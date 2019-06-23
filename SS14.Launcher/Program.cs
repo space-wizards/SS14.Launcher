@@ -40,7 +40,7 @@ namespace SS14.Launcher
             // Brick the launcher if it's an old version.
             var launcherVersionUri =
                 new Uri("https://builds.spacestation14.io/jenkins/userContent/current_launcher_version.txt");
-            System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls11 | System.Net.SecurityProtocolType.Tls12;
+            System.Net.ServicePointManager.SecurityProtocol |= System.Net.SecurityProtocolType.Tls12; //microsoft fucked up TLS so here's the trick to make it work
             var versionRequest = await _httpClient.GetAsync(launcherVersionUri);
             var version = (await versionRequest.Content.ReadAsStringAsync()).Trim();
             if (version != CurrentLauncherVersion)
