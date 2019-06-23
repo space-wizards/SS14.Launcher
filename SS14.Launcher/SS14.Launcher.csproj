@@ -20,4 +20,8 @@
       <Reference Include="System.Net.Http" />
     </ItemGroup>
 
+    <PropertyGroup Condition="'$(TargetFramework)' == 'net472'">
+        <DefineConstants>$(DefineConstants);NET_FRAMEWORK</DefineConstants>
+    </PropertyGroup>
+
 </Project>
