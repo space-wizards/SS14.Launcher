@@ -14,10 +14,9 @@ dotnet publish SS14.Launcher/SS14.Launcher.csproj -c Release --no-self-contained
 mkdir -p bin/publish/Linux/bin
 mkdir -p bin/publish/Linux/dotnet
 
-cp PublishFiles/SS14.Launcher bin/publish/Linux
-cp SS14.Launcher/bin/Release/netcoreapp3.0/linux-x64/publish/* bin/publish/Linux/bin
-cp -r Dependencies/dotnet/linux/* bin/publish/Linux/dotnet
+cp PublishFiles/SS14.Launcher PublishFiles/SS14.desktop bin/publish/Linux/
+cp SS14.Launcher/bin/Release/netcoreapp3.0/linux-x64/publish/* bin/publish/Linux/bin/
+cp -r Dependencies/dotnet/linux/* bin/publish/Linux/dotnet/
 
-pushd bin/publish/Linux
+cd bin/publish/Linux
 zip -r ../../../SS14.Launcher_Linux.zip *
-popd
