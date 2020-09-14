@@ -23,13 +23,15 @@ namespace SS14.Launcher.ViewModels
 
             var servers = new ServerListTabViewModel(cfg, statusCache, updater);
             var news = new NewsTabViewModel();
+            var options = new OptionsTabViewModel();
             var home = new HomePageViewModel(cfg, statusCache, updater);
 
             Tabs = new MainWindowTabViewModel[]
             {
                 home,
                 servers,
-                news
+                news,
+                options
             };
 
             this.WhenAnyValue(x => x.SelectedIndex).Subscribe(i => Tabs[i].Selected());
