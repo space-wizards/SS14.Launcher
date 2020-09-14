@@ -31,6 +31,7 @@ namespace SS14.Launcher.Models
         private bool _ignoreSave;
         private string? _userName;
         private int _nextInstallationId = 1;
+        private bool _forceGLES2;
 
         public ConfigurationManager()
         {
@@ -68,6 +69,20 @@ namespace SS14.Launcher.Models
 
         public IObservableCache<FavoriteServer, string> FavoriteServers => _favoriteServers;
         public IObservableCache<Installation, string> Installations => _installations;
+
+        /// <summary>
+        ///     If true, whenever SS14 is started, the cvar will be set to force GLES2 rendering. (See Models/Connector.cs:LaunchClient)
+        ///     Otherwise, it'll be set to the default fallback chain.
+        /// </summary>
+        public bool ForceGLES2
+        {
+            get => _forceGLES2;
+            set
+            {
+                this.RaiseAndSetIfChanged(ref _forceGLES2, value);
+                Save();
+            }
+        }
 
         public void AddFavoriteServer(FavoriteServer server)
         {
@@ -146,6 +161,8 @@ namespace SS14.Launcher.Models
                         a.AddOrUpdate(data.Installations);
                     });
                 }
+
+                ForceGLES2 = data.ForceGLES2 ?? false;
             }
             finally
             {
@@ -165,6 +182,7 @@ namespace SS14.Launcher.Models
             var data = JsonConvert.SerializeObject(new JsonData
             {
                 Username = _userName,
+                ForceGLES2 = _forceGLES2,
                 Favorites = _favoriteServers.Items.ToList(),
                 NextInstallationId = _nextInstallationId,
                 Installations = _installations.Items.ToList()
@@ -199,6 +217,9 @@ namespace SS14.Launcher.Models
 
             [JsonProperty(PropertyName = "next_installation_id")]
             public int NextInstallationId { get; set; } = 1;
-        }
+
+            [JsonProperty(PropertyName = "force_gles2")]
+            public bool? ForceGLES2 { get; set; }
+       }
     }
 }

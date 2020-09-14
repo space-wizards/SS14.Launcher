@@ -11,7 +11,8 @@
         <mainWindowTabs:OptionsTabViewModel />
     </Design.DataContext>
 
-    <Grid Margin="4" VerticalAlignment="Top" ColumnDefinitions="Auto, *">
-        <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="There would be some options here, but that's for another commit." Margin="4" />
-    </Grid>
+    <StackPanel Orientation="Vertical">
+        <CheckBox Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Margin="4" IsChecked="{Binding ForceGLES2,Mode=TwoWay}">Compatibility Mode</CheckBox>
+        <TextBlock Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" TextWrapping="Wrap" Text="This uses OpenGL ES 2 (via ANGLE if necessary), which is less likely to suffer from driver bugs. Use this if you are experiencing graphical issues." Margin="8" />
+    </StackPanel>
 </UserControl>

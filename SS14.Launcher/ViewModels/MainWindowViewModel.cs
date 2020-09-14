@@ -23,7 +23,7 @@ namespace SS14.Launcher.ViewModels
 
             var servers = new ServerListTabViewModel(cfg, statusCache, updater);
             var news = new NewsTabViewModel();
-            var options = new OptionsTabViewModel();
+            var options = new OptionsTabViewModel(cfg);
             var home = new HomePageViewModel(cfg, statusCache, updater);
 
             Tabs = new MainWindowTabViewModel[]
