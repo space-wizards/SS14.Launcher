@@ -204,6 +204,15 @@ public class Connector : ReactiveObject
         {
             var resp = await _http.GetStringAsync(infoAddr, cancel);
             var info = JsonConvert.DeserializeObject<ServerInfo>(resp);
+            if (info.BuildInformation != null)
+            {
+                // Infer download URL to be self-hosted client address if not supplied
+                // (The server may not know it's own address)
+                if (string.IsNullOrEmpty(info.BuildInformation.DownloadUrl))
+                {
+                    info.BuildInformation.DownloadUrl = UriHelper.GetServerSelfhostedClientZipAddress(parsedAddress).ToString();
+                }
+            }
             return (info, parsedAddress, infoAddr);
         }
         catch (Exception e) when (e is JsonException || e is HttpRequestException)

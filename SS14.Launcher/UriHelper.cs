@@ -122,4 +122,24 @@ public static class UriHelper
     {
         return new Uri(GetServerApiAddress(serverAddress), "info");
     }
+
+    /// <summary>
+    ///     Gets the <c>/client.zip</c> HTTP address for a server address.
+    ///     This is not necessarily the actual client ZIP address.
+    /// </summary>
+    [Pure]
+    public static Uri GetServerSelfhostedClientZipAddress(string serverAddress)
+    {
+        return GetServerSelfhostedClientZipAddress(ParseSs14Uri(serverAddress));
+    }
+
+    /// <summary>
+    ///     Gets the <c>/client.zip</c> HTTP address for an ss14 uri.
+    ///     This is not necessarily the actual client ZIP address.
+    /// </summary>
+    [Pure]
+    public static Uri GetServerSelfhostedClientZipAddress(Uri serverAddress)
+    {
+        return new Uri(GetServerApiAddress(serverAddress), "client.zip");
+    }
 }

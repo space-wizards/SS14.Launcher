@@ -100,6 +100,8 @@ public sealed class Updater : ReactiveObject
 
         Status = UpdateStatus.DownloadingClientUpdate;
 
+        Log.Information($"Downloading content update from {buildInformation.DownloadUrl}");
+
         var diskId = existingInstallation?.DiskId ?? _cfg.GetNewInstallationId();
         var binPath = Path.Combine(LauncherPaths.DirServerContent,
             diskId.ToString(CultureInfo.InvariantCulture) + ".zip");
