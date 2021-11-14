@@ -28,6 +28,7 @@ public sealed class DataManager : ReactiveObject
     private Guid _fingerprint;
     private Guid? _selectedLogin;
     private bool _forceGLES2;
+    private bool _dynamicPGO;
     private bool _hasDismissedEarlyAccessWarning;
     private bool _disableSigning;
     private bool _logClient;
@@ -102,6 +103,15 @@ public sealed class DataManager : ReactiveObject
         }
     }
 
+    public bool DynamicPGO
+    {
+        get => _dynamicPGO;
+        set
+        {
+            this.RaiseAndSetIfChanged(ref _dynamicPGO, value);
+            Save();
+        }
+    }
 
     public bool HasDismissedEarlyAccessWarning
     {
@@ -288,6 +298,7 @@ public sealed class DataManager : ReactiveObject
             _selectedLogin = data.SelectedLogin;
 
             ForceGLES2 = data.ForceGLES2 ?? false;
+            DynamicPGO = data.DynamicPGO ?? true;
             _hasDismissedEarlyAccessWarning = data.DismissedEarlyAccessWarning ?? false;
             _disableSigning = data.DisableSigning;
             _logClient = data.LogClient;
@@ -327,6 +338,7 @@ public sealed class DataManager : ReactiveObject
             SelectedLogin = _selectedLogin,
             Logins = _logins.Items.ToList(),
             ForceGLES2 = _forceGLES2,
+            DynamicPGO = _dynamicPGO,
             Favorites = _favoriteServers.Items.ToList(),
             NextInstallationId = _nextInstallationId,
             Engines = _engineInstallations.Items.ToList(),
@@ -380,6 +392,9 @@ public sealed class DataManager : ReactiveObject
 
         [JsonProperty(PropertyName = "force_gles2")]
         public bool? ForceGLES2 { get; set; }
+
+        [JsonProperty(PropertyName = "dynamic_pgo")]
+        public bool? DynamicPGO { get; set; }
 
         [JsonProperty(PropertyName = "dismissed_early_access_warning")]
         public bool? DismissedEarlyAccessWarning { get; set; }

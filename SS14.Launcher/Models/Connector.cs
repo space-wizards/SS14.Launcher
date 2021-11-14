@@ -267,6 +267,14 @@ public class Connector : ReactiveObject
             startInfo.RedirectStandardError = true;
         }
 
+        if (_cfg.DynamicPGO)
+        {
+            Log.Debug("Dynamic PGO is enabled.");
+            startInfo.EnvironmentVariables["DOTNET_TieredPGO"] = "1";
+            startInfo.EnvironmentVariables["DOTNET_TC_QuickJitForLoops"] = "1";
+            startInfo.EnvironmentVariables["DOTNET_ReadyToRun"] = "0";
+        }
+
         startInfo.UseShellExecute = false;
         startInfo.ArgumentList.AddRange(extraArgs);
         var process = Process.Start(startInfo);

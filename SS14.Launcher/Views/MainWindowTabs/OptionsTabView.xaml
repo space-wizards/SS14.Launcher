@@ -27,6 +27,11 @@
                    Text="This uses OpenGL ES 2 (via ANGLE if necessary), which is less likely to suffer from driver bugs. Try this if you are experiencing graphical issues or crashes."
                    Margin="8" />
 
+        <CheckBox VerticalAlignment="Center" Margin="4" IsChecked="{Binding Cfg.DynamicPGO}">Experimental Performance Options</CheckBox>
+        <TextBlock VerticalAlignment="Center" TextWrapping="Wrap"
+                   Text="Experimental .NET 6 environment variables that enable full Dynamic PGO. Disable if you experience issues."
+                   Margin="8" />
+
         <CheckBox VerticalAlignment="Center" Margin="4" IsChecked="{Binding Cfg.LogClient}">Log Client</CheckBox>
         <TextBlock VerticalAlignment="Center" TextWrapping="Wrap"
                    Text="Enables logging of any game client output. Useful for developers."
