@@ -26,22 +26,37 @@ internal static class Program
     public static void Main(string[] args)
     {
         // Parse arguments as early as possible for launcher messaging reasons.
-        string command = LauncherCommands.PingCommand;
+        string[] commands = {LauncherCommands.PingCommand};
         var commandSendAnyway = false;
         if (args.Length == 1)
         {
             // Check if this is a valid Uri, since that indicates re-invocation.
             if (Uri.TryCreate(args[0], UriKind.Absolute, out var result))
             {
-                command = LauncherCommands.ConstructConnectCommand(result);
+                commands = new string[] {LauncherCommands.BlankReasonCommand, LauncherCommands.ConstructConnectCommand(result)};
                 // This ensures we queue up the connection even if we're starting the launcher now.
                 commandSendAnyway = true;
             }
         }
-        if (LauncherMessaging.SendCommandOrClaim(command, commandSendAnyway))
+        else if (args.Length >= 2)
+        {
+            if (args[0] == "--commands")
+            {
+                // Trying to send an arbitrary series of commands.
+                // This is how the Loader is expected to communicate (and start the launcher if necessary).
+                // Note that there are special "untrusted text" versions of the commands that should be used.
+                commands = new string[args.Length - 1];
+                for (var i = 0; i < commands.Length; i++)
+                    commands[i] = args[i + 1];
+                commandSendAnyway = true;
+            }
+        }
+        // Note: This MUST occur before we do certain actions like:
+        // + Open the launcher log file (and therefore wipe a user's existing launcher log)
+        // + Initialize Avalonia (and therefore waste whatever time it takes to do that)
+        // Therefore any messages you receive at this point will be Console.WriteLine-only!
+        if (LauncherMessaging.SendCommandsOrClaim(commands, commandSendAnyway))
             return;
-
-        // Now that's done...
 
         VcRedistCheck.Check();
         var cfg = new DataManager();
@@ -75,7 +90,14 @@ internal static class Program
             .CreateLogger());
 #endif
 
-        BuildAvaloniaApp().Start(AppMain, args);
+        try
+        {
+            BuildAvaloniaApp().Start(AppMain, args);
+        }
+        finally
+        {
+            LauncherMessaging.ShutdownPipeServer();
+        }
     }
 
     // Avalonia configuration, don't remove; also used by visual designer.

@@ -16,6 +16,10 @@ public static class ConfigConstants
     // Check the command queue this often.
     public static readonly TimeSpan CommandQueueCheckInterval = TimeSpan.FromSeconds(1);
 
+    public const string LauncherCommandsNamedPipeName = "SS14.Launcher.CommandPipe";
+    // Amount of time to wait before the launcher decides to ignore named pipes entirely to keep the rest of the launcher functional.
+    public const int LauncherCommandsNamedPipeTimeout = 5000;
+
     public const string HubUrl = "https://central.spacestation14.io/hub/";
     public const string AuthUrl = "https://central.spacestation14.io/auth/";
     public const string DiscordUrl = "https://discord.gg/t2jac3p";
