@@ -1,3 +1,4 @@
+using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using Avalonia;
@@ -24,8 +25,25 @@ internal static class Program
     // yet and stuff might break.
     public static void Main(string[] args)
     {
-        VcRedistCheck.Check();
+        // Parse arguments as early as possible for launcher messaging reasons.
+        string command = LauncherCommands.PingCommand;
+        var commandSendAnyway = false;
+        if (args.Length == 1)
+        {
+            // Check if this is a valid Uri, since that indicates re-invocation.
+            if (Uri.TryCreate(args[0], UriKind.Absolute, out var result))
+            {
+                command = LauncherCommands.ConstructConnectCommand(result);
+                // This ensures we queue up the connection even if we're starting the launcher now.
+                commandSendAnyway = true;
+            }
+        }
+        if (LauncherMessaging.SendCommandOrClaim(command, commandSendAnyway))
+            return;
 
+        // Now that's done...
+
+        VcRedistCheck.Check();
         var cfg = new DataManager();
         cfg.Load();
         Locator.CurrentMutable.RegisterConstant(cfg);
@@ -75,7 +93,8 @@ internal static class Program
         Locator.CurrentMutable.RegisterConstant(new ServerStatusCache());
         Locator.CurrentMutable.RegisterConstant(new Updater());
         Locator.CurrentMutable.RegisterConstant(new AuthApi());
-        Locator.CurrentMutable.RegisterConstant(new LoginManager());
+        var lm = new LoginManager();
+        Locator.CurrentMutable.RegisterConstant(lm);
 
         var viewModel = new MainWindowViewModel();
         var window = new MainWindow
@@ -83,6 +102,8 @@ internal static class Program
             DataContext = viewModel
         };
         viewModel.OnWindowInitialized();
+
+        LauncherCommands.StartReceivingTimer(viewModel, lm);
 
         app.Run(window);
     }

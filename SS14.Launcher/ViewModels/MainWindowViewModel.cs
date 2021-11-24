@@ -115,6 +115,8 @@ public sealed class MainWindowViewModel : ViewModelBase, IErrorOverlayOwner
         {
             TrySwitchToAccount(login);
         }
+
+        // We should now start reacting to commands.
     }
 
     private async Task CheckAccounts()

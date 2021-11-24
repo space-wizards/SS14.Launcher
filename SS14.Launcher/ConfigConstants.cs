@@ -13,6 +13,9 @@ public static class ConfigConstants
     // If the user leaves the launcher running for absolute ages, this is how often we'll update his login tokens.
     public static readonly TimeSpan TokenRefreshInterval = TimeSpan.FromDays(7);
 
+    // Check the command queue this often.
+    public static readonly TimeSpan CommandQueueCheckInterval = TimeSpan.FromSeconds(1);
+
     public const string HubUrl = "https://central.spacestation14.io/hub/";
     public const string AuthUrl = "https://central.spacestation14.io/auth/";
     public const string DiscordUrl = "https://discord.gg/t2jac3p";
