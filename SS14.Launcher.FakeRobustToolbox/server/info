@@ -1,0 +1,14 @@
+{
+    "connect_address": "udp://localhost:1212/",
+    "auth": {
+        "mode": "Disabled",
+        "public_key": ""
+    },
+    "build": {
+        "engine_version": "meme",
+        "fork_id": "custom",
+        "version": "123",
+        "download_url": "",
+        "hash": null
+    }
+}

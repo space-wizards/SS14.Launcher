@@ -1,0 +1,12 @@
+# WARNING: This script will auto-install the engine ver.
+
+cd ..
+dotnet build
+cd server
+cp ../Robust.Client/bin/Debug/*/Robust.Client.dll ./
+zip client.zip Robust.Client.dll
+echo WARNING: Copying in "meme" engine version
+echo You will still need to formally add the engine version into your launcher config!
+cp client.zip ~/".local/share/Space Station 14/launcher/engines/meme.zip"
+python3 -m http.server 1212
+
