@@ -252,6 +252,8 @@ public class Connector : ReactiveObject
         if (_cfg.DisableSigning)
             startInfo.EnvironmentVariables["SS14_DISABLE_SIGNING"] = "true";
 
+        startInfo.EnvironmentVariables["SS14_LAUNCHER_PATH"] = Process.GetCurrentProcess().MainModule.FileName;
+
         // ReSharper disable once ReplaceWithSingleAssignment.False
         var manualPipeLogging = false;
         if (_cfg.LogClient)

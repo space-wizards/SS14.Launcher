@@ -52,7 +52,9 @@ internal class Program
         if (!TryGetLoader(clientAssembly, out var loader))
             return false;
 
-        var args = new MainArgs(_engineArgs, _fileApi);
+        var launcher = Environment.GetEnvironmentVariable("SS14_LAUNCHER_PATH");
+        var redialApi = launcher != null ? new RedialApi(launcher) : null;
+        var args = new MainArgs(_engineArgs, _fileApi, redialApi);
 
         loader.Main(args);
         return true;
