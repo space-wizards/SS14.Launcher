@@ -10,14 +10,14 @@ using System.Threading.Tasks;
 
 namespace SS14.Launcher;
 
-public static class LauncherMessaging
+public class LauncherMessaging
 {
     /// <summary>
     /// Queued commands. Inbound commands are sent from LauncherMessaging, handled/requeued in LauncherCommands.
     /// </summary>
-    public static ConcurrentQueue<string> CommandQueue = new();
+    public ConcurrentQueue<string> CommandQueue = new();
 
-    private static NamedPipeServerStream? _pipeServer;
+    private NamedPipeServerStream? _pipeServer;
 
     /// <summary>
     /// Either sends a command (a string containing anything except a carriage return or newline) to the primary launcher process,
@@ -28,7 +28,7 @@ public static class LauncherMessaging
     /// </summary>
     /// <param name="command">The sent command.</param>
     /// <param name="sendAnyway">If true, when claimed, the hook is given the command immediately for later processing.</param>
-    public static bool SendCommandsOrClaim(string[] commands, bool sendAnyway = true)
+    public bool SendCommandsOrClaim(string[] commands, bool sendAnyway = true)
     {
         // Verify command matches rules
         foreach (var command in commands)
@@ -124,7 +124,7 @@ public static class LauncherMessaging
     /// Closes the pipe server remotely, which causes WaitForConnection to throw, which cleans up the pipe server thread.
     /// This is important because otherwise the thread sticks around.
     /// </summary>
-    public static void ShutdownPipeServer()
+    public void ShutdownPipeServer()
     {
         if (_pipeServer != null)
         {

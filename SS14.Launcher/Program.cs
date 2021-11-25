@@ -25,6 +25,9 @@ internal static class Program
     // yet and stuff might break.
     public static void Main(string[] args)
     {
+        var msgr = new LauncherMessaging();
+        Locator.CurrentMutable.RegisterConstant(msgr);
+
         // Parse arguments as early as possible for launcher messaging reasons.
         string[] commands = {LauncherCommands.PingCommand};
         var commandSendAnyway = false;
@@ -55,7 +58,7 @@ internal static class Program
         // + Open the launcher log file (and therefore wipe a user's existing launcher log)
         // + Initialize Avalonia (and therefore waste whatever time it takes to do that)
         // Therefore any messages you receive at this point will be Console.WriteLine-only!
-        if (LauncherMessaging.SendCommandsOrClaim(commands, commandSendAnyway))
+        if (msgr.SendCommandsOrClaim(commands, commandSendAnyway))
             return;
 
         VcRedistCheck.Check();
@@ -96,7 +99,7 @@ internal static class Program
         }
         finally
         {
-            LauncherMessaging.ShutdownPipeServer();
+            msgr.ShutdownPipeServer();
         }
     }
 
@@ -111,6 +114,7 @@ internal static class Program
     private static void AppMain(Application app, string[] args)
     {
         var cfg = Locator.Current.GetService<DataManager>();
+        var msgr = Locator.Current.GetService<LauncherMessaging>();
         Locator.CurrentMutable.RegisterConstant<IEngineManager>(new EngineManagerDynamic());
         Locator.CurrentMutable.RegisterConstant(new ServerStatusCache());
         Locator.CurrentMutable.RegisterConstant(new Updater());
@@ -125,7 +129,9 @@ internal static class Program
         };
         viewModel.OnWindowInitialized();
 
-        LauncherCommands.StartReceivingTimer(viewModel, lm);
+        var lc = new LauncherCommands(viewModel);
+        Locator.CurrentMutable.RegisterConstant(lc);
+        lc.StartReceivingTimer();
 
         app.Run(window);
     }
