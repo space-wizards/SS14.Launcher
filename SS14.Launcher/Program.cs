@@ -93,13 +93,9 @@ internal static class Program
             .CreateLogger());
 #endif
 
-        try
+        using (msgr.PipeServerSelfDestruct)
         {
             BuildAvaloniaApp().Start(AppMain, args);
-        }
-        finally
-        {
-            msgr.ShutdownPipeServer();
         }
     }
 

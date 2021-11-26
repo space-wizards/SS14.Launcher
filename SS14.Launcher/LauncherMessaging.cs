@@ -7,6 +7,7 @@ using System.IO.Pipes;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Serilog;
 
 namespace SS14.Launcher;
 
@@ -22,6 +23,10 @@ public class LauncherMessaging
     /// </summary>
     private NamedPipeServerStream? _pipeServer;
 
+    /// <summary>
+    /// Cancellation token used to safely shut down the pipe server.
+    /// </summary>
+    public readonly CancellationTokenSource PipeServerSelfDestruct = new();
 
     /// <summary>
     /// Either sends a command (a string containing anything except a carriage return or newline) to the primary launcher process,
@@ -90,6 +95,7 @@ public class LauncherMessaging
     /// </summary>
     public async Task ServerTask(LauncherCommands lc)
     {
+        var token = PipeServerSelfDestruct.Token;
         // Handle initial commands before actually doing server stuff (as there may be no server).
         foreach (string s in _initialCommands)
         {
@@ -103,18 +109,23 @@ public class LauncherMessaging
         var sr = new StreamReader(_pipeServer, Encoding.UTF8);
         while (true)
         {
-            await _pipeServer.WaitForConnectionAsync();
+            await _pipeServer.WaitForConnectionAsync(token);
+            if (token.IsCancellationRequested) break;
             try
             {
                 while (!sr.EndOfStream)
                 {
-                    await lc.RunCommand(sr.ReadLine());
+                    // Can't be cancelled
+                    var line = await sr.ReadLineAsync();
+                    if (token.IsCancellationRequested) break;
+                    if (line != null)
+                        await lc.RunCommand(line);
                 }
             }
             catch (Exception e)
             {
                 // Not much we can do here.
-                Console.WriteLine("Pipe server: Unexpected end of stream.");
+                Log.Warning($"Pipe server: Exception during a connection: {e}");
             }
             try
             {
@@ -123,18 +134,6 @@ public class LauncherMessaging
             catch (Exception)
             {
             }
-        }
-    }
-
-    /// <summary>
-    /// Closes the pipe server remotely, which causes WaitForConnection to throw, which cleans up the pipe server thread.
-    /// This is important because otherwise the thread sticks around.
-    /// </summary>
-    public void ShutdownPipeServer()
-    {
-        if (_pipeServer != null)
-        {
-            _pipeServer.Close();
         }
     }
 }
