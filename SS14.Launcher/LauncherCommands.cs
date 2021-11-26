@@ -39,30 +39,51 @@ public class LauncherCommands
         _windowVm.Control?.Activate();
     }
 
-    private bool Connect(string param)
+    private async Task Connect(string param)
     {
-        // Sanity-check this!!!
-        var activeAccount = _loginMgr.ActiveAccount;
-        if ((activeAccount == null) || (activeAccount.Status != AccountLoginStatus.Available))
+        var reason = _reason == "" ? null : _reason;
+        // Sanity-check the connection.
+
+        LoggedInAccount? activeAccount = null;
+        while (true)
         {
-            return true;
-        }
-        else
-        {
-            // Drop the command if we are already connecting.
-            if (_windowVm.ConnectingVM != null)
+            activeAccount = _loginMgr.ActiveAccount;
+
+            if ((activeAccount == null) || (activeAccount.Status == AccountLoginStatus.Unsure))
             {
-                Log.Warning($"Dropping connect command: Busy connecting to a server");
-                return false;
+                await Task.Delay(ConfigConstants.LauncherCommandsRedialWaitTimeout);
             }
-            // Note that we don't want to activate the window for something we'll requeue again and again.
-            ActivateWindow();
-            ConnectingViewModel.StartConnect(_windowVm, param, _reason == "" ? null : _reason);
+            else
+            {
+                break;
+            }
         }
-        return false;
+
+        if (!Dispatcher.UIThread.CheckAccess())
+        {
+            Log.Warning($"Dropping connect command: Sanity checks have failed (not on UI thread)");
+            return;
+        }
+
+        if (activeAccount!.Status != AccountLoginStatus.Available)
+        {
+            Log.Warning($"Dropping connect command: Account not available");
+            return;
+        }
+
+        // Drop the command if we are already connecting.
+        if (_windowVm.ConnectingVM != null)
+        {
+            Log.Warning($"Dropping connect command: Busy connecting to a server");
+            return;
+        }
+        // Note that we don't want to activate the window for something we'll requeue again and again.
+        ActivateWindow();
+        Log.Information($"Connect command: \"{param}\", \"{reason}\"");
+        ConnectingViewModel.StartConnect(_windowVm, param, reason);
     }
 
-    private async Task<bool> RunCommand(string cmd)
+    public async Task RunCommand(string cmd)
     {
         // Log.Debug($"Launcher command: {cmd}");
 
@@ -79,7 +100,6 @@ public class LauncherCommands
             }
         }
 
-        var requeue = false;
         if (cmd == PingCommand)
         {
             // Yup!
@@ -105,47 +125,17 @@ public class LauncherCommands
             // Uri (encoded in UTF-8 and then into hex for safety)
             var uri = GetUntrustedTextField();
             if (uri != null)
-                requeue = Connect(uri);
+                await Connect(uri);
         }
         else if (cmd.StartsWith("c"))
         {
             // Used by the "pass URI as argument" logic, doesn't need to bother with safety measures
-            requeue = Connect(cmd.Substring(1));
+            await Connect(cmd.Substring(1));
         }
         else
         {
             Log.Error($"Unhandled launcher command: {cmd}");
         }
-        if (requeue)
-        {
-            // Command must be re-queued (maybe the user needs to login first)
-            _msgr.CommandQueue.Enqueue(cmd);
-            // Stop processing commands or it'll endlessly loop.
-            return false;
-        }
-        // Continue processing commands.
-        return true;
-    }
-
-    /// <summary>
-    /// Starts the timer that handles commands and either defers them (connection commands when not ready) or handles them.
-    /// </summary>
-    public void StartReceivingTimer()
-    {
-        _timer = DispatcherTimer.Run(() =>
-        {
-            async void Impl()
-            {
-                while (_msgr.CommandQueue.TryDequeue(out var cmd))
-                {
-                    // Leaves the loop when a command has to be re-queued or there are no commands left.
-                    if (!await RunCommand(cmd)) break;
-                }
-            }
-
-            Impl();
-            return true;
-        }, ConfigConstants.CommandQueueCheckInterval, DispatcherPriority.Background);
     }
 
     // Command constructors

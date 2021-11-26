@@ -1,5 +1,5 @@
 using System;
-using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Buffers;
 using System.Diagnostics;
 using System.IO;
@@ -13,11 +13,15 @@ namespace SS14.Launcher;
 public class LauncherMessaging
 {
     /// <summary>
-    /// Queued commands. Inbound commands are sent from LauncherMessaging, handled/requeued in LauncherCommands.
+    /// Initial commands that are fed into the launcher commands system on startup of the launcher.
     /// </summary>
-    public ConcurrentQueue<string> CommandQueue = new();
+    private string[] _initialCommands = Array.Empty<string>();
 
+    /// <summary>
+    /// *The* pipe server stream.
+    /// </summary>
     private NamedPipeServerStream? _pipeServer;
+
 
     /// <summary>
     /// Either sends a command (a string containing anything except a carriage return or newline) to the primary launcher process,
@@ -25,6 +29,7 @@ public class LauncherMessaging
     /// Returns true if the command was sent elsewhere (and the application should shutdown now).
     /// Returns false if we are the primary launcher process.
     /// This function should only ever be called once.
+    /// This occurs before Avalonia init.
     /// </summary>
     /// <param name="command">The sent command.</param>
     /// <param name="sendAnyway">If true, when claimed, the hook is given the command immediately for later processing.</param>
@@ -58,52 +63,14 @@ public class LauncherMessaging
         }
         catch (Exception)
         {
-            // Ok, so we're server.
+            // Ok, so we're server (we hope)
             Console.WriteLine("We are primary launcher (or primary launcher is out for lunch)");
         }
+
         // Try to create server
         try
         {
-            _pipeServer = new NamedPipeServerStream(actualPipeName);
-            new Thread(() =>
-            {
-                try
-                {
-                    // Note we can't just close the StreamReader per-connection.
-                    // It would close the underlying pipe server (breaking everything).
-                    var sr = new StreamReader(_pipeServer, Encoding.UTF8);
-                    while (true)
-                    {
-                        _pipeServer.WaitForConnection();
-                        try
-                        {
-                            while (!sr.EndOfStream)
-                            {
-                                CommandQueue.Enqueue(sr.ReadLine());
-                            }
-                        }
-                        catch (Exception e)
-                        {
-                            // Not much we can do here.
-                            Console.WriteLine("Pipe server: Unexpected end of stream.");
-                        }
-                        try
-                        {
-                            _pipeServer.Disconnect();
-                        }
-                        catch (Exception)
-                        {
-                        }
-                    }
-                }
-                catch (Exception e)
-                {
-                    // Thrown when the pipeServer gets disposed.
-                    // Done on purpose so main thread can terminate the pipe server.
-                    // Note that ObjectDisposedException is not necessarily thrown!!!
-                    Console.WriteLine($"Pipe server: Shutting down, cause {e}");
-                }
-            }).Start();
+            _pipeServer = new NamedPipeServerStream(actualPipeName, PipeDirection.InOut, 1, PipeTransmissionMode.Byte, PipeOptions.Asynchronous | PipeOptions.CurrentUserOnly);
         }
         catch (Exception e)
         {
@@ -112,12 +79,51 @@ public class LauncherMessaging
 
         if (sendAnyway)
         {
-            foreach (var command in commands)
-            {
-                CommandQueue.Enqueue(command);
-            }
+            _initialCommands = commands;
         }
         return false;
+    }
+
+    /// <summary>
+    /// This is the actual async server task, responsible for making everything else someone else's problem.
+    /// This occurs post-Avalonia-init.
+    /// </summary>
+    public async Task ServerTask(LauncherCommands lc)
+    {
+        // Handle initial commands before actually doing server stuff (as there may be no server).
+        foreach (string s in _initialCommands)
+        {
+            await lc.RunCommand(s);
+        }
+        // Actual server code
+        if (_pipeServer == null) return;
+        // With the pipe server created, we can move on
+        // Note we can't just close the StreamReader per-connection.
+        // It would close the underlying pipe server (breaking everything).
+        var sr = new StreamReader(_pipeServer, Encoding.UTF8);
+        while (true)
+        {
+            await _pipeServer.WaitForConnectionAsync();
+            try
+            {
+                while (!sr.EndOfStream)
+                {
+                    await lc.RunCommand(sr.ReadLine());
+                }
+            }
+            catch (Exception e)
+            {
+                // Not much we can do here.
+                Console.WriteLine("Pipe server: Unexpected end of stream.");
+            }
+            try
+            {
+                _pipeServer.Disconnect();
+            }
+            catch (Exception)
+            {
+            }
+        }
     }
 
     /// <summary>

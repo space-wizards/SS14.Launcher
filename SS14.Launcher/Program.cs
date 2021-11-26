@@ -131,7 +131,7 @@ internal static class Program
 
         var lc = new LauncherCommands(viewModel);
         Locator.CurrentMutable.RegisterConstant(lc);
-        lc.StartReceivingTimer();
+        msgr.ServerTask(lc);
 
         app.Run(window);
     }
