@@ -14,19 +14,19 @@ public class ConnectingViewModel : ViewModelBase
 
     private readonly CancellationTokenSource _cancelSource = new CancellationTokenSource();
 
-    private string? _overrideReason;
+    private string? _reasonSuffix;
 
     public bool IsErrored => _connector.Status == Connector.ConnectionStatus.ConnectionFailed ||
                              _connector.Status == Connector.ConnectionStatus.UpdateError ||
                              _connector.Status == Connector.ConnectionStatus.ClientExited &&
                              _connector.ClientExitedBadly;
 
-    public ConnectingViewModel(Connector connector, MainWindowViewModel windowVm, string? overrideReason)
+    public ConnectingViewModel(Connector connector, MainWindowViewModel windowVm, string? givenReason)
     {
         _updater = Locator.Current.GetService<Updater>();
         _connector = connector;
         _windowVm = windowVm;
-        _overrideReason = overrideReason;
+        _reasonSuffix = (givenReason != null) ? ("\n" + givenReason) : "";
 
         this.WhenAnyValue(x => x._updater.Progress)
             .Subscribe(_ =>
@@ -114,10 +114,10 @@ public class ConnectingViewModel : ViewModelBase
     public string StatusText =>
         _connector.Status switch
         {
-            Connector.ConnectionStatus.None => _overrideReason ?? "Starting connection...",
+            Connector.ConnectionStatus.None => "Starting connection..." + _reasonSuffix,
             Connector.ConnectionStatus.UpdateError =>
                 "There was an error while downloading server content. Please ask on Discord for support if the problem persists.",
-            Connector.ConnectionStatus.Updating => _overrideReason ?? ("Updating: " + _updater.Status switch
+            Connector.ConnectionStatus.Updating => ("Updating: " + _updater.Status switch
             {
                 Updater.UpdateStatus.CheckingClientUpdate => "Checking for server content update...",
                 Updater.UpdateStatus.DownloadingEngineVersion => "Downloading server content...",
@@ -126,20 +126,20 @@ public class ConnectingViewModel : ViewModelBase
                 Updater.UpdateStatus.CullingEngine => "Clearing old content...",
                 Updater.UpdateStatus.Ready => "Update done!",
                 _ => "You shouldn't see this"
-            }),
-            Connector.ConnectionStatus.Connecting => _overrideReason ?? "Fetching connection info from server...",
+            }) + _reasonSuffix,
+            Connector.ConnectionStatus.Connecting => "Fetching connection info from server..." + _reasonSuffix,
             Connector.ConnectionStatus.ConnectionFailed => "Failed to connect to server!",
-            Connector.ConnectionStatus.StartingClient => _overrideReason ?? "Starting client...",
+            Connector.ConnectionStatus.StartingClient => "Starting client..." + _reasonSuffix,
             Connector.ConnectionStatus.ClientExited => _connector.ClientExitedBadly
                 ? "Client seems to have crashed while starting. If this persists, please ask on Discord or GitHub for support."
                 : "",
             _ => ""
         };
 
-    public static void StartConnect(MainWindowViewModel windowVm, string address, string? overrideReason = null)
+    public static void StartConnect(MainWindowViewModel windowVm, string address, string? givenReason = null)
     {
         var connector = new Connector();
-        var vm = new ConnectingViewModel(connector, windowVm, overrideReason);
+        var vm = new ConnectingViewModel(connector, windowVm, givenReason);
         windowVm.ConnectingVM = vm;
         vm.Start(address);
     }
