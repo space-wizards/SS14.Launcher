@@ -36,7 +36,7 @@ public class LauncherCommands
         // This may not work, but let's try anyway...
         // In particular keep in mind:
         // https://github.com/AvaloniaUI/Avalonia/issues/2398
-        _windowVm.Control?.Activate();
+        _windowVm.Control?.ActivateForReal();
     }
 
     private async Task Connect(string param)
