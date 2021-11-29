@@ -1,17 +1,13 @@
 using System;
-using System.Buffers;
-using System.Diagnostics;
-using System.IO;
 using System.Text;
-using System.Threading;
+using System.Threading.Channels;
 using System.Threading.Tasks;
-using Avalonia;
 using Avalonia.Threading;
-using Avalonia.ReactiveUI;
-using Splat;
 using Serilog;
-using SS14.Launcher.ViewModels;
+using Splat;
 using SS14.Launcher.Models.Logins;
+using SS14.Launcher.Utility;
+using SS14.Launcher.ViewModels;
 
 namespace SS14.Launcher;
 
@@ -23,12 +19,15 @@ public class LauncherCommands
     private MainWindowViewModel _windowVm;
     private LoginManager _loginMgr;
     private LauncherMessaging _msgr;
+    public readonly Channel<string> CommandChannel;
 
     public LauncherCommands(MainWindowViewModel windowVm)
     {
         _windowVm = windowVm;
-        _loginMgr = Locator.Current.GetService<LoginManager>();
-        _msgr = Locator.Current.GetService<LauncherMessaging>();
+        _loginMgr = Locator.Current.GetRequiredService<LoginManager>();
+        _msgr = Locator.Current.GetRequiredService<LauncherMessaging>();
+
+        CommandChannel = Channel.CreateUnbounded<string>();
     }
 
     private void ActivateWindow()
@@ -83,9 +82,36 @@ public class LauncherCommands
         ConnectingViewModel.StartConnect(_windowVm, param, reason);
     }
 
-    public async Task RunCommand(string cmd)
+    public async ValueTask QueueCommand(string cmd)
     {
-        // Log.Debug($"Launcher command: {cmd}");
+        await CommandChannel.Writer.WriteAsync(cmd);
+    }
+
+    public void Shutdown()
+    {
+        CommandChannel.Writer.Complete();
+    }
+
+    public async void RunCommandTask()
+    {
+        var reader = CommandChannel.Reader;
+        while (await reader.WaitToReadAsync())
+        {
+            var cmd = await reader.ReadAsync();
+            try
+            {
+                await RunSingleCommand(cmd);
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Exception while processing launcher command {Command}", cmd);
+            }
+        }
+    }
+
+    private async Task RunSingleCommand(string cmd)
+    {
+        Log.Debug($"Launcher command: {cmd}");
 
         string? GetUntrustedTextField()
         {

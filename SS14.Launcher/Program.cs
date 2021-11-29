@@ -1,6 +1,7 @@
 using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Logging;
@@ -20,6 +21,8 @@ namespace SS14.Launcher;
 
 internal static class Program
 {
+    private static Task? _serverTask;
+
     // Initialization code. Don't use any Avalonia, third-party APIs or any
     // SynchronizationContext-reliant code before AppMain is called: things aren't initialized
     // yet and stuff might break.
@@ -96,7 +99,11 @@ internal static class Program
         using (msgr.PipeServerSelfDestruct)
         {
             BuildAvaloniaApp().Start(AppMain, args);
+            msgr.PipeServerSelfDestruct.Cancel();
         }
+
+        // Wait for pipe server to shut down cleanly.
+        _serverTask?.Wait();
     }
 
     // Avalonia configuration, don't remove; also used by visual designer.
@@ -126,9 +133,12 @@ internal static class Program
         viewModel.OnWindowInitialized();
 
         var lc = new LauncherCommands(viewModel);
+        lc.RunCommandTask();
         Locator.CurrentMutable.RegisterConstant(lc);
-        msgr.ServerTask(lc);
+        _serverTask = msgr.ServerTask(lc);
 
         app.Run(window);
+
+        lc.Shutdown();
     }
 }

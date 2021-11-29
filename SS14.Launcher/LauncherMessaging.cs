@@ -1,7 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Buffers;
-using System.Diagnostics;
 using System.IO;
 using System.IO.Pipes;
 using System.Text;
@@ -99,41 +96,52 @@ public class LauncherMessaging
         // Handle initial commands before actually doing server stuff (as there may be no server).
         foreach (string s in _initialCommands)
         {
-            await lc.RunCommand(s);
+            await lc.QueueCommand(s);
         }
+
         // Actual server code
         if (_pipeServer == null) return;
         // With the pipe server created, we can move on
         // Note we can't just close the StreamReader per-connection.
         // It would close the underlying pipe server (breaking everything).
         var sr = new StreamReader(_pipeServer, Encoding.UTF8);
-        while (true)
+        try
         {
-            await _pipeServer.WaitForConnectionAsync(token);
-            if (token.IsCancellationRequested) break;
-            try
+            while (true)
             {
-                while (!sr.EndOfStream)
+                await _pipeServer.WaitForConnectionAsync(token).ConfigureAwait(false);
+                if (token.IsCancellationRequested) break;
+                try
                 {
-                    // Can't be cancelled
-                    var line = await sr.ReadLineAsync();
-                    if (token.IsCancellationRequested) break;
-                    if (line != null)
-                        await lc.RunCommand(line);
+                    while (!sr.EndOfStream)
+                    {
+                        // Can't be cancelled
+                        var line = await sr.ReadLineAsync().WaitAsync(token).ConfigureAwait(false);
+                        if (line != null)
+                            await lc.QueueCommand(line);
+                    }
+
+                    _pipeServer.Disconnect();
+                }
+                catch (OperationCanceledException)
+                {
+                    // Rethrow outside loop.
+                    throw;
+                }
+                catch (Exception e)
+                {
+                    // Not much we can do here.
+                    Log.Warning($"Pipe server: Exception during a connection: {e}");
                 }
             }
-            catch (Exception e)
-            {
-                // Not much we can do here.
-                Log.Warning($"Pipe server: Exception during a connection: {e}");
-            }
-            try
-            {
-                _pipeServer.Disconnect();
-            }
-            catch (Exception)
-            {
-            }
+        }
+        catch (OperationCanceledException)
+        {
+            // We're gucci
+        }
+        finally
+        {
+            await _pipeServer.DisposeAsync();
         }
     }
 }
