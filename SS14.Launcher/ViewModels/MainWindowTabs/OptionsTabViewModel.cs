@@ -1,7 +1,6 @@
 using System.Diagnostics;
-using System.IO;
-using System.Linq;
 using Splat;
+using SS14.Launcher.Models.ContentManagement;
 using SS14.Launcher.Models.Data;
 using SS14.Launcher.Models.EngineManager;
 using SS14.Launcher.Utility;
@@ -12,11 +11,13 @@ public class OptionsTabViewModel : MainWindowTabViewModel
 {
     public DataManager Cfg { get; }
     private readonly IEngineManager _engineManager;
+    private readonly ContentManager _contentManager;
 
     public OptionsTabViewModel()
     {
         Cfg = Locator.Current.GetRequiredService<DataManager>();
         _engineManager = Locator.Current.GetRequiredService<IEngineManager>();
+        _contentManager.ClearAll();
     }
 
 #if RELEASE
@@ -84,7 +85,7 @@ public class OptionsTabViewModel : MainWindowTabViewModel
 
     public void ClearServerContent()
     {
-        foreach (var content in Cfg.ServerContent.Items.ToArray())
+        /*foreach (var content in Cfg.ServerContent.Items.ToArray())
         {
             Cfg.RemoveInstallation(content);
         }
@@ -94,7 +95,7 @@ public class OptionsTabViewModel : MainWindowTabViewModel
             File.Delete(file);
         }
 
-        Cfg.CommitConfig();
+        Cfg.CommitConfig();*/
     }
 
     public void OpenLogDirectory()

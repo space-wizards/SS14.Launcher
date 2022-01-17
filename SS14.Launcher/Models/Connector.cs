@@ -111,7 +111,7 @@ public class Connector : ReactiveObject
         Status = ConnectionStatus.ClientExited;
     }
 
-    private async Task<Process?> ConnectLaunchClient(ServerInfo info, InstalledServerContent installedServerContent,
+    private async Task<Process?> ConnectLaunchClient(ServerInfo info, int contentVersionId,
         Uri connectAddress, Uri parsedAddr)
     {
         var cVars = new List<(string, string)>();
@@ -132,7 +132,7 @@ public class Connector : ReactiveObject
             Debug.Assert(info.BuildInformation != null, "info.BuildInformation != null");
 
             // Launch client.
-            return await LaunchClient(info.BuildInformation.EngineVersion, installedServerContent, new[]
+            return await LaunchClient(info.BuildInformation.EngineVersion, contentVersionId, new[]
             {
                 // We are using the launcher. Don't show main menu etc..
                 "--launcher",
@@ -182,7 +182,7 @@ public class Connector : ReactiveObject
         }
     }
 
-    private async Task<InstalledServerContent> RunUpdateAsync(ServerInfo info, CancellationToken cancel)
+    private async Task<int> RunUpdateAsync(ServerInfo info, CancellationToken cancel)
     {
         // Must have been set when retrieving build info (inferred to be automatic zipping).
         Debug.Assert(info.BuildInformation != null, "info.BuildInformation != null");
@@ -193,7 +193,7 @@ public class Connector : ReactiveObject
             throw new ConnectException(ConnectionStatus.UpdateError);
         }
 
-        return installation;
+        return installation.Value;
     }
 
     private async Task<(ServerInfo, Uri, Uri)> GetServerInfoAsync(string address, CancellationToken cancel)
@@ -242,14 +242,13 @@ public class Connector : ReactiveObject
 
     private async Task<Process?> LaunchClient(
         string engineVersion,
-        InstalledServerContent installedServerContent,
+        int contentVersionId,
         IEnumerable<string> extraArgs,
         List<(string, string)> env)
     {
         var pubKey = LauncherPaths.PathPublicKey;
         var binPath = _engineManager.GetEnginePath(engineVersion);
         var sig = _engineManager.GetEngineSignature(engineVersion);
-        var contentPath = LauncherPaths.GetContentZip(installedServerContent.DiskId);
 
         var startInfo = await GetLoaderStartInfo();
 
@@ -258,7 +257,7 @@ public class Connector : ReactiveObject
         startInfo.ArgumentList.Add(pubKey);
 
         startInfo.ArgumentList.Add("--mount-zip");
-        startInfo.ArgumentList.Add(contentPath);
+        startInfo.ArgumentList.Add(contentVersionId.ToString(CultureInfo.InvariantCulture));
 
         foreach (var (k, v) in env)
         {

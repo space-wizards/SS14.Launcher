@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <OutputType>Exe</OutputType>
-        <OutputType Condition="'$(Configuration)' == 'Release'">WinExe</OutputType>
+        <!--<OutputType Condition="'$(Configuration)' == 'Release'">WinExe</OutputType>-->
         <TargetFramework>net6.0</TargetFramework>
         <Nullable>enable</Nullable>
         <!--<PublishTrimmed>true</PublishTrimmed>
@@ -24,6 +24,8 @@
         </AvaloniaResource>
 
         <AdditionalFiles Include="**\*.xaml" />
+
+        <Compile Remove="Models\Data\InstalledServerContent.cs" />
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="Avalonia" Version="0.10.10" />
@@ -56,6 +58,8 @@
         </EmbeddedResource>
         <None Remove="Models\Data\Migrations\*.sql" />
         <EmbeddedResource Include="Models\Data\Migrations\*.sql" />
+        <None Remove="Models\ContentManagement\Migrations\*.sql" />
+        <EmbeddedResource Include="Models\ContentManagement\Migrations\*.sql" />
     </ItemGroup>
     <ItemGroup>
         <None Remove="signing_key" />

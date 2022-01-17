@@ -42,7 +42,7 @@ public sealed class Updater : ReactiveObject
     [Reactive] public UpdateStatus Status { get; private set; }
     [Reactive] public (long downloaded, long total)? Progress { get; private set; }
 
-    public async Task<InstalledServerContent?> RunUpdateForLaunchAsync(
+    public async Task<int?> RunUpdateForLaunchAsync(
         ServerBuildInformation buildInformation,
         CancellationToken cancel = default)
     {
@@ -76,7 +76,7 @@ public sealed class Updater : ReactiveObject
         return null;
     }
 
-    private async Task<InstalledServerContent> RunUpdate(
+    private async Task<int> RunUpdate(
         ServerBuildInformation buildInformation,
         CancellationToken cancel)
     {

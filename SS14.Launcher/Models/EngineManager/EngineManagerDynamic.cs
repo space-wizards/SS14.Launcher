@@ -272,7 +272,7 @@ public sealed class EngineManagerDynamic : IEngineManager
 
     public async Task DoEngineCullMaybeAsync()
     {
-        Log.Debug("Checking to cull engine versions.");
+        /*Log.Debug("Checking to cull engine versions.");
 
         // Cull main engine installations.
 
@@ -288,7 +288,7 @@ public sealed class EngineManagerDynamic : IEngineManager
             _cfg.RemoveEngineInstallation(installation);
 
             await Task.Run(() => File.Delete(path));
-        }
+        }*/
 
         // Cull modules
 

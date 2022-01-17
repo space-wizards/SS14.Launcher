@@ -9,7 +9,6 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using Dapper;
-using DbUp.Engine;
 using DbUp.SQLite.Helpers;
 using DynamicData;
 using JetBrains.Annotations;
@@ -43,7 +42,6 @@ public sealed class DataManager : ReactiveObject
     private delegate void DbCommand(SqliteConnection connection);
 
     private readonly SourceCache<FavoriteServer, string> _favoriteServers = new(f => f.Address);
-    private readonly SourceCache<InstalledServerContent, string> _serverContent = new(i => i.ForkId);
 
     private readonly SourceCache<LoginInfo, Guid> _logins = new(l => l.UserId);
 
@@ -129,7 +127,6 @@ public sealed class DataManager : ReactiveObject
     }
 
     public IObservableCache<FavoriteServer, string> FavoriteServers => _favoriteServers;
-    public IObservableCache<InstalledServerContent, string> ServerContent => _serverContent;
     public IObservableCache<LoginInfo, Guid> Logins => _logins;
     public IObservableCache<InstalledEngineVersion, string> EngineInstallations => _engineInstallations;
     public IEnumerable<InstalledEngineModule> EngineModules => _modules;
@@ -154,21 +151,6 @@ public sealed class DataManager : ReactiveObject
     public void RemoveFavoriteServer(FavoriteServer server)
     {
         _favoriteServers.Remove(server);
-    }
-
-    public void AddInstallation(InstalledServerContent installedServerContent)
-    {
-        if (_favoriteServers.Lookup(installedServerContent.ForkId).HasValue)
-        {
-            throw new ArgumentException("An installation with that fork ID already exists.");
-        }
-
-        _serverContent.AddOrUpdate(installedServerContent); // Will do a save.
-    }
-
-    public void RemoveInstallation(InstalledServerContent installedServerContent)
-    {
-        _serverContent.Remove(installedServerContent);
     }
 
     public void AddEngineInstallation(InstalledEngineVersion version)
@@ -234,7 +216,7 @@ public sealed class DataManager : ReactiveObject
         var sw = Stopwatch.StartNew();
         var result = DbUp.DeployChanges.To
             .SQLiteDatabase(new SharedConnection(connection))
-            .WithScripts(LoadMigrationScriptsList())
+            .Configure(c => LoadMigrationScriptsList(c, "SS14.Launcher.Models.Data.Migrations"))
             .LogToAutodetectedLog()
             .WithTransactionPerScript()
             .Build()
@@ -270,27 +252,6 @@ public sealed class DataManager : ReactiveObject
         }
 
         CommitConfig();
-    }
-
-    private static IEnumerable<SqlScript> LoadMigrationScriptsList()
-    {
-        var assembly = typeof(DataManager).Assembly;
-        foreach (var resourceName in assembly.GetManifestResourceNames())
-        {
-            if (!resourceName.EndsWith(".sql"))
-                continue;
-
-            var index = resourceName.LastIndexOf('.', resourceName.Length - 5, resourceName.Length - 4);
-            index += 1;
-
-            var name = resourceName[index..^4];
-            yield return new LazySqlScript(name, () =>
-            {
-                using var reader = new StreamReader(assembly.GetManifestResourceStream(resourceName)!);
-
-                return reader.ReadToEnd();
-            });
-        }
     }
 
     private void LoadSqliteConfig(SqliteConnection sqliteConnection)
@@ -404,15 +365,6 @@ public sealed class DataManager : ReactiveObject
                 p.AddOrUpdate(data.Engines);
             }
         });
-
-        if (data.ServerContent != null)
-        {
-            _serverContent.Edit(a =>
-            {
-                a.Clear();
-                a.AddOrUpdate(data.ServerContent);
-            });
-        }
 
         SetCVar(CVars.CompatMode, data.ForceGLES2 ?? CVars.CompatMode.DefaultValue);
         SetCVar(CVars.Fingerprint, data.Fingerprint.ToString());
@@ -648,9 +600,6 @@ public sealed class DataManager : ReactiveObject
 
         [JsonProperty(PropertyName = "favorites")]
         public List<FavoriteServer>? Favorites { get; set; }
-
-        [JsonProperty(PropertyName = "server_content")]
-        public List<InstalledServerContent>? ServerContent { get; set; }
 
         [JsonProperty(PropertyName = "engines")]
         public List<InstalledEngineVersion>? Engines { get; set; }

@@ -17,7 +17,7 @@ internal class Program
 
     private readonly IFileApi _fileApi;
 
-    private Program(string robustPath, string[] engineArgs)
+    private Program(string robustPath, string contentVersionId, string[] engineArgs)
     {
         _engineArgs = engineArgs;
         var zipArchive = new ZipArchive(File.OpenRead(robustPath), ZipArchiveMode.Read);
@@ -122,6 +122,7 @@ internal class Program
         var robustPath = args[0];
         var sig = Convert.FromHexString(args[1]);
         var keyPath = args[2];
+        var contentVersionId = args[3];
 
         var pubKey = PublicKey.Import(
             SignatureAlgorithm.Ed25519,
@@ -147,7 +148,7 @@ internal class Program
             }
         }
 
-        var program = new Program(robustPath, args[3..]);
+        var program = new Program(robustPath, contentVersionId, args[4..]);
         if (!program.Run())
         {
             return 3;

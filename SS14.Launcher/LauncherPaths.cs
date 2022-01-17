@@ -1,5 +1,4 @@
 using System;
-using System.Globalization;
 using System.IO;
 using System.Runtime.InteropServices;
 
@@ -22,8 +21,10 @@ public static class LauncherPaths
 
     public static readonly string DirLauncherInstall = GetInstallDir();
     public static readonly string DirUserData = GetUserDataDir();
+    public static readonly string DirLocalData = GetLocalUserDataDir();
     public static readonly string DirEngineInstallations = Path.Combine(DirUserData, EngineInstallationsDirName);
     public static readonly string DirModuleInstallations = Path.Combine(DirUserData, EngineModulesDirName);
+    // Legacy server content directory. No longer used except to delete on launch.
     public static readonly string DirServerContent = Path.Combine(DirUserData, ServerContentDirName);
     public static readonly string DirLogs = Path.Combine(DirUserData, LogsDirName);
     public static readonly string PathLauncherLog = Path.Combine(DirLogs, LauncherLogName);
@@ -35,7 +36,7 @@ public static class LauncherPaths
     public static void CreateDirs()
     {
         Ensure(DirLogs);
-        Ensure(DirServerContent);
+        Ensure(DirLocalData);
         Ensure(DirEngineInstallations);
         Ensure(DirModuleInstallations);
 
@@ -77,6 +78,14 @@ public static class LauncherPaths
         return Path.Combine(appDataDir, AppDataPath);
     }
 
-    public static string GetContentZip(int diskId) =>
-        Path.Combine(DirServerContent, diskId.ToString(CultureInfo.InvariantCulture) + ".zip");
+    private static string GetLocalUserDataDir()
+    {
+        if (OperatingSystem.IsWindows())
+        {
+            var localAppData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+            return Path.Combine(localAppData, AppDataPath);
+        }
+
+        return GetUserDataDir();
+    }
 }
