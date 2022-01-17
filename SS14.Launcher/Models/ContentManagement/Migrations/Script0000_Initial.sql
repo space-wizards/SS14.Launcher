@@ -53,6 +53,10 @@ CREATE UNIQUE INDEX ContentManifestUniqueIndex ON ContentManifest(VersionId, Pat
 -- Engine dependencies needed by a specified ContentVersion.
 -- This includes both the base engine version (stored as the Robust module).
 -- And any extra modules such as Robust.Client.WebView.
+-- This does NOT describe the actual on-disk available modules and engines, only the ones which are *necessary*.
+-- This is intended to be checked before the game is launched and while updating.
+-- (the reason for this is so that updating doesn't have to be considered uninterruptible
+-- a *massive* 'transaction' of content + engine + modules).
 CREATE TABLE ContentEngineDependency(
     Id INTEGER PRIMARY KEY,
     -- Reference to ContentVersion to see which server version this belongs to.
