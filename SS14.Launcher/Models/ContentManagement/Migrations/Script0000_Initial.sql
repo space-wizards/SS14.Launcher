@@ -2,23 +2,28 @@
 CREATE TABLE ContentVersion(
     Id INTEGER PRIMARY KEY,
     -- Hash of the FULL manifest for this version.
-    Hash TEXT NOT NULL,
+    Hash BLOB NOT NULL,
     -- Fork & version ID reported by server.
     -- This is exclusively used to improve heuristics for which versions to evict from the download cache.
     -- It should not be trusted for security reasons.
     ForkId TEXT NULL,
     ForkVersion TEXT NULL,
-    -- Engine version used by this content version, so we know which engine versions can be culled.
-    EngineVersion TEXT NOT NULL,
     -- Last time this version was used, so we cull old ones.
-    LastUsed DATE NOT NULL
+    LastUsed DATE NOT NULL,
+    -- If this version was downloaded via a non-delta zip file, the hash of the zip file.
+    -- This is used to provide backwards compatibility to servers
+    -- that do not support the infrastructure for delta updates.
+    ZipHash BLOB NULL
+    -- Used engine version is stored in "ContentEngineDependency" table as 'Robust' module.
 );
 
 -- Stores the actual content of game files.
 CREATE TABLE Content(
     Id INTEGER PRIMARY KEY,
     -- SHA256 hash of the (uncompressed) data stored in this file.
-    Hash BLOB NOT NULL,
+    -- Unique constraint to not allow duplicate blobs in the database.
+    -- Also should be backed by an index allowing us to efficiently look up existing blobs when writing.
+    Hash BLOB NOT NULL UNIQUE,
     -- Uncompressed size of the data stored in this file.
     Size INTEGER NOT NULL,
     -- Compression algorithm used to store this file.
@@ -29,10 +34,6 @@ CREATE TABLE Content(
     -- Simple check: if a file is uncompressed, "Size" MUST match "Data" length.
     CONSTRAINT UncompressedSameSize CHECK(Compression != 0 OR length(Data) = Size)
 );
-
--- Index to efficiently look up entries when writing new data into DB.
--- Not used when reading, because ContentManifest references the int PK.
-CREATE UNIQUE INDEX ContentHashIndex ON Content(Hash);
 
 -- Stores the actual file list for each server version.
 CREATE TABLE ContentManifest(
@@ -48,3 +49,19 @@ CREATE TABLE ContentManifest(
 
 -- Can't have a duplicate path entry for a single version.
 CREATE UNIQUE INDEX ContentManifestUniqueIndex ON ContentManifest(VersionId, Path);
+
+-- Engine dependencies needed by a specified ContentVersion.
+-- This includes both the base engine version (stored as the Robust module).
+-- And any extra modules such as Robust.Client.WebView.
+CREATE TABLE ContentEngineDependency(
+    Id INTEGER PRIMARY KEY,
+    -- Reference to ContentVersion to see which server version this belongs to.
+    VersionId INTEGER NOT NULL REFERENCES ContentVersion(Id) ON DELETE CASCADE,
+    -- The name of the module. 'Robust' means this module is actually the base server version.
+    ModuleName TEXT NOT NULL,
+    -- The version of the module.
+    ModuleVersion TEXT NOT NULL
+);
+
+-- Cannot have multiple versions of the same module for a single installed version.
+CREATE UNIQUE INDEX ContentEngineModuleUniqueIndex ON ContentEngineDependency(VersionId, ModuleName);
