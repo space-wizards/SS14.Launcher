@@ -1,8 +1,4 @@
-﻿-- WAL is probably a better idea for this than journal.
--- So that you can connect to another server while a game is running.
-PRAGMA journal_mode=WAL;
-
--- Describes a single server version currently stored in this database.
+﻿-- Describes a single server version currently stored in this database.
 CREATE TABLE ContentVersion(
     Id INTEGER PRIMARY KEY,
     -- Hash of the FULL manifest for this version.

@@ -292,7 +292,7 @@ public sealed class EngineManagerDynamic : IEngineManager
 
         // Cull modules
 
-        var usedModules = _cfg.ServerContent.Items.SelectMany(c =>
+        /*var usedModules = _cfg.ServerContent.Items.SelectMany(c =>
         {
             var engineVersion = Version.Parse(c.CurrentEngineVersion);
             using var zip = File.OpenRead(LauncherPaths.GetContentZip(c.DiskId));
@@ -317,7 +317,7 @@ public sealed class EngineManagerDynamic : IEngineManager
             _cfg.RemoveEngineModule(module);
 
             await Task.Run(() => Directory.Delete(path, true));
-        }
+        }*/
     }
 
     public void ClearAllEngines()

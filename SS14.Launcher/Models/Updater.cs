@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.IO.Compression;
 using System.Net.Http;
@@ -80,7 +79,8 @@ public sealed class Updater : ReactiveObject
         ServerBuildInformation buildInformation,
         CancellationToken cancel)
     {
-        // I tried to fit modules into this and it all fell apart.
+        throw new NotImplementedException();
+        /*// I tried to fit modules into this and it all fell apart.
         // Please bear with me, all of this is a mess.
 
         Status = UpdateStatus.CheckingClientUpdate;
@@ -213,7 +213,7 @@ public sealed class Updater : ReactiveObject
         _cfg.CommitConfig();
 
         Log.Information("Update done!");
-        return installation!;
+        return installation!;*/
     }
 
     private async Task UpdateDownloadContent(
@@ -279,6 +279,7 @@ public sealed class Updater : ReactiveObject
     }
 
 
+    /*
     private bool CheckNeedUpdate(
         ServerBuildInformation buildInfo,
         [NotNullWhen(false)] out InstalledServerContent? installation)
@@ -312,6 +313,7 @@ public sealed class Updater : ReactiveObject
         installation = null;
         return true;
     }
+    */
 
     public static string[] GetModuleNames(Stream zipContent)
     {

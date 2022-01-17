@@ -256,14 +256,12 @@ public class Connector : ReactiveObject
         startInfo.ArgumentList.Add(sig);
         startInfo.ArgumentList.Add(pubKey);
 
-        startInfo.ArgumentList.Add("--mount-zip");
-        startInfo.ArgumentList.Add(contentVersionId.ToString(CultureInfo.InvariantCulture));
-
         foreach (var (k, v) in env)
         {
             startInfo.EnvironmentVariables[k] = v;
         }
 
+        /*
         // Env vars for engine modules.
         {
             await using var content = File.OpenRead(contentPath);
@@ -287,6 +285,7 @@ public class Connector : ReactiveObject
                 }
             }
         }
+        */
 
         startInfo.EnvironmentVariables["DOTNET_ROLL_FORWARD"] = "LatestMajor";
 

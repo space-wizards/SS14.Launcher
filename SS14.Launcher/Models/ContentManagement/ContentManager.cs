@@ -1,6 +1,7 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.IO;
-using DbUp.SQLite.Helpers;
+using Dapper;
 using Microsoft.Data.Sqlite;
 using Serilog;
 using SS14.Launcher.Models.Data;
@@ -14,19 +15,16 @@ public sealed class ContentManager
         var con = GetSqliteConnection();
         con.Open();
 
+        // I tried to set this from inside the migrations but didn't work, rip.
+        // Anyways: enabling WAL mode here so that downloading new files doesn't lock up if your game is running.
+        con.Execute("PRAGMA journal_mode=WAL");
+
         Log.Debug("Migrating content database...");
 
         var sw = Stopwatch.StartNew();
-        var result = DbUp.DeployChanges.To
-            .SQLiteDatabase(new SharedConnection(con))
-            .WithScripts(DataManager.LoadMigrationScriptsList("SS14.Launcher.Models.ContentManagement.Migrations"))
-            .LogToAutodetectedLog()
-            .WithTransactionPerScript()
-            .Build()
-            .PerformUpgrade();
-
-        if (result.Error is { } error)
-            throw error;
+        var success = Migrator.Migrate(con, "SS14.Launcher.Models.ContentManagement.Migrations");
+        if (!success)
+            throw new Exception("Migrations failed!");
 
         Log.Debug("Did migrations in {MigrationTime}", sw.Elapsed);
     }
