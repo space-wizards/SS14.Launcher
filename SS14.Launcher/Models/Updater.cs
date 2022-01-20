@@ -6,10 +6,13 @@ using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
 using Avalonia.Threading;
+using Dapper;
+using Microsoft.Data.Sqlite;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Serilog;
 using Splat;
+using SS14.Launcher.Models.ContentManagement;
 using SS14.Launcher.Models.Data;
 using SS14.Launcher.Models.EngineManager;
 using SS14.Launcher.Utility;
@@ -27,6 +30,7 @@ public sealed class Updater : ReactiveObject
             .Build();
 
     private readonly DataManager _cfg;
+    private readonly ContentManager _content;
     private readonly IEngineManager _engineManager;
     private readonly HttpClient _http;
     private bool _updating;
@@ -36,12 +40,13 @@ public sealed class Updater : ReactiveObject
         _cfg = Locator.Current.GetRequiredService<DataManager>();
         _engineManager = Locator.Current.GetRequiredService<IEngineManager>();
         _http = Locator.Current.GetRequiredService<HttpClient>();
+        _content = Locator.Current.GetRequiredService<ContentManager>();
     }
 
     [Reactive] public UpdateStatus Status { get; private set; }
     [Reactive] public (long downloaded, long total)? Progress { get; private set; }
 
-    public async Task<int?> RunUpdateForLaunchAsync(
+    public async Task<long?> RunUpdateForLaunchAsync(
         ServerBuildInformation buildInformation,
         CancellationToken cancel = default)
     {
@@ -75,148 +80,244 @@ public sealed class Updater : ReactiveObject
         return null;
     }
 
-    private async Task<int> RunUpdate(
+    private async Task<long> RunUpdate(
         ServerBuildInformation buildInformation,
         CancellationToken cancel)
     {
-        throw new NotImplementedException();
-        /*// I tried to fit modules into this and it all fell apart.
-        // Please bear with me, all of this is a mess.
-
         Status = UpdateStatus.CheckingClientUpdate;
 
-        var changedEngine = await InstallEngineVersionIfMissing(buildInformation.EngineVersion, cancel);
+        EngineModuleManifest? moduleManifest = null;
 
-        Status = UpdateStatus.CheckingClientUpdate;
+        var con = _content.Connection;
+        // Check if we already have this version installed in the content DB.
+        var forkInfo = new { buildInformation.ForkId, buildInformation.Version };
+        var existingVersion = con.QueryFirstOrDefault<ContentVersion>(
+            "SELECT * FROM ContentVersion WHERE ForkId = @ForkId AND ForkVersion = @Version",
+            forkInfo);
 
-        var changedContent = false;
-
-        var diskId = 0;
-        FileStream? file = null;
-        var deleteTemp = true;
-        InstalledServerContent? installation;
-        try
+        // If server specifies zip hash, we need to make sure it matches the local version.
+        var downloadNew = existingVersion == null;
+        if (buildInformation.Hash != null)
         {
-            if (CheckNeedUpdate(buildInformation, out installation))
+            if (existingVersion?.ZipHash == null
+                || !existingVersion.ZipHash.AsSpan().SequenceEqual(Convert.FromHexString(buildInformation.Hash)))
             {
-                changedContent = true;
-
-                diskId = _cfg.GetNewInstallationId();
-                var binPath = LauncherPaths.GetContentZip(diskId);
-
-                Log.Debug("Downloading new content into {NewContentPath}", binPath);
-
-                Helpers.EnsureDirectoryExists(LauncherPaths.DirServerContent);
-                file = File.Create(binPath, 4096, FileOptions.Asynchronous);
-
-                await UpdateDownloadContent(file, buildInformation, cancel);
+                downloadNew = true;
             }
-            else
-            {
-                deleteTemp = false;
-                file = File.OpenRead(LauncherPaths.GetContentZip(installation.DiskId));
-            }
+        }
 
-            if (changedEngine || changedContent)
-            {
-                file.Position = 0;
+        long versionRowId;
+        var engineVersion = buildInformation.EngineVersion;
+        if (downloadNew)
+        {
+            // Temp file to download zip into.
+            await using var tempFile = TempFile.CreateTempFile();
 
-                Status = UpdateStatus.CheckingEngineModules;
+            var zipHash = await UpdateDownloadContent(tempFile, buildInformation, cancel);
 
-                // Check for any modules that need installing.
-                var modules = GetModuleNames(file);
-                if (modules.Length != 0)
+            tempFile.Seek(0, SeekOrigin.Begin);
+
+            // File downloaded, time to dump this into the DB.
+
+            // ReSharper disable once UseAwaitUsing
+            using var transaction = con.BeginTransaction();
+
+            versionRowId = con.ExecuteScalar<long>(
+                @"INSERT INTO ContentVersion(Hash, ForkId, ForkVersion, LastUsed, ZipHash)
+                VALUES (zeroblob(32), @ForkId, @Version, datetime('now'), @ZipHash)
+                RETURNING Id",
+                new
                 {
-                    var moduleManifest = await _engineManager.GetEngineModuleManifest(cancel);
+                    forkInfo.ForkId,
+                    forkInfo.Version,
+                    ZipHash = zipHash
+                });
 
-                    Status = UpdateStatus.DownloadingEngineModules;
+            var zip = new ZipArchive(tempFile, ZipArchiveMode.Read, leaveOpen: true);
 
-                    foreach (var module in modules)
+            var hasher = SHA256.Create();
+
+            foreach (var entry in zip.Entries)
+            {
+                if (entry.Name == "")
+                    continue;
+
+                byte[] hash;
+                using (var stream = entry.Open())
+                {
+                    hash = hasher.ComputeHash(stream);
+                }
+
+                var row = con.QueryFirstOrDefault<long>(
+                    "SELECT Id FROM Content WHERE Hash = @Hash",
+                    new { Hash = hash });
+                if (row == 0)
+                {
+                    var compress = entry.Length - entry.CompressedLength > 10;
+                    if (compress)
                     {
-                        await _engineManager.DownloadModuleIfNecessary(
-                            module,
-                            buildInformation.EngineVersion,
-                            moduleManifest,
-                            DownloadProgressCallback, cancel);
-                    }
+                        var ms = new MemoryStream();
+                        var compressor = new DeflateStream(ms, CompressionLevel.Optimal);
+                        using var entryStream = entry.Open();
+                        entryStream.CopyTo(compressor);
+                        compressor.Dispose();
 
-                    Progress = null;
+                        row = con.ExecuteScalar<long>(
+                            @"INSERT INTO Content(Hash, Size, Compression, Data)
+                        VALUES (@Hash, @Size, @Compression, @Blob)
+                        RETURNING Id",
+                            new
+                            {
+                                Hash = hash,
+                                Size = entry.Length,
+                                Blob = ms.ToArray(),
+                                Compression = compress ? 1 : 0
+                            });
+                    }
+                    else
+                    {
+                        row = con.ExecuteScalar<long>(
+                            @"INSERT INTO Content(Hash, Size, Compression, Data)
+                        VALUES (@Hash, @Size, @Compression, zeroblob(@Size))
+                        RETURNING Id",
+                            new { Hash = hash, Size = entry.Length, Compression = compress ? 1 : 0 });
+
+                        using var stream = entry.Open();
+                        using var blob = new SqliteBlob(con, "Content", "Data", row);
+
+                        stream.CopyTo(blob);
+                    }
+                }
+
+                con.Execute(
+                    "INSERT INTO ContentManifest(VersionId, Path, ContentId) VALUES (@VersionId, @Path, @ContentId)",
+                    new
+                    {
+                        VersionId = versionRowId,
+                        Path = entry.FullName,
+                        ContentId = row,
+                    });
+            }
+
+            // Insert engine dependencies.
+
+            // Engine version.
+            con.Execute(
+                @"INSERT INTO ContentEngineDependency(VersionId, ModuleName, ModuleVersion)
+                VALUES (@Version, 'Robust', @EngineVersion)",
+                new
+                {
+                    Version = versionRowId, EngineVersion = engineVersion
+                });
+
+            // Grab manifest file.
+            var (manifestRowId, manifestCompression) = con.QueryFirstOrDefault<(long id, int compression)>(
+                "SELECT c.ROWID, c.Compression FROM ContentManifest cm, Content c WHERE Path = 'manifest.yml' AND VersionId = @Version AND c.Id = cm.ContentId",
+                new
+                {
+                    Version = versionRowId
+                });
+
+            if (manifestRowId != 0)
+            {
+                Stream stream = new SqliteBlob(con, "Content", "Data", manifestRowId, readOnly: true);
+                if (manifestCompression == 1)
+                    stream = new DeflateStream(stream, CompressionMode.Decompress);
+
+                string[] modules;
+                using (stream)
+                {
+                    modules = GetModuleNames(stream);
+                }
+
+                moduleManifest ??= await _engineManager.GetEngineModuleManifest(cancel);
+
+                foreach (var module in modules)
+                {
+                    var version = IEngineManager.ResolveEngineModuleVersion(moduleManifest, module, engineVersion);
+
+                    con.Execute(
+                        @"INSERT INTO ContentEngineDependency(VersionId, ModuleName, ModuleVersion)
+                        VALUES (@Version, @ModName, @EngineVersion)",
+                        new
+                        {
+                            Version = versionRowId,
+                            ModName = module,
+                            ModVersion = version
+                        });
                 }
             }
+
+            transaction.Commit();
         }
-        catch
+        else
         {
-            // Dispose download target file if content download or module download failed.
-            if (deleteTemp && file != null)
+            versionRowId = existingVersion!.Id;
+
+            // Ok so
+            // The engine version, despite being stored in the ContentEngineDependency table,
+            // is not actually based on the contents of the installed manifest.
+            // Instead, it is provided to us by the server.
+            // Because of this,
+            // I'm just gonna update the existing entry to update the robust version to match the server.
+
+            using var transaction = con.BeginTransaction();
+
+            var version = new { Version = versionRowId };
+            var curVersion = con.ExecuteScalar<string>(
+                "SELECT ModuleVersion FROM ContentEngineDependency WHERE ModuleName = 'Robust' AND VersionId = @Version",
+                version);
+            if (curVersion != engineVersion)
             {
-                var name = file.Name;
-                await file.DisposeAsync();
-                File.Delete(name);
+                con.Execute(
+                    "UPDATE ContentEngineDependency SET ModuleVersion=@EngineVersion WHERE ModuleName = 'Robust' AND VersionId = @Version",
+                    new { EngineVersion = engineVersion, Version = versionRowId });
             }
 
-            throw;
+            // Also I already opened this transaction so uhhh let's update LastUsed too.
+            con.Execute("UPDATE ContentVersion SET LastUsed = datetime('now') WHERE Id = @Version", version);
+
+            transaction.Commit();
         }
-        finally
+
         {
-            if (file != null)
-                await file.DisposeAsync();
+            Status = UpdateStatus.CheckingClientUpdate;
+            var modules = con.Query<(string, string)>(
+                "SELECT ModuleName, moduleVersion FROM ContentEngineDependency WHERE VersionId = @Version",
+                new { Version = versionRowId });
+
+            foreach (var (name, version) in modules)
+            {
+                if (name == "Robust")
+                {
+                    await InstallEngineVersionIfMissing(version, cancel);
+                }
+                else
+                {
+                    Status = UpdateStatus.DownloadingEngineModules;
+
+                    moduleManifest ??= await _engineManager.GetEngineModuleManifest(cancel);
+                }
+            }
         }
 
         Status = UpdateStatus.CommittingDownload;
 
         // Should be no errors from here on out.
 
-        if (changedContent)
-        {
-            // Write version to disk.
-            if (installation != null)
-            {
-                var prevId = installation.DiskId;
-                var prevPath = LauncherPaths.GetContentZip(prevId);
-
-                Log.Debug("Deleting old build: {PrevBuildPath}", prevPath);
-
-                try
-                {
-                    File.Delete(prevPath);
-                }
-                catch (Exception e)
-                {
-                    Log.Error(e, "Failed to delete previous build!");
-                }
-
-                installation.CurrentVersion = buildInformation.Version;
-                installation.CurrentHash = buildInformation.Hash;
-                installation.CurrentEngineVersion = buildInformation.EngineVersion;
-                installation.DiskId = diskId;
-            }
-            else
-            {
-                installation = new InstalledServerContent(
-                    buildInformation.Version,
-                    buildInformation.Hash,
-                    buildInformation.ForkId,
-                    diskId,
-                    buildInformation.EngineVersion);
-
-                _cfg.AddInstallation(installation);
-            }
-
-        }
-
-        if (changedContent || changedEngine)
+        /*if (changedContent || changedEngine)
         {
             Status = UpdateStatus.CullingEngine;
             await CullEngineVersionsMaybe();
-        }
+        }*/
 
         _cfg.CommitConfig();
 
         Log.Information("Update done!");
-        return installation!;*/
+        return versionRowId;
     }
 
-    private async Task UpdateDownloadContent(
+    private async Task<byte[]> UpdateDownloadContent(
         Stream file,
         ServerBuildInformation buildInformation,
         CancellationToken cancel)
@@ -237,13 +338,11 @@ public sealed class Updater : ReactiveObject
 
         Status = UpdateStatus.Verifying;
 
-        if (buildInformation.Hash != null)
+        var hash = await Task.Run(() => HashFile(file), cancel);
+        file.Position = 0;
+
+        if (buildInformation.Hash is { } expectHash)
         {
-            var hash = await Task.Run(() => HashFile(file), cancel);
-            file.Position = 0;
-
-            var expectHash = buildInformation.Hash;
-
             var newFileHashString = Convert.ToHexString(hash);
             if (!expectHash.Equals(newFileHashString, StringComparison.OrdinalIgnoreCase))
             {
@@ -251,6 +350,8 @@ public sealed class Updater : ReactiveObject
                     $"Hash mismatch. Expected: {expectHash}, got: {newFileHashString}");
             }
         }
+
+        return hash;
     }
 
     private async Task CullEngineVersionsMaybe()
@@ -315,20 +416,13 @@ public sealed class Updater : ReactiveObject
     }
     */
 
-    public static string[] GetModuleNames(Stream zipContent)
+    public static string[] GetModuleNames(Stream manifestContent)
     {
         // Check zip file contents for manifest.yml and read the modules the server needs.
-
-        using var zip = new ZipArchive(zipContent, ZipArchiveMode.Read, leaveOpen: true);
-
-        var manifest = zip.GetEntry("manifest.yml");
-        if (manifest != null)
-        {
-            using var streamReader = new StreamReader(manifest.Open());
-            var manifestData = ResourceManifestDeserializer.Deserialize<ResourceManifestData?>(streamReader);
-            if (manifestData != null)
-                return manifestData.Modules;
-        }
+        using var streamReader = new StreamReader(manifestContent);
+        var manifestData = ResourceManifestDeserializer.Deserialize<ResourceManifestData?>(streamReader);
+        if (manifestData != null)
+            return manifestData.Modules;
 
         return Array.Empty<string>();
     }

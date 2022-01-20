@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using System.IO;
 using Dapper;
 using Microsoft.Data.Sqlite;
 using Serilog;
@@ -10,6 +9,8 @@ namespace SS14.Launcher.Models.ContentManagement;
 
 public sealed class ContentManager
 {
+    public SqliteConnection Connection = default!;
+
     public void Initialize()
     {
         var con = GetSqliteConnection();
@@ -26,7 +27,13 @@ public sealed class ContentManager
         if (!success)
             throw new Exception("Migrations failed!");
 
-        Log.Debug("Did migrations in {MigrationTime}", sw.Elapsed);
+        Log.Debug("Did content DB migrations in {MigrationTime}", sw.Elapsed);
+        Connection = con;
+    }
+
+    public void Shutdown()
+    {
+        Connection.Dispose();
     }
 
     public void ClearAll()
@@ -34,14 +41,13 @@ public sealed class ContentManager
 
     }
 
-    private static string GetContentDbConnectionString()
-    {
-        var path = Path.Combine(LauncherPaths.DirLocalData, "content.db");
-        return $"Data Source={path};Mode=ReadWriteCreate";
-    }
-
     private static SqliteConnection GetSqliteConnection()
     {
         return new SqliteConnection(GetContentDbConnectionString());
+    }
+
+    private static string GetContentDbConnectionString()
+    {
+        return $"Data Source={LauncherPaths.PathContentDb};Mode=ReadWriteCreate";
     }
 }

@@ -185,14 +185,6 @@ public sealed class DataManager : ReactiveObject
         }
     }
 
-    public int GetNewInstallationId()
-    {
-        var id = GetCVar(CVars.NextInstallationId);
-        id += 1;
-        SetCVar(CVars.NextInstallationId, id);
-        return id;
-    }
-
     /// <summary>
     ///     Loads config file from disk, or resets the loaded config to default if the config doesn't exist on disk.
     /// </summary>
@@ -353,7 +345,6 @@ public sealed class DataManager : ReactiveObject
         SetCVar(CVars.LogLauncher, data.LogLauncher);
         SetCVar(CVars.MultiAccounts, data.MultiAccounts);
         SetCVar(CVars.HasDismissedEarlyAccessWarning, data.DismissedEarlyAccessWarning ?? false);
-        SetCVar(CVars.NextInstallationId, data.NextInstallationId);
     }
 
     [SuppressMessage("ReSharper", "UseAwaitUsing")]

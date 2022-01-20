@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -33,6 +35,25 @@ public interface IEngineManager
     Task DoEngineCullMaybeAsync();
     void ClearAllEngines();
     string GetEngineModule(string moduleName, string moduleVersion);
+
+    static string ResolveEngineModuleVersion(EngineModuleManifest manifest, string moduleName, string engineVersion)
+    {
+        if (!manifest.Modules.TryGetValue(moduleName, out var moduleData))
+            throw new UpdateException("Unable to find engine module in manifest!");
+
+        // Because engine modules are solely identified by *minimum* version,
+        // we have to double-check that there isn't a newer version of the module available for the relevant engine.
+        var engineVersionObj = Version.Parse(engineVersion);
+        var selectedVersion = moduleData.Versions
+            .Select(kv => new { Version = Version.Parse(kv.Key), kv.Key, kv.Value })
+            .Where(kv => engineVersionObj >= kv.Version)
+            .MaxBy(kv => kv.Version);
+
+        if (selectedVersion == null)
+            throw new UpdateException("Unable to find suitable module version in manifest!");
+
+        return selectedVersion.Key;
+    }
 }
 
 public sealed record EngineModuleManifest(

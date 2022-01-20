@@ -7,11 +7,13 @@ using System.Net.Http;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
+using Dapper;
 using DynamicData;
 using Newtonsoft.Json;
 using ReactiveUI;
 using Serilog;
 using Splat;
+using SS14.Launcher.Models.ContentManagement;
 using SS14.Launcher.Models.Data;
 using SS14.Launcher.Models.EngineManager;
 using SS14.Launcher.Models.Logins;
@@ -25,6 +27,7 @@ public class Connector : ReactiveObject
     private readonly DataManager _cfg;
     private readonly LoginManager _loginManager;
     private readonly IEngineManager _engineManager;
+    private readonly ContentManager _content;
 
     private ConnectionStatus _status = ConnectionStatus.None;
     private bool _clientExitedBadly;
@@ -37,6 +40,7 @@ public class Connector : ReactiveObject
         _loginManager = Locator.Current.GetRequiredService<LoginManager>();
         _engineManager = Locator.Current.GetRequiredService<IEngineManager>();
         _http = Locator.Current.GetRequiredService<HttpClient>();
+        _content = Locator.Current.GetRequiredService<ContentManager>();
     }
 
     public ConnectionStatus Status
@@ -111,7 +115,7 @@ public class Connector : ReactiveObject
         Status = ConnectionStatus.ClientExited;
     }
 
-    private async Task<Process?> ConnectLaunchClient(ServerInfo info, int contentVersionId,
+    private async Task<Process?> ConnectLaunchClient(ServerInfo info, long contentVersionId,
         Uri connectAddress, Uri parsedAddr)
     {
         var cVars = new List<(string, string)>();
@@ -182,7 +186,7 @@ public class Connector : ReactiveObject
         }
     }
 
-    private async Task<int> RunUpdateAsync(ServerInfo info, CancellationToken cancel)
+    private async Task<long> RunUpdateAsync(ServerInfo info, CancellationToken cancel)
     {
         // Must have been set when retrieving build info (inferred to be automatic zipping).
         Debug.Assert(info.BuildInformation != null, "info.BuildInformation != null");
@@ -242,7 +246,7 @@ public class Connector : ReactiveObject
 
     private async Task<Process?> LaunchClient(
         string engineVersion,
-        int contentVersionId,
+        long contentVersionId,
         IEnumerable<string> extraArgs,
         List<(string, string)> env)
     {
@@ -261,31 +265,25 @@ public class Connector : ReactiveObject
             startInfo.EnvironmentVariables[k] = v;
         }
 
-        /*
+        startInfo.EnvironmentVariables["SS14_LOADER_CONTENT_DB"] = LauncherPaths.PathContentDb;
+        startInfo.EnvironmentVariables["SS14_LOADER_CONTENT_VERSION"] = contentVersionId.ToString();
+
         // Env vars for engine modules.
         {
-            await using var content = File.OpenRead(contentPath);
-            var modules = Updater.GetModuleNames(content);
+            var modules = _content.Connection.Query<(string, string)>(
+                @"SELECT ModuleVersion, ModuleName
+                FROM ContentEngineDependency
+                WHERE ModuleName != 'Robust' AND VersionId = @Version",
+                new {Version = contentVersionId});
 
-            if (modules.Length > 0)
+            foreach (var (moduleName, moduleVersion) in modules)
             {
-                var engineVersionObj = Version.Parse(engineVersion);
-                foreach (var moduleName in modules)
-                {
-                    var moduleVersion = GetInstalledModuleForEngineVersion(engineVersionObj, moduleName, _cfg);
+                var modulePath = _engineManager.GetEngineModule(moduleName, moduleVersion);
 
-                    Debug.Assert(
-                        moduleVersion != null,
-                        "Module version must have been installed along with server installation");
-
-                    var modulePath = _engineManager.GetEngineModule(moduleVersion.Name, moduleVersion.Version);
-
-                    var envVar = $"ROBUST_MODULE_{moduleName.ToUpperInvariant().Replace('.', '_')}";
-                    startInfo.EnvironmentVariables[envVar] = modulePath;
-                }
+                var envVar = $"ROBUST_MODULE_{moduleName.ToUpperInvariant().Replace('.', '_')}";
+                startInfo.EnvironmentVariables[envVar] = modulePath;
             }
         }
-        */
 
         startInfo.EnvironmentVariables["DOTNET_ROLL_FORWARD"] = "LatestMajor";
 

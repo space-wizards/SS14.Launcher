@@ -133,14 +133,14 @@ internal static class Program
     {
         var cfg = Locator.Current.GetService<DataManager>();
         var msgr = Locator.Current.GetRequiredService<LauncherMessaging>();
+        var contentManager = new ContentManager();
+        Locator.CurrentMutable.RegisterConstant(contentManager);
         Locator.CurrentMutable.RegisterConstant<IEngineManager>(new EngineManagerDynamic());
         Locator.CurrentMutable.RegisterConstant(new Updater());
         Locator.CurrentMutable.RegisterConstant(new AuthApi());
         var lm = new LoginManager();
         Locator.CurrentMutable.RegisterConstant(lm);
-        var contentManager = new ContentManager();
         contentManager.Initialize();
-        Locator.CurrentMutable.RegisterConstant(contentManager);
 
         var viewModel = new MainWindowViewModel();
         var window = new MainWindow
@@ -156,6 +156,7 @@ internal static class Program
 
         app.Run(window);
 
+        contentManager.Shutdown();
         lc.Shutdown();
     }
 }

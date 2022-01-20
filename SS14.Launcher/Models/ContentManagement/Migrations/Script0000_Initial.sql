@@ -1,7 +1,8 @@
 ﻿-- Describes a single server version currently stored in this database.
 CREATE TABLE ContentVersion(
-    Id INTEGER PRIMARY KEY,
-    -- Hash of the FULL manifest for this version.
+    -- Autoincrement to avoid use-after-free type stuff if somebody clears the DB while the game is running.
+    Id INTEGER PRIMARY KEY AUTOINCREMENT,
+    -- SHA256 hash of the FULL manifest for this version.
     Hash BLOB NOT NULL,
     -- Fork & version ID reported by server.
     -- This is exclusively used to improve heuristics for which versions to evict from the download cache.
@@ -10,7 +11,7 @@ CREATE TABLE ContentVersion(
     ForkVersion TEXT NULL,
     -- Last time this version was used, so we cull old ones.
     LastUsed DATE NOT NULL,
-    -- If this version was downloaded via a non-delta zip file, the hash of the zip file.
+    -- If this version was downloaded via a non-delta zip file, the SHA256 hash of the zip file.
     -- This is used to provide backwards compatibility to servers
     -- that do not support the infrastructure for delta updates.
     ZipHash BLOB NULL
@@ -19,7 +20,8 @@ CREATE TABLE ContentVersion(
 
 -- Stores the actual content of game files.
 CREATE TABLE Content(
-    Id INTEGER PRIMARY KEY,
+    -- Autoincrement to avoid use-after-free type stuff if somebody clears the DB while the game is running.
+    Id INTEGER PRIMARY KEY AUTOINCREMENT,
     -- SHA256 hash of the (uncompressed) data stored in this file.
     -- Unique constraint to not allow duplicate blobs in the database.
     -- Also should be backed by an index allowing us to efficiently look up existing blobs when writing.
@@ -44,7 +46,11 @@ CREATE TABLE ContentManifest(
     Path TEXT NOT NULL,
     -- Reference to the actual content blob.
     -- Do not allow a file to be deleted
-    ContentId INTEGER NOT NULL REFERENCES Content(Id) ON DELETE RESTRICT
+    ContentId INTEGER NOT NULL REFERENCES Content(Id) ON DELETE RESTRICT,
+
+    -- Make sure that we aren't writing directory entries from the zip into this.
+    -- Just something I had happen in development, it only wastes DB space.
+    CONSTRAINT NotDirectory CHECK (Path NOT LIKE '%/')
 );
 
 -- Can't have a duplicate path entry for a single version.

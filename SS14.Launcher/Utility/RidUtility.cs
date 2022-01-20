@@ -25,7 +25,6 @@ public static class RidUtility
             else
             {
                 currentRid = reportedRid;
-                Log.Debug("Current RID is: {reported}", currentRid);
             }
         }
 

@@ -125,25 +125,12 @@ public sealed class EngineManagerDynamic : IEngineManager
 
         Log.Debug("Checking to download {ModuleName} for engine {EngineVersion}", moduleName, engineVersion);
 
-        if (!manifest.Modules.TryGetValue(moduleName, out var moduleData))
-            throw new UpdateException("Unable to find engine module in manifest!");
+        var selectedVersion = IEngineManager.ResolveEngineModuleVersion(manifest, moduleName, engineVersion);
+        var versionData = manifest.Modules[moduleName].Versions[selectedVersion];
 
-        // Because engine modules are solely identified by *minimum* version,
-        // we have to double-check that there isn't a newer version of the module available for the relevant engine.
-        var engineVersionObj = Version.Parse(engineVersion);
-        var selectedVersion = moduleData.Versions
-            .Select(kv => new { Version = Version.Parse(kv.Key), kv.Key, kv.Value })
-            .Where(kv => engineVersionObj >= kv.Version)
-            .MaxBy(kv => kv.Version);
+        Log.Debug("Selected module {ModuleName} {ModuleVersion}", moduleName, selectedVersion);
 
-        if (selectedVersion == null)
-            throw new UpdateException("Unable to find suitable module version in manifest!");
-
-        var selectedVersionString = selectedVersion.Key;
-
-        Log.Debug("Selected module {ModuleName} {ModuleVersion}", moduleName, selectedVersionString);
-
-        var alreadyInstalled = _cfg.EngineModules.Any(m => m.Name == moduleName && m.Version == selectedVersionString);
+        var alreadyInstalled = _cfg.EngineModules.Any(m => m.Name == moduleName && m.Version == selectedVersion);
 
         if (alreadyInstalled)
         {
@@ -151,20 +138,20 @@ public sealed class EngineManagerDynamic : IEngineManager
             return false;
         }
 
-        Log.Information("Installing {ModuleName} {ModuleVersion}", moduleName, selectedVersionString);
+        Log.Information("Installing {ModuleName} {ModuleVersion}", moduleName, selectedVersion);
 
-        var bestRid = RidUtility.FindBestRid(selectedVersion.Value.Platforms.Keys);
+        var bestRid = RidUtility.FindBestRid(versionData.Platforms.Keys);
         if (bestRid == null)
             throw new UpdateException("No module version available for our platform!");
 
         Log.Debug("Selecting RID {Rid}", bestRid);
 
-        var platformData = selectedVersion.Value.Platforms[bestRid];
+        var platformData = versionData.Platforms[bestRid];
 
         Log.Debug("Downloading module: {EngineDownloadUrl}", platformData.Url);
 
         var moduleDiskPath = Path.Combine(LauncherPaths.DirModuleInstallations, moduleName);
-        var moduleVersionDiskPath = Path.Combine(moduleDiskPath, selectedVersionString);
+        var moduleVersionDiskPath = Path.Combine(moduleDiskPath, selectedVersion);
 
         await Task.Run(() =>
         {
@@ -219,7 +206,7 @@ public sealed class EngineManagerDynamic : IEngineManager
             }
         }
 
-        _cfg.AddEngineModule(new InstalledEngineModule(moduleName, selectedVersionString));
+        _cfg.AddEngineModule(new InstalledEngineModule(moduleName, selectedVersion));
         _cfg.CommitConfig();
 
         Log.Debug("Done installing module!");

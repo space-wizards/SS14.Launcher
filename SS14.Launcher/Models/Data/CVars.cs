@@ -55,8 +55,6 @@ public static class CVars
     /// </summary>
     public static readonly CVarDef<bool> MultiAccounts = CVarDef.Create("MultiAccounts", false);
 
-    public static readonly CVarDef<int> NextInstallationId = CVarDef.Create("NextInstallationId", 1);
-
     /// <summary>
     /// Currently selected login in the drop down.
     /// </summary>

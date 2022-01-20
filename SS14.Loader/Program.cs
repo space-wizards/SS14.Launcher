@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.IO.Compression;
@@ -17,7 +18,7 @@ internal class Program
 
     private readonly IFileApi _fileApi;
 
-    private Program(string robustPath, string contentVersionId, string[] engineArgs)
+    private Program(string robustPath, string[] engineArgs)
     {
         _engineArgs = engineArgs;
         var zipArchive = new ZipArchive(File.OpenRead(robustPath), ZipArchiveMode.Read);
@@ -52,11 +53,30 @@ internal class Program
         if (!TryGetLoader(clientAssembly, out var loader))
             return false;
 
+        SQLitePCL.Batteries_V2.Init();
+
         var launcher = Environment.GetEnvironmentVariable("SS14_LAUNCHER_PATH");
         var redialApi = launcher != null ? new RedialApi(launcher) : null;
-        var args = new MainArgs(_engineArgs, _fileApi, redialApi);
+        var contentDb = Environment.GetEnvironmentVariable("SS14_LOADER_CONTENT_DB");
+        var contentVersion = Environment.GetEnvironmentVariable("SS14_LOADER_CONTENT_VERSION");
+        ContentDbFileApi? contentApi = null;
+        IEnumerable<ApiMount>? extraMounts = null;
+        if (!string.IsNullOrEmpty(contentDb) && !string.IsNullOrEmpty(contentVersion))
+        {
+            contentApi = new ContentDbFileApi(contentDb, long.Parse(contentVersion));
+            extraMounts = new[] { new ApiMount(contentApi, "/") };
+        }
 
-        loader.Main(args);
+        var args = new MainArgs(_engineArgs, _fileApi, redialApi, extraMounts);
+
+        try
+        {
+            loader.Main(args);
+        }
+        finally
+        {
+            contentApi?.Dispose();
+        }
         return true;
     }
 
@@ -122,7 +142,6 @@ internal class Program
         var robustPath = args[0];
         var sig = Convert.FromHexString(args[1]);
         var keyPath = args[2];
-        var contentVersionId = args[3];
 
         var pubKey = PublicKey.Import(
             SignatureAlgorithm.Ed25519,
@@ -148,7 +167,7 @@ internal class Program
             }
         }
 
-        var program = new Program(robustPath, contentVersionId, args[4..]);
+        var program = new Program(robustPath, args[3..]);
         if (!program.Run())
         {
             return 3;

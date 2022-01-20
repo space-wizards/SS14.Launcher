@@ -18,7 +18,6 @@ public class OptionsTabViewModel : MainWindowTabViewModel
         Cfg = Locator.Current.GetRequiredService<DataManager>();
         _engineManager = Locator.Current.GetRequiredService<IEngineManager>();
         _contentManager = Locator.Current.GetRequiredService<ContentManager>();
-        _contentManager.ClearAll();
     }
 
 #if RELEASE

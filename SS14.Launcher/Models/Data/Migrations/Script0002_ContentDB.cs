@@ -12,6 +12,10 @@ public sealed class Script0002_ContentDB : Migrator.IMigrationScript
         if (Directory.Exists(LauncherPaths.DirServerContent))
             Directory.Delete(LauncherPaths.DirServerContent, true);
 
-        return "DROP TABLE ServerContent";
+        return @"
+DROP TABLE ServerContent;
+
+DELETE FROM Config WHERE Key='NextInstallationId';
+";
     }
 }
