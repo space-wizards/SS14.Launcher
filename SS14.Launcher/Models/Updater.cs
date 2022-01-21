@@ -88,7 +88,7 @@ public sealed class Updater : ReactiveObject
 
         EngineModuleManifest? moduleManifest = null;
 
-        var con = _content.Connection;
+        using var con = ContentManager.GetSqliteConnection();
         // Check if we already have this version installed in the content DB.
         var forkInfo = new { buildInformation.ForkId, buildInformation.Version };
         var existingVersion = con.QueryFirstOrDefault<ContentVersion>(

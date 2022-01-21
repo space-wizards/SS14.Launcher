@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using Dapper;
 using Microsoft.Data.Sqlite;
 using Serilog;
@@ -9,12 +10,9 @@ namespace SS14.Launcher.Models.ContentManagement;
 
 public sealed class ContentManager
 {
-    public SqliteConnection Connection = default!;
-
     public void Initialize()
     {
-        var con = GetSqliteConnection();
-        con.Open();
+        using var con = GetSqliteConnection();
 
         // I tried to set this from inside the migrations but didn't work, rip.
         // Anyways: enabling WAL mode here so that downloading new files doesn't lock up if your game is running.
@@ -28,22 +26,38 @@ public sealed class ContentManager
             throw new Exception("Migrations failed!");
 
         Log.Debug("Did content DB migrations in {MigrationTime}", sw.Elapsed);
-        Connection = con;
     }
 
-    public void Shutdown()
-    {
-        Connection.Dispose();
-    }
-
+    /// <summary>
+    /// Clear ALL installed server content and try to truncate the DB.
+    /// </summary>
     public void ClearAll()
     {
+        Task.Run(() =>
+        {
+            try
+            {
+                using var con = GetSqliteConnection();
 
+                using var transact = con.BeginTransaction();
+                con.Execute("DELETE FROM ContentVersion");
+                con.Execute("DELETE FROM Content");
+                transact.Commit();
+
+                con.Execute("VACUUM");
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "Error while truncating content DB!");
+            }
+        });
     }
 
-    private static SqliteConnection GetSqliteConnection()
+    public static SqliteConnection GetSqliteConnection()
     {
-        return new SqliteConnection(GetContentDbConnectionString());
+        var con = new SqliteConnection(GetContentDbConnectionString());
+        con.Open();
+        return con;
     }
 
     private static string GetContentDbConnectionString()

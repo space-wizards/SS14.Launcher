@@ -270,7 +270,8 @@ public class Connector : ReactiveObject
 
         // Env vars for engine modules.
         {
-            var modules = _content.Connection.Query<(string, string)>(
+            using var con = ContentManager.GetSqliteConnection();
+            var modules = con.Query<(string, string)>(
                 @"SELECT ModuleVersion, ModuleName
                 FROM ContentEngineDependency
                 WHERE ModuleName != 'Robust' AND VersionId = @Version",

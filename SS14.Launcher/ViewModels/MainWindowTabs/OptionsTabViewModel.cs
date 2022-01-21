@@ -85,17 +85,7 @@ public class OptionsTabViewModel : MainWindowTabViewModel
 
     public void ClearServerContent()
     {
-        /*foreach (var content in Cfg.ServerContent.Items.ToArray())
-        {
-            Cfg.RemoveInstallation(content);
-        }
-
-        foreach (var file in Directory.EnumerateFiles(LauncherPaths.DirServerContent))
-        {
-            File.Delete(file);
-        }
-
-        Cfg.CommitConfig();*/
+        _contentManager.ClearAll();
     }
 
     public void OpenLogDirectory()

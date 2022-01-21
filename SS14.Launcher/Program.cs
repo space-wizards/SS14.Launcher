@@ -156,7 +156,6 @@ internal static class Program
 
         app.Run(window);
 
-        contentManager.Shutdown();
         lc.Shutdown();
     }
 }
