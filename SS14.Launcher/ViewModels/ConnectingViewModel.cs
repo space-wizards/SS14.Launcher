@@ -1,4 +1,5 @@
 using System;
+using System.Reactive.Linq;
 using System.Threading;
 using ReactiveUI;
 using Splat;
@@ -17,9 +18,13 @@ public class ConnectingViewModel : ViewModelBase
 
     private string? _reasonSuffix;
 
-    public bool IsErrored => _connector.Status == Connector.ConnectionStatus.ConnectionFailed ||
-                             _connector.Status == Connector.ConnectionStatus.UpdateError ||
-                             _connector.Status == Connector.ConnectionStatus.ClientExited &&
+    private Connector.ConnectionStatus _connectorStatus;
+    private Updater.UpdateStatus _updaterStatus;
+    private (long downloaded, long total)? _updaterProgress;
+
+    public bool IsErrored => _connectorStatus == Connector.ConnectionStatus.ConnectionFailed ||
+                             _connectorStatus == Connector.ConnectionStatus.UpdateError ||
+                             _connectorStatus == Connector.ConnectionStatus.ClientExited &&
                              _connector.ClientExitedBadly;
 
     public ConnectingViewModel(Connector connector, MainWindowViewModel windowVm, string? givenReason)
@@ -30,19 +35,30 @@ public class ConnectingViewModel : ViewModelBase
         _reasonSuffix = (givenReason != null) ? ("\n" + givenReason) : "";
 
         this.WhenAnyValue(x => x._updater.Progress)
-            .Subscribe(_ =>
+            .ObserveOn(RxApp.MainThreadScheduler)
+            .Subscribe(progress =>
             {
+                _updaterProgress = progress;
+
                 this.RaisePropertyChanged(nameof(Progress));
                 this.RaisePropertyChanged(nameof(ProgressIndeterminate));
                 this.RaisePropertyChanged(nameof(ProgressText));
             });
 
         this.WhenAnyValue(x => x._updater.Status)
-            .Subscribe(_ => { this.RaisePropertyChanged(nameof(StatusText)); });
+            .ObserveOn(RxApp.MainThreadScheduler)
+            .Subscribe(status =>
+            {
+                _updaterStatus = status;
+                this.RaisePropertyChanged(nameof(StatusText));
+            });
 
         this.WhenAnyValue(x => x._connector.Status)
+            .ObserveOn(RxApp.MainThreadScheduler)
             .Subscribe(val =>
             {
+                _connectorStatus = val;
+
                 this.RaisePropertyChanged(nameof(ProgressIndeterminate));
                 this.RaisePropertyChanged(nameof(StatusText));
                 this.RaisePropertyChanged(nameof(ProgressBarVisible));
@@ -57,6 +73,7 @@ public class ConnectingViewModel : ViewModelBase
             });
 
         this.WhenAnyValue(x => x._connector.ClientExitedBadly)
+            .ObserveOn(RxApp.MainThreadScheduler)
             .Subscribe(_ =>
             {
                 this.RaisePropertyChanged(nameof(StatusText));
@@ -68,12 +85,12 @@ public class ConnectingViewModel : ViewModelBase
     {
         get
         {
-            if (_updater.Progress == null)
+            if (_updaterProgress == null)
             {
                 return 0;
             }
 
-            var (downloaded, total) = _updater.Progress.Value;
+            var (downloaded, total) = _updaterProgress.Value;
 
             return downloaded / (float) total;
         }
@@ -83,12 +100,12 @@ public class ConnectingViewModel : ViewModelBase
     {
         get
         {
-            if (_updater.Progress == null)
+            if (_updaterProgress == null)
             {
                 return "";
             }
 
-            var (downloaded, total) = _updater.Progress.Value;
+            var (downloaded, total) = _updaterProgress.Value;
 
             return $"{Helpers.FormatBytes(downloaded)} / {Helpers.FormatBytes(total)}";
         }
@@ -98,27 +115,27 @@ public class ConnectingViewModel : ViewModelBase
     {
         get
         {
-            if (_connector.Status == Connector.ConnectionStatus.Updating)
+            if (_connectorStatus == Connector.ConnectionStatus.Updating)
             {
-                return !_updater.Progress.HasValue;
+                return !_updaterProgress.HasValue;
             }
 
             return true;
         }
     }
 
-    public bool ProgressBarVisible => _connector.Status != Connector.ConnectionStatus.ClientExited &&
-                                      _connector.Status != Connector.ConnectionStatus.ClientRunning &&
-                                      _connector.Status != Connector.ConnectionStatus.ConnectionFailed &&
-                                      _connector.Status != Connector.ConnectionStatus.UpdateError;
+    public bool ProgressBarVisible => _connectorStatus != Connector.ConnectionStatus.ClientExited &&
+                                      _connectorStatus != Connector.ConnectionStatus.ClientRunning &&
+                                      _connectorStatus != Connector.ConnectionStatus.ConnectionFailed &&
+                                      _connectorStatus != Connector.ConnectionStatus.UpdateError;
 
     public string StatusText =>
-        _connector.Status switch
+        _connectorStatus switch
         {
             Connector.ConnectionStatus.None => "Starting connection..." + _reasonSuffix,
             Connector.ConnectionStatus.UpdateError =>
                 "There was an error while downloading server content. Please ask on Discord for support if the problem persists.",
-            Connector.ConnectionStatus.Updating => ("Updating: " + _updater.Status switch
+            Connector.ConnectionStatus.Updating => ("Updating: " + _updaterStatus switch
             {
                 Updater.UpdateStatus.CheckingClientUpdate => "Checking for server content update...",
                 Updater.UpdateStatus.DownloadingEngineVersion => "Downloading server content...",
@@ -128,7 +145,8 @@ public class ConnectingViewModel : ViewModelBase
                 Updater.UpdateStatus.Ready => "Update done!",
                 Updater.UpdateStatus.CheckingEngineModules => "Checking for additional dependencies...",
                 Updater.UpdateStatus.DownloadingEngineModules => "Downloading extra dependencies...",
-                Updater.UpdateStatus.CommittingDownload => "Committing download...",
+                Updater.UpdateStatus.CommittingDownload => "Synchronizing to disk...",
+                Updater.UpdateStatus.LoadingIntoDb => "Storing assets in database...",
                 _ => "You shouldn't see this"
             }) + _reasonSuffix,
             Connector.ConnectionStatus.Connecting => "Fetching connection info from server..." + _reasonSuffix,

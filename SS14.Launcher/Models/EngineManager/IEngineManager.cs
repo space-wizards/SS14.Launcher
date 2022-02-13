@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Data.Sqlite;
 
 namespace SS14.Launcher.Models.EngineManager;
 // This is an interface instead of a class because
@@ -32,7 +33,7 @@ public interface IEngineManager
         Helpers.DownloadProgressCallback? progress = null,
         CancellationToken cancel = default);
 
-    Task DoEngineCullMaybeAsync();
+    Task DoEngineCullMaybeAsync(SqliteConnection contenCon);
     void ClearAllEngines();
     string GetEngineModule(string moduleName, string moduleVersion);
 

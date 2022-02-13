@@ -8,6 +8,8 @@ using System.Net.Http.Json;
 using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
+using Dapper;
+using Microsoft.Data.Sqlite;
 using NSec.Cryptography;
 using Serilog;
 using Splat;
@@ -115,7 +117,7 @@ public sealed class EngineManagerDynamic : IEngineManager
 
     public async Task<bool> DownloadModuleIfNecessary(
         string moduleName,
-        string engineVersion,
+        string moduleVersion,
         EngineModuleManifest manifest,
         Helpers.DownloadProgressCallback? progress = null,
         CancellationToken cancel = default)
@@ -123,14 +125,13 @@ public sealed class EngineManagerDynamic : IEngineManager
         // Currently the module handling code assumes all modules need straight extract to disk.
         // This works for CEF, but who knows what the future might hold?
 
-        Log.Debug("Checking to download {ModuleName} for engine {EngineVersion}", moduleName, engineVersion);
+        Log.Debug("Checking to download {ModuleName} {ModuleVersion}", moduleName, moduleVersion);
 
-        var selectedVersion = IEngineManager.ResolveEngineModuleVersion(manifest, moduleName, engineVersion);
-        var versionData = manifest.Modules[moduleName].Versions[selectedVersion];
+        var versionData = manifest.Modules[moduleName].Versions[moduleVersion];
 
-        Log.Debug("Selected module {ModuleName} {ModuleVersion}", moduleName, selectedVersion);
+        Log.Debug("Selected module {ModuleName} {ModuleVersion}", moduleName, moduleVersion);
 
-        var alreadyInstalled = _cfg.EngineModules.Any(m => m.Name == moduleName && m.Version == selectedVersion);
+        var alreadyInstalled = _cfg.EngineModules.Any(m => m.Name == moduleName && m.Version == moduleVersion);
 
         if (alreadyInstalled)
         {
@@ -138,7 +139,7 @@ public sealed class EngineManagerDynamic : IEngineManager
             return false;
         }
 
-        Log.Information("Installing {ModuleName} {ModuleVersion}", moduleName, selectedVersion);
+        Log.Information("Installing {ModuleName} {ModuleVersion}", moduleName, moduleVersion);
 
         var bestRid = RidUtility.FindBestRid(versionData.Platforms.Keys);
         if (bestRid == null)
@@ -151,7 +152,7 @@ public sealed class EngineManagerDynamic : IEngineManager
         Log.Debug("Downloading module: {EngineDownloadUrl}", platformData.Url);
 
         var moduleDiskPath = Path.Combine(LauncherPaths.DirModuleInstallations, moduleName);
-        var moduleVersionDiskPath = Path.Combine(moduleDiskPath, selectedVersion);
+        var moduleVersionDiskPath = Path.Combine(moduleDiskPath, moduleVersion);
 
         await Task.Run(() =>
         {
@@ -206,7 +207,7 @@ public sealed class EngineManagerDynamic : IEngineManager
             }
         }
 
-        _cfg.AddEngineModule(new InstalledEngineModule(moduleName, selectedVersion));
+        _cfg.AddEngineModule(new InstalledEngineModule(moduleName, moduleVersion));
         _cfg.CommitConfig();
 
         Log.Debug("Done installing module!");
@@ -257,14 +258,17 @@ public sealed class EngineManagerDynamic : IEngineManager
                throw new InvalidDataException();
     }
 
-    public async Task DoEngineCullMaybeAsync()
+    public async Task DoEngineCullMaybeAsync(SqliteConnection contenCon)
     {
-        /*Log.Debug("Checking to cull engine versions.");
+        Log.Debug("Checking to cull engine dependencies");
 
         // Cull main engine installations.
 
-        var usedVersions = _cfg.ServerContent.Items.Select(c => c.CurrentEngineVersion).ToHashSet();
-        var toCull = _cfg.EngineInstallations.Items.Where(i => !usedVersions.Contains(i.Version)).ToArray();
+        var modulesUsed = contenCon
+            .Query<(string, string)>("SELECT DISTINCT ModuleName, ModuleVersion FROM ContentEngineDependency")
+            .ToHashSet();
+
+        var toCull = _cfg.EngineInstallations.Items.Where(i => !modulesUsed.Contains(("Robust", i.Version))).ToArray();
 
         foreach (var installation in toCull)
         {
@@ -275,36 +279,21 @@ public sealed class EngineManagerDynamic : IEngineManager
             _cfg.RemoveEngineInstallation(installation);
 
             await Task.Run(() => File.Delete(path));
-        }*/
+        }
 
         // Cull modules
-
-        /*var usedModules = _cfg.ServerContent.Items.SelectMany(c =>
-        {
-            var engineVersion = Version.Parse(c.CurrentEngineVersion);
-            using var zip = File.OpenRead(LauncherPaths.GetContentZip(c.DiskId));
-            return Updater.GetModuleNames(zip)
-                .Select(m => Connector.GetInstalledModuleForEngineVersion(engineVersion, m, _cfg));
-        });
-
-        var toCullModules = _cfg.EngineModules.Except(usedModules).ToArray();
+        var toCullModules = _cfg.EngineModules.Where(m => !modulesUsed.Contains((m.Name, m.Version))).ToArray();
 
         foreach (var module in toCullModules)
         {
             Log.Debug("Culling unused module {EngineModule}", module);
-
-            if (module == null)
-            {
-                Log.Warning("Unable to resolve module for installed server content! Module: {Module}", module);
-                continue;
-            }
 
             var path = GetEngineModule(module.Name, module.Version);
 
             _cfg.RemoveEngineModule(module);
 
             await Task.Run(() => Directory.Delete(path, true));
-        }*/
+        }
     }
 
     public void ClearAllEngines()

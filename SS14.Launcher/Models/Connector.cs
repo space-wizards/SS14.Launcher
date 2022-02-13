@@ -7,13 +7,11 @@ using System.Net.Http;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
-using Dapper;
 using DynamicData;
 using Newtonsoft.Json;
 using ReactiveUI;
 using Serilog;
 using Splat;
-using SS14.Launcher.Models.ContentManagement;
 using SS14.Launcher.Models.Data;
 using SS14.Launcher.Models.EngineManager;
 using SS14.Launcher.Models.Logins;
@@ -27,7 +25,6 @@ public class Connector : ReactiveObject
     private readonly DataManager _cfg;
     private readonly LoginManager _loginManager;
     private readonly IEngineManager _engineManager;
-    private readonly ContentManager _content;
 
     private ConnectionStatus _status = ConnectionStatus.None;
     private bool _clientExitedBadly;
@@ -40,7 +37,6 @@ public class Connector : ReactiveObject
         _loginManager = Locator.Current.GetRequiredService<LoginManager>();
         _engineManager = Locator.Current.GetRequiredService<IEngineManager>();
         _http = Locator.Current.GetRequiredService<HttpClient>();
-        _content = Locator.Current.GetRequiredService<ContentManager>();
     }
 
     public ConnectionStatus Status
@@ -115,7 +111,9 @@ public class Connector : ReactiveObject
         Status = ConnectionStatus.ClientExited;
     }
 
-    private async Task<Process?> ConnectLaunchClient(ServerInfo info, long contentVersionId,
+    private async Task<Process?> ConnectLaunchClient(
+        ServerInfo info,
+        ContentLaunchInfo launchInfo,
         Uri connectAddress, Uri parsedAddr)
     {
         var cVars = new List<(string, string)>();
@@ -132,11 +130,8 @@ public class Connector : ReactiveObject
 
         try
         {
-            // Must have been set when retrieving build info (inferred to be automatic zipping).
-            Debug.Assert(info.BuildInformation != null, "info.BuildInformation != null");
-
             // Launch client.
-            return await LaunchClient(info.BuildInformation.EngineVersion, contentVersionId, new[]
+            return await LaunchClient(launchInfo, new[]
             {
                 // We are using the launcher. Don't show main menu etc..
                 "--launcher",
@@ -186,7 +181,7 @@ public class Connector : ReactiveObject
         }
     }
 
-    private async Task<long> RunUpdateAsync(ServerInfo info, CancellationToken cancel)
+    private async Task<ContentLaunchInfo> RunUpdateAsync(ServerInfo info, CancellationToken cancel)
     {
         // Must have been set when retrieving build info (inferred to be automatic zipping).
         Debug.Assert(info.BuildInformation != null, "info.BuildInformation != null");
@@ -197,7 +192,7 @@ public class Connector : ReactiveObject
             throw new ConnectException(ConnectionStatus.UpdateError);
         }
 
-        return installation.Value;
+        return installation;
     }
 
     private async Task<(ServerInfo, Uri, Uri)> GetServerInfoAsync(string address, CancellationToken cancel)
@@ -245,12 +240,12 @@ public class Connector : ReactiveObject
     }
 
     private async Task<Process?> LaunchClient(
-        string engineVersion,
-        long contentVersionId,
+        ContentLaunchInfo launchInfo,
         IEnumerable<string> extraArgs,
         List<(string, string)> env)
     {
         var pubKey = LauncherPaths.PathPublicKey;
+        var engineVersion = launchInfo.ModuleInfo.Single(x => x.Module == "Robust").Version;
         var binPath = _engineManager.GetEnginePath(engineVersion);
         var sig = _engineManager.GetEngineSignature(engineVersion);
 
@@ -266,19 +261,15 @@ public class Connector : ReactiveObject
         }
 
         startInfo.EnvironmentVariables["SS14_LOADER_CONTENT_DB"] = LauncherPaths.PathContentDb;
-        startInfo.EnvironmentVariables["SS14_LOADER_CONTENT_VERSION"] = contentVersionId.ToString();
+        startInfo.EnvironmentVariables["SS14_LOADER_CONTENT_VERSION"] = launchInfo.Version.ToString();
 
         // Env vars for engine modules.
         {
-            using var con = ContentManager.GetSqliteConnection();
-            var modules = con.Query<(string, string)>(
-                @"SELECT ModuleVersion, ModuleName
-                FROM ContentEngineDependency
-                WHERE ModuleName != 'Robust' AND VersionId = @Version",
-                new {Version = contentVersionId});
-
-            foreach (var (moduleName, moduleVersion) in modules)
+            foreach (var (moduleName, moduleVersion) in launchInfo.ModuleInfo)
             {
+                if (moduleName == "Robust")
+                    continue;
+
                 var modulePath = _engineManager.GetEngineModule(moduleName, moduleVersion);
 
                 var envVar = $"ROBUST_MODULE_{moduleName.ToUpperInvariant().Replace('.', '_')}";
