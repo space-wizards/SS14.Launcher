@@ -4,6 +4,7 @@ using System.IO.Compression;
 using System.Linq;
 using System.Net.Http;
 using System.Security.Cryptography;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Avalonia.Threading;
@@ -346,9 +347,15 @@ public sealed class Updater : ReactiveObject
 
         var zip = new ZipArchive(tempFile, ZipArchiveMode.Read, leaveOpen: true);
 
+        // TODO: hash incrementally without buffering in-memory
+        var manifestStream = new MemoryStream();
+        var manifestWriter = new StreamWriter(manifestStream, new UTF8Encoding(false));
+        manifestWriter.Write("Robust Content Manifest 1\n");
+
         var hasher = SHA256.Create();
 
-        foreach (var entry in zip.Entries)
+        // Sort by full name for manifest building.
+        foreach (var entry in zip.Entries.OrderBy(e => e.FullName, StringComparer.Ordinal))
         {
             // Ignore directory entries.
             if (entry.Name == "")
@@ -398,7 +405,7 @@ public sealed class Updater : ReactiveObject
                         @"INSERT INTO Content(Hash, Size, Compression, Data)
                         VALUES (@Hash, @Size, @Compression, zeroblob(@Size))
                         RETURNING Id",
-                        new { Hash = hash, Size = entry.Length,Compression = ContentCompressionScheme.None });
+                        new { Hash = hash, Size = entry.Length, Compression = ContentCompressionScheme.None });
 
                     using var stream = entry.Open();
                     using var blob = new SqliteBlob(con, "Content", "Data", row);
@@ -415,7 +422,21 @@ public sealed class Updater : ReactiveObject
                     Path = entry.FullName,
                     ContentId = row,
                 });
+
+            manifestWriter.Write($"{Convert.ToHexString(hash)} {entry.FullName}\n");
         }
+
+        manifestWriter.Flush();
+
+        manifestStream.Seek(0, SeekOrigin.Begin);
+
+        var manifestHash = HashFile(manifestStream);
+
+        // File.WriteAllBytes("manifest.txt", manifestStream.ToArray());
+
+        con.Execute(
+            "UPDATE ContentVersion SET Hash = @Hash WHERE Id = @Id",
+            new { Hash = manifestHash, Id = versionId });
 
         // Insert engine dependencies.
 
@@ -429,12 +450,12 @@ public sealed class Updater : ReactiveObject
             });
 
         // If we have a manifest file, load module dependencies from manifest file.
-        if (ContentManager.OpenBlob(con, versionId, "manifest.yml") is { } manifestStream)
+        if (ContentManager.OpenBlob(con, versionId, "manifest.yml") is { } resourceManifest)
         {
             string[] modules;
-            using (manifestStream)
+            using (resourceManifest)
             {
-                modules = GetModuleNames(manifestStream);
+                modules = GetModuleNames(resourceManifest);
             }
 
             if (modules.Length > 0)
