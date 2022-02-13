@@ -29,6 +29,14 @@ internal sealed class ContentDbFileApi : IFileApi, IDisposable
             out var db,
             SQLITE_OPEN_READONLY | SQLITE_OPEN_NOMUTEX | SQLITE_OPEN_SHAREDCACHE,
             null);
+
+        // Make sure to have a read transaction on every database connection
+        // so that the launcher can't delete anything from underneath us if the user does anything.
+        // NOTE: the read transaction does not begin until the first read operation (weird SQLite semantics).
+        // For the primary DB connection, this happens in LoadManifest().
+        // For the pool ones down below we run a useless read command.
+        sqlite3_exec(db, "BEGIN");
+
         CheckThrowSqliteErr(db, err);
 
         LoadManifest(version, db);
@@ -46,6 +54,10 @@ internal sealed class ContentDbFileApi : IFileApi, IDisposable
                 SQLITE_OPEN_READONLY | SQLITE_OPEN_NOMUTEX | SQLITE_OPEN_SHAREDCACHE,
                 null);
             CheckThrowSqliteErr(db, err);
+
+            sqlite3_exec(db, "BEGIN");
+            // Aforementioned useless read command.
+            sqlite3_exec(db, "SELECT COUNT(*) FROM ContentVersion");
 
             _dbConnections.Add(db);
         }
