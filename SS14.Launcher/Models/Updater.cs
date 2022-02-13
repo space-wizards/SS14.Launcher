@@ -390,7 +390,7 @@ public sealed class Updater : ReactiveObject
                             Hash = hash,
                             Size = entry.Length,
                             BlobLen = ms.Length,
-                            Compression = compress ? 1 : 0
+                            Compression = ContentCompressionScheme.Deflate
                         });
 
                     using var blob = new SqliteBlob(con, "Content", "Data", row);

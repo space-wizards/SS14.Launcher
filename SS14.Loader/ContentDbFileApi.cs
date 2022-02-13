@@ -8,13 +8,14 @@ using System.Threading;
 using Microsoft.Data.Sqlite;
 using Robust.LoaderApi;
 using SQLitePCL;
+using SS14.Launcher.Models.ContentManagement;
 using static SQLitePCL.raw;
 
 namespace SS14.Loader;
 
 internal sealed class ContentDbFileApi : IFileApi, IDisposable
 {
-    private readonly Dictionary<string, (long id, int length, int compr)> _files = new();
+    private readonly Dictionary<string, (long id, int length, ContentCompressionScheme compr)> _files = new();
     private readonly SemaphoreSlim _dbConnectionsSemaphore;
     private readonly ConcurrentBag<sqlite3> _dbConnections = new();
     private readonly int _connectionPoolSize;
@@ -80,7 +81,7 @@ internal sealed class ContentDbFileApi : IFileApi, IDisposable
         {
             var rowId = sqlite3_column_int64(stmt, 0);
             var size = sqlite3_column_int(stmt, 1);
-            var compression = sqlite3_column_int(stmt, 2);
+            var compression = (ContentCompressionScheme) sqlite3_column_int(stmt, 2);
             var path = sqlite3_column_text(stmt, 3).utf8_to_string();
 
             _files.Add(path, (rowId, size, compression));
@@ -142,7 +143,7 @@ internal sealed class ContentDbFileApi : IFileApi, IDisposable
             if (err != SQLITE_OK)
                 SqliteException.ThrowExceptionForRC(err, db);
 
-            if (compression == 1)
+            if (compression == ContentCompressionScheme.Deflate)
             {
                 var buffer = GC.AllocateUninitializedArray<byte>(length);
                 stream = new MemoryStream(buffer);
