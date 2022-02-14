@@ -1,20 +1,20 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-    <PropertyGroup>
-        <TargetFramework>net6.0</TargetFramework>
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
 
-        <IsPackable>false</IsPackable>
-    </PropertyGroup>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
 
-    <ItemGroup>
-        <PackageReference Include="nunit" Version="3.13.2" />
-        <PackageReference Include="NUnit.Analyzers" Version="3.1.0" />
-        <PackageReference Include="NUnit3TestAdapter" Version="3.17.0" />
-        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.4" />
-    </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="nunit" Version="3.13.2"/>
+    <PackageReference Include="NUnit.Analyzers" Version="3.1.0"/>
+    <PackageReference Include="NUnit3TestAdapter" Version="3.17.0"/>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.4"/>
+  </ItemGroup>
 
-    <ItemGroup>
-      <ProjectReference Include="..\SS14.Launcher\SS14.Launcher.csproj" />
-    </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SS14.Launcher\SS14.Launcher.csproj"/>
+  </ItemGroup>
 
 </Project>

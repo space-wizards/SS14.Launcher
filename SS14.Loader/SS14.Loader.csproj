@@ -1,25 +1,25 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-    <PropertyGroup>
-        <OutputType>WinExe</OutputType>
-        <TargetFramework>net6.0</TargetFramework>
-        <Nullable>enable</Nullable>
-        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    </PropertyGroup>
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
 
-    <ItemGroup>
-      <ProjectReference Include="..\Robust.LoaderApi\Robust.LoaderApi\Robust.LoaderApi.csproj" />
-    </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Robust.LoaderApi\Robust.LoaderApi\Robust.LoaderApi.csproj"/>
+  </ItemGroup>
 
-    <ItemGroup>
-        <!-- I'm not making a new shared project for a single enum. -->
-        <Compile Include="../SS14.Launcher/Models/ContentManagement/ContentCompressionScheme.cs" />
-    </ItemGroup>
+  <ItemGroup>
+    <!-- I'm not making a new shared project for a single enum. -->
+    <Compile Include="../SS14.Launcher/Models/ContentManagement/ContentCompressionScheme.cs"/>
+  </ItemGroup>
 
-    <ItemGroup>
-      <PackageReference Include="Microsoft.Data.Sqlite" Version="6.0.1" />
-      <PackageReference Include="NSec.Cryptography" Version="20.2.0" />
-      <PackageReference Include="Robust.Natives" Version="0.1.0" />
-    </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="6.0.1"/>
+    <PackageReference Include="NSec.Cryptography" Version="20.2.0"/>
+    <PackageReference Include="Robust.Natives" Version="0.1.0"/>
+  </ItemGroup>
 
 </Project>

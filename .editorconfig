@@ -12,5 +12,5 @@ insert_final_newline = true
 trim_trailing_whitespace = true
 
 
-[*.{xaml,axaml,yml}]
+[*.{xaml,axaml,yml,csproj}]
 indent_size = 2
