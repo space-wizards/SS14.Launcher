@@ -61,6 +61,16 @@ public static class CVars
     public static readonly CVarDef<string> SelectedLogin = CVarDef.Create("SelectedLogin", "");
 
     public static readonly CVarDef<string> Fingerprint = CVarDef.Create("Fingerprint", "");
+
+    /// <summary>
+    /// Maximum amount of TOTAL versions to keep in the content database.
+    /// </summary>
+    public static readonly CVarDef<int> MaxVersionsToKeep = CVarDef.Create("MaxVersionsToKeep", 15);
+
+    /// <summary>
+    /// Maximum amount of versions to keep of a specific fork ID.
+    /// </summary>
+    public static readonly CVarDef<int> MaxForkVersionsToKeep = CVarDef.Create("MaxForkVersionsToKeep", 3);
 }
 
 /// <summary>

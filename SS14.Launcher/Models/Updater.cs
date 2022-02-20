@@ -1,8 +1,10 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Net.Http;
+using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
@@ -92,10 +94,18 @@ public sealed class Updater : ReactiveObject
         var moduleManifest =
             new Lazy<Task<EngineModuleManifest>>(() => _engineManager.GetEngineModuleManifest(cancel));
 
+        // ReSharper disable once UseAwaitUsing
         using var con = ContentManager.GetSqliteConnection();
-        // ReSharper disable once MethodSupportsCancellation
         var versionRowId = await Task.Run(
-            () => TouchOrDownloadContentUpdate(buildInfo, con, moduleManifest, cancel));
+            () => TouchOrDownloadContentUpdate(buildInfo, con, moduleManifest, cancel),
+            CancellationToken.None);
+
+        Log.Information("Checking to cull old content versions...");
+
+        await Task.Run(() =>
+        {
+            CullOldContentVersions(con);
+        }, CancellationToken.None);
 
         (string, string)[] modules;
 
@@ -134,6 +144,50 @@ public sealed class Updater : ReactiveObject
 
         Log.Information("Update done!");
         return new ContentLaunchInfo(versionRowId, modules);
+    }
+
+    private void CullOldContentVersions(SqliteConnection con)
+    {
+        using var tx = con.BeginTransaction();
+
+        Status = UpdateStatus.CullingContent;
+
+        // We keep at most MaxVersionsToKeep TOTAL.
+        // We keep at most MaxForkVersionsToKeep of a specific ForkID.
+        // Old builds get culled first.
+
+        var maxVersions = _cfg.GetCVar(CVars.MaxVersionsToKeep);
+        var maxForkVersions = _cfg.GetCVar(CVars.MaxForkVersionsToKeep);
+
+        var versions = con.Query<ContentVersion>("SELECT * FROM ContentVersion ORDER BY LastUsed DESC").ToArray();
+
+        var forkCounts = versions.Select(x => x.ForkId).Distinct().ToDictionary(x => x, _ => 0);
+
+        var totalCount = 0;
+        foreach (var version in versions)
+        {
+            ref var count = ref CollectionsMarshal.GetValueRefOrAddDefault(forkCounts, version.ForkId, out _);
+
+            var keep = count < maxForkVersions && totalCount < maxVersions;
+            if (keep)
+            {
+                count += 1;
+                totalCount += 1;
+            }
+            else
+            {
+                Log.Debug("Culling version {ForkId}/{ForkVersion}", version.ForkId, version.ForkVersion);
+                con.Execute("DELETE FROM ContentVersion WHERE Id = @Id", new { version.Id });
+            }
+        }
+
+        if (totalCount != versions.Length)
+        {
+            var rows = con.Execute("DELETE FROM Content WHERE Id NOT IN (SELECT ContentId FROM ContentManifest)");
+            Log.Debug("Culled {RowsCulled} orphaned content blobs", rows);
+        }
+
+        tx.Commit();
     }
 
     private static ContentVersion? CheckExisting(SqliteConnection con, ServerBuildInformation buildInfo)
@@ -206,6 +260,7 @@ public sealed class Updater : ReactiveObject
         return versionId;
     }
 
+    [SuppressMessage("ReSharper", "MethodHasAsyncOverload")]
     private static async Task<long> DuplicateExistingVersion(
         ServerBuildInformation buildInfo,
         SqliteConnection con,
@@ -313,6 +368,9 @@ public sealed class Updater : ReactiveObject
         return versionId;
     }
 
+    [SuppressMessage("ReSharper", "MethodHasAsyncOverload")]
+    [SuppressMessage("ReSharper", "MethodHasAsyncOverloadWithCancellation")]
+    [SuppressMessage("ReSharper", "UseAwaitUsing")]
     private async Task<long> DownloadNewVersion(
         ServerBuildInformation buildInfo,
         SqliteConnection con,
@@ -320,7 +378,6 @@ public sealed class Updater : ReactiveObject
         CancellationToken cancel,
         string engineVersion)
     {
-        long versionId;
         // Don't have this version, download it.
 
         // Temp file to download zip into.
@@ -334,7 +391,7 @@ public sealed class Updater : ReactiveObject
 
         // File downloaded, time to dump this into the DB.
 
-        versionId = con.ExecuteScalar<long>(
+        var versionId = con.ExecuteScalar<long>(
             @"INSERT INTO ContentVersion(Hash, ForkId, ForkVersion, LastUsed, ZipHash)
                 VALUES (zeroblob(32), @ForkId, @Version, datetime('now'), @ZipHash)
                 RETURNING Id",
@@ -577,6 +634,7 @@ public sealed class Updater : ReactiveObject
         CommittingDownload,
         LoadingIntoDb,
         CullingEngine,
+        CullingContent,
         Ready,
         Error,
     }

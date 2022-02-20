@@ -142,6 +142,7 @@ public class ConnectingViewModel : ViewModelBase
                 Updater.UpdateStatus.DownloadingClientUpdate => "Downloading server content...",
                 Updater.UpdateStatus.Verifying => "Verifying download integrity...",
                 Updater.UpdateStatus.CullingEngine => "Clearing old content...",
+                Updater.UpdateStatus.CullingContent => "Clearing old server content...",
                 Updater.UpdateStatus.Ready => "Update done!",
                 Updater.UpdateStatus.CheckingEngineModules => "Checking for additional dependencies...",
                 Updater.UpdateStatus.DownloadingEngineModules => "Downloading extra dependencies...",
