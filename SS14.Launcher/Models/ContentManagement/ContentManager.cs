@@ -7,6 +7,7 @@ using Dapper;
 using Microsoft.Data.Sqlite;
 using Serilog;
 using SS14.Launcher.Models.Data;
+using SS14.Launcher.Utility;
 
 namespace SS14.Launcher.Models.ContentManagement;
 
@@ -82,6 +83,9 @@ public sealed class ContentManager
 
             case ContentCompressionScheme.Deflate:
                 return new DeflateStream(blob, CompressionMode.Decompress);
+
+            case ContentCompressionScheme.ZStd:
+                return new ZStdDecompressStream(blob);
 
             default:
                 throw new InvalidDataException("Unknown compression scheme in ContentDB!");

@@ -18,50 +18,53 @@
     <AvaloniaResource Include="**\*.xaml">
       <SubType>Designer</SubType>
     </AvaloniaResource>
-    <AvaloniaResource Include="Assets\**"/>
+    <AvaloniaResource Include="Assets\**" />
     <AvaloniaResource Update="Views\MainWindowLogin.xaml">
       <SubType>Designer</SubType>
     </AvaloniaResource>
 
-    <AdditionalFiles Include="**\*.xaml"/>
+    <AdditionalFiles Include="**\*.xaml" />
 
-    <Compile Remove="Models\Data\InstalledServerContent.cs"/>
+    <Compile Remove="Models\Data\InstalledServerContent.cs" />
+
+    <Compile Remove="Models\ContentManagement\ZStdDecompressStream.cs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Avalonia" Version="0.10.10"/>
-    <PackageReference Include="Avalonia.Desktop" Version="0.10.10"/>
-    <PackageReference Include="Avalonia.ReactiveUI" Version="0.10.10"/>
-    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="0.10.10"/>
-    <PackageReference Include="CodeHollow.FeedReader" Version="1.2.1"/>
-    <PackageReference Include="Dapper" Version="2.0.123"/>
-    <PackageReference Include="DynamicData" Version="7.4.9"/>
-    <PackageReference Include="Microsoft.Data.Sqlite" Version="6.0.1"/>
-    <PackageReference Include="Microsoft.Toolkit.Mvvm" Version="7.1.2"/>
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1"/>
-    <PackageReference Include="ReactiveUI" Version="17.1.9"/>
-    <PackageReference Include="ReactiveUI.Fody" Version="17.1.9"/>
-    <PackageReference Include="Robust.Shared.AuthLib" Version="0.1.2"/>
-    <PackageReference Include="Serilog" Version="2.10.0"/>
-    <PackageReference Include="Serilog.Sinks.Console" Version="3.1.1"/>
-    <PackageReference Include="Serilog.Sinks.File" Version="4.1.0"/>
-    <PackageReference Include="XamlNameReferenceGenerator" Version="1.2.1"/>
-    <PackageReference Include="YamlDotNet" Version="11.2.1"/>
-    <PackageReference Include="TerraFX.Interop.Windows" Version="10.0.20348"/>
-    <PackageReference Include="NSec.Cryptography" Version="20.2.0"/>
-    <PackageReference Include="Mono.Posix.NETStandard" Version="1.0.0"/>
+    <PackageReference Include="Avalonia" Version="0.10.10" />
+    <PackageReference Include="Avalonia.Desktop" Version="0.10.10" />
+    <PackageReference Include="Avalonia.ReactiveUI" Version="0.10.10" />
+    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="0.10.10" />
+    <PackageReference Include="CodeHollow.FeedReader" Version="1.2.1" />
+    <PackageReference Include="Dapper" Version="2.0.123" />
+    <PackageReference Include="DynamicData" Version="7.4.9" />
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="6.0.1" />
+    <PackageReference Include="Microsoft.Toolkit.Mvvm" Version="7.1.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="ReactiveUI" Version="17.1.9" />
+    <PackageReference Include="ReactiveUI.Fody" Version="17.1.9" />
+    <PackageReference Include="Robust.Shared.AuthLib" Version="0.1.2" />
+    <PackageReference Include="Serilog" Version="2.10.0" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />
+    <PackageReference Include="Serilog.Sinks.File" Version="4.1.0" />
+    <PackageReference Include="XamlNameReferenceGenerator" Version="1.2.1" />
+    <PackageReference Include="YamlDotNet" Version="11.2.1" />
+    <PackageReference Include="TerraFX.Interop.Windows" Version="10.0.20348" />
+    <PackageReference Include="NSec.Cryptography" Version="20.2.0" />
+    <PackageReference Include="Mono.Posix.NETStandard" Version="1.0.0" />
+    <PackageReference Include="ImpromptuNinjas.ZStd" Version="1.4.5.5" />
   </ItemGroup>
   <ItemGroup>
-    <None Remove="Utility\runtime.json"/>
+    <None Remove="Utility\runtime.json" />
     <EmbeddedResource Include="Utility\runtime.json">
       <LogicalName>Utility.runtime.json</LogicalName>
     </EmbeddedResource>
-    <None Remove="Models\Data\Migrations\*.sql"/>
-    <EmbeddedResource Include="Models\Data\Migrations\*.sql"/>
-    <None Remove="Models\ContentManagement\Migrations\*.sql"/>
-    <EmbeddedResource Include="Models\ContentManagement\Migrations\*.sql"/>
+    <None Remove="Models\Data\Migrations\*.sql" />
+    <EmbeddedResource Include="Models\Data\Migrations\*.sql" />
+    <None Remove="Models\ContentManagement\Migrations\*.sql" />
+    <EmbeddedResource Include="Models\ContentManagement\Migrations\*.sql" />
   </ItemGroup>
   <ItemGroup>
-    <None Remove="signing_key"/>
+    <None Remove="signing_key" />
     <Content Include="signing_key">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

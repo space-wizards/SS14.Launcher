@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.IO.Compression;
@@ -11,6 +12,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Avalonia.Threading;
 using Dapper;
+using ImpromptuNinjas.ZStd;
 using Microsoft.Data.Sqlite;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
@@ -410,6 +412,11 @@ public sealed class Updater : ReactiveObject
         manifestWriter.Write("Robust Content Manifest 1\n");
 
         var hasher = SHA256.Create();
+        var totalSize = 0L;
+        var sw = new Stopwatch();
+
+        var compressBuffer = new MemoryStream();
+        using var zStdCompressor = new ZStdCompressStream(compressBuffer, ZStdConstants.ZSTD_BLOCKSIZE_MAX);
 
         // Sort by full name for manifest building.
         foreach (var entry in zip.Entries.OrderBy(e => e.FullName, StringComparer.Ordinal))
@@ -432,29 +439,32 @@ public sealed class Updater : ReactiveObject
                 var compress = entry.Length - entry.CompressedLength > 10;
                 if (compress)
                 {
-                    var ms = new MemoryStream();
-                    var compressor = new DeflateStream(ms, CompressionLevel.Optimal);
                     using var entryStream = entry.Open();
-                    entryStream.CopyTo(compressor);
-                    compressor.Flush();
+                    sw.Start();
+                    entryStream.CopyTo(zStdCompressor);
+                    zStdCompressor.Flush(true);
+                    sw.Stop();
+
+                    totalSize += compressBuffer.Length;
 
                     row = con.ExecuteScalar<long>(
                         @"INSERT INTO Content(Hash, Size, Compression, Data)
-                        VALUES (@Hash, @Size, @Compression, zeroblob(@BlobLen))
-                        RETURNING Id",
+                    VALUES (@Hash, @Size, @Compression, zeroblob(@BlobLen))
+                    RETURNING Id",
                         new
                         {
                             Hash = hash,
                             Size = entry.Length,
-                            BlobLen = ms.Length,
-                            Compression = ContentCompressionScheme.Deflate
+                            BlobLen = compressBuffer.Length,
+                            Compression = ContentCompressionScheme.ZStd
                         });
 
                     using var blob = new SqliteBlob(con, "Content", "Data", row);
-                    ms.Position = 0;
-                    ms.CopyTo(blob);
+                    compressBuffer.Position = 0;
+                    compressBuffer.CopyTo(blob);
+                    compressBuffer.Position = 0;
+                    compressBuffer.SetLength(0);
 
-                    compressor.Dispose();
                 }
                 else
                 {
@@ -482,6 +492,8 @@ public sealed class Updater : ReactiveObject
 
             manifestWriter.Write($"{Convert.ToHexString(hash)} {entry.FullName}\n");
         }
+
+        Log.Debug("Compression report: {ElapsedMs} ms elapsed, {TotalSize} B total size", sw.ElapsedMilliseconds, totalSize);
 
         manifestWriter.Flush();
 

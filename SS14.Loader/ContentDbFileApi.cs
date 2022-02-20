@@ -9,6 +9,7 @@ using Microsoft.Data.Sqlite;
 using Robust.LoaderApi;
 using SQLitePCL;
 using SS14.Launcher.Models.ContentManagement;
+using SS14.Launcher.Utility;
 using static SQLitePCL.raw;
 
 namespace SS14.Loader;
@@ -143,26 +144,43 @@ internal sealed class ContentDbFileApi : IFileApi, IDisposable
             if (err != SQLITE_OK)
                 SqliteException.ThrowExceptionForRC(err, db);
 
-            if (compression == ContentCompressionScheme.Deflate)
+            switch (compression)
             {
-                var buffer = GC.AllocateUninitializedArray<byte>(length);
-                stream = new MemoryStream(buffer);
+                case ContentCompressionScheme.Deflate:
+                {
+                    var buffer = GC.AllocateUninitializedArray<byte>(length);
+                    stream = new MemoryStream(buffer);
 
-                var blobStream = new SqliteBlobStream(blob);
-                using var deflater = new DeflateStream(blobStream, CompressionMode.Decompress);
-                deflater.CopyTo(stream);
-                stream.Position = 0;
-            }
-            else
-            {
-                using var _ = blob;
+                    var blobStream = new SqliteBlobStream(blob);
+                    using var deflater = new DeflateStream(blobStream, CompressionMode.Decompress);
+                    deflater.CopyTo(stream);
+                    stream.Position = 0;
+                    break;
+                }
+                case ContentCompressionScheme.ZStd:
+                {
+                    var buffer = GC.AllocateUninitializedArray<byte>(length);
+                    stream = new MemoryStream(buffer);
+                    var blobStream = new SqliteBlobStream(blob);
+                    using var decompress = new ZStdDecompressStream(blobStream);
+                    decompress.CopyTo(stream);
+                    stream.Position = 0;
+                    break;
+                }
+                case ContentCompressionScheme.None:
+                {
+                    using var _ = blob;
 
-                var buffer = GC.AllocateUninitializedArray<byte>(length);
-                err = sqlite3_blob_read(blob, buffer.AsSpan(), 0);
-                if (err != SQLITE_OK)
-                    SqliteException.ThrowExceptionForRC(err, db);
+                    var buffer = GC.AllocateUninitializedArray<byte>(length);
+                    err = sqlite3_blob_read(blob, buffer.AsSpan(), 0);
+                    if (err != SQLITE_OK)
+                        SqliteException.ThrowExceptionForRC(err, db);
 
-                stream = new MemoryStream(buffer, writable: false);
+                    stream = new MemoryStream(buffer, writable: false);
+                    break;
+                }
+                default:
+                    throw new NotSupportedException($"Unknown compression scheme: {compression}");
             }
             return true;
         }
