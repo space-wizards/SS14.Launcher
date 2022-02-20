@@ -16,6 +16,7 @@ internal static class ZStdConstants
 
     // ZSTD_DStreamInSize (not exposed by ImpromptuNinjas.ZStd, this is from the C code)
     public const int ZSTD_DSTREAMIN_SIZE = ZSTD_BLOCKSIZE_MAX + ZSTD_BLOCKHEADERSIZE;
+    public const int ZSTD_CSTREAMIN_SIZE = ZSTD_BLOCKSIZE_MAX;
 }
 
 

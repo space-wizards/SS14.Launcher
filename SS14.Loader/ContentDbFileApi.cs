@@ -164,7 +164,7 @@ internal sealed class ContentDbFileApi : IFileApi, IDisposable
                     var buffer = GC.AllocateUninitializedArray<byte>(length);
                     stream = new MemoryStream(buffer);
 
-                    using var blobStream = new SqliteBlobStream(blob);
+                    using var blobStream = new SqliteBlobStream(blob, canWrite: false, ownsBlob: false);
                     using var deflater = new DeflateStream(blobStream, CompressionMode.Decompress);
                     deflater.CopyTo(stream);
                     stream.Position = 0;
@@ -234,7 +234,14 @@ internal sealed class ContentDbFileApi : IFileApi, IDisposable
 
                     // We know the output buffer always has enough space so if this returns > 0 then we need more input.
                     if (err == (UIntPtr)0)
+                    {
+                        if (into.Length != 0)
+                        {
+                            // Safety check to avoid leaking any uninitialized data if I just screwed up.
+                            throw new InvalidOperationException("Failed to fill buffer!");
+                        }
                         return;
+                    }
                 }
             }
         }
@@ -260,47 +267,4 @@ internal sealed class ContentDbFileApi : IFileApi, IDisposable
     }
 
     public IEnumerable<string> AllFiles => _files.Keys;
-
-    private sealed class SqliteBlobStream : Stream
-    {
-        private int _pos;
-        private readonly sqlite3_blob _blob;
-
-        public SqliteBlobStream(sqlite3_blob blob)
-        {
-            _blob = blob;
-            Length = sqlite3_blob_bytes(blob);
-        }
-
-        public override int Read(byte[] buffer, int offset, int count) => Read(buffer.AsSpan(offset, count));
-        public override int Read(Span<byte> buffer)
-        {
-            var toRead = (int)Math.Min(buffer.Length, Length - _pos);
-            if (toRead == 0)
-                return 0;
-
-            var err = sqlite3_blob_read(_blob, buffer[..toRead], _pos);
-            if (err != SQLITE_OK)
-                SqliteException.ThrowExceptionForRC(err, null);
-
-            _pos += toRead;
-
-            return toRead;
-        }
-
-        public override long Seek(long offset, SeekOrigin origin) => throw new NotSupportedException();
-        public override void SetLength(long value) => throw new NotSupportedException();
-        public override void Write(byte[] buffer, int offset, int count) => throw new NotSupportedException();
-        public override void Flush() => throw new NotSupportedException();
-
-        public override bool CanRead => true;
-        public override bool CanSeek => false;
-        public override bool CanWrite => false;
-        public override long Length { get; }
-        public override long Position
-        {
-            get => _pos;
-            set => throw new NotSupportedException();
-        }
-    }
 }

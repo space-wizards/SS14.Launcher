@@ -415,82 +415,99 @@ public sealed class Updater : ReactiveObject
         var totalSize = 0L;
         var sw = new Stopwatch();
 
-        var compressBuffer = new MemoryStream();
-        using var zStdCompressor = new ZStdCompressStream(compressBuffer, ZStdConstants.ZSTD_BLOCKSIZE_MAX);
-
-        // Sort by full name for manifest building.
-        foreach (var entry in zip.Entries.OrderBy(e => e.FullName, StringComparer.Ordinal))
+        SqliteBlobStream? blob = null;
+        try
         {
-            // Ignore directory entries.
-            if (entry.Name == "")
-                continue;
+            // Re-use compression buffer and compressor for all files, creating/freeing them is expensive.
+            var compressBuffer = new MemoryStream();
+            using var zStdCompressor = new ZStdCompressStream(compressBuffer, ZStdConstants.ZSTD_CSTREAMIN_SIZE);
 
-            byte[] hash;
-            using (var stream = entry.Open())
+            // Sort by full name for manifest building.
+            foreach (var entry in zip.Entries.OrderBy(e => e.FullName, StringComparer.Ordinal))
             {
-                hash = hasher.ComputeHash(stream);
-            }
+                // Ignore directory entries.
+                if (entry.Name == "")
+                    continue;
 
-            var row = con.QueryFirstOrDefault<long>(
-                "SELECT Id FROM Content WHERE Hash = @Hash",
-                new { Hash = hash });
-            if (row == 0)
-            {
-                var compress = entry.Length - entry.CompressedLength > 10;
-                if (compress)
+                byte[] hash;
+                using (var stream = entry.Open())
                 {
+                    hash = hasher.ComputeHash(stream);
+                }
+
+                var row = con.QueryFirstOrDefault<long>(
+                    "SELECT Id FROM Content WHERE Hash = @Hash",
+                    new { Hash = hash });
+                if (row == 0)
+                {
+                    // Don't have this content blob yet, insert it into the database.
                     using var entryStream = entry.Open();
-                    sw.Start();
-                    entryStream.CopyTo(zStdCompressor);
-                    zStdCompressor.Flush(true);
-                    sw.Stop();
 
-                    totalSize += compressBuffer.Length;
+                    var compress = entry.Length - entry.CompressedLength > 10;
+                    if (compress)
+                    {
+                        sw.Start();
+                        entryStream.CopyTo(zStdCompressor);
+                        // Flush to end fragment (i.e. file)
+                        zStdCompressor.Flush(true);
+                        sw.Stop();
 
-                    row = con.ExecuteScalar<long>(
-                        @"INSERT INTO Content(Hash, Size, Compression, Data)
-                    VALUES (@Hash, @Size, @Compression, zeroblob(@BlobLen))
-                    RETURNING Id",
-                        new
-                        {
-                            Hash = hash,
-                            Size = entry.Length,
-                            BlobLen = compressBuffer.Length,
-                            Compression = ContentCompressionScheme.ZStd
-                        });
+                        totalSize += compressBuffer.Length;
 
-                    using var blob = new SqliteBlob(con, "Content", "Data", row);
-                    compressBuffer.Position = 0;
-                    compressBuffer.CopyTo(blob);
-                    compressBuffer.Position = 0;
-                    compressBuffer.SetLength(0);
-
-                }
-                else
-                {
-                    row = con.ExecuteScalar<long>(
-                        @"INSERT INTO Content(Hash, Size, Compression, Data)
-                        VALUES (@Hash, @Size, @Compression, zeroblob(@Size))
+                        row = con.ExecuteScalar<long>(
+                            @"INSERT INTO Content(Hash, Size, Compression, Data)
+                        VALUES (@Hash, @Size, @Compression, zeroblob(@BlobLen))
                         RETURNING Id",
-                        new { Hash = hash, Size = entry.Length, Compression = ContentCompressionScheme.None });
+                            new
+                            {
+                                Hash = hash,
+                                Size = entry.Length,
+                                BlobLen = compressBuffer.Length,
+                                Compression = ContentCompressionScheme.ZStd
+                            });
 
-                    using var stream = entry.Open();
-                    using var blob = new SqliteBlob(con, "Content", "Data", row);
+                        if (blob == null)
+                            blob = SqliteBlobStream.Open(con.Handle!, "main", "Content", "Data", row, true);
+                        else
+                            blob.Reopen(row);
 
-                    stream.CopyTo(blob);
+                        // Write memory buffer to SQLite and reset it.
+                        blob.Write(compressBuffer.GetBuffer().AsSpan(0, (int)compressBuffer.Length));
+                        compressBuffer.Position = 0;
+                        compressBuffer.SetLength(0);
+                    }
+                    else
+                    {
+                        row = con.ExecuteScalar<long>(
+                            @"INSERT INTO Content(Hash, Size, Compression, Data)
+                            VALUES (@Hash, @Size, @Compression, zeroblob(@Size))
+                            RETURNING Id",
+                            new { Hash = hash, Size = entry.Length, Compression = ContentCompressionScheme.None });
+
+                        if (blob == null)
+                            blob = SqliteBlobStream.Open(con.Handle!, "main", "Content", "Data", row, true);
+                        else
+                            blob.Reopen(row);
+
+                        entryStream.CopyTo(blob);
+                    }
                 }
+
+                con.Execute(
+                    "INSERT INTO ContentManifest(VersionId, Path, ContentId) VALUES (@VersionId, @Path, @ContentId)",
+                    new
+                    {
+                        VersionId = versionId,
+                        Path = entry.FullName,
+                        ContentId = row,
+                    });
+
+                manifestWriter.Write($"{Convert.ToHexString(hash)} {entry.FullName}\n");
             }
-
-            con.Execute(
-                "INSERT INTO ContentManifest(VersionId, Path, ContentId) VALUES (@VersionId, @Path, @ContentId)",
-                new
-                {
-                    VersionId = versionId,
-                    Path = entry.FullName,
-                    ContentId = row,
-                });
-
-            manifestWriter.Write($"{Convert.ToHexString(hash)} {entry.FullName}\n");
+        }
+        finally
+        {
+            blob?.Dispose();
         }
 
         Log.Debug("Compression report: {ElapsedMs} ms elapsed, {TotalSize} B total size", sw.ElapsedMilliseconds, totalSize);

@@ -29,7 +29,7 @@ CREATE TABLE Content(
     -- Uncompressed size of the data stored in this file.
     Size INTEGER NOT NULL,
     -- Compression scheme used to store this file.
-    -- See ContentCompressionScheme enum for
+    -- See ContentCompressionScheme enum for values.
     Compression INTEGER NOT NULL,
     -- Actual data for the file. May be compressed based on "Compression".
     Data BLOB NOT NULL,
