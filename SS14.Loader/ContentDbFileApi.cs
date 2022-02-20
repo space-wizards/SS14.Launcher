@@ -1,16 +1,19 @@
 ﻿using System;
+using System.Buffers;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.IO.Compression;
 using System.Threading;
+using ImpromptuNinjas.ZStd;
 using Microsoft.Data.Sqlite;
 using Robust.LoaderApi;
 using SQLitePCL;
 using SS14.Launcher.Models.ContentManagement;
 using SS14.Launcher.Utility;
 using static SQLitePCL.raw;
+using Buffer = ImpromptuNinjas.ZStd.Buffer;
 
 namespace SS14.Loader;
 
@@ -18,10 +21,10 @@ internal sealed class ContentDbFileApi : IFileApi, IDisposable
 {
     private readonly Dictionary<string, (long id, int length, ContentCompressionScheme compr)> _files = new();
     private readonly SemaphoreSlim _dbConnectionsSemaphore;
-    private readonly ConcurrentBag<sqlite3> _dbConnections = new();
+    private readonly ConcurrentBag<ConPoolEntry> _dbConnections = new();
     private readonly int _connectionPoolSize;
 
-    public ContentDbFileApi(string contentDbPath, long version)
+    public unsafe ContentDbFileApi(string contentDbPath, long version)
     {
         if (sqlite3_threadsafe() == 0)
             throw new InvalidOperationException("SQLite is not thread safe!");
@@ -34,19 +37,16 @@ internal sealed class ContentDbFileApi : IFileApi, IDisposable
 
         // Make sure to have a read transaction on every database connection
         // so that the launcher can't delete anything from underneath us if the user does anything.
-        // NOTE: the read transaction does not begin until the first read operation (weird SQLite semantics).
-        // For the primary DB connection, this happens in LoadManifest().
-        // For the pool ones down below we run a useless read command.
         sqlite3_exec(db, "BEGIN");
 
         CheckThrowSqliteErr(db, err);
 
-        LoadManifest(version, db);
+        LoadManifest(version, db, out var initBlob);
 
         // Create pool of connections to avoid lock contention on multithreaded scenarios.
         var poolSize = _connectionPoolSize = ConnectionPoolSize();
         _dbConnectionsSemaphore = new SemaphoreSlim(poolSize, poolSize);
-        _dbConnections.Add(db);
+        _dbConnections.Add(new ConPoolEntry(db, DCtx.Create(), InitBlob()));
 
         for (var i = 1; i < poolSize; i++)
         {
@@ -58,15 +58,22 @@ internal sealed class ContentDbFileApi : IFileApi, IDisposable
             CheckThrowSqliteErr(db, err);
 
             sqlite3_exec(db, "BEGIN");
-            // Aforementioned useless read command.
-            sqlite3_exec(db, "SELECT COUNT(*) FROM ContentVersion");
 
-            _dbConnections.Add(db);
+            _dbConnections.Add(new ConPoolEntry(db, DCtx.Create(), InitBlob()));
+        }
+
+        sqlite3_blob InitBlob()
+        {
+            var rc = sqlite3_blob_open(db, "main", "Content", "Data", initBlob, 0, out var blob);
+            SqliteException.ThrowExceptionForRC(rc, db);
+            return blob;
         }
     }
 
-    private void LoadManifest(long version, sqlite3 db)
+    private void LoadManifest(long version, sqlite3 db, out long initBlob)
     {
+        initBlob = default;
+
         var err = sqlite3_prepare_v2(
             db,
             @"
@@ -86,6 +93,8 @@ internal sealed class ContentDbFileApi : IFileApi, IDisposable
             var path = sqlite3_column_text(stmt, 3).utf8_to_string();
 
             _files.Add(path, (rowId, size, compression));
+
+            initBlob = rowId;
         }
         CheckThrowSqliteErr(db, err, SQLITE_DONE);
 
@@ -105,7 +114,7 @@ internal sealed class ContentDbFileApi : IFileApi, IDisposable
         if (!string.IsNullOrEmpty(envVar))
             return int.Parse(envVar);
 
-        return Math.Min(2, Environment.ProcessorCount);
+        return Math.Max(2, Environment.ProcessorCount);
     }
 
     public void Dispose()
@@ -119,7 +128,8 @@ internal sealed class ContentDbFileApi : IFileApi, IDisposable
                 continue;
             }
 
-            db.Close();
+            db.Blob.Close();
+            db.Connection.Close();
         }
     }
 
@@ -134,13 +144,16 @@ internal sealed class ContentDbFileApi : IFileApi, IDisposable
         var (id, length, compression) = tuple;
 
         _dbConnectionsSemaphore.Wait();
-        sqlite3? db = null;
+        ConPoolEntry? entry = null;
         try
         {
-            if (!_dbConnections.TryTake(out db))
+            if (!_dbConnections.TryTake(out entry))
                 throw new InvalidOperationException("Entered semaphore but failed to retrieve DB connection??");
 
-            var err = sqlite3_blob_open(db, "main", "Content", "Data", id, 0, out var blob);
+            var db = entry.Connection;
+            var blob = entry.Blob;
+
+            var err = sqlite3_blob_reopen(blob, id);
             if (err != SQLITE_OK)
                 SqliteException.ThrowExceptionForRC(err, db);
 
@@ -151,7 +164,7 @@ internal sealed class ContentDbFileApi : IFileApi, IDisposable
                     var buffer = GC.AllocateUninitializedArray<byte>(length);
                     stream = new MemoryStream(buffer);
 
-                    var blobStream = new SqliteBlobStream(blob);
+                    using var blobStream = new SqliteBlobStream(blob);
                     using var deflater = new DeflateStream(blobStream, CompressionMode.Decompress);
                     deflater.CopyTo(stream);
                     stream.Position = 0;
@@ -160,17 +173,16 @@ internal sealed class ContentDbFileApi : IFileApi, IDisposable
                 case ContentCompressionScheme.ZStd:
                 {
                     var buffer = GC.AllocateUninitializedArray<byte>(length);
-                    stream = new MemoryStream(buffer);
-                    var blobStream = new SqliteBlobStream(blob);
-                    using var decompress = new ZStdDecompressStream(blobStream);
-                    decompress.CopyTo(stream);
-                    stream.Position = 0;
+                    stream = new MemoryStream(buffer, writable: false);
+
+                    unsafe
+                    {
+                        ReadBlobZStd(buffer, blob, db, entry.DecompressionContext);
+                    }
                     break;
                 }
                 case ContentCompressionScheme.None:
                 {
-                    using var _ = blob;
-
                     var buffer = GC.AllocateUninitializedArray<byte>(length);
                     err = sqlite3_blob_read(blob, buffer.AsSpan(), 0);
                     if (err != SQLITE_OK)
@@ -186,10 +198,64 @@ internal sealed class ContentDbFileApi : IFileApi, IDisposable
         }
         finally
         {
-            if (db != null)
-                _dbConnections.Add(db);
+            if (entry != null)
+                _dbConnections.Add(entry);
 
             _dbConnectionsSemaphore.Release();
+        }
+    }
+
+    private static unsafe void ReadBlobZStd(Span<byte> into, sqlite3_blob blob, sqlite3 db, DCtx* context)
+    {
+        var remainingInput = sqlite3_blob_bytes(blob);
+        var blobOffset = 0;
+        var buffer = ArrayPool<byte>.Shared.Rent(ZStdConstants.ZSTD_DSTREAMIN_SIZE);
+        try
+        {
+            while (true)
+            {
+                var toRead = Math.Min(buffer.Length, remainingInput);
+                var rc = sqlite3_blob_read(blob, buffer.AsSpan(0, toRead), blobOffset);
+                SqliteException.ThrowExceptionForRC(rc, db);
+                blobOffset += toRead;
+                remainingInput -= toRead;
+
+                fixed (byte* inputPtr = buffer)
+                fixed (byte* outputPtr = into)
+                {
+                    var inputBuf = new Buffer(inputPtr, (UIntPtr)toRead, (UIntPtr)0);
+                    var outputBuf = new Buffer(outputPtr, (UIntPtr)into.Length, (UIntPtr)0);
+
+                    var err = Native.ZStdDCtx.StreamDecompress(context, ref outputBuf, ref inputBuf);
+                    if (Native.ZStd.IsError(err) != 0)
+                        throw new ZStdException(Native.ZStd.GetErrorName(err));
+
+                    into = into[(int)outputBuf.Position..];
+
+                    // We know the output buffer always has enough space so if this returns > 0 then we need more input.
+                    if (err == (UIntPtr)0)
+                        return;
+                }
+            }
+        }
+        finally
+        {
+            Native.ZStdDCtx.ResetDCtx(context, ResetDirective.SessionOnly);
+            ArrayPool<byte>.Shared.Return(buffer);
+        }
+    }
+
+    private sealed unsafe class ConPoolEntry
+    {
+        public readonly sqlite3 Connection;
+        public readonly DCtx* DecompressionContext;
+        public readonly sqlite3_blob Blob;
+
+        public ConPoolEntry(sqlite3 connection, DCtx* decompressionContext, sqlite3_blob blob)
+        {
+            Connection = connection;
+            DecompressionContext = decompressionContext;
+            Blob = blob;
         }
     }
 
@@ -204,13 +270,6 @@ internal sealed class ContentDbFileApi : IFileApi, IDisposable
         {
             _blob = blob;
             Length = sqlite3_blob_bytes(blob);
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            base.Dispose(disposing);
-
-            _blob.Close();
         }
 
         public override int Read(byte[] buffer, int offset, int count) => Read(buffer.AsSpan(offset, count));
