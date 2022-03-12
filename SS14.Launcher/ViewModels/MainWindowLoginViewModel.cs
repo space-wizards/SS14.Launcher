@@ -65,4 +65,15 @@ public class MainWindowLoginViewModel : ViewModelBase
     {
         Screen = new RegisterNeedsConfirmationViewModel(this, _authApi, username, password, _loginMgr, _cfg);
     }
+
+    public bool LogLauncher
+    {
+        // This not a clean solution, replace it with something better.
+        get => _cfg.GetCVar(CVars.LogLauncher);
+        set
+        {
+            _cfg.SetCVar(CVars.LogLauncher, value);
+            _cfg.CommitConfig();
+        }
+    }
 }
