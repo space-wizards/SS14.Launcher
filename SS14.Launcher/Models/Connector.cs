@@ -307,6 +307,13 @@ public class Connector : ReactiveObject
             startInfo.EnvironmentVariables["DOTNET_ReadyToRun"] = "0";
         }
 
+        if (OperatingSystem.IsLinux())
+        {
+            // Work around https://github.com/space-wizards/RobustToolbox/issues/2563
+            // Yuck.
+            startInfo.EnvironmentVariables["GLIBC_TUNABLES"] = "glibc.rtld.dynamic_sort=1";
+        }
+
         startInfo.UseShellExecute = false;
         startInfo.ArgumentList.AddRange(extraArgs);
         var process = Process.Start(startInfo);
