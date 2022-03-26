@@ -51,7 +51,7 @@
     <PackageReference Include="TerraFX.Interop.Windows" Version="10.0.20348" />
     <PackageReference Include="NSec.Cryptography" Version="20.2.0" />
     <PackageReference Include="Mono.Posix.NETStandard" Version="1.0.0" />
-    <PackageReference Include="ImpromptuNinjas.ZStd" Version="1.4.5.5" />
+    <PackageReference Include="SharpZstd.Interop" Version="1.5.2-beta1" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Utility\runtime.json" />

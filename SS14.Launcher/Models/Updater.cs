@@ -12,11 +12,11 @@ using System.Threading;
 using System.Threading.Tasks;
 using Avalonia.Threading;
 using Dapper;
-using ImpromptuNinjas.ZStd;
 using Microsoft.Data.Sqlite;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Serilog;
+using SharpZstd.Interop;
 using Splat;
 using SS14.Launcher.Models.ContentManagement;
 using SS14.Launcher.Models.Data;
@@ -420,7 +420,7 @@ public sealed class Updater : ReactiveObject
         {
             // Re-use compression buffer and compressor for all files, creating/freeing them is expensive.
             var compressBuffer = new MemoryStream();
-            using var zStdCompressor = new ZStdCompressStream(compressBuffer, ZStdConstants.ZSTD_CSTREAMIN_SIZE);
+            using var zStdCompressor = new ZStdCompressStream(compressBuffer);
 
             // Sort by full name for manifest building.
             foreach (var entry in zip.Entries.OrderBy(e => e.FullName, StringComparer.Ordinal))
@@ -447,9 +447,9 @@ public sealed class Updater : ReactiveObject
                     if (compress)
                     {
                         sw.Start();
-                        entryStream.CopyTo(zStdCompressor);
+                        entryStream.CopyTo(zStdCompressor, (int)Zstd.ZSTD_CStreamInSize());
                         // Flush to end fragment (i.e. file)
-                        zStdCompressor.Flush(true);
+                        zStdCompressor.FlushEnd();
                         sw.Stop();
 
                         totalSize += compressBuffer.Length;

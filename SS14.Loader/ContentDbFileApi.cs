@@ -6,14 +6,14 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.IO.Compression;
 using System.Threading;
-using ImpromptuNinjas.ZStd;
 using Microsoft.Data.Sqlite;
 using Robust.LoaderApi;
+using SharpZstd.Interop;
 using SQLitePCL;
 using SS14.Launcher.Models.ContentManagement;
 using SS14.Launcher.Utility;
 using static SQLitePCL.raw;
-using Buffer = ImpromptuNinjas.ZStd.Buffer;
+using static SharpZstd.Interop.Zstd;
 
 namespace SS14.Loader;
 
@@ -46,7 +46,7 @@ internal sealed class ContentDbFileApi : IFileApi, IDisposable
         // Create pool of connections to avoid lock contention on multithreaded scenarios.
         var poolSize = _connectionPoolSize = ConnectionPoolSize();
         _dbConnectionsSemaphore = new SemaphoreSlim(poolSize, poolSize);
-        _dbConnections.Add(new ConPoolEntry(db, DCtx.Create(), InitBlob()));
+        _dbConnections.Add(new ConPoolEntry(db, ZSTD_createDCtx(), InitBlob()));
 
         for (var i = 1; i < poolSize; i++)
         {
@@ -59,7 +59,7 @@ internal sealed class ContentDbFileApi : IFileApi, IDisposable
 
             sqlite3_exec(db, "BEGIN");
 
-            _dbConnections.Add(new ConPoolEntry(db, DCtx.Create(), InitBlob()));
+            _dbConnections.Add(new ConPoolEntry(db, ZSTD_createDCtx(), InitBlob()));
         }
 
         sqlite3_blob InitBlob()
@@ -205,11 +205,11 @@ internal sealed class ContentDbFileApi : IFileApi, IDisposable
         }
     }
 
-    private static unsafe void ReadBlobZStd(Span<byte> into, sqlite3_blob blob, sqlite3 db, DCtx* context)
+    private static unsafe void ReadBlobZStd(Span<byte> into, sqlite3_blob blob, sqlite3 db, ZSTD_DCtx* context)
     {
         var remainingInput = sqlite3_blob_bytes(blob);
         var blobOffset = 0;
-        var buffer = ArrayPool<byte>.Shared.Rent(ZStdConstants.ZSTD_DSTREAMIN_SIZE);
+        var buffer = ArrayPool<byte>.Shared.Rent((int)ZSTD_DStreamInSize());
         try
         {
             while (true)
@@ -223,14 +223,13 @@ internal sealed class ContentDbFileApi : IFileApi, IDisposable
                 fixed (byte* inputPtr = buffer)
                 fixed (byte* outputPtr = into)
                 {
-                    var inputBuf = new Buffer(inputPtr, (UIntPtr)toRead, (UIntPtr)0);
-                    var outputBuf = new Buffer(outputPtr, (UIntPtr)into.Length, (UIntPtr)0);
+                    var inputBuf = new ZSTD_inBuffer { src =  inputPtr, pos = 0, size = (nuint)toRead};
+                    var outputBuf = new ZSTD_outBuffer { dst = outputPtr, pos = 0, size = (nuint)into.Length };
 
-                    var err = Native.ZStdDCtx.StreamDecompress(context, ref outputBuf, ref inputBuf);
-                    if (Native.ZStd.IsError(err) != 0)
-                        throw new ZStdException(Native.ZStd.GetErrorName(err));
+                    var err = ZSTD_decompressStream(context, &outputBuf, &inputBuf);
+                    ZStdException.ThrowIfError(err);
 
-                    into = into[(int)outputBuf.Position..];
+                    into = into[(int)outputBuf.pos..];
 
                     // We know the output buffer always has enough space so if this returns > 0 then we need more input.
                     if (err == (UIntPtr)0)
@@ -247,7 +246,7 @@ internal sealed class ContentDbFileApi : IFileApi, IDisposable
         }
         finally
         {
-            Native.ZStdDCtx.ResetDCtx(context, ResetDirective.SessionOnly);
+            ZSTD_DCtx_reset(context, ZSTD_ResetDirective.ZSTD_reset_session_only);
             ArrayPool<byte>.Shared.Return(buffer);
         }
     }
@@ -255,10 +254,10 @@ internal sealed class ContentDbFileApi : IFileApi, IDisposable
     private sealed unsafe class ConPoolEntry
     {
         public readonly sqlite3 Connection;
-        public readonly DCtx* DecompressionContext;
+        public readonly ZSTD_DCtx* DecompressionContext;
         public readonly sqlite3_blob Blob;
 
-        public ConPoolEntry(sqlite3 connection, DCtx* decompressionContext, sqlite3_blob blob)
+        public ConPoolEntry(sqlite3 connection, ZSTD_DCtx* decompressionContext, sqlite3_blob blob)
         {
             Connection = connection;
             DecompressionContext = decompressionContext;

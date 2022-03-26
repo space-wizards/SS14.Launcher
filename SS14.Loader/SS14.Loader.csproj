@@ -23,7 +23,7 @@
     <PackageReference Include="Microsoft.Data.Sqlite" Version="6.0.1"/>
     <PackageReference Include="NSec.Cryptography" Version="20.2.0"/>
     <PackageReference Include="Robust.Natives" Version="0.1.0"/>
-    <PackageReference Include="ImpromptuNinjas.ZStd" Version="1.4.5.5" />
+    <PackageReference Include="SharpZstd.Interop" Version="1.5.2-beta1" />
   </ItemGroup>
 
 </Project>
