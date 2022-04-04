@@ -10,6 +10,66 @@ using static SharpZstd.Interop.Zstd;
 
 namespace SS14.Launcher.Utility;
 
+public static class ZStd
+{
+    public static int CompressBound(int length)
+    {
+        return (int)ZSTD_compressBound((nuint)length);
+    }
+}
+
+public sealed unsafe class ZStdCCtx : IDisposable
+{
+    public ZSTD_CCtx* Context { get; private set; }
+
+    private bool Disposed => Context == null;
+
+    public ZStdCCtx()
+    {
+        Context = ZSTD_createCCtx();
+    }
+
+    public void SetParameter(ZSTD_cParameter parameter, int value)
+    {
+        CheckDisposed();
+
+        ZSTD_CCtx_setParameter(Context, parameter, value);
+    }
+
+    public int Compress(Span<byte> destination, Span<byte> source, int compressionLevel = ZSTD_CLEVEL_DEFAULT)
+    {
+        CheckDisposed();
+
+        fixed (byte* dst = destination)
+        fixed (byte* src = source)
+        {
+            var ret = ZSTD_compressCCtx(
+                Context,
+                dst, (nuint)destination.Length,
+                src, (nuint)source.Length,
+                compressionLevel);
+
+            ZStdException.ThrowIfError(ret);
+            return (int)ret;
+        }
+    }
+
+    public void Dispose()
+    {
+        if (Disposed)
+            return;
+
+        ZSTD_freeCCtx(Context);
+        Context = null;
+    }
+
+    private void CheckDisposed()
+    {
+        if (Disposed)
+            throw new ObjectDisposedException(nameof(ZStdCCtx));
+    }
+}
+
 [Serializable]
 public class ZStdException : Exception
 {
@@ -113,7 +173,7 @@ public sealed class ZStdDecompressStream : Stream
             fixed (byte* outputPtr = buffer)
             {
                 var outputBuf = new ZSTD_outBuffer { dst = outputPtr, pos = 0, size = (nuint)buffer.Length };
-                var inputBuf = new ZSTD_inBuffer { src =  inputPtr, pos = (nuint)_bufferPos, size = (nuint)_bufferSize};
+                var inputBuf = new ZSTD_inBuffer { src = inputPtr, pos = (nuint)_bufferPos, size = (nuint)_bufferSize };
                 var ret = ZSTD_decompressStream(_ctx, &outputBuf, &inputBuf);
 
                 _bufferPos = (int)inputBuf.pos;
@@ -314,6 +374,7 @@ public sealed class ZStdCompressStream : Stream
     public override bool CanSeek => false;
     public override bool CanWrite => true;
     public override long Length => throw new NotSupportedException();
+
     public override long Position
     {
         get => throw new NotSupportedException();

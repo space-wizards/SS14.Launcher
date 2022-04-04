@@ -210,13 +210,19 @@ public class Connector : ReactiveObject
         {
             var resp = await _http.GetStringAsync(infoAddr, cancel);
             var info = JsonConvert.DeserializeObject<ServerInfo>(resp) ?? throw new InvalidDataException();
-            if (info.BuildInformation != null)
+            if (info.BuildInformation is {} buildInfo && (buildInfo.Acz || string.IsNullOrEmpty(buildInfo.DownloadUrl)))
             {
+                var acz = info.BuildInformation.Acz;
+                var apiAddress = UriHelper.GetServerApiAddress(parsedAddress);
+
                 // Infer download URL to be self-hosted client address if not supplied
                 // (The server may not know it's own address)
-                if (string.IsNullOrEmpty(info.BuildInformation.DownloadUrl))
+                info.BuildInformation.DownloadUrl = new Uri(apiAddress, "client.zip").ToString();
+
+                if (acz)
                 {
-                    info.BuildInformation.DownloadUrl = UriHelper.GetServerSelfhostedClientZipAddress(parsedAddress).ToString();
+                    info.BuildInformation.ManifestUrl = new Uri(apiAddress, "manifest.txt").ToString();
+                    info.BuildInformation.ManifestDownloadUrl = new Uri(apiAddress, "download").ToString();
                 }
             }
             return (info, parsedAddress, infoAddr);

@@ -1,10 +1,14 @@
 using System;
+using System.Buffers.Binary;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Net.Http;
+using System.Numerics;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
@@ -29,6 +33,8 @@ namespace SS14.Launcher.Models;
 
 public sealed class Updater : ReactiveObject
 {
+    private const int ManifestDownloadProtocolVersion = 1;
+
     private static readonly IDeserializer ResourceManifestDeserializer =
         new DeserializerBuilder()
             .WithNamingConvention(CamelCaseNamingConvention.Instance)
@@ -104,10 +110,7 @@ public sealed class Updater : ReactiveObject
 
         Log.Information("Checking to cull old content versions...");
 
-        await Task.Run(() =>
-        {
-            CullOldContentVersions(con);
-        }, CancellationToken.None);
+        await Task.Run(() => { CullOldContentVersions(con); }, CancellationToken.None);
 
         (string, string)[] modules;
 
@@ -196,13 +199,22 @@ public sealed class Updater : ReactiveObject
     {
         // Check if we already have this version installed in the content DB.
 
-        Log.Debug("Checking to see if we already have version for fork {ForkId}/{ForkVersion} Hash: {ZipHash}",
-            buildInfo.ForkId, buildInfo.Version, buildInfo.Hash);
+        Log.Debug(
+            "Checking to see if we already have version for fork {ForkId}/{ForkVersion} ZipHash: {ZipHash} ManifestHash: {ManifestHash}",
+            buildInfo.ForkId, buildInfo.Version, buildInfo.Hash, buildInfo.ManifestHash);
 
         ContentVersion? found;
-        if (buildInfo.Hash is { } hashHex)
+        if (buildInfo.ManifestHash is { } manifestHashHex)
         {
-            // If the server provides a zip hash, look up purely by it.
+            // Manifest hash is ultimate source of truth.
+            var hash = Convert.FromHexString(manifestHashHex);
+
+            found = con.QueryFirstOrDefault<ContentVersion>(
+                "SELECT * FROM ContentVersion WHERE Hash = @Hash", new { Hash = hash });
+        }
+        else if (buildInfo.Hash is { } hashHex)
+        {
+            // If the server ONLY provides a zip hash, look up purely by it.
             var hash = Convert.FromHexString(hashHex);
 
             found = con.QueryFirstOrDefault<ContentVersion>(
@@ -370,6 +382,7 @@ public sealed class Updater : ReactiveObject
         return versionId;
     }
 
+    /// <returns>The manifest hash</returns>
     [SuppressMessage("ReSharper", "MethodHasAsyncOverload")]
     [SuppressMessage("ReSharper", "MethodHasAsyncOverloadWithCancellation")]
     [SuppressMessage("ReSharper", "UseAwaitUsing")]
@@ -382,27 +395,343 @@ public sealed class Updater : ReactiveObject
     {
         // Don't have this version, download it.
 
+        var versionId = con.ExecuteScalar<long>(
+            @"INSERT INTO ContentVersion(Hash, ForkId, ForkVersion, LastUsed, ZipHash)
+                VALUES (zeroblob(32), @ForkId, @Version, datetime('now'), NULL)
+                RETURNING Id",
+            new
+            {
+                buildInfo.ForkId,
+                buildInfo.Version
+            });
+
+        // TODO: Download URL
+        byte[] manifestHash;
+        if (!string.IsNullOrEmpty(buildInfo.ManifestUrl)
+            && !string.IsNullOrEmpty(buildInfo.ManifestDownloadUrl)
+            && !string.IsNullOrEmpty(buildInfo.ManifestHash))
+        {
+            manifestHash = await DownloadNewVersionManifest(buildInfo, con, versionId, cancel);
+        }
+        else
+        {
+            manifestHash = await DownloadNewVersionZip(buildInfo, con, versionId, cancel);
+        }
+
+        Log.Debug("Manifest hash: {ManifestHash}", Convert.ToHexString(manifestHash));
+
+        con.Execute(
+            "UPDATE ContentVersion SET Hash = @Hash WHERE Id = @Id",
+            new { Hash = manifestHash, Id = versionId });
+
+        // Insert engine dependencies.
+
+        // Engine version.
+        con.Execute(
+            @"INSERT INTO ContentEngineDependency(VersionId, ModuleName, ModuleVersion)
+                VALUES (@Version, 'Robust', @EngineVersion)",
+            new
+            {
+                Version = versionId, EngineVersion = engineVersion
+            });
+
+        Log.Debug("Inserting dependency: {ModuleName} {ModuleVersion}", "Robust", engineVersion);
+
+        // If we have a manifest file, load module dependencies from manifest file.
+        if (ContentManager.OpenBlob(con, versionId, "manifest.yml") is { } resourceManifest)
+        {
+            string[] modules;
+            using (resourceManifest)
+            {
+                modules = GetModuleNames(resourceManifest);
+            }
+
+            if (modules.Length > 0)
+            {
+                var manifest = await moduleManifest.Value;
+
+                foreach (var module in modules)
+                {
+                    var version = IEngineManager.ResolveEngineModuleVersion(manifest, module, engineVersion);
+
+                    con.Execute(
+                        @"INSERT INTO ContentEngineDependency(VersionId, ModuleName, ModuleVersion)
+                        VALUES (@Version, @ModName, @EngineVersion)",
+                        new
+                        {
+                            Version = versionId,
+                            ModName = module,
+                            ModVersion = version
+                        });
+
+                    Log.Debug("Inserting dependency: {ModuleName} {ModuleVersion}", module, version);
+                }
+            }
+        }
+
+        return versionId;
+    }
+
+    [SuppressMessage("ReSharper", "MethodHasAsyncOverload")]
+    [SuppressMessage("ReSharper", "MethodHasAsyncOverloadWithCancellation")]
+    [SuppressMessage("ReSharper", "UseAwaitUsing")]
+    private async Task<byte[]> DownloadNewVersionManifest(
+        ServerBuildInformation buildInfo,
+        SqliteConnection con,
+        long versionId,
+        CancellationToken cancel)
+    {
+        // Download manifest first.
+
+        var manifest = await _http.GetByteArrayAsync(buildInfo.ManifestUrl, cancel);
+        var manifestHash = SHA256.HashData(manifest);
+
+        if (Convert.ToHexString(manifestHash) != buildInfo.ManifestHash)
+            throw new UpdateException("Manifest has incorrect hash!");
+
+        // Go over the manifest, reading it into the SQLite ContentManifest table.
+        // For any content blobs we don't have yet, we put a placeholder entry in the database for now.
+        // Keep track of all files we need to download for later.
+
+        var sr = new StreamReader(new MemoryStream(manifest));
+
+        if (sr.ReadLine() != "Robust Content Manifest 1")
+            throw new UpdateException("Unknown manifest header!");
+
+        var toDownload = new List<(long rowid, int index)>();
+
+        var lineIndex = 0;
+        while (sr.ReadLine() is { } manifestLine)
+        {
+            cancel.ThrowIfCancellationRequested();
+
+            var sep = manifestLine.IndexOf(' ');
+            var hash = Convert.FromHexString(manifestLine.AsSpan(0, sep));
+            var filename = manifestLine[(sep + 1)..];
+
+            var row = con.QueryFirstOrDefault<long>(
+                "SELECT Id FROM Content WHERE Hash = @Hash",
+                new { Hash = hash });
+            if (row == 0)
+            {
+                // Insert placeholder
+                row = con.ExecuteScalar<long>(
+                    "INSERT INTO Content (Hash, Size, Compression, Data) VALUES (@Hash, 0, 0, zeroblob(0)) RETURNING Id",
+                    new { Hash = hash });
+
+                toDownload.Add((row, lineIndex));
+            }
+
+            con.Execute(
+                "INSERT INTO ContentManifest(VersionId, Path, ContentId) VALUES (@VersionId, @Path, @ContentId)",
+                new
+                {
+                    VersionId = versionId,
+                    Path = filename,
+                    ContentId = row,
+                });
+
+            lineIndex += 1;
+        }
+
+        if (toDownload.Count > 0)
+        {
+            // Have missing files, need to download them.
+
+            Log.Debug(
+                "Missing {MissingContentBlobs} blobs, downloading from {ManifestDownloadUrl}",
+                toDownload.Count,
+                buildInfo.ManifestDownloadUrl!);
+
+            await CheckManifestDownloadServerProtocolVersions(buildInfo.ManifestDownloadUrl!, cancel);
+
+            // Alright well we support the protocol. Now to start the HTTP request!
+
+            var requestBody = new byte[toDownload.Count * 4];
+            var reqI = 0;
+            foreach (var (_, idx) in toDownload)
+            {
+                BinaryPrimitives.WriteInt32LittleEndian(requestBody.AsSpan(reqI, 4), idx);
+                reqI += 4;
+            }
+
+            var request = new HttpRequestMessage(HttpMethod.Post, buildInfo.ManifestDownloadUrl);
+            request.Headers.Add(
+                "X-Robust-Download-Protocol",
+                ManifestDownloadProtocolVersion.ToString(CultureInfo.InvariantCulture));
+            request.Headers.Add("Accept-Encoding", "zstd");
+
+            request.Content = new ByteArrayContent(requestBody);
+
+            Log.Debug("Starting download...");
+
+            Status = UpdateStatus.DownloadingClientUpdate;
+
+            var response = await _http.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancel);
+            response.EnsureSuccessStatusCode();
+
+            var stream = await response.Content.ReadAsStreamAsync(cancel);
+            if (response.Content.Headers.TryGetValues("Content-Encoding", out var ce) && ce.First() == "zstd")
+            {
+                Log.Debug("Download is using ZStd");
+                stream = new ZStdDecompressStream(stream);
+            }
+
+            using (stream)
+            using (var compressContext = new ZStdCCtx())
+            {
+                // compressContext.SetParameter(ZSTD_cParameter.ZSTD_c_nbWorkers, 4);
+                var swZstd = new Stopwatch();
+                var swSqlite = new Stopwatch();
+
+                SqliteBlobStream? blob = null;
+                try
+                {
+                    // Re-use compression buffer and compressor for all files, creating/freeing them is expensive.
+                    var compressBuffer = new byte[1024];
+                    var readBuffer = new byte[1024];
+
+                    var i = 0;
+                    foreach (var (rowId, _) in toDownload)
+                    {
+                        Progress = (i++, toDownload.Count, ProgressUnit.None);
+
+                        cancel.ThrowIfCancellationRequested();
+
+                        // Read length.
+                        var header = await stream.ReadExactAsync(4, cancel);
+
+                        var length = BinaryPrimitives.ReadInt32LittleEndian(header);
+
+                        EnsureBuffer(ref readBuffer, length);
+                        var data = readBuffer.AsMemory(0, length);
+                        await stream.ReadExactAsync(data, cancel);
+
+                        var uncompressedLen = data.Length;
+                        var hash = SHA256.HashData(data.Span);
+
+                        // Double check hash!
+                        var expectedHash = con.ExecuteScalar<byte[]>(
+                            "SELECT Hash FROM Content WHERE Id = @Id",
+                            new { Id = rowId });
+
+                        if (!expectedHash.AsSpan().SequenceEqual(hash))
+                            throw new UpdateException("Hash mismatch while downloading!");
+
+                        swZstd.Start();
+                        // Try compression.
+                        EnsureBuffer(ref compressBuffer, ZStd.CompressBound(data.Length));
+                        var compressLength = compressContext.Compress(compressBuffer, data.Span);
+
+                        swZstd.Stop();
+
+                        var compression = 0;
+                        var writeData = data;
+
+                        if (compressLength + 10 < uncompressedLen)
+                        {
+                            compression = 2;
+                            writeData = compressBuffer.AsMemory(0, compressLength);
+                        }
+
+                        swSqlite.Start();
+                        con.Execute(
+                            "UPDATE Content SET Size = @Size, Data = zeroblob(@DataSize), Compression = @Compression WHERE Id = @Id",
+                            new
+                            {
+                                Id = rowId, Size = uncompressedLen, DataSize = writeData.Length,
+                                Compression = compression
+                            });
+
+                        if (blob == null)
+                            blob = SqliteBlobStream.Open(con.Handle!, "main", "Content", "Data", rowId, true);
+                        else
+                            blob.Reopen(rowId);
+
+                        blob.Write(writeData.Span);
+                        swSqlite.Stop();
+
+                        // Log.Debug("Data size: {DataSize}, Size: {UncompressedLen}", writeData.Length, uncompressedLen);
+                    }
+                }
+                finally
+                {
+                    blob?.Dispose();
+                }
+
+                Log.Debug("ZSTD: {ZStdElapsed} ms | SQLite: {SqliteElapsed} ms",
+                    swZstd.ElapsedMilliseconds,
+                    swSqlite.ElapsedMilliseconds);
+            }
+        }
+
+        return manifestHash;
+    }
+
+    private static void EnsureBuffer(ref byte[] buf, int needsFit)
+    {
+        if (buf.Length >= needsFit)
+            return;
+
+        var newLen = 2 << BitOperations.Log2((uint)needsFit-1);
+
+        Array.Resize(ref buf, newLen);
+    }
+
+    private async Task CheckManifestDownloadServerProtocolVersions(string url, CancellationToken cancel)
+    {
+        // Check that we support the required protocol versions for the download server.
+
+        Log.Debug("Checking supported protocols on download server...");
+
+        // Do HTTP OPTIONS to figure out supported download protocol versions.
+        var request = new HttpRequestMessage(HttpMethod.Options, url);
+
+        var resp = await _http.SendAsync(request, cancel);
+        resp.EnsureSuccessStatusCode();
+
+        if (!resp.Headers.TryGetValues("X-Robust-Download-Min-Protocol", out var minHeaders)
+            || !resp.Headers.TryGetValues("X-Robust-Download-Max-Protocol", out var maxHeaders))
+        {
+            throw new UpdateException("Missing required headers from OPTIONS on manifest download URL!");
+        }
+
+        if (!int.TryParse(minHeaders.First(), NumberStyles.Integer, CultureInfo.InvariantCulture, out var min)
+            || !int.TryParse(maxHeaders.First(), NumberStyles.Integer, CultureInfo.InvariantCulture, out var max))
+        {
+            throw new UpdateException("Invalid version headers on OPTIONS on manifest download URL!");
+        }
+
+        Log.Debug("Download server protocol min: {MinProtocolVersion} max: {MaxProtocolVersion}", min, max);
+
+        if (min > ManifestDownloadProtocolVersion || max < ManifestDownloadProtocolVersion)
+        {
+            throw new UpdateException("No supported protocol version for download server.");
+        }
+    }
+
+    [SuppressMessage("ReSharper", "MethodHasAsyncOverload")]
+    [SuppressMessage("ReSharper", "MethodHasAsyncOverloadWithCancellation")]
+    [SuppressMessage("ReSharper", "UseAwaitUsing")]
+    private async Task<byte[]> DownloadNewVersionZip(
+        ServerBuildInformation buildInfo,
+        SqliteConnection con,
+        long versionId,
+        CancellationToken cancel)
+    {
         // Temp file to download zip into.
         await using var tempFile = TempFile.CreateTempFile();
 
         var zipHash = await UpdateDownloadContent(tempFile, buildInfo, cancel);
+
+        con.Execute("UPDATE ContentVersion SET ZipHash=@ZipHash WHERE Id=@Version",
+            new { ZipHash = zipHash, Version = versionId });
 
         Status = UpdateStatus.LoadingIntoDb;
 
         tempFile.Seek(0, SeekOrigin.Begin);
 
         // File downloaded, time to dump this into the DB.
-
-        var versionId = con.ExecuteScalar<long>(
-            @"INSERT INTO ContentVersion(Hash, ForkId, ForkVersion, LastUsed, ZipHash)
-                VALUES (zeroblob(32), @ForkId, @Version, datetime('now'), @ZipHash)
-                RETURNING Id",
-            new
-            {
-                buildInfo.ForkId,
-                buildInfo.Version,
-                ZipHash = zipHash
-            });
 
         var zip = new ZipArchive(tempFile, ZipArchiveMode.Read, leaveOpen: true);
 
@@ -522,7 +851,8 @@ public sealed class Updater : ReactiveObject
             blob?.Dispose();
         }
 
-        Log.Debug("Compression report: {ElapsedMs} ms elapsed, {TotalSize} B total size", sw.ElapsedMilliseconds, totalSize);
+        Log.Debug("Compression report: {ElapsedMs} ms elapsed, {TotalSize} B total size", sw.ElapsedMilliseconds,
+            totalSize);
         Log.Debug("New files: {NewFilesCount}", newFileCount);
 
         manifestWriter.Flush();
@@ -531,60 +861,7 @@ public sealed class Updater : ReactiveObject
 
         var manifestHash = HashFile(manifestStream);
 
-        Log.Debug("Manifest hash: {ManifestHash}", Convert.ToHexString(manifestHash));
-
-        // File.WriteAllBytes("manifest.txt", manifestStream.ToArray());
-
-        con.Execute(
-            "UPDATE ContentVersion SET Hash = @Hash WHERE Id = @Id",
-            new { Hash = manifestHash, Id = versionId });
-
-        // Insert engine dependencies.
-
-        // Engine version.
-        con.Execute(
-            @"INSERT INTO ContentEngineDependency(VersionId, ModuleName, ModuleVersion)
-                VALUES (@Version, 'Robust', @EngineVersion)",
-            new
-            {
-                Version = versionId, EngineVersion = engineVersion
-            });
-
-        Log.Debug("Inserting dependency: {ModuleName} {ModuleVersion}", "Robust", engineVersion);
-
-        // If we have a manifest file, load module dependencies from manifest file.
-        if (ContentManager.OpenBlob(con, versionId, "manifest.yml") is { } resourceManifest)
-        {
-            string[] modules;
-            using (resourceManifest)
-            {
-                modules = GetModuleNames(resourceManifest);
-            }
-
-            if (modules.Length > 0)
-            {
-                var manifest = await moduleManifest.Value;
-
-                foreach (var module in modules)
-                {
-                    var version = IEngineManager.ResolveEngineModuleVersion(manifest, module, engineVersion);
-
-                    con.Execute(
-                        @"INSERT INTO ContentEngineDependency(VersionId, ModuleName, ModuleVersion)
-                        VALUES (@Version, @ModName, @EngineVersion)",
-                        new
-                        {
-                            Version = versionId,
-                            ModName = module,
-                            ModVersion = version
-                        });
-
-                    Log.Debug("Inserting dependency: {ModuleName} {ModuleVersion}", module, version);
-                }
-            }
-        }
-
-        return versionId;
+        return manifestHash;
     }
 
     /// <summary>
