@@ -34,6 +34,8 @@ namespace SS14.Launcher.Models;
 public sealed class Updater : ReactiveObject
 {
     private const int ManifestDownloadProtocolVersion = 1;
+    // How many bytes a compression attempt needs to save to be considered "worth it".
+    private const int CompressionSavingsThreshold = 10;
 
     private static readonly IDeserializer ResourceManifestDeserializer =
         new DeserializerBuilder()
@@ -577,37 +579,94 @@ public sealed class Updater : ReactiveObject
                 stream = new ZStdDecompressStream(stream);
             }
 
+            // Read flags header
+            var streamHeader = await stream.ReadExactAsync(4, cancel);
+            var streamFlags = (DownloadStreamHeaderFlags)BinaryPrimitives.ReadInt32LittleEndian(streamHeader);
+            var preCompressed = (streamFlags & DownloadStreamHeaderFlags.PreCompressed) != 0;
+
             using (stream)
-            using (var compressContext = new ZStdCCtx())
             {
                 // compressContext.SetParameter(ZSTD_cParameter.ZSTD_c_nbWorkers, 4);
+                // If the stream is pre-compressed we need to decompress the blobs to verify SHA256 hash.
+                // If it isn't, we need to manually try re-compressing individual files to store them.
+                var compressContext = preCompressed ? null : new ZStdCCtx();
+                var decompressContext = preCompressed ? new ZStdDCtx() : null;
+
                 var swZstd = new Stopwatch();
                 var swSqlite = new Stopwatch();
+
+                // Normal file header:
+                // <int32> uncompressed length
+                // When preCompressed is set, we add:
+                // <int32> compressed length
+                var fileHeader = new byte[preCompressed ? 8 : 4];
 
                 SqliteBlobStream? blob = null;
                 try
                 {
-                    // Re-use compression buffer and compressor for all files, creating/freeing them is expensive.
+                    // Buffer for storing compressed ZStd data.
                     var compressBuffer = new byte[1024];
+
+                    // Buffer for storing uncompressed data.
                     var readBuffer = new byte[1024];
 
                     var i = 0;
                     foreach (var (rowId, _) in toDownload)
                     {
+                        // Simple loop stuff.
+                        cancel.ThrowIfCancellationRequested();
                         Progress = (i++, toDownload.Count, ProgressUnit.None);
 
-                        cancel.ThrowIfCancellationRequested();
 
-                        // Read length.
-                        var header = await stream.ReadExactAsync(4, cancel);
+                        // Read file header.
+                        await stream.ReadExactAsync(fileHeader, cancel);
 
-                        var length = BinaryPrimitives.ReadInt32LittleEndian(header);
+                        var length = BinaryPrimitives.ReadInt32LittleEndian(fileHeader.AsSpan(0, 4));
 
                         EnsureBuffer(ref readBuffer, length);
                         var data = readBuffer.AsMemory(0, length);
-                        await stream.ReadExactAsync(data, cancel);
 
-                        var uncompressedLen = data.Length;
+                        // Data to write to database.
+                        var compression = ContentCompressionScheme.None;
+                        var writeData = data;
+
+                        if (preCompressed)
+                        {
+                            // Compressed length from extended header.
+                            var compressedLength = BinaryPrimitives.ReadInt32LittleEndian(fileHeader.AsSpan(4, 4));
+
+                            // Log.Debug("{index:D5}: {blobLength:D8} {dataLength:D8}", idx, length, compressedLength);
+
+                            if (compressedLength > 0)
+                            {
+                                EnsureBuffer(ref compressBuffer, compressedLength);
+                                var compressedData = compressBuffer.AsMemory(0, compressedLength);
+                                await stream.ReadExactAsync(compressedData, cancel);
+
+                                // Decompress so that we can verify hash down below.
+                                // TODO: It's possible to hash while we're decompressing to avoid using a full buffer.
+
+                                swZstd.Start();
+                                var decompressedLength = decompressContext!.Decompress(data.Span, compressedData.Span);
+                                swZstd.Stop();
+
+                                if (decompressedLength != data.Length)
+                                    throw new UpdateException($"Compressed blob {i} had incorrect decompressed size!");
+
+                                // Set variables so that the database write down below uses them.
+                                compression = ContentCompressionScheme.ZStd;
+                                writeData = compressedData;
+                            }
+                            else
+                            {
+                                await stream.ReadExactAsync(data, cancel);
+                            }
+                        }
+                        else
+                        {
+                            await stream.ReadExactAsync(data, cancel);
+                        }
+
                         var hash = SHA256.HashData(data.Span);
 
                         // Double check hash!
@@ -618,20 +677,24 @@ public sealed class Updater : ReactiveObject
                         if (!expectedHash.AsSpan().SequenceEqual(hash))
                             throw new UpdateException("Hash mismatch while downloading!");
 
-                        swZstd.Start();
-                        // Try compression.
-                        EnsureBuffer(ref compressBuffer, ZStd.CompressBound(data.Length));
-                        var compressLength = compressContext.Compress(compressBuffer, data.Span);
-
-                        swZstd.Stop();
-
-                        var compression = 0;
-                        var writeData = data;
-
-                        if (compressLength + 10 < uncompressedLen)
+                        if (!preCompressed)
                         {
-                            compression = 2;
-                            writeData = compressBuffer.AsMemory(0, compressLength);
+                            // File wasn't pre-compressed. We should try to manually compress it to save space in DB.
+
+                            swZstd.Start();
+
+                            EnsureBuffer(ref compressBuffer, ZStd.CompressBound(data.Length));
+                            var compressLength = compressContext!.Compress(compressBuffer, data.Span);
+
+                            swZstd.Stop();
+
+                            // Don't bother saving compressed data if it didn't save enough space.
+                            if (compressLength + CompressionSavingsThreshold < length)
+                            {
+                                // Set variables so that the database write down below uses them.
+                                compression = ContentCompressionScheme.ZStd;
+                                writeData = compressBuffer.AsMemory(0, compressLength);
+                            }
                         }
 
                         swSqlite.Start();
@@ -639,7 +702,9 @@ public sealed class Updater : ReactiveObject
                             "UPDATE Content SET Size = @Size, Data = zeroblob(@DataSize), Compression = @Compression WHERE Id = @Id",
                             new
                             {
-                                Id = rowId, Size = uncompressedLen, DataSize = writeData.Length,
+                                Id = rowId,
+                                Size = length,
+                                DataSize = writeData.Length,
                                 Compression = compression
                             });
 
@@ -657,6 +722,8 @@ public sealed class Updater : ReactiveObject
                 finally
                 {
                     blob?.Dispose();
+                    decompressContext?.Dispose();
+                    compressContext?.Dispose();
                 }
 
                 Log.Debug("ZSTD: {ZStdElapsed} ms | SQLite: {SqliteElapsed} ms",
@@ -673,9 +740,9 @@ public sealed class Updater : ReactiveObject
         if (buf.Length >= needsFit)
             return;
 
-        var newLen = 2 << BitOperations.Log2((uint)needsFit-1);
+        var newLen = 2 << BitOperations.Log2((uint)needsFit - 1);
 
-        Array.Resize(ref buf, newLen);
+        buf = new byte[newLen];
     }
 
     private async Task CheckManifestDownloadServerProtocolVersions(string url, CancellationToken cancel)
@@ -970,5 +1037,17 @@ public sealed class Updater : ReactiveObject
     {
         None,
         Bytes,
+    }
+
+    [Flags]
+    public enum DownloadStreamHeaderFlags
+    {
+        None = 0,
+
+        /// <summary>
+        /// If this flag is set on the download stream, individual files have been pre-compressed by the server.
+        /// This means each file has a compression header, and the launcher should not attempt to compress files itself.
+        /// </summary>
+        PreCompressed = 1 << 0
     }
 }
