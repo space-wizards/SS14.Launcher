@@ -8,14 +8,14 @@ namespace SS14.Launcher.Utility;
 
 public static class StreamHelper
 {
-    public static async Task<byte[]> ReadExactAsync(this Stream stream, int amount, CancellationToken cancel)
+    public static async ValueTask<byte[]> ReadExactAsync(this Stream stream, int amount, CancellationToken cancel)
     {
         var data = new byte[amount];
         await ReadExactAsync(stream, data, cancel);
         return data;
     }
 
-    public static async Task ReadExactAsync(this Stream stream, Memory<byte> into, CancellationToken cancel)
+    public static async ValueTask ReadExactAsync(this Stream stream, Memory<byte> into, CancellationToken cancel)
     {
         while (into.Length > 0)
         {
