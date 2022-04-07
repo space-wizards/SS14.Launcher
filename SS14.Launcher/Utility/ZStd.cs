@@ -54,6 +54,11 @@ public sealed unsafe class ZStdCCtx : IDisposable
         }
     }
 
+    ~ZStdCCtx()
+    {
+        Dispose();
+    }
+
     public void Dispose()
     {
         if (Disposed)
@@ -61,6 +66,7 @@ public sealed unsafe class ZStdCCtx : IDisposable
 
         ZSTD_freeCCtx(Context);
         Context = null;
+        GC.SuppressFinalize(this);
     }
 
     private void CheckDisposed()
@@ -69,6 +75,61 @@ public sealed unsafe class ZStdCCtx : IDisposable
             throw new ObjectDisposedException(nameof(ZStdCCtx));
     }
 }
+
+public sealed unsafe class ZStdDCtx : IDisposable
+{
+    public ZSTD_DCtx* Context { get; private set; }
+
+    private bool Disposed => Context == null;
+
+    public ZStdDCtx()
+    {
+        Context = ZSTD_createDCtx();
+    }
+
+    public void SetParameter(ZSTD_dParameter parameter, int value)
+    {
+        CheckDisposed();
+
+        ZSTD_DCtx_setParameter(Context, parameter, value);
+    }
+
+    public int Decompress(Span<byte> destination, Span<byte> source)
+    {
+        CheckDisposed();
+
+        fixed (byte* dst = destination)
+        fixed (byte* src = source)
+        {
+            var ret = ZSTD_decompressDCtx(Context, dst, (nuint)destination.Length, src, (nuint)source.Length);
+
+            ZStdException.ThrowIfError(ret);
+            return (int)ret;
+        }
+    }
+
+    ~ZStdDCtx()
+    {
+        Dispose();
+    }
+
+    public void Dispose()
+    {
+        if (Disposed)
+            return;
+
+        ZSTD_freeDCtx(Context);
+        Context = null;
+        GC.SuppressFinalize(this);
+    }
+
+    private void CheckDisposed()
+    {
+        if (Disposed)
+            throw new ObjectDisposedException(nameof(ZStdDCtx));
+    }
+}
+
 
 [Serializable]
 public class ZStdException : Exception
