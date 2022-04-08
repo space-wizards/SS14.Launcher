@@ -22,12 +22,14 @@ using ReactiveUI.Fody.Helpers;
 using Serilog;
 using SharpZstd.Interop;
 using Splat;
+using SQLitePCL;
 using SS14.Launcher.Models.ContentManagement;
 using SS14.Launcher.Models.Data;
 using SS14.Launcher.Models.EngineManager;
 using SS14.Launcher.Utility;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
+using static SQLitePCL.raw;
 
 namespace SS14.Launcher.Models;
 
@@ -483,13 +485,23 @@ public sealed class Updater : ReactiveObject
         long versionId,
         CancellationToken cancel)
     {
+        var swZstd = new Stopwatch();
+        var swSqlite = new Stopwatch();
+        var swSha256 = new Stopwatch();
+
         // Download manifest first.
 
+        Log.Debug("Downloading content manifest from {ContentManifestUrl}", buildInfo.ManifestUrl);
+
         var manifest = await _http.GetByteArrayAsync(buildInfo.ManifestUrl, cancel);
+        swSha256.Start();
         var manifestHash = SHA256.HashData(manifest);
+        swSha256.Stop();
 
         if (Convert.ToHexString(manifestHash) != buildInfo.ManifestHash)
             throw new UpdateException("Manifest has incorrect hash!");
+
+        Log.Debug("Successfully validated manifest hash");
 
         // Go over the manifest, reading it into the SQLite ContentManifest table.
         // For any content blobs we don't have yet, we put a placeholder entry in the database for now.
@@ -502,6 +514,35 @@ public sealed class Updater : ReactiveObject
 
         var toDownload = new List<(long rowid, int index)>();
 
+        Log.Debug("Parsing manifest into database...");
+
+        var err = sqlite3_prepare_v2(
+            con.Handle,
+            "SELECT Id FROM Content WHERE Hash = ?",
+            out var stmtFindContentRow);
+        SqliteException.ThrowExceptionForRC(err, con.Handle);
+
+        using var _ = stmtFindContentRow;
+
+        err = sqlite3_prepare_v2(
+            con.Handle,
+            "INSERT INTO Content (Hash, Size, Compression, Data) VALUES (@Hash, 0, 0, zeroblob(0)) RETURNING Id",
+            out var stmtContentPlaceholder);
+        SqliteException.ThrowExceptionForRC(err, con.Handle);
+
+        using var a = stmtContentPlaceholder;
+
+        err = sqlite3_prepare_v2(
+            con.Handle,
+            "INSERT INTO ContentManifest(VersionId, Path, ContentId) VALUES (@VersionId, @Path, @ContentId)",
+            out var stmtInsertManifest);
+        SqliteException.ThrowExceptionForRC(err, con.Handle);
+
+        // VersionId does not change, bind it early.
+        CheckErr(sqlite3_bind_int64(stmtInsertManifest, 1, versionId));
+
+        using var b = stmtInsertManifest;
+
         var lineIndex = 0;
         while (sr.ReadLine() is { } manifestLine)
         {
@@ -509,29 +550,51 @@ public sealed class Updater : ReactiveObject
 
             var sep = manifestLine.IndexOf(' ');
             var hash = Convert.FromHexString(manifestLine.AsSpan(0, sep));
-            var filename = manifestLine[(sep + 1)..];
+            var filename = manifestLine.AsMemory(sep + 1);
 
-            var row = con.QueryFirstOrDefault<long>(
-                "SELECT Id FROM Content WHERE Hash = @Hash",
-                new { Hash = hash });
-            if (row == 0)
+            // Look up if we have an existing blob by that hash.
+
+            swSqlite.Start();
+            err = sqlite3_bind_blob(stmtFindContentRow, 1, hash);
+            SqliteException.ThrowExceptionForRC(err, con.Handle);
+
+            err = sqlite3_step(stmtFindContentRow);
+            SqliteException.ThrowExceptionForRC(err, con.Handle);
+
+            long row;
+            if (err == SQLITE_DONE)
             {
+                CheckErr(sqlite3_reset(stmtFindContentRow));
+
                 // Insert placeholder
-                row = con.ExecuteScalar<long>(
-                    "INSERT INTO Content (Hash, Size, Compression, Data) VALUES (@Hash, 0, 0, zeroblob(0)) RETURNING Id",
-                    new { Hash = hash });
+                // INSERT INTO Content (Hash, Size, Compression, Data) VALUES (@Hash, 0, 0, zeroblob(0)) RETURNING Id
+
+                CheckErr(sqlite3_bind_blob(stmtContentPlaceholder, 1, hash)); // @Hash
+                CheckErr(sqlite3_step(stmtContentPlaceholder));
+
+                row = sqlite3_column_int64(stmtContentPlaceholder, 0);
+                CheckErr(sqlite3_reset(stmtContentPlaceholder));
 
                 toDownload.Add((row, lineIndex));
             }
+            else
+            {
+                Debug.Assert(err == SQLITE_ROW);
 
-            con.Execute(
-                "INSERT INTO ContentManifest(VersionId, Path, ContentId) VALUES (@VersionId, @Path, @ContentId)",
-                new
-                {
-                    VersionId = versionId,
-                    Path = filename,
-                    ContentId = row,
-                });
+                row = sqlite3_column_int64(stmtFindContentRow, 0);
+
+                err = sqlite3_reset(stmtFindContentRow);
+                SqliteException.ThrowExceptionForRC(err, con.Handle);
+            }
+
+            // INSERT INTO ContentManifest(VersionId, Path, ContentId) VALUES (@VersionId, @Path, @ContentId)
+            // @VersionId is bound at statement creation.
+            CheckErr(sqlite3_bind_text16(stmtInsertManifest, 2, filename.Span)); // @Path
+            CheckErr(sqlite3_bind_int64(stmtInsertManifest, 3, row)); // @ContentId
+
+            CheckErr(sqlite3_step(stmtInsertManifest));
+            CheckErr(sqlite3_reset(stmtInsertManifest));
+            swSqlite.Stop();
 
             lineIndex += 1;
         }
@@ -592,9 +655,6 @@ public sealed class Updater : ReactiveObject
                 var compressContext = preCompressed ? null : new ZStdCCtx();
                 var decompressContext = preCompressed ? new ZStdDCtx() : null;
 
-                var swZstd = new Stopwatch();
-                var swSqlite = new Stopwatch();
-
                 // Normal file header:
                 // <int32> uncompressed length
                 // When preCompressed is set, we add:
@@ -602,13 +662,29 @@ public sealed class Updater : ReactiveObject
                 var fileHeader = new byte[preCompressed ? 8 : 4];
 
                 SqliteBlobStream? blob = null;
+                sqlite3_stmt? stmtFindContentHash = null;
+                sqlite3_stmt? stmtUpdateContent = null;
                 try
                 {
+                    err = sqlite3_prepare_v2(
+                        con.Handle,
+                        "SELECT Hash FROM Content WHERE Id = ?",
+                        out stmtFindContentHash);
+                    SqliteException.ThrowExceptionForRC(err, con.Handle);
+
+                    err = sqlite3_prepare_v2(
+                        con.Handle,
+                        "UPDATE Content SET Size = @Size, Data = zeroblob(@DataSize), Compression = @Compression WHERE Id = @Id",
+                        out stmtUpdateContent);
+                    SqliteException.ThrowExceptionForRC(err, con.Handle);
+
                     // Buffer for storing compressed ZStd data.
                     var compressBuffer = new byte[1024];
 
                     // Buffer for storing uncompressed data.
                     var readBuffer = new byte[1024];
+
+                    var hash = new byte[256 / 8];
 
                     var i = 0;
                     foreach (var (rowId, _) in toDownload)
@@ -667,15 +743,23 @@ public sealed class Updater : ReactiveObject
                             await stream.ReadExactAsync(data, cancel);
                         }
 
-                        var hash = SHA256.HashData(data.Span);
+                        swSha256.Start();
+                        SHA256.HashData(data.Span, hash);
+                        swSha256.Stop();
 
                         // Double check hash!
-                        var expectedHash = con.ExecuteScalar<byte[]>(
-                            "SELECT Hash FROM Content WHERE Id = @Id",
-                            new { Id = rowId });
+                        swSqlite.Start();
 
-                        if (!expectedHash.AsSpan().SequenceEqual(hash))
+                        CheckErr(sqlite3_bind_int64(stmtFindContentHash, 1, rowId));
+
+                        CheckErr(sqlite3_step(stmtFindContentHash));
+
+                        if (!sqlite3_column_blob(stmtFindContentHash, 0).SequenceEqual(hash))
                             throw new UpdateException("Hash mismatch while downloading!");
+
+                        CheckErr(sqlite3_reset(stmtFindContentHash));
+
+                        swSqlite.Stop();
 
                         if (!preCompressed)
                         {
@@ -698,15 +782,17 @@ public sealed class Updater : ReactiveObject
                         }
 
                         swSqlite.Start();
-                        con.Execute(
-                            "UPDATE Content SET Size = @Size, Data = zeroblob(@DataSize), Compression = @Compression WHERE Id = @Id",
-                            new
-                            {
-                                Id = rowId,
-                                Size = length,
-                                DataSize = writeData.Length,
-                                Compression = compression
-                            });
+
+                        // UPDATE Content SET Size = @Size, Data = zeroblob(@DataSize), Compression = @Compression WHERE Id = @Id
+
+                        CheckErr(sqlite3_bind_int(stmtUpdateContent, 1, length)); // @Size
+                        CheckErr(sqlite3_bind_int(stmtUpdateContent, 2, writeData.Length)); // @DataSize
+                        CheckErr(sqlite3_bind_int(stmtUpdateContent, 3, (int) compression)); // @Compression
+                        CheckErr(sqlite3_bind_int64(stmtUpdateContent, 4, rowId)); // @Id
+
+                        CheckErr(sqlite3_step(stmtUpdateContent));
+
+                        CheckErr(sqlite3_reset(stmtUpdateContent));
 
                         if (blob == null)
                             blob = SqliteBlobStream.Open(con.Handle!, "main", "Content", "Data", rowId, true);
@@ -724,15 +810,21 @@ public sealed class Updater : ReactiveObject
                     blob?.Dispose();
                     decompressContext?.Dispose();
                     compressContext?.Dispose();
+                    stmtFindContentHash?.Dispose();
+                    stmtUpdateContent?.Dispose();
                 }
-
-                Log.Debug("ZSTD: {ZStdElapsed} ms | SQLite: {SqliteElapsed} ms",
-                    swZstd.ElapsedMilliseconds,
-                    swSqlite.ElapsedMilliseconds);
             }
         }
 
+
+        Log.Debug("ZSTD: {ZStdElapsed} ms | SQLite: {SqliteElapsed} ms | SHA256: {Sha256Elapsed} ms",
+            swZstd.ElapsedMilliseconds,
+            swSqlite.ElapsedMilliseconds,
+            swSha256.ElapsedMilliseconds);
+
         return manifestHash;
+
+        void CheckErr(int err) => SqliteException.ThrowExceptionForRC(err, con.Handle);
     }
 
     private static void EnsureBuffer(ref byte[] buf, int needsFit)
@@ -833,7 +925,7 @@ public sealed class Updater : ReactiveObject
                 if (entry.Name == "")
                     continue;
 
-                Log.Verbose("Storing file {EntryName}", entry.FullName);
+                // Log.Verbose("Storing file {EntryName}", entry.FullName);
 
                 byte[] hash;
                 using (var stream = entry.Open())
