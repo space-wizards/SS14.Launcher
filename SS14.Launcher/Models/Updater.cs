@@ -207,6 +207,9 @@ public sealed class Updater : ReactiveObject
             "Checking to see if we already have version for fork {ForkId}/{ForkVersion} ZipHash: {ZipHash} ManifestHash: {ManifestHash}",
             buildInfo.ForkId, buildInfo.Version, buildInfo.Hash, buildInfo.ManifestHash);
 
+        // We ORDER BY ... DESC so that a hopeful exact match always comes first.
+        // This way, we avoid DuplicateExistingVersion() unless absolutely necessary.
+
         ContentVersion? found;
         if (buildInfo.ManifestHash is { } manifestHashHex)
         {
@@ -214,7 +217,12 @@ public sealed class Updater : ReactiveObject
             var hash = Convert.FromHexString(manifestHashHex);
 
             found = con.QueryFirstOrDefault<ContentVersion>(
-                "SELECT * FROM ContentVersion WHERE Hash = @Hash", new { Hash = hash });
+                "SELECT * FROM ContentVersion cv " +
+                "WHERE Hash = @Hash " +
+                "ORDER BY ForkVersion = @ForkVersion " +
+                "AND ForkId = @ForkId " +
+                "AND (SELECT ModuleVersion FROM ContentEngineDependency ced WHERE ced.VersionId = cv.Id AND ModuleName = 'Robust') = @EngineVersion " +
+                "DESC", new { Hash = hash, ForkVersion = buildInfo.Version, buildInfo.ForkId, buildInfo.EngineVersion });
         }
         else if (buildInfo.Hash is { } hashHex)
         {
@@ -222,7 +230,11 @@ public sealed class Updater : ReactiveObject
             var hash = Convert.FromHexString(hashHex);
 
             found = con.QueryFirstOrDefault<ContentVersion>(
-                "SELECT * FROM ContentVersion WHERE ZipHash = @ZipHash", new { ZipHash = hash });
+                "SELECT * FROM ContentVersion cv WHERE ZipHash = @ZipHash " +
+                "ORDER BY ForkVersion = @ForkVersion " +
+                "AND ForkId = @ForkId " +
+                "AND (SELECT ModuleVersion FROM ContentEngineDependency ced WHERE ced.VersionId = cv.Id AND ModuleName = 'Robust') = @EngineVersion " +
+                "DESC", new { ZipHash = hash, ForkVersion = buildInfo.Version, buildInfo.ForkId, buildInfo.EngineVersion });
         }
         else
         {
@@ -231,7 +243,9 @@ public sealed class Updater : ReactiveObject
             // Testing I guess?
 
             found = con.QueryFirstOrDefault<ContentVersion>(
-                "SELECT * FROM ContentVersion WHERE ForkId = @ForkId AND ForkVersion = @Version",
+                "SELECT * FROM ContentVersion cv WHERE ForkId = @ForkId AND ForkVersion = @Version " +
+                "ORDER BY (SELECT ModuleVersion FROM ContentEngineDependency ced WHERE ced.VersionId = cv.Id AND ModuleName = 'Robust') = @EngineVersion " +
+                "DESC",
                 new { buildInfo.ForkId, buildInfo.Version });
         }
 
@@ -304,6 +318,8 @@ public sealed class Updater : ReactiveObject
 
         if (changedFork || changedEngineVersion)
         {
+            Log.Debug("Mismatching ContentVersion info, duplicating to new entry");
+
             versionId = con.ExecuteScalar<long>(
                 @"INSERT INTO ContentVersion (Hash, ForkId, ForkVersion, LastUsed, ZipHash)
                     VALUES (@Hash, @ForkId, @ForkVersion, datetime('now'), @ZipHash)
@@ -318,13 +334,13 @@ public sealed class Updater : ReactiveObject
             // Copy entire manifest over.
             con.Execute(@"
                     INSERT INTO ContentManifest (VersionId, Path, ContentId)
-                    SELECT (@NewVersion, Path, ContentId)
+                    SELECT @NewVersion, Path, ContentId
                     FROM ContentManifest
                     WHERE VersionId = @OldVersion",
                 new
                 {
                     NewVersion = versionId,
-                    OldVersion = existingVersion.ForkVersion
+                    OldVersion = existingVersion.Id
                 });
 
             if (changedEngineVersion)
@@ -332,13 +348,20 @@ public sealed class Updater : ReactiveObject
                 con.Execute(@"
                         INSERT INTO ContentEngineDependency (VersionId, ModuleName, ModuleVersion)
                         VALUES (@VersionId, 'Robust', @EngineVersion)",
-                    new { EngineVersion = engineVersion });
+                    new
+                    {
+                        EngineVersion = engineVersion,
+                        VersionId = versionId
+                    });
 
                 // Recalculate module dependencies.
                 var oldDependencies = con.Query<string>(@"
                         SELECT ModuleName
                         FROM ContentEngineDependency
-                        WHERE VersionId = @OldVersion AND ModuleName != 'Robust'").ToArray();
+                        WHERE VersionId = @OldVersion AND ModuleName != 'Robust'", new
+                {
+                    OldVersion = existingVersion.Id
+                }).ToArray();
 
                 if (oldDependencies.Length > 0)
                 {
