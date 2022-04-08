@@ -32,7 +32,7 @@ public class ServerBuildInformation
     [JsonProperty(PropertyName = "manifest_url", Required = Required.Default)]
     public string? ManifestUrl;
 
-    [JsonProperty(PropertyName = "manifest_download_url")]
+    [JsonProperty(PropertyName = "manifest_download_url", Required = Required.Default)]
     public string? ManifestDownloadUrl;
 
     [JsonProperty(PropertyName = "engine_version")]
@@ -47,10 +47,10 @@ public class ServerBuildInformation
     [JsonProperty(PropertyName = "hash", Required = Required.AllowNull)]
     public string? Hash;
 
-    [JsonProperty(PropertyName = "manifest_hash")]
+    [JsonProperty(PropertyName = "manifest_hash", Required = Required.Default)]
     public string? ManifestHash;
 
-    [JsonProperty(PropertyName = "acz")]
+    [JsonProperty(PropertyName = "acz", Required = Required.Default)]
     public bool Acz;
 }
 
