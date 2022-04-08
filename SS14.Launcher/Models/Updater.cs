@@ -517,8 +517,11 @@ public sealed class Updater : ReactiveObject
         Log.Debug("Downloading content manifest from {ContentManifestUrl}", buildInfo.ManifestUrl);
 
         var manifestHasher = IncrementalHash.CreateHash(HashAlgorithmName.SHA256);
-        var manifest = new HasherStream(
-            await _http.GetStreamAsync(buildInfo.ManifestUrl, cancel), manifestHasher);
+        var request = new HttpRequestMessage(HttpMethod.Get, buildInfo.ManifestUrl);
+        var manifestResp = await _http.SendZStdAsync(request, HttpCompletionOption.ResponseHeadersRead, cancel);
+        manifestResp.EnsureSuccessStatusCode();
+
+        var manifest = new HasherStream(await manifestResp.Content.ReadAsStreamAsync(cancel), manifestHasher);
 
         // Go over the manifest, reading it into the SQLite ContentManifest table.
         // For any content blobs we don't have yet, we put a placeholder entry in the database for now.
@@ -645,11 +648,10 @@ public sealed class Updater : ReactiveObject
                 reqI += 4;
             }
 
-            var request = new HttpRequestMessage(HttpMethod.Post, buildInfo.ManifestDownloadUrl);
+            request = new HttpRequestMessage(HttpMethod.Post, buildInfo.ManifestDownloadUrl);
             request.Headers.Add(
                 "X-Robust-Download-Protocol",
                 ManifestDownloadProtocolVersion.ToString(CultureInfo.InvariantCulture));
-            request.Headers.Add("Accept-Encoding", "zstd");
 
             request.Content = new ByteArrayContent(requestBody);
 
@@ -657,15 +659,10 @@ public sealed class Updater : ReactiveObject
 
             Status = UpdateStatus.DownloadingClientUpdate;
 
-            var response = await _http.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancel);
+            var response = await _http.SendZStdAsync(request, HttpCompletionOption.ResponseHeadersRead, cancel);
             response.EnsureSuccessStatusCode();
 
             var stream = await response.Content.ReadAsStreamAsync(cancel);
-            if (response.Content.Headers.TryGetValues("Content-Encoding", out var ce) && ce.First() == "zstd")
-            {
-                Log.Debug("Download is using ZStd");
-                stream = new ZStdDecompressStream(stream);
-            }
 
             // Read flags header
             var streamHeader = await stream.ReadExactAsync(4, cancel);
