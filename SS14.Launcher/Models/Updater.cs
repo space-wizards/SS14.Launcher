@@ -112,7 +112,7 @@ public sealed class Updater : ReactiveObject
             () => TouchOrDownloadContentUpdate(buildInfo, con, moduleManifest, cancel),
             CancellationToken.None);
 
-        Log.Information("Checking to cull old content versions...");
+        Log.Debug("Checking to cull old content versions...");
 
         await Task.Run(() => { CullOldContentVersions(con); }, CancellationToken.None);
 
