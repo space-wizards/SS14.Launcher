@@ -493,21 +493,15 @@ public sealed class Updater : ReactiveObject
 
         Log.Debug("Downloading content manifest from {ContentManifestUrl}", buildInfo.ManifestUrl);
 
-        var manifest = await _http.GetByteArrayAsync(buildInfo.ManifestUrl, cancel);
-        swSha256.Start();
-        var manifestHash = SHA256.HashData(manifest);
-        swSha256.Stop();
-
-        if (Convert.ToHexString(manifestHash) != buildInfo.ManifestHash)
-            throw new UpdateException("Manifest has incorrect hash!");
-
-        Log.Debug("Successfully validated manifest hash");
+        var manifestHasher = IncrementalHash.CreateHash(HashAlgorithmName.SHA256);
+        var manifest = new HasherStream(
+            await _http.GetStreamAsync(buildInfo.ManifestUrl, cancel), manifestHasher);
 
         // Go over the manifest, reading it into the SQLite ContentManifest table.
         // For any content blobs we don't have yet, we put a placeholder entry in the database for now.
         // Keep track of all files we need to download for later.
 
-        var sr = new StreamReader(new MemoryStream(manifest));
+        using var sr = new StreamReader(manifest);
 
         if (sr.ReadLine() != "Robust Content Manifest 1")
             throw new UpdateException("Unknown manifest header!");
@@ -598,6 +592,14 @@ public sealed class Updater : ReactiveObject
 
             lineIndex += 1;
         }
+
+        Log.Debug("Total of {ManifestEntriesCount} manifest entries", lineIndex);
+
+        var manifestHash = manifestHasher.GetCurrentHash();
+        if (Convert.ToHexString(manifestHash) != buildInfo.ManifestHash)
+            throw new UpdateException("Manifest has incorrect hash!");
+
+        Log.Debug("Successfully validated manifest hash");
 
         if (toDownload.Count > 0)
         {
