@@ -21,6 +21,7 @@ using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Serilog;
 using SharpZstd.Interop;
+using SpaceWizards.Sodium;
 using Splat;
 using SQLitePCL;
 using SS14.Launcher.Models.ContentManagement;
@@ -510,18 +511,20 @@ public sealed class Updater : ReactiveObject
     {
         var swZstd = new Stopwatch();
         var swSqlite = new Stopwatch();
-        var swSha256 = new Stopwatch();
+        var swBlake = new Stopwatch();
 
         // Download manifest first.
 
         Log.Debug("Downloading content manifest from {ContentManifestUrl}", buildInfo.ManifestUrl);
 
-        var manifestHasher = IncrementalHash.CreateHash(HashAlgorithmName.SHA256);
         var request = new HttpRequestMessage(HttpMethod.Get, buildInfo.ManifestUrl);
         var manifestResp = await _http.SendZStdAsync(request, HttpCompletionOption.ResponseHeadersRead, cancel);
         manifestResp.EnsureSuccessStatusCode();
 
-        var manifest = new HasherStream(await manifestResp.Content.ReadAsStreamAsync(cancel), manifestHasher);
+        var manifest = Blake2BHasherStream.CreateReader(
+            await manifestResp.Content.ReadAsStreamAsync(cancel),
+            ReadOnlySpan<byte>.Empty,
+            32);
 
         // Go over the manifest, reading it into the SQLite ContentManifest table.
         // For any content blobs we don't have yet, we put a placeholder entry in the database for now.
@@ -564,7 +567,7 @@ public sealed class Updater : ReactiveObject
         using var b = stmtInsertManifest;
 
         var lineIndex = 0;
-        while (sr.ReadLine() is { } manifestLine)
+        while (await sr.ReadLineAsync() is { } manifestLine)
         {
             cancel.ThrowIfCancellationRequested();
 
@@ -621,7 +624,7 @@ public sealed class Updater : ReactiveObject
 
         Log.Debug("Total of {ManifestEntriesCount} manifest entries", lineIndex);
 
-        var manifestHash = manifestHasher.GetCurrentHash();
+        var manifestHash = manifest.Finish();
         if (Convert.ToHexString(manifestHash) != buildInfo.ManifestHash)
             throw new UpdateException("Manifest has incorrect hash!");
 
@@ -672,7 +675,7 @@ public sealed class Updater : ReactiveObject
             using (stream)
             {
                 // compressContext.SetParameter(ZSTD_cParameter.ZSTD_c_nbWorkers, 4);
-                // If the stream is pre-compressed we need to decompress the blobs to verify SHA256 hash.
+                // If the stream is pre-compressed we need to decompress the blobs to verify BLAKE2B hash.
                 // If it isn't, we need to manually try re-compressing individual files to store them.
                 var compressContext = preCompressed ? null : new ZStdCCtx();
                 var decompressContext = preCompressed ? new ZStdDCtx() : null;
@@ -765,9 +768,9 @@ public sealed class Updater : ReactiveObject
                             await stream.ReadExactAsync(data, cancel);
                         }
 
-                        swSha256.Start();
-                        SHA256.HashData(data.Span, hash);
-                        swSha256.Stop();
+                        swBlake.Start();
+                        CryptoGenericHashBlake2B.Hash(hash, data.Span, ReadOnlySpan<byte>.Empty);
+                        swBlake.Stop();
 
                         // Double check hash!
                         swSqlite.Start();
@@ -839,10 +842,10 @@ public sealed class Updater : ReactiveObject
         }
 
 
-        Log.Debug("ZSTD: {ZStdElapsed} ms | SQLite: {SqliteElapsed} ms | SHA256: {Sha256Elapsed} ms",
+        Log.Debug("ZSTD: {ZStdElapsed} ms | SQLite: {SqliteElapsed} ms | Blake2B: {Blake2BElapsed} ms",
             swZstd.ElapsedMilliseconds,
             swSqlite.ElapsedMilliseconds,
-            swSha256.ElapsedMilliseconds);
+            swBlake.ElapsedMilliseconds);
 
         return manifestHash;
 
@@ -921,7 +924,6 @@ public sealed class Updater : ReactiveObject
         var manifestWriter = new StreamWriter(manifestStream, new UTF8Encoding(false));
         manifestWriter.Write("Robust Content Manifest 1\n");
 
-        var hasher = SHA256.Create();
         var totalSize = 0L;
         var sw = new Stopwatch();
 
@@ -952,7 +954,7 @@ public sealed class Updater : ReactiveObject
                 byte[] hash;
                 using (var stream = entry.Open())
                 {
-                    hash = hasher.ComputeHash(stream);
+                    hash = Blake2B.HashStream(stream, 32);
                 }
 
                 var row = con.QueryFirstOrDefault<long>(
@@ -1040,9 +1042,7 @@ public sealed class Updater : ReactiveObject
 
         manifestStream.Seek(0, SeekOrigin.Begin);
 
-        var manifestHash = HashFile(manifestStream);
-
-        return manifestHash;
+        return Blake2B.HashStream(manifestStream, 32);
     }
 
     /// <summary>
