@@ -2,7 +2,7 @@
 CREATE TABLE ContentVersion(
     -- Autoincrement to avoid use-after-free type stuff if somebody clears the DB while the game is running.
     Id INTEGER PRIMARY KEY AUTOINCREMENT,
-    -- SHA256 hash of the FULL manifest for this version.
+    -- BLAKE2b hash of the FULL manifest for this version.
     Hash BLOB NOT NULL,
     -- Fork & version ID reported by server.
     -- This is exclusively used to improve heuristics for which versions to evict from the download cache.
@@ -22,7 +22,7 @@ CREATE TABLE ContentVersion(
 CREATE TABLE Content(
     -- Autoincrement to avoid use-after-free type stuff if somebody clears the DB while the game is running.
     Id INTEGER PRIMARY KEY AUTOINCREMENT,
-    -- SHA256 hash of the (uncompressed) data stored in this file.
+    -- BLAKE2B hash of the (uncompressed) data stored in this file.
     -- Unique constraint to not allow duplicate blobs in the database.
     -- Also should be backed by an index allowing us to efficiently look up existing blobs when writing.
     Hash BLOB NOT NULL UNIQUE,
