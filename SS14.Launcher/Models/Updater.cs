@@ -37,6 +37,7 @@ namespace SS14.Launcher.Models;
 public sealed class Updater : ReactiveObject
 {
     private const int ManifestDownloadProtocolVersion = 1;
+
     // How many bytes a compression attempt needs to save to be considered "worth it".
     private const int CompressionSavingsThreshold = 10;
 
@@ -90,6 +91,7 @@ public sealed class Updater : ReactiveObject
         }
         finally
         {
+            Progress = null;
             _updating = false;
         }
 
@@ -223,7 +225,8 @@ public sealed class Updater : ReactiveObject
                 "ORDER BY ForkVersion = @ForkVersion " +
                 "AND ForkId = @ForkId " +
                 "AND (SELECT ModuleVersion FROM ContentEngineDependency ced WHERE ced.VersionId = cv.Id AND ModuleName = 'Robust') = @EngineVersion " +
-                "DESC", new { Hash = hash, ForkVersion = buildInfo.Version, buildInfo.ForkId, buildInfo.EngineVersion });
+                "DESC",
+                new { Hash = hash, ForkVersion = buildInfo.Version, buildInfo.ForkId, buildInfo.EngineVersion });
         }
         else if (buildInfo.Hash is { } hashHex)
         {
@@ -235,7 +238,8 @@ public sealed class Updater : ReactiveObject
                 "ORDER BY ForkVersion = @ForkVersion " +
                 "AND ForkId = @ForkId " +
                 "AND (SELECT ModuleVersion FROM ContentEngineDependency ced WHERE ced.VersionId = cv.Id AND ModuleName = 'Robust') = @EngineVersion " +
-                "DESC", new { ZipHash = hash, ForkVersion = buildInfo.Version, buildInfo.ForkId, buildInfo.EngineVersion });
+                "DESC",
+                new { ZipHash = hash, ForkVersion = buildInfo.Version, buildInfo.ForkId, buildInfo.EngineVersion });
         }
         else
         {
@@ -465,39 +469,48 @@ public sealed class Updater : ReactiveObject
 
         Log.Debug("Inserting dependency: {ModuleName} {ModuleVersion}", "Robust", engineVersion);
 
-        // If we have a manifest file, load module dependencies from manifest file.
-        if (ContentManager.OpenBlob(con, versionId, "manifest.yml") is { } resourceManifest)
-        {
-            string[] modules;
-            using (resourceManifest)
-            {
-                modules = GetModuleNames(resourceManifest);
-            }
-
-            if (modules.Length > 0)
-            {
-                var manifest = await moduleManifest.Value;
-
-                foreach (var module in modules)
-                {
-                    var version = IEngineManager.ResolveEngineModuleVersion(manifest, module, engineVersion);
-
-                    con.Execute(
-                        @"INSERT INTO ContentEngineDependency(VersionId, ModuleName, ModuleVersion)
-                        VALUES (@Version, @ModName, @EngineVersion)",
-                        new
-                        {
-                            Version = versionId,
-                            ModName = module,
-                            ModVersion = version
-                        });
-
-                    Log.Debug("Inserting dependency: {ModuleName} {ModuleVersion}", module, version);
-                }
-            }
-        }
+        await ResolveContentDependencies(con, versionId, engineVersion, moduleManifest);
 
         return versionId;
+    }
+
+    private static async Task ResolveContentDependencies(
+        SqliteConnection con,
+        long versionId,
+        string engineVersion,
+        Lazy<Task<EngineModuleManifest>> moduleManifest)
+    {
+        // If we have a manifest file, load module dependencies from manifest file.
+        if (ContentManager.OpenBlob(con, versionId, "manifest.yml") is not { } resourceManifest)
+            return;
+
+        string[] modules;
+        using (resourceManifest)
+        {
+            modules = GetModuleNames(resourceManifest);
+        }
+
+        if (modules.Length <= 0)
+            return;
+
+        var manifest = await moduleManifest.Value;
+
+        foreach (var module in modules)
+        {
+            var version = IEngineManager.ResolveEngineModuleVersion(manifest, module, engineVersion);
+
+            con.Execute(
+                @"INSERT INTO ContentEngineDependency(VersionId, ModuleName, ModuleVersion)
+                        VALUES (@Version, @ModName, @EngineVersion)",
+                new
+                {
+                    Version = versionId,
+                    ModName = module,
+                    ModVersion = version
+                });
+
+            Log.Debug("Inserting dependency: {ModuleName} {ModuleVersion}", module, version);
+        }
     }
 
     [SuppressMessage("ReSharper", "MethodHasAsyncOverload")]
@@ -515,6 +528,47 @@ public sealed class Updater : ReactiveObject
 
         // Download manifest first.
 
+        Status = UpdateStatus.FetchingClientManifest;
+
+        var (toDownload, manifestHash) = await IngestContentManifest(buildInfo, con, versionId, swSqlite, cancel);
+
+        Progress = null;
+        Status = UpdateStatus.DownloadingClientUpdate;
+
+        if (toDownload.Count > 0)
+        {
+            // Have missing files, need to download them.
+
+            Log.Debug(
+                "Missing {MissingContentBlobs} blobs, downloading from {ManifestDownloadUrl}",
+                toDownload.Count,
+                buildInfo.ManifestDownloadUrl!);
+
+            await DownloadMissingContent(
+                buildInfo,
+                con,
+                toDownload,
+                swSqlite,
+                swZstd,
+                swBlake,
+                cancel);
+        }
+
+        Log.Debug("ZSTD: {ZStdElapsed} ms | SQLite: {SqliteElapsed} ms | Blake2B: {Blake2BElapsed} ms",
+            swZstd.ElapsedMilliseconds,
+            swSqlite.ElapsedMilliseconds,
+            swBlake.ElapsedMilliseconds);
+
+        return manifestHash;
+    }
+
+    private async Task<(List<(long rowid, int index)> toDownload, byte[] manifestHash)> IngestContentManifest(
+        ServerBuildInformation buildInfo,
+        SqliteConnection con,
+        long versionId,
+        Stopwatch swSqlite,
+        CancellationToken cancel)
+    {
         Log.Debug("Downloading content manifest from {ContentManifestUrl}", buildInfo.ManifestUrl);
 
         var request = new HttpRequestMessage(HttpMethod.Get, buildInfo.ManifestUrl);
@@ -532,18 +586,20 @@ public sealed class Updater : ReactiveObject
 
         using var sr = new StreamReader(manifest);
 
-        if (sr.ReadLine() != "Robust Content Manifest 1")
+        if (await sr.ReadLineAsync() != "Robust Content Manifest 1")
             throw new UpdateException("Unknown manifest header!");
 
         var toDownload = new List<(long rowid, int index)>();
 
         Log.Debug("Parsing manifest into database...");
 
+        // Prepare SQLite queries.
+
         var err = sqlite3_prepare_v2(
             con.Handle,
             "SELECT Id FROM Content WHERE Hash = ?",
             out var stmtFindContentRow);
-        SqliteException.ThrowExceptionForRC(err, con.Handle);
+        CheckErr(err);
 
         using var _ = stmtFindContentRow;
 
@@ -551,7 +607,7 @@ public sealed class Updater : ReactiveObject
             con.Handle,
             "INSERT INTO Content (Hash, Size, Compression, Data) VALUES (@Hash, 0, 0, zeroblob(0)) RETURNING Id",
             out var stmtContentPlaceholder);
-        SqliteException.ThrowExceptionForRC(err, con.Handle);
+        CheckErr(err);
 
         using var a = stmtContentPlaceholder;
 
@@ -559,7 +615,7 @@ public sealed class Updater : ReactiveObject
             con.Handle,
             "INSERT INTO ContentManifest(VersionId, Path, ContentId) VALUES (@VersionId, @Path, @ContentId)",
             out var stmtInsertManifest);
-        SqliteException.ThrowExceptionForRC(err, con.Handle);
+        CheckErr(err);
 
         // VersionId does not change, bind it early.
         CheckErr(sqlite3_bind_int64(stmtInsertManifest, 1, versionId));
@@ -630,224 +686,222 @@ public sealed class Updater : ReactiveObject
 
         Log.Debug("Successfully validated manifest hash");
 
-        if (toDownload.Count > 0)
+        return (toDownload, manifestHash);
+
+        void CheckErr(int err) => SqliteException.ThrowExceptionForRC(err, con.Handle);
+    }
+
+    private async Task DownloadMissingContent(
+        ServerBuildInformation buildInfo,
+        SqliteConnection con,
+        List<(long rowid, int index)> toDownload,
+        Stopwatch swSqlite,
+        Stopwatch swZstd,
+        Stopwatch swBlake,
+        CancellationToken cancel)
+    {
+
+        await CheckManifestDownloadServerProtocolVersions(buildInfo.ManifestDownloadUrl!, cancel);
+
+        // Alright well we support the protocol. Now to start the HTTP request!
+
+
+        // Write request body.
+        var requestBody = new byte[toDownload.Count * 4];
+        var reqI = 0;
+        foreach (var (_, idx) in toDownload)
         {
-            // Have missing files, need to download them.
-
-            Log.Debug(
-                "Missing {MissingContentBlobs} blobs, downloading from {ManifestDownloadUrl}",
-                toDownload.Count,
-                buildInfo.ManifestDownloadUrl!);
-
-            await CheckManifestDownloadServerProtocolVersions(buildInfo.ManifestDownloadUrl!, cancel);
-
-            // Alright well we support the protocol. Now to start the HTTP request!
-
-            var requestBody = new byte[toDownload.Count * 4];
-            var reqI = 0;
-            foreach (var (_, idx) in toDownload)
-            {
-                BinaryPrimitives.WriteInt32LittleEndian(requestBody.AsSpan(reqI, 4), idx);
-                reqI += 4;
-            }
-
-            request = new HttpRequestMessage(HttpMethod.Post, buildInfo.ManifestDownloadUrl);
-            request.Headers.Add(
-                "X-Robust-Download-Protocol",
-                ManifestDownloadProtocolVersion.ToString(CultureInfo.InvariantCulture));
-
-            request.Content = new ByteArrayContent(requestBody);
-
-            Log.Debug("Starting download...");
-
-            Status = UpdateStatus.DownloadingClientUpdate;
-
-            var response = await _http.SendZStdAsync(request, HttpCompletionOption.ResponseHeadersRead, cancel);
-            response.EnsureSuccessStatusCode();
-
-            var stream = await response.Content.ReadAsStreamAsync(cancel);
-
-            // Read flags header
-            var streamHeader = await stream.ReadExactAsync(4, cancel);
-            var streamFlags = (DownloadStreamHeaderFlags)BinaryPrimitives.ReadInt32LittleEndian(streamHeader);
-            var preCompressed = (streamFlags & DownloadStreamHeaderFlags.PreCompressed) != 0;
-
-            using (stream)
-            {
-                // compressContext.SetParameter(ZSTD_cParameter.ZSTD_c_nbWorkers, 4);
-                // If the stream is pre-compressed we need to decompress the blobs to verify BLAKE2B hash.
-                // If it isn't, we need to manually try re-compressing individual files to store them.
-                var compressContext = preCompressed ? null : new ZStdCCtx();
-                var decompressContext = preCompressed ? new ZStdDCtx() : null;
-
-                // Normal file header:
-                // <int32> uncompressed length
-                // When preCompressed is set, we add:
-                // <int32> compressed length
-                var fileHeader = new byte[preCompressed ? 8 : 4];
-
-                SqliteBlobStream? blob = null;
-                sqlite3_stmt? stmtFindContentHash = null;
-                sqlite3_stmt? stmtUpdateContent = null;
-                try
-                {
-                    err = sqlite3_prepare_v2(
-                        con.Handle,
-                        "SELECT Hash FROM Content WHERE Id = ?",
-                        out stmtFindContentHash);
-                    SqliteException.ThrowExceptionForRC(err, con.Handle);
-
-                    err = sqlite3_prepare_v2(
-                        con.Handle,
-                        "UPDATE Content SET Size = @Size, Data = zeroblob(@DataSize), Compression = @Compression WHERE Id = @Id",
-                        out stmtUpdateContent);
-                    SqliteException.ThrowExceptionForRC(err, con.Handle);
-
-                    // Buffer for storing compressed ZStd data.
-                    var compressBuffer = new byte[1024];
-
-                    // Buffer for storing uncompressed data.
-                    var readBuffer = new byte[1024];
-
-                    var hash = new byte[256 / 8];
-
-                    var i = 0;
-                    foreach (var (rowId, _) in toDownload)
-                    {
-                        // Simple loop stuff.
-                        cancel.ThrowIfCancellationRequested();
-                        Progress = (i++, toDownload.Count, ProgressUnit.None);
-
-
-                        // Read file header.
-                        await stream.ReadExactAsync(fileHeader, cancel);
-
-                        var length = BinaryPrimitives.ReadInt32LittleEndian(fileHeader.AsSpan(0, 4));
-
-                        EnsureBuffer(ref readBuffer, length);
-                        var data = readBuffer.AsMemory(0, length);
-
-                        // Data to write to database.
-                        var compression = ContentCompressionScheme.None;
-                        var writeData = data;
-
-                        if (preCompressed)
-                        {
-                            // Compressed length from extended header.
-                            var compressedLength = BinaryPrimitives.ReadInt32LittleEndian(fileHeader.AsSpan(4, 4));
-
-                            // Log.Debug("{index:D5}: {blobLength:D8} {dataLength:D8}", idx, length, compressedLength);
-
-                            if (compressedLength > 0)
-                            {
-                                EnsureBuffer(ref compressBuffer, compressedLength);
-                                var compressedData = compressBuffer.AsMemory(0, compressedLength);
-                                await stream.ReadExactAsync(compressedData, cancel);
-
-                                // Decompress so that we can verify hash down below.
-                                // TODO: It's possible to hash while we're decompressing to avoid using a full buffer.
-
-                                swZstd.Start();
-                                var decompressedLength = decompressContext!.Decompress(data.Span, compressedData.Span);
-                                swZstd.Stop();
-
-                                if (decompressedLength != data.Length)
-                                    throw new UpdateException($"Compressed blob {i} had incorrect decompressed size!");
-
-                                // Set variables so that the database write down below uses them.
-                                compression = ContentCompressionScheme.ZStd;
-                                writeData = compressedData;
-                            }
-                            else
-                            {
-                                await stream.ReadExactAsync(data, cancel);
-                            }
-                        }
-                        else
-                        {
-                            await stream.ReadExactAsync(data, cancel);
-                        }
-
-                        swBlake.Start();
-                        CryptoGenericHashBlake2B.Hash(hash, data.Span, ReadOnlySpan<byte>.Empty);
-                        swBlake.Stop();
-
-                        // Double check hash!
-                        swSqlite.Start();
-
-                        CheckErr(sqlite3_bind_int64(stmtFindContentHash, 1, rowId));
-
-                        CheckErr(sqlite3_step(stmtFindContentHash));
-
-                        if (!sqlite3_column_blob(stmtFindContentHash, 0).SequenceEqual(hash))
-                            throw new UpdateException("Hash mismatch while downloading!");
-
-                        CheckErr(sqlite3_reset(stmtFindContentHash));
-
-                        swSqlite.Stop();
-
-                        if (!preCompressed)
-                        {
-                            // File wasn't pre-compressed. We should try to manually compress it to save space in DB.
-
-                            swZstd.Start();
-
-                            EnsureBuffer(ref compressBuffer, ZStd.CompressBound(data.Length));
-                            var compressLength = compressContext!.Compress(compressBuffer, data.Span);
-
-                            swZstd.Stop();
-
-                            // Don't bother saving compressed data if it didn't save enough space.
-                            if (compressLength + CompressionSavingsThreshold < length)
-                            {
-                                // Set variables so that the database write down below uses them.
-                                compression = ContentCompressionScheme.ZStd;
-                                writeData = compressBuffer.AsMemory(0, compressLength);
-                            }
-                        }
-
-                        swSqlite.Start();
-
-                        // UPDATE Content SET Size = @Size, Data = zeroblob(@DataSize), Compression = @Compression WHERE Id = @Id
-
-                        CheckErr(sqlite3_bind_int(stmtUpdateContent, 1, length)); // @Size
-                        CheckErr(sqlite3_bind_int(stmtUpdateContent, 2, writeData.Length)); // @DataSize
-                        CheckErr(sqlite3_bind_int(stmtUpdateContent, 3, (int) compression)); // @Compression
-                        CheckErr(sqlite3_bind_int64(stmtUpdateContent, 4, rowId)); // @Id
-
-                        CheckErr(sqlite3_step(stmtUpdateContent));
-
-                        CheckErr(sqlite3_reset(stmtUpdateContent));
-
-                        if (blob == null)
-                            blob = SqliteBlobStream.Open(con.Handle!, "main", "Content", "Data", rowId, true);
-                        else
-                            blob.Reopen(rowId);
-
-                        blob.Write(writeData.Span);
-                        swSqlite.Stop();
-
-                        // Log.Debug("Data size: {DataSize}, Size: {UncompressedLen}", writeData.Length, uncompressedLen);
-                    }
-                }
-                finally
-                {
-                    blob?.Dispose();
-                    decompressContext?.Dispose();
-                    compressContext?.Dispose();
-                    stmtFindContentHash?.Dispose();
-                    stmtUpdateContent?.Dispose();
-                }
-            }
+            BinaryPrimitives.WriteInt32LittleEndian(requestBody.AsSpan(reqI, 4), idx);
+            reqI += 4;
         }
 
+        var request = new HttpRequestMessage(HttpMethod.Post, buildInfo.ManifestDownloadUrl);
+        request.Headers.Add(
+            "X-Robust-Download-Protocol",
+            ManifestDownloadProtocolVersion.ToString(CultureInfo.InvariantCulture));
 
-        Log.Debug("ZSTD: {ZStdElapsed} ms | SQLite: {SqliteElapsed} ms | Blake2B: {Blake2BElapsed} ms",
-            swZstd.ElapsedMilliseconds,
-            swSqlite.ElapsedMilliseconds,
-            swBlake.ElapsedMilliseconds);
+        request.Content = new ByteArrayContent(requestBody);
 
-        return manifestHash;
+        Log.Debug("Starting download...");
+
+        Status = UpdateStatus.DownloadingClientUpdate;
+
+        // Send HTTP request
+
+        var response = await _http.SendZStdAsync(request, HttpCompletionOption.ResponseHeadersRead, cancel);
+        response.EnsureSuccessStatusCode();
+
+        await using var stream = await response.Content.ReadAsStreamAsync(cancel);
+
+        // Read flags header
+        var streamHeader = await stream.ReadExactAsync(4, cancel);
+        var streamFlags = (DownloadStreamHeaderFlags)BinaryPrimitives.ReadInt32LittleEndian(streamHeader);
+        var preCompressed = (streamFlags & DownloadStreamHeaderFlags.PreCompressed) != 0;
+
+        // compressContext.SetParameter(ZSTD_cParameter.ZSTD_c_nbWorkers, 4);
+        // If the stream is pre-compressed we need to decompress the blobs to verify BLAKE2B hash.
+        // If it isn't, we need to manually try re-compressing individual files to store them.
+        var compressContext = preCompressed ? null : new ZStdCCtx();
+        var decompressContext = preCompressed ? new ZStdDCtx() : null;
+
+        // Normal file header:
+        // <int32> uncompressed length
+        // When preCompressed is set, we add:
+        // <int32> compressed length
+        var fileHeader = new byte[preCompressed ? 8 : 4];
+
+        SqliteBlobStream? blob = null;
+        sqlite3_stmt? stmtFindContentHash = null;
+        sqlite3_stmt? stmtUpdateContent = null;
+        try
+        {
+            var err = sqlite3_prepare_v2(
+                con.Handle,
+                "SELECT Hash FROM Content WHERE Id = ?",
+                out stmtFindContentHash);
+            SqliteException.ThrowExceptionForRC(err, con.Handle);
+
+            err = sqlite3_prepare_v2(
+                con.Handle,
+                "UPDATE Content SET Size = @Size, Data = zeroblob(@DataSize), Compression = @Compression WHERE Id = @Id",
+                out stmtUpdateContent);
+            SqliteException.ThrowExceptionForRC(err, con.Handle);
+
+            // Buffer for storing compressed ZStd data.
+            var compressBuffer = new byte[1024];
+
+            // Buffer for storing uncompressed data.
+            var readBuffer = new byte[1024];
+
+            var hash = new byte[256 / 8];
+
+            var i = 0;
+            foreach (var (rowId, _) in toDownload)
+            {
+                // Simple loop stuff.
+                cancel.ThrowIfCancellationRequested();
+                Progress = (i++, toDownload.Count, ProgressUnit.None);
+
+
+                // Read file header.
+                await stream.ReadExactAsync(fileHeader, cancel);
+
+                var length = BinaryPrimitives.ReadInt32LittleEndian(fileHeader.AsSpan(0, 4));
+
+                EnsureBuffer(ref readBuffer, length);
+                var data = readBuffer.AsMemory(0, length);
+
+                // Data to write to database.
+                var compression = ContentCompressionScheme.None;
+                var writeData = data;
+
+                if (preCompressed)
+                {
+                    // Compressed length from extended header.
+                    var compressedLength = BinaryPrimitives.ReadInt32LittleEndian(fileHeader.AsSpan(4, 4));
+
+                    // Log.Debug("{index:D5}: {blobLength:D8} {dataLength:D8}", idx, length, compressedLength);
+
+                    if (compressedLength > 0)
+                    {
+                        EnsureBuffer(ref compressBuffer, compressedLength);
+                        var compressedData = compressBuffer.AsMemory(0, compressedLength);
+                        await stream.ReadExactAsync(compressedData, cancel);
+
+                        // Decompress so that we can verify hash down below.
+                        // TODO: It's possible to hash while we're decompressing to avoid using a full buffer.
+
+                        swZstd.Start();
+                        var decompressedLength = decompressContext!.Decompress(data.Span, compressedData.Span);
+                        swZstd.Stop();
+
+                        if (decompressedLength != data.Length)
+                            throw new UpdateException($"Compressed blob {i} had incorrect decompressed size!");
+
+                        // Set variables so that the database write down below uses them.
+                        compression = ContentCompressionScheme.ZStd;
+                        writeData = compressedData;
+                    }
+                    else
+                    {
+                        await stream.ReadExactAsync(data, cancel);
+                    }
+                }
+                else
+                {
+                    await stream.ReadExactAsync(data, cancel);
+                }
+
+                swBlake.Start();
+                CryptoGenericHashBlake2B.Hash(hash, data.Span, ReadOnlySpan<byte>.Empty);
+                swBlake.Stop();
+
+                // Double check hash!
+                swSqlite.Start();
+
+                CheckErr(sqlite3_bind_int64(stmtFindContentHash, 1, rowId));
+
+                CheckErr(sqlite3_step(stmtFindContentHash));
+
+                if (!sqlite3_column_blob(stmtFindContentHash, 0).SequenceEqual(hash))
+                    throw new UpdateException("Hash mismatch while downloading!");
+
+                CheckErr(sqlite3_reset(stmtFindContentHash));
+
+                swSqlite.Stop();
+
+                if (!preCompressed)
+                {
+                    // File wasn't pre-compressed. We should try to manually compress it to save space in DB.
+
+                    swZstd.Start();
+
+                    EnsureBuffer(ref compressBuffer, ZStd.CompressBound(data.Length));
+                    var compressLength = compressContext!.Compress(compressBuffer, data.Span);
+
+                    swZstd.Stop();
+
+                    // Don't bother saving compressed data if it didn't save enough space.
+                    if (compressLength + CompressionSavingsThreshold < length)
+                    {
+                        // Set variables so that the database write down below uses them.
+                        compression = ContentCompressionScheme.ZStd;
+                        writeData = compressBuffer.AsMemory(0, compressLength);
+                    }
+                }
+
+                swSqlite.Start();
+
+                // UPDATE Content SET Size = @Size, Data = zeroblob(@DataSize), Compression = @Compression WHERE Id = @Id
+
+                CheckErr(sqlite3_bind_int(stmtUpdateContent, 1, length)); // @Size
+                CheckErr(sqlite3_bind_int(stmtUpdateContent, 2, writeData.Length)); // @DataSize
+                CheckErr(sqlite3_bind_int(stmtUpdateContent, 3, (int)compression)); // @Compression
+                CheckErr(sqlite3_bind_int64(stmtUpdateContent, 4, rowId)); // @Id
+
+                CheckErr(sqlite3_step(stmtUpdateContent));
+
+                CheckErr(sqlite3_reset(stmtUpdateContent));
+
+                if (blob == null)
+                    blob = SqliteBlobStream.Open(con.Handle!, "main", "Content", "Data", rowId, true);
+                else
+                    blob.Reopen(rowId);
+
+                blob.Write(writeData.Span);
+                swSqlite.Stop();
+
+                // Log.Debug("Data size: {DataSize}, Size: {UncompressedLen}", writeData.Length, uncompressedLen);
+            }
+        }
+        finally
+        {
+            blob?.Dispose();
+            decompressContext?.Dispose();
+            compressContext?.Dispose();
+            stmtFindContentHash?.Dispose();
+            stmtUpdateContent?.Dispose();
+        }
 
         void CheckErr(int err) => SqliteException.ThrowExceptionForRC(err, con.Handle);
     }
@@ -1137,6 +1191,7 @@ public sealed class Updater : ReactiveObject
         CheckingEngineModules,
         DownloadingEngineVersion,
         DownloadingEngineModules,
+        FetchingClientManifest,
         DownloadingClientUpdate,
         Verifying,
         CommittingDownload,
