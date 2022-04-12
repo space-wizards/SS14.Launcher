@@ -8,6 +8,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Numerics;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
@@ -721,6 +722,7 @@ public sealed class Updater : ReactiveObject
             ManifestDownloadProtocolVersion.ToString(CultureInfo.InvariantCulture));
 
         request.Content = new ByteArrayContent(requestBody);
+        request.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
 
         Log.Debug("Starting download...");
 
