@@ -252,7 +252,7 @@ public sealed class Updater : ReactiveObject
                 "SELECT * FROM ContentVersion cv WHERE ForkId = @ForkId AND ForkVersion = @Version " +
                 "ORDER BY (SELECT ModuleVersion FROM ContentEngineDependency ced WHERE ced.VersionId = cv.Id AND ModuleName = 'Robust') = @EngineVersion " +
                 "DESC",
-                new { buildInfo.ForkId, buildInfo.Version });
+                new { buildInfo.ForkId, buildInfo.Version, buildInfo.EngineVersion });
         }
 
 
