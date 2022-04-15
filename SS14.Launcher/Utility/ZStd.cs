@@ -1,4 +1,6 @@
-﻿using System;
+using System;
+using System.Diagnostics;
+using System.Reflection;
 using System.Buffers;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -15,6 +17,56 @@ public static class ZStd
     public static int CompressBound(int length)
     {
         return (int)ZSTD_compressBound((nuint)length);
+    }
+
+    // Note that this approach is not absolutely necessary.
+    // If it fails, then there's still the system libzstd hail-mary
+    [DllImport("libdl.so.2", EntryPoint = "dlopen")]
+    private static extern IntPtr _DLOpenLinux([MarshalAs(UnmanagedType.LPUTF8Str)] string name, int flags);
+
+    // Sets up a workaround resolver for SharpZstd.Interop
+    public static void SetupResolver()
+    {
+        NativeLibrary.SetDllImportResolver(typeof(SharpZstd.Interop.Zstd).Assembly, (name, assembly, path) =>
+        {
+            if (name != "zstd")
+                return IntPtr.Zero;
+
+            IntPtr handle;
+
+            // On Linux in particular, attempt to directly load the Space Wizards zstd.so with flags to prevent symbol issues.
+            if (OperatingSystem.IsLinux())
+            {
+                // PJB found this, not me.
+                var paths = (string)AppContext.GetData("NATIVE_DLL_SEARCH_DIRECTORIES")!;
+                foreach (var p in paths.Split(':', StringSplitOptions.RemoveEmptyEntries))
+                {
+                    string v = Path.Join(p, "zstd.so");
+                    // 2: RTLD_NOW (fail-fast : better than breaking anyway, and we may still be able to use the system libzstd.so.1)
+                    // 8: RTLD_DEEPBIND
+                    // 0: RTLD_LOCAL
+                    handle = _DLOpenLinux(v, 2 | 8 | 0);
+                    if (handle != IntPtr.Zero)
+                    {
+                        return handle;
+                    }
+                }
+            }
+
+            // If we *can* load the system libzstd.so.1, we *should*.
+            if (NativeLibrary.TryLoad("libzstd.so.1", out handle))
+                return handle;
+
+            return IntPtr.Zero;
+        });
+        try {
+            CompressBound(0);
+        } catch (Exception ex) {
+            // This is also called from Loader, so no Log
+            Console.WriteLine(" -- ZStd.SetupResolver failed CompressBound(0) check!!! -- ");
+            Console.WriteLine("This implies ZStd could not be loaded on your system.");
+            Console.WriteLine($"Things are about to go VERY WRONG: {ex}");
+        }
     }
 }
 

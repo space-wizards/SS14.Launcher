@@ -73,6 +73,7 @@ internal static class Program
 
         VcRedistCheck.Check();
         LauncherPaths.CreateDirs();
+        ZStd.SetupResolver();
 
         var cfg = new DataManager();
         cfg.Load();

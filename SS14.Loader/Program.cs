@@ -8,6 +8,7 @@ using System.Runtime.InteropServices;
 using System.Runtime.Loader;
 using NSec.Cryptography;
 using Robust.LoaderApi;
+using SS14.Launcher.Utility;
 
 namespace SS14.Loader;
 
@@ -138,6 +139,8 @@ internal class Program
             Console.WriteLine("Usage: SS14.Loader <robustPath> <signature> <public key> [engineArg [engineArg...]]");
             return 1;
         }
+
+        ZStd.SetupResolver();
 
         var robustPath = args[0];
         var sig = Convert.FromHexString(args[1]);
