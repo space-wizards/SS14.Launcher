@@ -47,9 +47,7 @@ public static class ZStd
                     // 0: RTLD_LOCAL
                     handle = _DLOpenLinux(v, 2 | 8 | 0);
                     if (handle != IntPtr.Zero)
-                    {
                         return handle;
-                    }
                 }
             }
 
@@ -59,9 +57,12 @@ public static class ZStd
 
             return IntPtr.Zero;
         });
-        try {
+        try
+        {
             CompressBound(0);
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             // This is also called from Loader, so no Log
             Console.WriteLine(" -- ZStd.SetupResolver failed CompressBound(0) check!!! -- ");
             Console.WriteLine("This implies ZStd could not be loaded on your system.");
