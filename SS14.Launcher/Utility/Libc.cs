@@ -14,6 +14,6 @@ internal static class Libc
     public const int RTLD_LOCAL = 0;
     public const int RTLD_NODELETE = 0x01000;
 
-    [DllImport("libdl")]
+    [DllImport("libdl.so.2")]
     public static extern IntPtr dlopen([MarshalAs(UnmanagedType.LPUTF8Str)] string name, int flags);
 }
