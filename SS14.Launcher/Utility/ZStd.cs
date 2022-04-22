@@ -406,7 +406,7 @@ public sealed class ZStdCompressStream : Stream
             outBuf.pos = (nuint)_bufferPos;
             outBuf.dst = outPtr;
 
-            ZSTD_inBuffer inBuf;
+            ZSTD_inBuffer inBuf = default;
 
             while (true)
             {
