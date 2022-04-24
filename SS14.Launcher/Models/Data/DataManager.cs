@@ -143,6 +143,19 @@ public sealed class DataManager : ReactiveObject
         _favoriteServers.Remove(server);
     }
 
+    public void RaiseFavoriteServer(FavoriteServer server)
+    {
+        var found = _favoriteServers.Lookup(server.Address);
+        if (!found.HasValue)
+        {
+            throw new ArgumentException("Cannot raise a favorite server that isn't a favorite in the first place.");
+        }
+        // Note the long->double conversion. This conversion will lose precision in around half a million years.
+        // However, it beats betting something won't go wrong with using long in JSON.
+        found.Value.RaiseTime = ((double) DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()) / 1000;
+        _favoriteServers.AddOrUpdate(found.Value);
+    }
+
     public void AddEngineInstallation(InstalledEngineVersion version)
     {
         _engineInstallations.AddOrUpdate(version);

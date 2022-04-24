@@ -23,8 +23,22 @@
           <TextBlock VerticalAlignment="Center" Text="{Binding Name}" />
         </DockPanel>
       </Expander.Header>
-      <DockPanel>
-        <Button DockPanel.Dock="Bottom" HorizontalAlignment="Right" Margin="4"
+      <DockPanel Margin="4">
+        <!-- Raise to top button. -->
+        <Button DockPanel.Dock="Right" HorizontalAlignment="Right"
+                IsVisible="{Binding ViewedInFavoritesPane}" Classes="OpenLeft"
+                Content="Raise to top"
+                Command="{Binding FavoriteRaiseButtonPressed}" />
+        <!--
+            Two versions of the favorite/unfavorite button based on if we're in the favorites pane.
+            This is so that OpenRight is applied properly.
+        -->
+        <Button DockPanel.Dock="Right" HorizontalAlignment="Right"
+                IsVisible="{Binding ViewedInFavoritesPane}" Classes="OpenRight"
+                Content="{Binding FavoriteButtonText}"
+                Command="{Binding FavoriteButtonPressed}" />
+        <Button DockPanel.Dock="Right" HorizontalAlignment="Right"
+                IsVisible="{Binding !ViewedInFavoritesPane}"
                 Content="{Binding FavoriteButtonText}"
                 Command="{Binding FavoriteButtonPressed}" />
       </DockPanel>

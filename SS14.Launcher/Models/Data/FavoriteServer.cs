@@ -10,6 +10,7 @@ namespace SS14.Launcher.Models.Data;
 public sealed class FavoriteServer : ReactiveObject
 {
     private string? _name;
+    private double _raiseTime;
 
     // For serialization.
     public FavoriteServer()
@@ -32,4 +33,16 @@ public sealed class FavoriteServer : ReactiveObject
 
     [JsonProperty(PropertyName = "address")]
     public string Address { get; private set; } // Need private set for JSON.NET to work.
+
+    /// <summary>
+    /// Used to infer an exact ordering for servers in a simple, compatible manner.
+    /// Format is a Unix timestamp in seconds as this provides simple, fast comparison - this isn't meant to really be used as a date.
+    /// Defaults to 0, this is fine.
+    /// </summary>
+    [JsonProperty(PropertyName = "raiseTime")]
+    public double RaiseTime
+    {
+        get => _raiseTime;
+        set => this.RaiseAndSetIfChanged(ref _raiseTime, value);
+    }
 }

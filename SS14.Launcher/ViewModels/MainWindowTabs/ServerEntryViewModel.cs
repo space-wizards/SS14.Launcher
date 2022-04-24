@@ -61,6 +61,8 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
     public string FavoriteButtonText => IsFavorite ? "Remove Favorite" : "Add Favorite";
     private bool IsFavorite => _cfg.FavoriteServers.Lookup(Address).HasValue;
 
+    public bool ViewedInFavoritesPane { get; set; }
+
     public string ServerStatusString => _cacheData.Status switch
     {
         ServerStatusCode.Offline => "Unable to connect",
@@ -96,6 +98,17 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
         {
             var fav = new FavoriteServer(_cacheData.Name ?? FallbackName, Address);
             _cfg.AddFavoriteServer(fav);
+        }
+
+        _cfg.CommitConfig();
+    }
+
+    public void FavoriteRaiseButtonPressed()
+    {
+        if (IsFavorite)
+        {
+            // Usual business, raise priority
+            _cfg.RaiseFavoriteServer(_cfg.FavoriteServers.Lookup(Address).Value);
         }
 
         _cfg.CommitConfig();
