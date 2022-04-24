@@ -145,15 +145,9 @@ public sealed class DataManager : ReactiveObject
 
     public void RaiseFavoriteServer(FavoriteServer server)
     {
-        var found = _favoriteServers.Lookup(server.Address);
-        if (!found.HasValue)
-        {
-            throw new ArgumentException("Cannot raise a favorite server that isn't a favorite in the first place.");
-        }
-        // Note the long->double conversion. This conversion will lose precision in around half a million years.
-        // However, it beats betting something won't go wrong with using long in JSON.
-        found.Value.RaiseTime = ((double) DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()) / 1000;
-        _favoriteServers.AddOrUpdate(found.Value);
+        _favoriteServers.Remove(server);
+        server.RaiseTime = DateTimeOffset.UtcNow;
+        _favoriteServers.AddOrUpdate(server);
     }
 
     public void AddEngineInstallation(InstalledEngineVersion version)
@@ -258,9 +252,9 @@ public sealed class DataManager : ReactiveObject
 
         // Favorites
         _favoriteServers.AddOrUpdate(
-            sqliteConnection.Query<(string addr, string name)>(
-                    "SELECT Address,Name FROM FavoriteServer")
-                .Select(l => new FavoriteServer(l.name, l.addr)));
+            sqliteConnection.Query<(string addr, string name, DateTimeOffset raiseTime)>(
+                    "SELECT Address,Name,RaiseTime FROM FavoriteServer")
+                .Select(l => new FavoriteServer(l.name, l.addr, l.raiseTime)));
 
         // Engine installations
         _engineInstallations.AddOrUpdate(
@@ -427,14 +421,15 @@ public sealed class DataManager : ReactiveObject
         var data = new
         {
             server.Address,
+            server.RaiseTime,
             server.Name
         };
         AddDbCommand(con =>
         {
             con.Execute(reason switch
                 {
-                    ChangeReason.Add => "INSERT INTO FavoriteServer VALUES (@Address, @Name)",
-                    ChangeReason.Update => "UPDATE FavoriteServer SET Name = @Name WHERE Address = @Address",
+                    ChangeReason.Add => "INSERT INTO FavoriteServer VALUES (@Address, @Name, @RaiseTime)",
+                    ChangeReason.Update => "UPDATE FavoriteServer SET Name = @Name, RaiseTime = @RaiseTime WHERE Address = @Address",
                     ChangeReason.Remove => "DELETE FROM FavoriteServer WHERE Address = @Address",
                     _ => throw new ArgumentOutOfRangeException(nameof(reason), reason, null)
                 },
