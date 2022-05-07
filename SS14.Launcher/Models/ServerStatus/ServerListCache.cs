@@ -26,8 +26,8 @@ public sealed class ServerListCache : ReactiveObject
 
     public readonly ObservableCollection<ServerStatusDataWithFallbackName> AllServers = new();
 
-    [Reactive] public RefreshListStatus Status { get; private set; } = RefreshListStatus.NotUpdated;
-    public event Action? StatusUpdated;
+    [Reactive]
+    public RefreshListStatus Status { get; private set; } = RefreshListStatus.NotUpdated;
 
     public ServerListCache()
     {
@@ -41,9 +41,7 @@ public sealed class ServerListCache : ReactiveObject
     {
         if (Status == RefreshListStatus.NotUpdated)
         {
-            _refreshCancel?.Cancel();
-            _refreshCancel = new CancellationTokenSource();
-            RefreshServerList(_refreshCancel.Token);
+            RequestRefresh();
         }
     }
 
@@ -62,7 +60,6 @@ public sealed class ServerListCache : ReactiveObject
     {
         AllServers.Clear();
         Status = RefreshListStatus.UpdatingMaster;
-        StatusUpdated?.Invoke();
 
         try
         {
@@ -73,7 +70,6 @@ public sealed class ServerListCache : ReactiveObject
             var entries = await response.Content.AsJson<ServerListEntry[]>();
 
             Status = RefreshListStatus.Updating;
-            StatusUpdated?.Invoke();
 
             await Parallel.ForEachAsync(entries, new ParallelOptions
             {
@@ -107,7 +103,6 @@ public sealed class ServerListCache : ReactiveObject
             Log.Error(e, "Failed to fetch server list due to exception");
             Status = RefreshListStatus.Error;
         }
-        StatusUpdated?.Invoke();
     }
 }
 

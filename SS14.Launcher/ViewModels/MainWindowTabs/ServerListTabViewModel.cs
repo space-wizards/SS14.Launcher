@@ -26,20 +26,7 @@ public class ServerListTabViewModel : MainWindowTabViewModel
     private List<ServerEntryViewModel> _allServers => _serverListCache.AllServers.Select(
         x => new ServerEntryViewModel(_windowVm, x.Data) { FallbackName = x.FallbackName ?? "" }
     ).ToList();
-    private RefreshListStatus _status = RefreshListStatus.NotUpdated;
     private string? _searchString;
-
-    private RefreshListStatus Status
-    {
-        get => _status;
-        set
-        {
-            this.RaiseAndSetIfChanged(ref _status, value);
-            this.RaisePropertyChanged(nameof(ListText));
-            this.RaisePropertyChanged(nameof(ListTextVisible));
-            this.RaisePropertyChanged(nameof(SpinnerVisible));
-        }
-    }
 
     public override string Name => "Servers";
 
@@ -54,26 +41,27 @@ public class ServerListTabViewModel : MainWindowTabViewModel
         }
     }
 
-    public bool ListTextVisible => Status != RefreshListStatus.Updated;
-    public bool SpinnerVisible => Status < RefreshListStatus.Updated;
+    public bool ListTextVisible => _serverListCache.Status != RefreshListStatus.Updated;
+    public bool SpinnerVisible => _serverListCache.Status < RefreshListStatus.Updated;
 
     public string ListText
     {
         get
         {
-            if (Status == RefreshListStatus.Error)
+            var status = _serverListCache.Status;
+            if (status == RefreshListStatus.Error)
                 return "There was an error fetching the master server list.";
 
-            if (Status == RefreshListStatus.UpdatingMaster)
+            if (status == RefreshListStatus.UpdatingMaster)
                 return "Fetching master server list...";
 
             if (SearchedServers.Count == 0 && _allServers.Count != 0)
                 return "No servers match your search.";
 
-            if (Status == RefreshListStatus.Updating)
+            if (status == RefreshListStatus.Updating)
                 return "Discovering servers...";
 
-            if (Status == RefreshListStatus.NotUpdated)
+            if (status == RefreshListStatus.NotUpdated)
                 return "";
 
             if (_allServers.Count == 0)
@@ -88,8 +76,19 @@ public class ServerListTabViewModel : MainWindowTabViewModel
         _windowVm = windowVm;
         _http = Locator.Current.GetRequiredService<HttpClient>();
         _serverListCache = Locator.Current.GetRequiredService<ServerListCache>();
+
         _serverListCache.AllServers.CollectionChanged += (_, _) => UpdateSearchedList();
-        _serverListCache.StatusUpdated += () => Status = _serverListCache.Status;
+        _serverListCache.PropertyChanged += (_, args) =>
+        {
+            switch (args.PropertyName)
+            {
+                case nameof(ServerListCache.Status):
+                    this.RaisePropertyChanged(nameof(ListText));
+                    this.RaisePropertyChanged(nameof(ListTextVisible));
+                    this.RaisePropertyChanged(nameof(SpinnerVisible));
+                    break;
+            }
+        };
     }
 
     public override void Selected()
