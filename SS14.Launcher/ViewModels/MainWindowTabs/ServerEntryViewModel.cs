@@ -48,6 +48,12 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
         Favorite = favorite;
     }
 
+    public ServerEntryViewModel(MainWindowViewModel windowVm, ServerStatusDataWithFallbackName ssdfb)
+        : this(windowVm, ssdfb.Data)
+    {
+        FallbackName = ssdfb.FallbackName ?? "";
+    }
+
     public void ConnectPressed()
     {
         ConnectingViewModel.StartConnect(_windowVm, Address);

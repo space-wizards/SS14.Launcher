@@ -24,7 +24,7 @@ public class ServerListTabViewModel : MainWindowTabViewModel
     public ObservableCollection<ServerEntryViewModel> SearchedServers { get; } = new();
 
     private List<ServerEntryViewModel> _allServers => _serverListCache.AllServers.Select(
-        x => new ServerEntryViewModel(_windowVm, x.Data) { FallbackName = x.FallbackName ?? "" }
+        x => new ServerEntryViewModel(_windowVm, x)
     ).ToList();
     private string? _searchString;
 
