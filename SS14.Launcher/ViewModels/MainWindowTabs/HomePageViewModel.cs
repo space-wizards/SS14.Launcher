@@ -44,7 +44,7 @@ public class HomePageViewModel : MainWindowTabViewModel
             .Subscribe(_ =>
             {
                 FavoritesEmpty = favorites.Count == 0;
-                ShowSuggestions = favorites.Count <= 4;
+                ShowSuggestions = favorites.Count <= 3;
             });
 
         Favorites = favorites;
