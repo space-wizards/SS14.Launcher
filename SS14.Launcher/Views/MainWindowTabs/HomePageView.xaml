@@ -32,11 +32,7 @@
       </Panel.Background>
       <ScrollViewer MinHeight="150" HorizontalScrollBarVisibility="Disabled">
         <Panel>
-          <DockPanel IsVisible="{Binding !FavoritesEmpty}">
-            <ItemsControl DockPanel.Dock="Top"
-                          Items="{Binding Favorites}"
-                          Classes="ServerList" />
-
+          <DockPanel IsVisible="{Binding !FavoritesEmpty}" LastChildFill="True">
             <StackPanel DockPanel.Dock="Bottom" IsVisible="{Binding ShowSuggestions}"
                         Orientation="Vertical" VerticalAlignment="Center">
               <TextBlock Text="There are other servers you can join..." HorizontalAlignment="Center"
@@ -47,6 +43,8 @@
               <Button Content="Go to the servers tab" Command="{Binding MainWindowViewModel.SelectTabServers}"
                       HorizontalAlignment="Center" />
             </StackPanel>
+            <ItemsControl Items="{Binding Favorites}"
+                          Classes="ServerList" />
           </DockPanel>
           <StackPanel IsVisible="{Binding FavoritesEmpty}"
                       Orientation="Vertical" VerticalAlignment="Center">
