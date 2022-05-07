@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Net.Http;
@@ -18,11 +19,14 @@ public class ServerListTabViewModel : MainWindowTabViewModel
 {
     private readonly MainWindowViewModel _windowVm;
     private readonly HttpClient _http;
+    private readonly ServerListCache _serverListCache;
     private CancellationTokenSource? _refreshCancel;
 
     public ObservableCollection<ServerEntryViewModel> SearchedServers { get; } = new();
 
-    private readonly List<ServerEntryViewModel> _allServers = new();
+    private List<ServerEntryViewModel> _allServers => _serverListCache.AllServers.Select(
+        x => new ServerEntryViewModel(_windowVm, x.Data) { FallbackName = x.FallbackName ?? "" }
+    ).ToList();
     private RefreshListStatus _status = RefreshListStatus.NotUpdated;
     private string? _searchString;
 
@@ -84,6 +88,9 @@ public class ServerListTabViewModel : MainWindowTabViewModel
     {
         _windowVm = windowVm;
         _http = Locator.Current.GetRequiredService<HttpClient>();
+        _serverListCache = Locator.Current.GetRequiredService<ServerListCache>();
+        _serverListCache.AllServersUpdated += UpdateSearchedList;
+        _serverListCache.StatusUpdated += () => Status = _serverListCache.Status;
     }
 
     public override void Selected()
@@ -107,52 +114,7 @@ public class ServerListTabViewModel : MainWindowTabViewModel
 
     private async void RefreshServerList(CancellationToken cancel)
     {
-        _allServers.Clear();
-        Status = RefreshListStatus.UpdatingMaster;
-
-        try
-        {
-            using var response = await _http.GetAsync(ConfigConstants.HubUrl + "api/servers", cancel);
-
-            response.EnsureSuccessStatusCode();
-
-            var entries = await response.Content.AsJson<ServerListEntry[]>();
-
-            Status = RefreshListStatus.Updating;
-
-            await Parallel.ForEachAsync(entries, new ParallelOptions
-            {
-                MaxDegreeOfParallelism = 20,
-                CancellationToken = cancel
-            }, async (entry, token) =>
-            {
-                var status = new ServerStatusData(entry.Address);
-                await ServerStatusCache.UpdateStatusFor(status, _http, token);
-
-                if (status.Status == ServerStatusCode.Offline)
-                    return;
-
-                Dispatcher.UIThread.Post(() =>
-                {
-                    if (!cancel.IsCancellationRequested)
-                    {
-                        // Log.Information("{Name}: {Address}", status.Name, status.Address);
-                        _allServers.Add(new ServerEntryViewModel(_windowVm, status) { FallbackName = entry.Name ?? "" });
-                        UpdateSearchedList();
-                    }
-                });
-            });
-
-            Status = RefreshListStatus.Updated;
-        }
-        catch (OperationCanceledException)
-        {
-        }
-        catch (Exception e)
-        {
-            Log.Error(e, "Failed to fetch server list due to exception");
-            Status = RefreshListStatus.Error;
-        }
+        await _serverListCache.RefreshServerList(cancel);
     }
 
     private void UpdateSearchedList()
@@ -182,39 +144,5 @@ public class ServerListTabViewModel : MainWindowTabViewModel
 
         return vm.CacheData.Name != null &&
                vm.CacheData.Name.Contains(SearchString, StringComparison.CurrentCultureIgnoreCase);
-    }
-
-    private sealed class ServerListEntry
-    {
-        public string Address { get; set; } = default!;
-        public string Name { get; set; } = default!;
-    }
-
-    private enum RefreshListStatus
-    {
-        /// <summary>
-        /// Hasn't started updating yet?
-        /// </summary>
-        NotUpdated,
-
-        /// <summary>
-        /// Fetching master server list.
-        /// </summary>
-        UpdatingMaster,
-
-        /// <summary>
-        /// Fetched master server list and currently fetching information from master servers.
-        /// </summary>
-        Updating,
-
-        /// <summary>
-        /// Fetched information from ALL servers from the hub.
-        /// </summary>
-        Updated,
-
-        /// <summary>
-        /// An error occured.
-        /// </summary>
-        Error
     }
 }
