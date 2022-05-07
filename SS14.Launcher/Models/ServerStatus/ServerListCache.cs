@@ -20,6 +20,9 @@ namespace SS14.Launcher.Models.ServerStatus;
 public sealed class ServerListCache : ReactiveObject
 {
     private readonly HttpClient _http;
+
+    private CancellationTokenSource? _refreshCancel;
+
     public readonly List<ServerStatusDataWithFallbackName> AllServers = new();
     public event Action? AllServersUpdated;
 
@@ -29,6 +32,31 @@ public sealed class ServerListCache : ReactiveObject
     public ServerListCache()
     {
         _http = Locator.Current.GetRequiredService<HttpClient>();
+    }
+
+    /// <summary>
+    /// This function requests the initial update from the server if one hasn't already been requested.
+    /// </summary>
+    public void RequestInitialUpdate()
+    {
+        if (Status == RefreshListStatus.NotUpdated)
+        {
+            _refreshCancel?.Cancel();
+            _refreshCancel = new CancellationTokenSource();
+            RefreshServerList(_refreshCancel.Token);
+        }
+    }
+
+    /// <summary>
+    /// This function performs a refresh.
+    /// </summary>
+    public void RequestRefresh()
+    {
+        _refreshCancel?.Cancel();
+        AllServers.Clear();
+        AllServersUpdated?.Invoke();
+        _refreshCancel = new CancellationTokenSource();
+        RefreshServerList(_refreshCancel.Token);
     }
 
     public async Task RefreshServerList(CancellationToken cancel)

@@ -20,7 +20,6 @@ public class ServerListTabViewModel : MainWindowTabViewModel
     private readonly MainWindowViewModel _windowVm;
     private readonly HttpClient _http;
     private readonly ServerListCache _serverListCache;
-    private CancellationTokenSource? _refreshCancel;
 
     public ObservableCollection<ServerEntryViewModel> SearchedServers { get; } = new();
 
@@ -95,26 +94,12 @@ public class ServerListTabViewModel : MainWindowTabViewModel
 
     public override void Selected()
     {
-        if (Status == RefreshListStatus.NotUpdated)
-        {
-            _refreshCancel?.Cancel();
-            _refreshCancel = new CancellationTokenSource();
-            RefreshServerList(_refreshCancel.Token);
-        }
+        _serverListCache.RequestInitialUpdate();
     }
 
     public void RefreshPressed()
     {
-        _refreshCancel?.Cancel();
-        _allServers.Clear();
-        SearchedServers.Clear();
-        _refreshCancel = new CancellationTokenSource();
-        RefreshServerList(_refreshCancel.Token);
-    }
-
-    private async void RefreshServerList(CancellationToken cancel)
-    {
-        await _serverListCache.RefreshServerList(cancel);
+        _serverListCache.RequestRefresh();
     }
 
     private void UpdateSearchedList()
