@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Net.Http;
 using System.Threading;
@@ -23,8 +24,7 @@ public sealed class ServerListCache : ReactiveObject
 
     private CancellationTokenSource? _refreshCancel;
 
-    public readonly List<ServerStatusDataWithFallbackName> AllServers = new();
-    public event Action? AllServersUpdated;
+    public readonly ObservableCollection<ServerStatusDataWithFallbackName> AllServers = new();
 
     [Reactive] public RefreshListStatus Status { get; private set; } = RefreshListStatus.NotUpdated;
     public event Action? StatusUpdated;
@@ -54,12 +54,11 @@ public sealed class ServerListCache : ReactiveObject
     {
         _refreshCancel?.Cancel();
         AllServers.Clear();
-        AllServersUpdated?.Invoke();
         _refreshCancel = new CancellationTokenSource();
         RefreshServerList(_refreshCancel.Token);
     }
 
-    public async Task RefreshServerList(CancellationToken cancel)
+    public async void RefreshServerList(CancellationToken cancel)
     {
         AllServers.Clear();
         Status = RefreshListStatus.UpdatingMaster;
@@ -94,7 +93,6 @@ public sealed class ServerListCache : ReactiveObject
                     {
                         // Log.Information("{Name}: {Address}", status.Name, status.Address);
                         AllServers.Add(new ServerStatusDataWithFallbackName(status, entry.Name));
-                        AllServersUpdated?.Invoke();
                     }
                 });
             });

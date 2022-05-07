@@ -88,7 +88,7 @@ public class ServerListTabViewModel : MainWindowTabViewModel
         _windowVm = windowVm;
         _http = Locator.Current.GetRequiredService<HttpClient>();
         _serverListCache = Locator.Current.GetRequiredService<ServerListCache>();
-        _serverListCache.AllServersUpdated += UpdateSearchedList;
+        _serverListCache.AllServers.CollectionChanged += (_, _) => UpdateSearchedList();
         _serverListCache.StatusUpdated += () => Status = _serverListCache.Status;
     }
 
