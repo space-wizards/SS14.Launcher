@@ -38,7 +38,11 @@ public class HomePageViewModel : MainWindowTabViewModel
             })
             .Sort(Comparer<ServerEntryViewModel>.Create((a, b) => string.Compare(a.Name, b.Name, StringComparison.CurrentCultureIgnoreCase)))
             .Bind(out var favorites)
-            .Subscribe(_ => FavoritesEmpty = favorites.Count == 0);
+            .Subscribe(_ =>
+            {
+                FavoritesEmpty = favorites.Count == 0;
+                ShowSuggestions = favorites.Count <= 4;
+            });
 
         Favorites = favorites;
     }
@@ -46,6 +50,7 @@ public class HomePageViewModel : MainWindowTabViewModel
     public ReadOnlyObservableCollection<ServerEntryViewModel> Favorites { get; }
 
     [Reactive] public bool FavoritesEmpty { get; private set; } = true;
+    [Reactive] public bool ShowSuggestions { get; private set; } = true;
 
     public override string Name => "Home";
     public Control? Control { get; set; }
