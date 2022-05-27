@@ -10,6 +10,7 @@ namespace SS14.Launcher.Models.Data;
 public sealed class FavoriteServer : ReactiveObject
 {
     private string? _name;
+    private DateTimeOffset _raiseTime;
 
     // For serialization.
     public FavoriteServer()
@@ -23,6 +24,13 @@ public sealed class FavoriteServer : ReactiveObject
         Address = address;
     }
 
+    public FavoriteServer(string? name, string address, DateTimeOffset raiseTime)
+    {
+        Name = name;
+        Address = address;
+        RaiseTime = raiseTime;
+    }
+
     [JsonProperty(PropertyName = "name")]
     public string? Name
     {
@@ -32,4 +40,15 @@ public sealed class FavoriteServer : ReactiveObject
 
     [JsonProperty(PropertyName = "address")]
     public string Address { get; private set; } // Need private set for JSON.NET to work.
+
+    /// <summary>
+    /// Used to infer an exact ordering for servers in a simple, compatible manner.
+    /// Defaults to 0, this is fine.
+    /// This isn't saved in JSON because the launcher apparently doesn't use JSON for these anymore.
+    /// </summary>
+    public DateTimeOffset RaiseTime
+    {
+        get => _raiseTime;
+        set => this.RaiseAndSetIfChanged(ref _raiseTime, value);
+    }
 }

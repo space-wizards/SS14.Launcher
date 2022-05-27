@@ -143,6 +143,13 @@ public sealed class DataManager : ReactiveObject
         _favoriteServers.Remove(server);
     }
 
+    public void RaiseFavoriteServer(FavoriteServer server)
+    {
+        _favoriteServers.Remove(server);
+        server.RaiseTime = DateTimeOffset.UtcNow;
+        _favoriteServers.AddOrUpdate(server);
+    }
+
     public void AddEngineInstallation(InstalledEngineVersion version)
     {
         _engineInstallations.AddOrUpdate(version);
@@ -245,9 +252,9 @@ public sealed class DataManager : ReactiveObject
 
         // Favorites
         _favoriteServers.AddOrUpdate(
-            sqliteConnection.Query<(string addr, string name)>(
-                    "SELECT Address,Name FROM FavoriteServer")
-                .Select(l => new FavoriteServer(l.name, l.addr)));
+            sqliteConnection.Query<(string addr, string name, DateTimeOffset raiseTime)>(
+                    "SELECT Address,Name,RaiseTime FROM FavoriteServer")
+                .Select(l => new FavoriteServer(l.name, l.addr, l.raiseTime)));
 
         // Engine installations
         _engineInstallations.AddOrUpdate(
@@ -414,14 +421,15 @@ public sealed class DataManager : ReactiveObject
         var data = new
         {
             server.Address,
+            server.RaiseTime,
             server.Name
         };
         AddDbCommand(con =>
         {
             con.Execute(reason switch
                 {
-                    ChangeReason.Add => "INSERT INTO FavoriteServer VALUES (@Address, @Name)",
-                    ChangeReason.Update => "UPDATE FavoriteServer SET Name = @Name WHERE Address = @Address",
+                    ChangeReason.Add => "INSERT INTO FavoriteServer VALUES (@Address, @Name, @RaiseTime)",
+                    ChangeReason.Update => "UPDATE FavoriteServer SET Name = @Name, RaiseTime = @RaiseTime WHERE Address = @Address",
                     ChangeReason.Remove => "DELETE FROM FavoriteServer WHERE Address = @Address",
                     _ => throw new ArgumentOutOfRangeException(nameof(reason), reason, null)
                 },
