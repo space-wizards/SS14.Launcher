@@ -72,9 +72,7 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
     public string ServerStatusString => _cacheData.Status switch
     {
         ServerStatusCode.Offline => "Unable to connect",
-        ServerStatusCode.Online => _cacheData.PlayerCount == 1
-            ? $"Online: {_cacheData.PlayerCount} player"
-            : $"Online: {_cacheData.PlayerCount} players",
+        ServerStatusCode.Online => $"Online: {_cacheData.PlayerCount} / {_cacheData.SoftMaxPlayerCount} players",
         ServerStatusCode.FetchingStatus => "Fetching status...",
         _ => throw new NotSupportedException()
     };

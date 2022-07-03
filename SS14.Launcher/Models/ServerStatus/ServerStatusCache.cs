@@ -113,6 +113,7 @@ public sealed class ServerStatusCache
             data.Status = ServerStatusCode.Online;
             data.Name = status.Name;
             data.PlayerCount = status.PlayerCount;
+            data.SoftMaxPlayerCount = status.SoftMaxPlayerCount;
         }
         catch (OperationCanceledException)
         {
@@ -153,6 +154,9 @@ public sealed class ServerStatusCache
 
         [JsonProperty(PropertyName = "players")]
         public int PlayerCount { get; set; }
+
+        [JsonProperty(PropertyName = "soft_max_players")]
+        public int SoftMaxPlayerCount { get; set; }
     }
 
     private sealed class CacheReg

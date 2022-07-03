@@ -8,6 +8,7 @@ public sealed class ServerStatusData : ObservableObject, IServerStatusData
     private string? _name;
     private TimeSpan? _ping;
     private int _playerCount;
+    private int _softMaxPlayerCount;
     private ServerStatusCode _status = ServerStatusCode.FetchingStatus;
 
     public ServerStatusData(string address)
@@ -41,5 +42,11 @@ public sealed class ServerStatusData : ObservableObject, IServerStatusData
     {
         get => _playerCount;
         set => SetProperty(ref _playerCount, value);
+    }
+
+    public int SoftMaxPlayerCount
+    {
+        get => _softMaxPlayerCount;
+        set => SetProperty(ref _softMaxPlayerCount, value);
     }
 }
