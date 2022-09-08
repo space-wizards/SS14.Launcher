@@ -4,7 +4,9 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- Launcher-loader shared stuff -->
-    <PackageVersion Include="Microsoft.Data.Sqlite" Version="7.0.4"/>
+    <PackageVersion Include="Microsoft.Data.Sqlite.Core" Version="7.0.4" />
+    <PackageVersion Include="SQLitePCLRaw.bundle_e_sqlite3" Version="2.1.4" Condition="'$(UseSystemSqlite)' != 'True'" />
+    <PackageVersion Include="SQLitePCLRaw.provider.sqlite3" Version="2.1.4" Condition="'$(UseSystemSqlite)' == 'True'" />
     <PackageVersion Include="NSec.Cryptography" Version="22.4.0"/>
     <PackageVersion Include="SharpZstd.Interop" Version="1.5.2-beta2"/>
     <PackageVersion Include="JetBrains.Annotations" Version="2023.2.0-eap3" />

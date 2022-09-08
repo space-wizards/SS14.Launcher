@@ -1,3 +1,4 @@
+using Microsoft.Data.Sqlite;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -41,6 +42,9 @@ internal static class Program
         Console.OutputEncoding = Encoding.UTF8;
 #endif
 
+#if USE_SYSTEM_SQLITE
+        SQLitePCL.raw.SetProvider(new SQLitePCL.SQLite3Provider_sqlite3());
+#endif
         var msgr = new LauncherMessaging();
         Locator.CurrentMutable.RegisterConstant(msgr);
 
