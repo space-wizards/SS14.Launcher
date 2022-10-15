@@ -30,10 +30,10 @@
     <Compile Remove="Models\ContentManagement\ZStdDecompressStream.cs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Avalonia" Version="0.10.13" />
-    <PackageReference Include="Avalonia.Desktop" Version="0.10.13" />
-    <PackageReference Include="Avalonia.ReactiveUI" Version="0.10.13" />
-    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="0.10.13" />
+    <PackageReference Include="Avalonia" Version="0.10.10" />
+    <PackageReference Include="Avalonia.Desktop" Version="0.10.10" />
+    <PackageReference Include="Avalonia.ReactiveUI" Version="0.10.10" />
+    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="0.10.10" />
     <PackageReference Include="CodeHollow.FeedReader" Version="1.2.1" />
     <PackageReference Include="Dapper" Version="2.0.123" />
     <PackageReference Include="DynamicData" Version="7.4.9" />
