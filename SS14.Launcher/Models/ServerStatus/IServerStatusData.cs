@@ -17,6 +17,11 @@ public interface IServerStatusData : INotifyPropertyChanged
     /// </summary>
     string? Name { get; set; }
 
+    /// <summary>
+    ///     Fork ID the server is running.
+    /// </summary>
+    string? ForkID { get; set; }
+
     ServerStatusCode Status { get; set; }
     int PlayerCount { get; set; }
 }

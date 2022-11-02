@@ -10,6 +10,7 @@ namespace SS14.Launcher.Models.Data;
 public sealed class FavoriteServer : ReactiveObject
 {
     private string? _name;
+    private string? _forkID;
     private DateTimeOffset _raiseTime;
 
     // For serialization.
@@ -21,6 +22,13 @@ public sealed class FavoriteServer : ReactiveObject
     public FavoriteServer(string? name, string address)
     {
         Name = name;
+        Address = address;
+    }
+
+    public FavoriteServer(string? name, string forkID, string address)
+    {
+        Name = name;
+        ForkID = forkID;
         Address = address;
     }
 
@@ -36,6 +44,13 @@ public sealed class FavoriteServer : ReactiveObject
     {
         get => _name;
         set => this.RaiseAndSetIfChanged(ref _name, value);
+    }
+
+    [JsonProperty(PropertyName = "fork_id")]
+    public string? ForkID
+    {
+        get => _forkID;
+        set => this.RaiseAndSetIfChanged(ref _forkID, value);
     }
 
     [JsonProperty(PropertyName = "address")]

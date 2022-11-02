@@ -21,6 +21,7 @@
                      Margin="10, 0" />
           <!-- TODO: Enable text trimming here when Avalonia 0.10 is out of preview and we switch to it. -->
           <TextBlock VerticalAlignment="Center" Text="{Binding Name}" />
+          <TextBlock VerticalAlignment="Center" TextAlignment="Right" Text="{Binding ForkID}" />
         </DockPanel>
       </Expander.Header>
       <DockPanel Margin="4">

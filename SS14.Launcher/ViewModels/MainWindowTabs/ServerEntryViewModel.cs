@@ -15,6 +15,7 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
     private readonly MainWindowViewModel _windowVm;
     private string Address => _cacheData.Address;
     private string _fallbackName = string.Empty;
+    private string _fallbackForkID = "nyano";
 
     public ServerEntryViewModel(MainWindowViewModel windowVm, ServerStatusData cacheData)
     {
@@ -37,6 +38,10 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
 
                 case nameof(IServerStatusData.Name):
                     OnPropertyChanged(nameof(Name));
+                    break;
+
+                case nameof(IServerStatusData.ForkID):
+                    OnPropertyChanged(nameof(ForkID));
                     break;
             }
         };
@@ -64,6 +69,7 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
     public bool IsExpanded { get; set; }
 
     public string Name => Favorite?.Name ?? _cacheData.Name ?? _fallbackName;
+    public string ForkID => "Game: " + (_cacheData.ForkID ?? _fallbackForkID);
     public string FavoriteButtonText => IsFavorite ? "Remove Favorite" : "Add Favorite";
     private bool IsFavorite => _cfg.FavoriteServers.Lookup(Address).HasValue;
 
