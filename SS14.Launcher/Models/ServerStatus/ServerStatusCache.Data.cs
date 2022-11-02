@@ -6,6 +6,7 @@ namespace SS14.Launcher.Models.ServerStatus;
 public sealed class ServerStatusData : ObservableObject, IServerStatusData
 {
     private string? _name;
+    private string? _forkID;
     private TimeSpan? _ping;
     private int _playerCount;
     private int _softMaxPlayerCount;
@@ -22,6 +23,12 @@ public sealed class ServerStatusData : ObservableObject, IServerStatusData
     {
         get => _name;
         set => SetProperty(ref _name, value);
+    }
+
+    public string? ForkID
+    {
+        get => _forkID;
+        set => SetProperty(ref _forkID, value);
     }
 
     // BUG: This ping stat is completely wrong currently.

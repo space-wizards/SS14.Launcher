@@ -112,6 +112,7 @@ public sealed class ServerStatusCache
 
             data.Status = ServerStatusCode.Online;
             data.Name = status.Name;
+            data.ForkID = status.ForkID;
             data.PlayerCount = status.PlayerCount;
             data.SoftMaxPlayerCount = status.SoftMaxPlayerCount;
         }
@@ -151,6 +152,7 @@ public sealed class ServerStatusCache
     private sealed class ServerStatus
     {
         [JsonProperty(PropertyName = "name")] public string? Name { get; set; }
+        [JsonProperty(PropertyName = "fork_id")] public string? ForkID { get; set; }
 
         [JsonProperty(PropertyName = "players")]
         public int PlayerCount { get; set; }
