@@ -4,22 +4,21 @@ using SS14.Launcher.Models.Logins;
 
 namespace SS14.Launcher.ViewModels.Login;
 
-public class ExpiredLoginViewModel : BaseLoginViewModel, IErrorOverlayOwner
+public class ExpiredLoginViewModel : BaseLoginViewModel
 {
     private readonly DataManager _cfg;
-    private readonly MainWindowLoginViewModel _parentVm;
     private readonly AuthApi _authApi;
     private readonly LoginManager _loginMgr;
 
     public ExpiredLoginViewModel(
-        DataManager cfg,
         MainWindowLoginViewModel parentVm,
+        DataManager cfg,
         AuthApi authApi,
         LoginManager loginMgr,
         LoggedInAccount account)
+    : base(parentVm)
     {
         _cfg = cfg;
-        _parentVm = parentVm;
         _authApi = authApi;
         _loginMgr = loginMgr;
         Account = account;
@@ -28,19 +27,18 @@ public class ExpiredLoginViewModel : BaseLoginViewModel, IErrorOverlayOwner
     [Reactive] public string EditingPassword { get; set; } = "";
     public LoggedInAccount Account { get; }
 
-    public void OverlayOk()
-    {
-        OverlayControl = null;
-    }
-
     public async void OnLogInButtonPressed()
     {
+        if (Busy)
+            return;
+
         Busy = true;
         try
         {
-            var resp = await _authApi.AuthenticateAsync(Account.UserId, EditingPassword);
+            var request = new AuthApi.AuthenticateRequest(Account.UserId, EditingPassword);
+            var resp = await _authApi.AuthenticateAsync(request);
 
-            await LoginViewModel.DoLogin(this, resp, _loginMgr, _authApi);
+            await LoginViewModel.DoLogin(this, request, resp, _loginMgr, _authApi);
 
             _cfg.CommitConfig();
         }
@@ -55,6 +53,6 @@ public class ExpiredLoginViewModel : BaseLoginViewModel, IErrorOverlayOwner
         _cfg.RemoveLogin(Account.LoginInfo);
         _cfg.CommitConfig();
 
-        _parentVm.SwitchToLogin();
+        ParentVM.SwitchToLogin();
     }
 }

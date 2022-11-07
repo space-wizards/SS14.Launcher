@@ -2,8 +2,10 @@ using System;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Net.Http.Json;
 using System.Runtime.Serialization;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Serilog;
 using Splat;
@@ -22,40 +24,18 @@ public sealed class AuthApi
         _httpClient = Locator.Current.GetRequiredService<HttpClient>();
     }
 
-    public Task<AuthenticateResult> AuthenticateAsync(Guid userId, string password)
-    {
-        var request = new AuthenticateRequest
-        {
-            UserId = userId,
-            Password = password
-        };
-
-        return AuthenticateImpl(request);
-    }
-
-    public Task<AuthenticateResult> AuthenticateAsync(string username, string password)
-    {
-        var request = new AuthenticateRequest
-        {
-            Username = username,
-            Password = password
-        };
-
-        return AuthenticateImpl(request);
-    }
-
-    private async Task<AuthenticateResult> AuthenticateImpl(AuthenticateRequest request)
+    public async Task<AuthenticateResult> AuthenticateAsync(AuthenticateRequest request)
     {
         try
         {
-            const string authUrl = ConfigConstants.AuthUrl + "api/auth/authenticate";
+            var authUrl = ConfigConstants.AuthUrl + "api/auth/authenticate";
 
-            using var resp = await _httpClient.PostAsync(authUrl, request);
+            using var resp = await _httpClient.PostAsJsonAsync(authUrl, request);
 
             if (resp.IsSuccessStatusCode)
             {
                 var respJson = await resp.Content.AsJson<AuthenticateResponse>();
-                var token = new LoginToken(respJson.Token, DateTimeOffset.Parse(respJson.ExpireTime));
+                var token = new LoginToken(respJson.Token, respJson.ExpireTime);
                 return new AuthenticateResult(new LoginInfo
                 {
                     UserId = respJson.UserId,
@@ -68,23 +48,29 @@ public sealed class AuthApi
             {
                 // Login failure.
                 var respJson = await resp.Content.AsJson<AuthenticateDenyResponse>();
-                return new AuthenticateResult(respJson.Errors);
+                return new AuthenticateResult(respJson.Errors, respJson.Code);
             }
 
             Log.Error("Server returned unexpected HTTP status code: {responseCode}", resp.StatusCode);
             Log.Debug("Response for error:\n{response}\n{content}", resp, await resp.Content.ReadAsStringAsync());
             // Unknown error? uh oh.
-            return new AuthenticateResult(new[] {"Server returned unknown error"});
+            return new AuthenticateResult(
+                new[] { "Server returned unknown error" },
+                AuthenticateDenyResponseCode.UnknownError);
         }
         catch (JsonException e)
         {
             Log.Error(e, "JsonException in AuthenticateAsync");
-            return new AuthenticateResult(new[] {"Server sent invalid response"});
+            return new AuthenticateResult(
+                new[] { "Server sent invalid response" },
+                AuthenticateDenyResponseCode.UnknownError);
         }
         catch (HttpRequestException httpE)
         {
             Log.Error(httpE, "HttpRequestException in AuthenticateAsync");
-            return new AuthenticateResult(new[] {$"Connection error to authentication server: {httpE.Message}"});
+            return new AuthenticateResult(
+                new[] { $"Connection error to authentication server: {httpE.Message}" },
+                AuthenticateDenyResponseCode.UnknownError);
         }
     }
 
@@ -92,16 +78,11 @@ public sealed class AuthApi
     {
         try
         {
-            var request = new RegisterRequest
-            {
-                Username = username,
-                Email = email,
-                Password = password
-            };
+            var request = new RegisterRequest(username, email, password);
 
-            const string authUrl = ConfigConstants.AuthUrl + "api/auth/register";
+            var authUrl = ConfigConstants.AuthUrl + "api/auth/register";
 
-            using var resp = await _httpClient.PostAsync(authUrl, request);
+            using var resp = await _httpClient.PostAsJsonAsync(authUrl, request);
 
             if (resp.IsSuccessStatusCode)
             {
@@ -119,17 +100,17 @@ public sealed class AuthApi
             Log.Error("Server returned unexpected HTTP status code: {responseCode}", resp.StatusCode);
             Log.Debug("Response for error:\n{response}\n{content}", resp, await resp.Content.ReadAsStringAsync());
             // Unknown error? uh oh.
-            return new RegisterResult(new[] {"Server returned unknown error"});
+            return new RegisterResult(new[] { "Server returned unknown error" });
         }
         catch (JsonException e)
         {
             Log.Error(e, "JsonException in RegisterAsync");
-            return new RegisterResult(new[] {"Server sent invalid response"});
+            return new RegisterResult(new[] { "Server sent invalid response" });
         }
         catch (HttpRequestException httpE)
         {
             Log.Error(httpE, "HttpRequestException in RegisterAsync");
-            return new RegisterResult(new[] {$"Connection error to authentication server: {httpE.Message}"});
+            return new RegisterResult(new[] { $"Connection error to authentication server: {httpE.Message}" });
         }
     }
 
@@ -138,14 +119,11 @@ public sealed class AuthApi
     {
         try
         {
-            var request = new ResetPasswordRequest
-            {
-                Email = email,
-            };
+            var request = new ResetPasswordRequest(email);
 
-            const string authUrl = ConfigConstants.AuthUrl + "api/auth/resetPassword";
+            var authUrl = ConfigConstants.AuthUrl + "api/auth/resetPassword";
 
-            using var resp = await _httpClient.PostAsync(authUrl, request);
+            using var resp = await _httpClient.PostAsJsonAsync(authUrl, request);
 
             if (resp.IsSuccessStatusCode)
             {
@@ -155,12 +133,12 @@ public sealed class AuthApi
             // Unknown error? uh oh.
             Log.Error("Server returned unexpected HTTP status code: {responseCode}", resp.StatusCode);
             Log.Debug("Response for error:\n{response}\n{content}", resp, await resp.Content.ReadAsStringAsync());
-            return new[] {"Server returned unknown error"};
+            return new[] { "Server returned unknown error" };
         }
         catch (HttpRequestException httpE)
         {
             Log.Error(httpE, "HttpRequestException in ForgotPasswordAsync");
-            return new[] {$"Connection error to authentication server: {httpE.Message}"};
+            return new[] { $"Connection error to authentication server: {httpE.Message}" };
         }
     }
 
@@ -168,14 +146,11 @@ public sealed class AuthApi
     {
         try
         {
-            var request = new ResendConfirmationRequest
-            {
-                Email = email,
-            };
+            var request = new ResendConfirmationRequest(email);
 
-            const string authUrl = ConfigConstants.AuthUrl + "api/auth/resendConfirmation";
+            var authUrl = ConfigConstants.AuthUrl + "api/auth/resendConfirmation";
 
-            using var resp = await _httpClient.PostAsync(authUrl, request);
+            using var resp = await _httpClient.PostAsJsonAsync(authUrl, request);
 
             if (resp.IsSuccessStatusCode)
             {
@@ -185,12 +160,12 @@ public sealed class AuthApi
             // Unknown error? uh oh.
             Log.Error("Server returned unexpected HTTP status code: {responseCode}", resp.StatusCode);
             Log.Debug("Response for error:\n{response}\n{content}", resp, await resp.Content.ReadAsStringAsync());
-            return new[] {"Server returned unknown error"};
+            return new[] { "Server returned unknown error" };
         }
         catch (HttpRequestException httpE)
         {
             Log.Error(httpE, "HttpRequestException in ResendConfirmationAsync");
-            return new[] {$"Connection error to authentication server: {httpE.Message}"};
+            return new[] { $"Connection error to authentication server: {httpE.Message}" };
         }
     }
 
@@ -202,21 +177,17 @@ public sealed class AuthApi
     {
         try
         {
-            var request = new RefreshRequest
-            {
-                Token = token
-            };
+            var request = new RefreshRequest(token);
 
-            const string authUrl = ConfigConstants.AuthUrl + "api/auth/refresh";
+            var authUrl = ConfigConstants.AuthUrl + "api/auth/refresh";
 
-            using var resp = await _httpClient.PostAsync(authUrl, request);
+            using var resp = await _httpClient.PostAsJsonAsync(authUrl, request);
 
             if (resp.IsSuccessStatusCode)
             {
                 var response = await resp.Content.AsJson<RefreshResponse>();
-                var time = DateTimeOffset.Parse(response.ExpireTime);
 
-                return new LoginToken(response.NewToken, time);
+                return new LoginToken(response.NewToken, response.ExpireTime);
             }
 
             if (resp.StatusCode == HttpStatusCode.Unauthorized)
@@ -248,14 +219,11 @@ public sealed class AuthApi
     {
         try
         {
-            var request = new LogoutRequest
-            {
-                Token = token
-            };
+            var request = new LogoutRequest(token);
 
-            const string authUrl = ConfigConstants.AuthUrl + "api/auth/logout";
+            var authUrl = ConfigConstants.AuthUrl + "api/auth/logout";
 
-            using var resp = await _httpClient.PostAsync(authUrl, request);
+            using var resp = await _httpClient.PostAsJsonAsync(authUrl, request);
 
             if (resp.IsSuccessStatusCode)
             {
@@ -284,7 +252,7 @@ public sealed class AuthApi
     {
         try
         {
-            const string authUrl = ConfigConstants.AuthUrl + "api/auth/ping";
+            var authUrl = ConfigConstants.AuthUrl + "api/auth/ping";
 
             using var requestMessage = new HttpRequestMessage(HttpMethod.Get, authUrl);
             requestMessage.Headers.Authorization = new AuthenticationHeaderValue("SS14Auth", token);
@@ -313,85 +281,73 @@ public sealed class AuthApi
         }
     }
 
-    public sealed class AuthenticateRequest
+    public sealed record AuthenticateRequest(string? Username, Guid? UserId, string Password, string? TfaCode = null)
     {
-        public string? Username { get; set; }
-        public Guid? UserId { get; set; }
-        public string Password { get; set; } = default!;
+        public AuthenticateRequest(string username, string password) : this(username, null, password)
+        {
+
+        }
+
+        public AuthenticateRequest(Guid userId, string password) : this(null, userId, password)
+        {
+
+        }
     }
 
-    public sealed class AuthenticateResponse
+    public sealed record AuthenticateResponse(string Token, string Username, Guid UserId, DateTimeOffset ExpireTime);
+
+    public sealed record AuthenticateDenyResponse(string[] Errors, AuthenticateDenyResponseCode Code);
+
+    [JsonConverter(typeof(JsonStringEnumConverter))]
+    public enum AuthenticateDenyResponseCode
     {
-        public string Token { get; set; } = default!;
-        public string Username { get; set; } = default!;
-        public Guid UserId { get; set; }
-        public string ExpireTime { get; set; } = default!;
+        // @formatter:off
+        None               =  0,
+        InvalidCredentials =  1,
+        AccountUnconfirmed =  2,
+        TfaRequired        =  3,
+        TfaInvalid         =  4,
+
+        // Not actually from the API, but used internally.
+        UnknownError       = -1,
+        // @formatter:on
     }
 
-    public sealed class AuthenticateDenyResponse
-    {
-        public string[] Errors { get; set; } = default!;
-    }
+    public sealed record RegisterRequest(string Username, string Email, string Password);
 
-    public sealed class RegisterRequest
-    {
-        public string Username { get; set; } = default!;
-        public string Email { get; set; } = default!;
-        public string Password { get; set; } = default!;
-    }
+    public sealed record RegisterResponse(RegisterResponseStatus Status);
 
-    public sealed class RegisterResponse
-    {
-        public RegisterResponseStatus Status { get; set; }
-    }
+    public sealed record RegisterResponseError(string[] Errors);
 
-    public sealed class RegisterResponseError
-    {
-        public string[] Errors { get; set; } = default!;
-    }
+    public sealed record ResetPasswordRequest(string Email);
 
-    public sealed class ResetPasswordRequest
-    {
-        public string Email { get; set; } = default!;
-    }
+    public sealed record ResendConfirmationRequest(string Email);
 
-    public sealed class ResendConfirmationRequest
-    {
-        public string Email { get; set; } = default!;
-    }
+    public sealed record LogoutRequest(string Token);
 
-    public sealed class LogoutRequest
-    {
-        public string Token { get; set; } = default!;
-    }
+    public sealed record RefreshRequest(string Token);
 
-    public sealed class RefreshRequest
-    {
-        public string Token { get; set; } = default!;
-    }
-
-    public sealed class RefreshResponse
-    {
-        public string NewToken { get; set; } = default!;
-        public string ExpireTime { get; set; } = default!;
-    }
+    public sealed record RefreshResponse(DateTimeOffset ExpireTime, string NewToken);
 }
 
 public readonly struct AuthenticateResult
 {
     private readonly LoginInfo? _loginInfo;
     private readonly string[]? _errors;
+    public AuthApi.AuthenticateDenyResponseCode Code { get; }
 
     public AuthenticateResult(LoginInfo loginInfo)
     {
         _loginInfo = loginInfo;
         _errors = null;
+        Code = default;
     }
 
-    public AuthenticateResult(string[] errors)
+    public AuthenticateResult(string[] errors, AuthApi.AuthenticateDenyResponseCode code)
     {
         _loginInfo = null;
         _errors = errors;
+        Code = code;
     }
 
     public bool IsSuccess => _loginInfo != null;

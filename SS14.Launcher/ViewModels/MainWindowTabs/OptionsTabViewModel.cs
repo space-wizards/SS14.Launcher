@@ -106,4 +106,9 @@ public class OptionsTabViewModel : MainWindowTabViewModel
             FileName = LauncherPaths.DirLogs
         });
     }
+
+    public void OpenAccountSettings()
+    {
+        Helpers.OpenUri(ConfigConstants.AccountManagementUrl);
+    }
 }

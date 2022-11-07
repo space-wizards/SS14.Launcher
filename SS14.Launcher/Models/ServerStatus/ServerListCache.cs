@@ -1,11 +1,10 @@
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Net.Http;
+using System.Net.Http.Json;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 using Serilog;
 using Splat;
 using SS14.Launcher.Utility;
@@ -63,11 +62,9 @@ public sealed class ServerListCache : ReactiveObject
 
         try
         {
-            using var response = await _http.GetAsync(ConfigConstants.HubUrl + "api/servers", cancel);
-
-            response.EnsureSuccessStatusCode();
-
-            var entries = await response.Content.AsJson<ServerListEntry[]>();
+            var entries = await _http.GetFromJsonAsync<ServerListEntry[]>(
+                ConfigConstants.HubUrl + "api/servers",
+                cancel) ?? throw new JsonException("Server list is null!");
 
             Status = RefreshListStatus.Updating;
 

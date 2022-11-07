@@ -4,11 +4,12 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Json;
 using System.Runtime.InteropServices;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using DynamicData;
-using Newtonsoft.Json;
 using ReactiveUI;
 using Serilog;
 using Splat;
@@ -208,8 +209,7 @@ public class Connector : ReactiveObject
 
         try
         {
-            var resp = await _http.GetStringAsync(infoAddr, cancel);
-            var info = JsonConvert.DeserializeObject<ServerInfo>(resp) ?? throw new InvalidDataException();
+            var info = await _http.GetFromJsonAsync<ServerInfo>(infoAddr, cancel) ?? throw new InvalidDataException();
             if (info.BuildInformation is {} buildInfo && (buildInfo.Acz || string.IsNullOrEmpty(buildInfo.DownloadUrl)))
             {
                 var acz = info.BuildInformation.Acz;

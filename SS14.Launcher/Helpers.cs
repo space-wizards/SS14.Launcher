@@ -4,18 +4,18 @@ using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Net.Http;
-using System.Net.Mime;
-using System.Text;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using Mono.Unix;
-using Newtonsoft.Json;
 using TerraFX.Interop.Windows;
 
 namespace SS14.Launcher;
 
 public static class Helpers
 {
+    public static readonly JsonSerializerOptions JsonWebOptions = new(JsonSerializerDefaults.Web);
+
     public delegate void DownloadProgressCallback(long downloaded, long total);
 
     public static void ExtractZipToDirectory(string directory, Stream zipStream)
@@ -90,7 +90,12 @@ public static class Helpers
 
     public static void OpenUri(Uri uri)
     {
-        Process.Start(new ProcessStartInfo(uri.ToString()) {UseShellExecute = true});
+        OpenUri(uri.ToString());
+    }
+
+    public static void OpenUri(string uri)
+    {
+        Process.Start(new ProcessStartInfo(uri) { UseShellExecute = true });
     }
 
     private static readonly string[] ByteSuffixes =
@@ -118,21 +123,11 @@ public static class Helpers
         return $"{Math.Round(d, 2)} {ByteSuffixes[i]}";
     }
 
-    /// <summary>
-    ///     Does a POST with JSON.
-    /// </summary>
-    public static Task<HttpResponseMessage> PostAsync<T>(this HttpClient client, string uri, T value)
-    {
-        var content = new StringContent(JsonConvert.SerializeObject(value), Encoding.UTF8,
-            MediaTypeNames.Application.Json);
-
-        return client.PostAsync(uri, content);
-    }
-
     public static async Task<T> AsJson<T>(this HttpContent content) where T : notnull
     {
         var str = await content.ReadAsStringAsync();
-        return JsonConvert.DeserializeObject<T>(str) ?? throw new JsonException("AsJson: did not expect null response");
+        return JsonSerializer.Deserialize<T>(str, JsonWebOptions) ??
+               throw new JsonException("AsJson: did not expect null response");
     }
 
     public static unsafe void MarkDirectoryCompress(string path)
@@ -144,7 +139,7 @@ public static class Helpers
         fixed (char* pPath = path)
         {
             var handle = Windows.CreateFileW(
-                (ushort*) pPath,
+                (ushort*)pPath,
                 Windows.GENERIC_ALL,
                 FILE.FILE_SHARE_READ,
                 null,
@@ -153,7 +148,7 @@ public static class Helpers
                 HANDLE.NULL);
 
             var lpBytesReturned = 0u;
-            var lpInBuffer = (short) Windows.COMPRESSION_FORMAT_DEFAULT;
+            var lpInBuffer = (short)Windows.COMPRESSION_FORMAT_DEFAULT;
 
             Windows.DeviceIoControl(
                 handle,

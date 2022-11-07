@@ -2,9 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
+using System.Net.Http.Json;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 using Serilog;
 using Splat;
 using SS14.Launcher.Utility;
@@ -94,12 +96,8 @@ public sealed class ServerStatusCache
                 {
                     linkedToken.CancelAfter(ConfigConstants.ServerStatusTimeout);
 
-                    using var response = await http.GetAsync(statusAddr, linkedToken.Token);
-                    response.EnsureSuccessStatusCode();
-
-                    var statusJson = JsonConvert.DeserializeObject<ServerStatus>(
-                        await response.Content.ReadAsStringAsync(linkedToken.Token));
-                    status = statusJson ?? throw new InvalidDataException();
+                    status = await http.GetFromJsonAsync<ServerStatus>(statusAddr, linkedToken.Token)
+                             ?? throw new InvalidDataException();
                 }
 
                 cancel.ThrowIfCancellationRequested();
@@ -112,7 +110,7 @@ public sealed class ServerStatusCache
 
             data.Status = ServerStatusCode.Online;
             data.Name = status.Name;
-            data.ForkID = status.ForkID;
+            data.GameName = status.GameName;
             data.PlayerCount = status.PlayerCount;
             data.SoftMaxPlayerCount = status.SoftMaxPlayerCount;
         }
@@ -149,17 +147,13 @@ public sealed class ServerStatusCache
         _cachedData.Clear();
     }
 
-    private sealed class ServerStatus
-    {
-        [JsonProperty(PropertyName = "name")] public string? Name { get; set; }
-        [JsonProperty(PropertyName = "fork_id")] public string? ForkID { get; set; }
-
-        [JsonProperty(PropertyName = "players")]
-        public int PlayerCount { get; set; }
-
-        [JsonProperty(PropertyName = "soft_max_players")]
-        public int SoftMaxPlayerCount { get; set; }
-    }
+    private sealed record ServerStatus(
+        [property: JsonPropertyName("name")] string? Name,
+        [property: JsonPropertyName("game_name")] string? GameName,
+        [property: JsonPropertyName("players")]
+        int PlayerCount,
+        [property: JsonPropertyName("soft_max_players")]
+        int SoftMaxPlayerCount);
 
     private sealed class CacheReg
     {

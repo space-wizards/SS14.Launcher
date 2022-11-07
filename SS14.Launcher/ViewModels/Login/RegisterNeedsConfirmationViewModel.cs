@@ -7,11 +7,10 @@ using SS14.Launcher.Models.Logins;
 
 namespace SS14.Launcher.ViewModels.Login;
 
-public class RegisterNeedsConfirmationViewModel : BaseLoginViewModel, IErrorOverlayOwner
+public class RegisterNeedsConfirmationViewModel : BaseLoginViewModel
 {
     private const int TimeoutSeconds = 5;
 
-    public MainWindowLoginViewModel ParentVM { get; }
     private readonly AuthApi _authApi;
 
     private readonly string _loginUsername;
@@ -20,6 +19,7 @@ public class RegisterNeedsConfirmationViewModel : BaseLoginViewModel, IErrorOver
     private readonly DataManager _dataManager;
 
     public bool ConfirmButtonEnabled => TimeoutSecondsLeft == 0;
+
     public string ConfirmButtonText
     {
         get
@@ -36,11 +36,12 @@ public class RegisterNeedsConfirmationViewModel : BaseLoginViewModel, IErrorOver
 
     [Reactive] private int TimeoutSecondsLeft { get; set; }
 
-    public RegisterNeedsConfirmationViewModel(MainWindowLoginViewModel parentVm,
+    public RegisterNeedsConfirmationViewModel(
+        MainWindowLoginViewModel parentVm,
         AuthApi authApi, string username, string password, LoginManager loginMgr, DataManager dataManager)
+        : base(parentVm)
     {
         BusyText = "Logging in...";
-        ParentVM = parentVm;
         _authApi = authApi;
 
         _loginUsername = username;
@@ -70,18 +71,23 @@ public class RegisterNeedsConfirmationViewModel : BaseLoginViewModel, IErrorOver
 
     public async void ConfirmButtonPressed()
     {
+        if (Busy)
+            return;
+
         Busy = true;
-        var resp = await _authApi.AuthenticateAsync(_loginUsername, _loginPassword);
 
-        await LoginViewModel.DoLogin(this, resp, _loginMgr, _authApi);
+        try
+        {
+            var request = new AuthApi.AuthenticateRequest(_loginUsername, _loginPassword);
+            var resp = await _authApi.AuthenticateAsync(request);
 
-        _dataManager.CommitConfig();
+            await LoginViewModel.DoLogin(this, request, resp, _loginMgr, _authApi);
 
-        Busy = false;
-    }
-
-    public void OverlayOk()
-    {
-        OverlayControl = null;
+            _dataManager.CommitConfig();
+        }
+        finally
+        {
+            Busy = false;
+        }
     }
 }

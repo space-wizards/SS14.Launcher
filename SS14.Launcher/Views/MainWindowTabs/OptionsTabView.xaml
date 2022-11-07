@@ -21,6 +21,11 @@
               Command="{Binding OpenLogDirectory}"/>
 
       <StackPanel Orientation="Vertical">
+        <Button Content="Account settings" Margin="4" Command="{Binding OpenAccountSettings}" HorizontalAlignment="Left" />
+        <TextBlock VerticalAlignment="Center" TextWrapping="Wrap"
+                   Text="You can manage your account settings, such as changing email or password, through our website."
+                   Margin="8" />
+
         <CheckBox VerticalAlignment="Center" Margin="4" IsChecked="{Binding CompatMode}">Compatibility Mode</CheckBox>
         <TextBlock VerticalAlignment="Center" TextWrapping="Wrap"
                    Text="This uses OpenGL ES 2 (via ANGLE if necessary), which is less likely to suffer from driver bugs. Try this if you are experiencing graphical issues or crashes."

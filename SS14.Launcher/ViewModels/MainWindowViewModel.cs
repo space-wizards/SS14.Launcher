@@ -170,9 +170,7 @@ public sealed class MainWindowViewModel : ViewModelBase, IErrorOverlayOwner
 
         try
         {
-            var versionRequest = await _http.GetAsync(ConfigConstants.LauncherVersionUrl);
-            versionRequest.EnsureSuccessStatusCode();
-            var curVersion = await versionRequest.Content.ReadAsStringAsync();
+            var curVersion = await _http.GetStringAsync(ConfigConstants.LauncherVersionUrl);
             var versions = curVersion.Trim().Split('\n', StringSplitOptions.RemoveEmptyEntries);
             OutOfDate = Array.IndexOf(versions, ConfigConstants.CurrentLauncherVersion) == -1;
         }

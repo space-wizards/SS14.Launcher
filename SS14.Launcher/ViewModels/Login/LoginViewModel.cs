@@ -7,9 +7,8 @@ using SS14.Launcher.Models.Logins;
 
 namespace SS14.Launcher.ViewModels.Login;
 
-public class LoginViewModel : BaseLoginViewModel, IErrorOverlayOwner
+public class LoginViewModel : BaseLoginViewModel
 {
-    public MainWindowLoginViewModel ParentVM { get; }
     private readonly AuthApi _authApi;
     private readonly LoginManager _loginMgr;
     private readonly DataManager _dataManager;
@@ -20,13 +19,12 @@ public class LoginViewModel : BaseLoginViewModel, IErrorOverlayOwner
     [Reactive] public bool IsInputValid { get; private set; }
 
     public LoginViewModel(MainWindowLoginViewModel parentVm, AuthApi authApi,
-        LoginManager loginMgr, DataManager dataManager)
+        LoginManager loginMgr, DataManager dataManager) : base(parentVm)
     {
         BusyText = "Logging in...";
         _authApi = authApi;
         _loginMgr = loginMgr;
         _dataManager = dataManager;
-        ParentVM = parentVm;
 
         this.WhenAnyValue(x => x.EditingUsername, x => x.EditingPassword)
             .Subscribe(s => { IsInputValid = !string.IsNullOrEmpty(s.Item1) && !string.IsNullOrEmpty(s.Item2); });
@@ -34,7 +32,7 @@ public class LoginViewModel : BaseLoginViewModel, IErrorOverlayOwner
 
     public async void OnLogInButtonPressed()
     {
-        if (!IsInputValid)
+        if (!IsInputValid || Busy)
         {
             return;
         }
@@ -42,9 +40,10 @@ public class LoginViewModel : BaseLoginViewModel, IErrorOverlayOwner
         Busy = true;
         try
         {
-            var resp = await _authApi.AuthenticateAsync(EditingUsername, EditingPassword);
+            var request = new AuthApi.AuthenticateRequest(EditingUsername, EditingPassword);
+            var resp = await _authApi.AuthenticateAsync(request);
 
-            await DoLogin(this, resp, _loginMgr, _authApi);
+            await DoLogin(this, request, resp, _loginMgr, _authApi);
 
             _dataManager.CommitConfig();
         }
@@ -56,6 +55,7 @@ public class LoginViewModel : BaseLoginViewModel, IErrorOverlayOwner
 
     public static async Task<bool> DoLogin<T>(
         T vm,
+        AuthApi.AuthenticateRequest request,
         AuthenticateResult resp,
         LoginManager loginMgr,
         AuthApi authApi)
@@ -85,12 +85,14 @@ public class LoginViewModel : BaseLoginViewModel, IErrorOverlayOwner
             return true;
         }
 
-        vm.OverlayControl = new AuthErrorsOverlayViewModel(vm, "Unable to log in", resp.Errors);
-        return false;
-    }
+        if (resp.Code == AuthApi.AuthenticateDenyResponseCode.TfaRequired)
+        {
+            vm.ParentVM.SwitchToAuthTfa(request);
+            return false;
+        }
 
-    public void OverlayOk()
-    {
-        OverlayControl = null;
+        var errors = AuthErrorsOverlayViewModel.AuthCodeToErrors(resp.Errors, resp.Code);
+        vm.OverlayControl = new AuthErrorsOverlayViewModel(vm, "Unable to log in", errors);
+        return false;
     }
 }

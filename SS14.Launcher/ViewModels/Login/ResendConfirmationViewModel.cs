@@ -2,23 +2,24 @@ using ReactiveUI.Fody.Helpers;
 
 namespace SS14.Launcher.ViewModels.Login;
 
-public class ResendConfirmationViewModel : BaseLoginViewModel, IErrorOverlayOwner
+public class ResendConfirmationViewModel : BaseLoginViewModel
 {
     private readonly AuthApi _authApi;
-    public MainWindowLoginViewModel ParentVM { get; }
 
     [Reactive] public string EditingEmail { get; set; } = "";
 
     private bool _errored;
 
-    public ResendConfirmationViewModel(MainWindowLoginViewModel parentVM, AuthApi authApi)
+    public ResendConfirmationViewModel(MainWindowLoginViewModel parentVM, AuthApi authApi) : base(parentVM)
     {
         _authApi = authApi;
-        ParentVM = parentVM;
     }
 
     public async void SubmitPressed()
     {
+        if (Busy)
+            return;
+
         Busy = true;
         try
         {
@@ -46,12 +47,11 @@ public class ResendConfirmationViewModel : BaseLoginViewModel, IErrorOverlayOwne
         }
     }
 
-    public void OverlayOk()
+    public override void OverlayOk()
     {
         if (_errored)
         {
-            // Clear overlay and allow re-submit if an error occured.
-            OverlayControl = null;
+            base.OverlayOk();
         }
         else
         {

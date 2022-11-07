@@ -6,6 +6,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
 using Dapper;
@@ -13,7 +14,6 @@ using DynamicData;
 using JetBrains.Annotations;
 using Microsoft.Data.Sqlite;
 using Microsoft.Toolkit.Mvvm.Messaging;
-using Newtonsoft.Json;
 using ReactiveUI;
 using Serilog;
 
@@ -217,12 +217,7 @@ public sealed class DataManager : ReactiveObject
         }
         else
         {
-            // SQLite DB empty, load from old JSON config file.
-            LoadJsonConfig();
-
-            // Loading of JSON config will have created a bunch of DB commands.
-            // These will be committed at the end of the function.
-
+            // SQLite DB empty, fresh launcher!
             // Add an unused config key so the above count check is always correct.
             AddDbCommand(con => con.Execute("INSERT INTO Config VALUES ('Populated', TRUE)"));
         }
@@ -307,53 +302,6 @@ public sealed class DataManager : ReactiveObject
         return new CVarEntry<T>(this, def);
     }
 
-    private void LoadJsonConfig()
-    {
-        var path = GetCfgJsonPath();
-
-        using var changeSuppress = SuppressChangeNotifications();
-        if (!File.Exists(path))
-            return;
-
-        var text = File.ReadAllText(path);
-        var data = JsonConvert.DeserializeObject<JsonData>(text)!;
-
-        _favoriteServers.Edit(a =>
-        {
-            a.Clear();
-            if (data.Favorites != null)
-                a.AddOrUpdate(data.Favorites);
-        });
-
-        _logins.Edit(p =>
-        {
-            p.Clear();
-            if (data.Logins != null)
-            {
-                p.AddOrUpdate(data.Logins);
-            }
-        });
-
-        _engineInstallations.Edit(p =>
-        {
-            p.Clear();
-
-            if (data.Engines != null)
-            {
-                p.AddOrUpdate(data.Engines);
-            }
-        });
-
-        SetCVar(CVars.CompatMode, data.ForceGLES2 ?? CVars.CompatMode.DefaultValue);
-        SetCVar(CVars.Fingerprint, data.Fingerprint.ToString());
-        SetCVar(CVars.DynamicPgo, data.DynamicPGO ?? CVars.DynamicPgo.DefaultValue);
-        SetCVar(CVars.DisableSigning, data.DisableSigning);
-        SetCVar(CVars.LogClient, data.LogClient);
-        SetCVar(CVars.LogLauncher, data.LogLauncher);
-        SetCVar(CVars.MultiAccounts, data.MultiAccounts);
-        SetCVar(CVars.HasDismissedEarlyAccessWarning, data.DismissedEarlyAccessWarning ?? false);
-    }
-
     [SuppressMessage("ReSharper", "UseAwaitUsing")]
     public async void CommitConfig()
     {
@@ -397,11 +345,6 @@ public sealed class DataManager : ReactiveObject
         CommitConfig();
         // Wait for any DB writes to finish to make sure we commit everything.
         _dbWritingSemaphore.Wait();
-    }
-
-    private static string GetCfgJsonPath()
-    {
-        return Path.Combine(LauncherPaths.DirUserData, "launcher_config.json");
     }
 
     private static string GetCfgDbConnectionString()
@@ -541,49 +484,6 @@ public sealed class DataManager : ReactiveObject
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Value)));
         }
-    }
-
-    [Serializable]
-    private sealed class JsonData
-    {
-        [JsonProperty(PropertyName = "selected_login")]
-        public Guid? SelectedLogin { get; set; }
-
-        [JsonProperty(PropertyName = "favorites")]
-        public List<FavoriteServer>? Favorites { get; set; }
-
-        [JsonProperty(PropertyName = "engines")]
-        public List<InstalledEngineVersion>? Engines { get; set; }
-
-        [JsonProperty(PropertyName = "logins")]
-        public List<LoginInfo>? Logins { get; set; }
-
-        [JsonProperty(PropertyName = "next_installation_id")]
-        public int NextInstallationId { get; set; } = 1;
-
-        [JsonProperty(PropertyName = "fingerprint")]
-        public Guid Fingerprint { get; set; }
-
-        [JsonProperty(PropertyName = "force_gles2")]
-        public bool? ForceGLES2 { get; set; }
-
-        [JsonProperty(PropertyName = "dynamic_pgo")]
-        public bool? DynamicPGO { get; set; }
-
-        [JsonProperty(PropertyName = "dismissed_early_access_warning")]
-        public bool? DismissedEarlyAccessWarning { get; set; }
-
-        [JsonProperty(PropertyName = "disable_signing")]
-        public bool DisableSigning { get; set; }
-
-        [JsonProperty(PropertyName = "log_client")]
-        public bool LogClient { get; set; }
-
-        [JsonProperty(PropertyName = "log_launcher")]
-        public bool LogLauncher { get; set; }
-
-        [JsonProperty(PropertyName = "multi_accounts")]
-        public bool MultiAccounts { get; set; }
     }
 }
 

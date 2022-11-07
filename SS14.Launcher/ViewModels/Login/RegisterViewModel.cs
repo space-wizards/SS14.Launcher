@@ -9,10 +9,9 @@ using SS14.Launcher.Models.Logins;
 
 namespace SS14.Launcher.ViewModels.Login;
 
-public class RegisterViewModel : BaseLoginViewModel, IErrorOverlayOwner
+public class RegisterViewModel : BaseLoginViewModel
 {
     private readonly DataManager _cfg;
-    public MainWindowLoginViewModel ParentVM { get; }
     private readonly AuthApi _authApi;
     private readonly LoginManager _loginMgr;
 
@@ -27,10 +26,10 @@ public class RegisterViewModel : BaseLoginViewModel, IErrorOverlayOwner
     [Reactive] public bool Is13OrOlder { get; set; }
 
 
-    public RegisterViewModel(DataManager cfg, MainWindowLoginViewModel parentVm, AuthApi authApi, LoginManager loginMgr)
+    public RegisterViewModel(MainWindowLoginViewModel parentVm, DataManager cfg, AuthApi authApi, LoginManager loginMgr)
+        : base(parentVm)
     {
         _cfg = cfg;
-        ParentVM = parentVm;
         _authApi = authApi;
         _loginMgr = loginMgr;
 
@@ -93,7 +92,7 @@ public class RegisterViewModel : BaseLoginViewModel, IErrorOverlayOwner
 
     public async void OnRegisterInButtonPressed()
     {
-        if (!IsInputValid)
+        if (!IsInputValid || Busy)
         {
             return;
         }
@@ -103,39 +102,34 @@ public class RegisterViewModel : BaseLoginViewModel, IErrorOverlayOwner
         try
         {
             var result = await _authApi.RegisterAsync(EditingUsername, EditingEmail, EditingPassword);
-            if (result.IsSuccess)
+            if (!result.IsSuccess)
             {
-                var status = result.Status;
-                if (status == RegisterResponseStatus.Registered)
-                {
-                    BusyText = "Logging in...";
-                    // No confirmation needed, log in immediately.
-                    var resp = await _authApi.AuthenticateAsync(EditingUsername, EditingPassword);
+                OverlayControl = new AuthErrorsOverlayViewModel(this, "Unable to register", result.Errors);
+                return;
+            }
 
-                    await LoginViewModel.DoLogin(this, resp, _loginMgr, _authApi);
+            var status = result.Status;
+            if (status == RegisterResponseStatus.Registered)
+            {
+                BusyText = "Logging in...";
+                // No confirmation needed, log in immediately.
+                var request = new AuthApi.AuthenticateRequest(EditingUsername, EditingPassword);
+                var resp = await _authApi.AuthenticateAsync(request);
 
-                    _cfg.CommitConfig();
-                }
-                else
-                {
-                    Debug.Assert(status == RegisterResponseStatus.RegisteredNeedConfirmation);
+                await LoginViewModel.DoLogin(this, request, resp, _loginMgr, _authApi);
 
-                    ParentVM.SwitchToRegisterNeedsConfirmation(EditingUsername, EditingPassword);
-                }
+                _cfg.CommitConfig();
             }
             else
             {
-                OverlayControl = new AuthErrorsOverlayViewModel(this, "Unable to register", result.Errors);
+                Debug.Assert(status == RegisterResponseStatus.RegisteredNeedConfirmation);
+
+                ParentVM.SwitchToRegisterNeedsConfirmation(EditingUsername, EditingPassword);
             }
         }
         finally
         {
             Busy = false;
         }
-    }
-
-    public void OverlayOk()
-    {
-        OverlayControl = null;
     }
 }

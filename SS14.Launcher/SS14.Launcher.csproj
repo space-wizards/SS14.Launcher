@@ -6,7 +6,7 @@
     <Nullable>enable</Nullable>
     <!--<PublishTrimmed>true</PublishTrimmed>
     <PublishSingleFile>true</PublishSingleFile>-->
-    <Version>0.14.0</Version>
+    <Version>0.16.1</Version>
     <IsPackable>false</IsPackable>
     <DefineConstants Condition="'$(FullRelease)' == 'True'">FULL_RELEASE;$(DefineConstants)</DefineConstants>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -24,10 +24,6 @@
     </AvaloniaResource>
 
     <AdditionalFiles Include="**\*.xaml" />
-
-    <Compile Remove="Models\Data\InstalledServerContent.cs" />
-
-    <Compile Remove="Models\ContentManagement\ZStdDecompressStream.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Avalonia" Version="0.10.13" />
@@ -39,7 +35,6 @@
     <PackageReference Include="DynamicData" Version="7.4.9" />
     <PackageReference Include="Microsoft.Data.Sqlite" Version="6.0.1" />
     <PackageReference Include="Microsoft.Toolkit.Mvvm" Version="7.1.2" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="ReactiveUI" Version="17.1.9" />
     <PackageReference Include="ReactiveUI.Fody" Version="17.1.9" />
     <PackageReference Include="Robust.Shared.AuthLib" Version="0.1.2" />
