@@ -110,8 +110,8 @@ public sealed class ServerStatusCache
 
             data.Status = ServerStatusCode.Online;
             data.Name = status.Name;
-            data.SoftMaxPlayerCount = status.SoftMaxPlayerCount;
             data.PlayerCount = status.PlayerCount;
+            data.SoftMaxPlayerCount = status.SoftMaxPlayerCount;
         }
         catch (OperationCanceledException)
         {
