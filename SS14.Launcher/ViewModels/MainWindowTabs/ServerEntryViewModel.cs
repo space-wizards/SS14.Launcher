@@ -29,6 +29,7 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
             switch (args.PropertyName)
             {
                 case nameof(IServerStatusData.PlayerCount):
+                case nameof(IServerStatusData.SoftMaxPlayerCount):
                     OnPropertyChanged(nameof(ServerStatusString));
                     break;
 

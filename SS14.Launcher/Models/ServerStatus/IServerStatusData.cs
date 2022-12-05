@@ -23,4 +23,6 @@ public interface IServerStatusData : INotifyPropertyChanged
     ServerStatusInfoCode StatusInfo { get; set; }
 
     int PlayerCount { get; set; }
+
+    int SoftMaxPlayerCount { get; set; }
 }
