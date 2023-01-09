@@ -11,13 +11,20 @@
   </Design.DataContext>
 
   <DockPanel LastChildFill="True">
-    <DockPanel DockPanel.Dock="Top" LastChildFill="False" Margin="4, 0, 4, 2">
-      <TextBlock DockPanel.Dock="Left" Text="Servers:" Classes="NanoHeadingMedium" />
-      <Button DockPanel.Dock="Right" Content="Refresh" Command="{Binding RefreshPressed}" />
+    <DockPanel DockPanel.Dock="Top" Margin="4, 0, 4, 2">
+      <!--TODO: These measurements are just golfed based on approximations of where the sections *probably* are, and assumes a scroll bar is present. This might prove a bit wonky with localization and excessive screen sizes. It'd be ideal if this header section could dynamically adapt to the section sizes in the server list.-->
+      <Separator DockPanel.Dock="Right" Margin="0 0 101 0"/>
+      <TextBlock DockPanel.Dock="Right" Text="Players" Classes="SubText" TextAlignment="Center" MinWidth="80" Margin="10 0"/>
+      <Separator DockPanel.Dock="Right" />
+      <TextBlock DockPanel.Dock="Right" Text="Server Name" Classes="SubText"/>
     </DockPanel>
 
-    <TextBox DockPanel.Dock="Bottom" Text="{Binding SearchString, Mode=TwoWay}" Watermark="Search For Servers..."
-             UseFloatingWatermark="False" />
+    <DockPanel DockPanel.Dock="Bottom" Margin="4 4 4 0">
+      <Button DockPanel.Dock="Right" Content="Refresh" Command="{Binding RefreshPressed}" />
+      <TextBox DockPanel.Dock="Right" Text="{Binding SearchString, Mode=TwoWay}" Watermark="Search For Servers..."
+               UseFloatingWatermark="False"
+               Margin="0 0 8 0" />
+    </DockPanel>
 
     <Panel DockPanel.Dock="Bottom" Classes="ScrollViewerSep" />
     <Panel DockPanel.Dock="Top" Classes="ScrollViewerSep" />

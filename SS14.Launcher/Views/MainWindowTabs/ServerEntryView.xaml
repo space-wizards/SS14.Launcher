@@ -18,9 +18,10 @@
           <Button IsEnabled="{Binding IsOnline}" DockPanel.Dock="Right" Content="Connect"
                   Command="{Binding ConnectPressed}" />
           <TextBlock DockPanel.Dock="Right" VerticalAlignment="Center"
-                     TextAlignment="Left" Text="{Binding ServerStatusString}"
-                     MinWidth="150"
+                     TextAlignment="Center" Text="{Binding ServerStatusString}"
+                     MinWidth="80"
                      Margin="10, 0" />
+          <Separator DockPanel.Dock="Right" />
           <!-- TODO: Enable text trimming here when Avalonia 0.10 is out of preview and we switch to it. -->
           <TextBlock VerticalAlignment="Center" Text="{Binding Name}" />
         </DockPanel>

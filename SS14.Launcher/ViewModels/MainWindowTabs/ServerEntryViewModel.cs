@@ -94,19 +94,19 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
             switch (_cacheData.Status)
             {
                 case ServerStatusCode.Offline:
-                    return "Unable to connect";
+                    return "OFFLINE";
                 case ServerStatusCode.Online:
                     // Give a ratio for servers with a defined player count, or just a current number for those without.
                     if (_cacheData.SoftMaxPlayerCount > 0)
                     {
-                        return $"Online: {_cacheData.PlayerCount} / {_cacheData.SoftMaxPlayerCount} players";
+                        return $"{_cacheData.PlayerCount} / {_cacheData.SoftMaxPlayerCount}";
                     }
                     else
                     {
-                        return _cacheData.PlayerCount == 1 ? $"Online: {_cacheData.PlayerCount} player" : $"Online: {_cacheData.PlayerCount} players";
+                        return $"{_cacheData.PlayerCount} / ∞";
                     }
                 case ServerStatusCode.FetchingStatus:
-                    return "Fetching status...";
+                    return "Fetching...";
                 default:
                     throw new NotSupportedException();
             }

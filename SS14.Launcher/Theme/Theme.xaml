@@ -58,4 +58,9 @@
   <Style Selector="Button.BigButton > TextBlock">
     <Setter Property="FontSize" Value="20" />
   </Style>
+
+  <Style Selector="Separator">
+    <Setter Property="BorderThickness" Value="1" />
+    <Setter Property="BorderBrush" Value="{DynamicResource ThemeListSeparatorBrush}" />
+  </Style>
 </Styles>

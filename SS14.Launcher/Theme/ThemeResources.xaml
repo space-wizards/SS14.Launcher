@@ -16,6 +16,9 @@
     <Color x:Key="ThemeTabItemSelectedColor">#CC3E6C45</Color>
     <Color x:Key="ThemeTabItemHoveredColor">#CC575B7F</Color>
 
+    <Color x:Key="ThemeListSeparatorColor">#AA575B7F</Color>
+    <Color x:Key="ThemeListSeparatorColorTransparent">#00575B7F</Color>
+
     <SolidColorBrush x:Key="ThemeBackgroundBrush" Color="{StaticResource ThemeBackgroundColor}" />
     <SolidColorBrush x:Key="ThemeForegroundBrush" Color="{StaticResource ThemeForegroundColor}" />
 
@@ -29,6 +32,11 @@
 
     <SolidColorBrush x:Key="ThemeTabItemSelectedBrush" Color="{StaticResource ThemeTabItemSelectedColor}" />
     <SolidColorBrush x:Key="ThemeTabItemHoveredBrush" Color="{StaticResource ThemeTabItemHoveredColor}" />
+
+    <RadialGradientBrush x:Key="ThemeListSeparatorBrush" Radius="12">
+      <GradientStop Offset="0" Color="{StaticResource ThemeListSeparatorColor}"/>
+      <GradientStop Offset="1" Color="{StaticResource ThemeListSeparatorColorTransparent}"/>
+    </RadialGradientBrush>
 
     <sys:Double x:Key="FontSizeNormal">15</sys:Double>
 
