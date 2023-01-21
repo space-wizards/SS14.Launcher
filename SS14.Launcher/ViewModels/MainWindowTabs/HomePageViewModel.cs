@@ -51,19 +51,15 @@ public class HomePageViewModel : MainWindowTabViewModel
             .Subscribe(_ =>
             {
                 FavoritesEmpty = favorites.Count == 0;
-                ShowSuggestions = favorites.Count <= 3;
             });
 
         Favorites = favorites;
-
-        _serverListCache.AllServers.CollectionChanged += (_, _) => UpdateSuggestions();
     }
 
     public ReadOnlyObservableCollection<ServerEntryViewModel> Favorites { get; }
     public ObservableCollection<ServerEntryViewModel> Suggestions { get; } = new();
 
     [Reactive] public bool FavoritesEmpty { get; private set; } = true;
-    [Reactive] public bool ShowSuggestions { get; private set; } = true;
 
     public override string Name => "Home";
     public Control? Control { get; set; }
@@ -124,29 +120,5 @@ public class HomePageViewModel : MainWindowTabViewModel
             _statusCache.InitialUpdateStatus(favorite.CacheData);
         }
         _serverListCache.RequestInitialUpdate();
-    }
-
-    public void UpdateSuggestions()
-    {
-        // Determine suggestions.
-        // Note that we don't bother updating this when favorites change.
-        Suggestions.Clear();
-        var candidates = _serverListCache.AllServers.
-            Where(x => x.Data.PlayerCount != 0). // Servers with players
-            Where(x => !(_cfg.FavoriteServers.Lookup(x.Data.Address).HasValue)). // That are not already favorited
-            ToList();
-        var rng = new Random();
-        // Pick candidates.
-        for (var i = 0; i < 2; i++)
-        {
-            if (candidates.Count == 0)
-            {
-                break;
-            }
-            var p = rng.Next(candidates.Count);
-            var v = candidates[p];
-            candidates.RemoveAt(p);
-            Suggestions.Add(new ServerEntryViewModel(MainWindowViewModel, v));
-        }
     }
 }
