@@ -81,11 +81,6 @@ public static class CVars
     /// Whether to display override assets (trans rights).
     /// </summary>
     public static readonly CVarDef<bool> OverrideAssets = CVarDef.Create("OverrideAssets", true);
-
-    /// <summary>
-    /// Accepted the error that Windows 7 etc isn't supported anymore.
-    /// </summary>
-    public static readonly CVarDef<bool> DismissedOldWindows = CVarDef.Create("DismissedOldWindows", false);
 }
 
 /// <summary>

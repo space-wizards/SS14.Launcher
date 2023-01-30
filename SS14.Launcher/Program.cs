@@ -83,7 +83,7 @@ internal static class Program
         cfg.Load();
         Locator.CurrentMutable.RegisterConstant(cfg);
 
-        CheckWindows7(cfg);
+        CheckWindows7();
 
         if (cfg.GetCVar(CVars.LogLauncher))
         {
@@ -125,13 +125,10 @@ internal static class Program
         _serverTask?.Wait();
     }
 
-    private static unsafe void CheckWindows7(DataManager cfg)
+    private static unsafe void CheckWindows7()
     {
         // 9600 is Windows 8.1, minimum we currently support.
         if (!OperatingSystem.IsWindows() || Environment.OSVersion.Version.Build >= 9600)
-            return;
-
-        if (cfg.GetCVar(CVars.DismissedOldWindows))
             return;
 
         const string text =
@@ -145,9 +142,6 @@ internal static class Program
         {
             _ = Windows.MessageBoxW(HWND.NULL, (ushort*)pText, (ushort*)pCaption, MB.MB_OK | MB.MB_ICONWARNING);
         }
-
-        cfg.SetCVar(CVars.DismissedOldWindows, true);
-        cfg.CommitConfig();
     }
 
     // Avalonia configuration, don't remove; also used by visual designer.
