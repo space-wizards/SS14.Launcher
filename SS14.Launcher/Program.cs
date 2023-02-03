@@ -138,10 +138,7 @@ internal static class Program
 
         var caption = "Unsupported Windows version";
 
-        var thread = Thread.CurrentThread;
-
-        if (thread.CurrentCulture.TwoLetterISOLanguageName == "ru" ||
-            thread.CurrentUICulture.TwoLetterISOLanguageName == "ru")
+        if (Language.UserHasLanguage("ru"))
         {
             text = "Вы используете старую версию Windows которая больше не поддерживается Space Station 14.\n\n" +
                    "При возникновении ошибок НЕ БУДЕТ ОКАЗАНО НИКАКОЙ ПОДДЕРЖКИ.";
