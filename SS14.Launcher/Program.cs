@@ -1,6 +1,7 @@
 using System;
 using System.Net.Http.Headers;
 using System.Runtime.InteropServices;
+using System.Threading;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
@@ -131,11 +132,22 @@ internal static class Program
         if (!OperatingSystem.IsWindows() || Environment.OSVersion.Version.Build >= 9600)
             return;
 
-        const string text =
+        var text =
             "You are using an old version of Windows that is no longer supported by Space Station 14.\n\n" +
             "If anything breaks, DO NOT ASK FOR HELP OR SUPPORT.";
 
-        const string caption = "Unsupported Windows version";
+        var caption = "Unsupported Windows version";
+
+        var thread = Thread.CurrentThread;
+
+        if (thread.CurrentCulture.TwoLetterISOLanguageName == "ru" ||
+            thread.CurrentUICulture.TwoLetterISOLanguageName == "ru")
+        {
+            text = "Вы используете старую версию Windows которая больше не поддерживается Space Station 14.\n\n" +
+                   "При возникновении ошибок НЕ БУДЕТ ОКАЗАНО НИКАКОЙ ПОДДЕРЖКИ.";
+
+            caption = "Неподдерживаемая версия Windows";
+        }
 
         fixed (char* pText = text)
         fixed (char* pCaption = caption)
