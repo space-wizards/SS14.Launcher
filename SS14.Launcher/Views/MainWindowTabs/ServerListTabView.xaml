@@ -13,7 +13,7 @@
   <DockPanel LastChildFill="True">
     <DockPanel DockPanel.Dock="Top" Margin="4, 0, 4, 2">
       <!--TODO: These measurements are just golfed based on approximations of where the sections *probably* are, and assumes a scroll bar is present. This might prove a bit wonky with localization and excessive screen sizes. It'd be ideal if this header section could dynamically adapt to the section sizes in the server list.-->
-      <Control DockPanel.Dock="Right" MinWidth="101" />
+      <Control DockPanel.Dock="Right" MinWidth="105" />
       <Rectangle DockPanel.Dock="Right" Classes="VerticalSeparator"/>
       <TextBlock DockPanel.Dock="Right" Text="Players" Classes="SubText" TextAlignment="Center" MinWidth="80" Margin="10 0"/>
       <Rectangle DockPanel.Dock="Right" Classes="VerticalSeparator" />
