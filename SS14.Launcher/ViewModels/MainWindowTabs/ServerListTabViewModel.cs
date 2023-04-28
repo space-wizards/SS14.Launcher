@@ -48,29 +48,25 @@ public class ServerListTabViewModel : MainWindowTabViewModel
         get
         {
             var status = _serverListCache.Status;
-            switch (status)
-            {
-                case RefreshListStatus.Error:
-                    return "There was an error fetching the master server lists.";
-                case RefreshListStatus.PartialError:
-                    return "Failed to fetch some or all server lists. Ensure your hub configuration is correct.";
-                case RefreshListStatus.UpdatingMaster:
-                    return "Fetching master server list...";
-                case RefreshListStatus.Updating:
-                    return "Discovering servers...";
-                case RefreshListStatus.NotUpdated:
-                    return "";
-                case RefreshListStatus.Updated:
-                default:
-                    if (SearchedServers.Count == 0 && _allServers.Count != 0)
-                        // TODO: Actually make this show up or just remove it entirely
-                        return "No servers match your search.";
+            if (status == RefreshListStatus.Error)
+                return "There was an error fetching the master server list.";
 
-                    if (_allServers.Count == 0)
-                        return "There are no public servers. Ensure your hub configuration is correct.";
+            if (status == RefreshListStatus.UpdatingMaster)
+                return "Fetching master server list...";
 
-                    return "";
-            }
+            if (SearchedServers.Count == 0 && _allServers.Count != 0)
+                return "No servers match your search.";
+
+            if (status == RefreshListStatus.Updating)
+                return "Discovering servers...";
+
+            if (status == RefreshListStatus.NotUpdated)
+                return "";
+
+            if (_allServers.Count == 0)
+                return "There's no public servers, apparently?";
+
+            return "";
         }
     }
 

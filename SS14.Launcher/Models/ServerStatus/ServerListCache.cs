@@ -60,18 +60,18 @@ public sealed class ServerListCache : ReactiveObject, IServerSource
 
         try
         {
-            var (allSucceeded, entries) = await _hubApi.GetServers(cancel);
+            var entries = await _hubApi.GetServerList(cancel);
 
             Status = RefreshListStatus.Updating;
 
             AllServers.AddRange(entries.Select(entry =>
             {
-                var statusData = new ServerStatusData(entry.Address, entry.HubAddress);
+                var statusData = new ServerStatusData(entry.Address);
                 ServerStatusCache.ApplyStatus(statusData, entry.StatusData);
                 return new ServerStatusDataWithFallbackName(statusData, entry.StatusData.Name);
             }));
 
-            Status = allSucceeded ? RefreshListStatus.Updated : RefreshListStatus.PartialError;
+            Status = RefreshListStatus.Updated;
         }
         catch (OperationCanceledException)
         {
@@ -87,7 +87,7 @@ public sealed class ServerListCache : ReactiveObject, IServerSource
     {
         ServerStatusCache.UpdateInfoForCore(
             statusData,
-            async token => await _hubApi.GetServerInfo(statusData, token));
+            async token => await _hubApi.GetServerInfo(statusData.Address, token));
     }
 }
 
@@ -126,13 +126,8 @@ public enum RefreshListStatus
     Updated,
 
     /// <summary>
-    /// A connection error occured when fetching from at least one hub.
-    /// </summary>
-    PartialError,
-
-    /// <summary>
     /// An error occured.
     /// </summary>
-    Error,
+    Error
 }
 
