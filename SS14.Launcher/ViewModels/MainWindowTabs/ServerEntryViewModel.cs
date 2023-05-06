@@ -1,10 +1,9 @@
 using System;
+using System.ComponentModel;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Messaging;
-using Splat;
 using SS14.Launcher.Models.Data;
 using SS14.Launcher.Models.ServerStatus;
-using SS14.Launcher.Utility;
 
 namespace SS14.Launcher.ViewModels.MainWindowTabs;
 
@@ -18,47 +17,21 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
     private string _fallbackName = string.Empty;
     private bool _isExpanded;
 
-    public ServerEntryViewModel(MainWindowViewModel windowVm, ServerStatusData cacheData, IServerSource serverSource)
+    public ServerEntryViewModel(MainWindowViewModel windowVm, ServerStatusData cacheData, IServerSource serverSource, DataManager cfg)
     {
-        _cfg = Locator.Current.GetRequiredService<DataManager>();
+        _cfg = cfg;
         _windowVm = windowVm;
         _cacheData = cacheData;
         _serverSource = serverSource;
-
-        _cacheData.PropertyChanged += (_, args) =>
-        {
-            switch (args.PropertyName)
-            {
-                case nameof(IServerStatusData.PlayerCount):
-                case nameof(IServerStatusData.SoftMaxPlayerCount):
-                    OnPropertyChanged(nameof(ServerStatusString));
-                    break;
-
-                case nameof(IServerStatusData.Status):
-                    OnPropertyChanged(nameof(IsOnline));
-                    OnPropertyChanged(nameof(ServerStatusString));
-                    OnPropertyChanged(nameof(Description));
-                    CheckUpdateInfo();
-                    break;
-
-                case nameof(IServerStatusData.Name):
-                    OnPropertyChanged(nameof(Name));
-                    break;
-
-                case nameof(IServerStatusData.Description):
-                case nameof(IServerStatusData.StatusInfo):
-                    OnPropertyChanged(nameof(Description));
-                    break;
-            }
-        };
     }
 
     public ServerEntryViewModel(
         MainWindowViewModel windowVm,
         ServerStatusData cacheData,
         FavoriteServer favorite,
-        IServerSource serverSource)
-        : this(windowVm, cacheData, serverSource)
+        IServerSource serverSource,
+        DataManager cfg)
+        : this(windowVm, cacheData, serverSource, cfg)
     {
         Favorite = favorite;
     }
@@ -66,8 +39,9 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
     public ServerEntryViewModel(
         MainWindowViewModel windowVm,
         ServerStatusDataWithFallbackName ssdfb,
-        IServerSource serverSource)
-        : this(windowVm, ssdfb.Data, serverSource)
+        IServerSource serverSource,
+        DataManager cfg)
+        : this(windowVm, ssdfb.Data, serverSource, cfg)
     {
         FallbackName = ssdfb.FallbackName ?? "";
     }
@@ -199,5 +173,46 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
             return;
 
         _serverSource.UpdateInfoFor(_cacheData);
+    }
+
+    protected override void OnActivated()
+    {
+        base.OnActivated();
+
+        _cacheData.PropertyChanged += OnCacheDataOnPropertyChanged;
+    }
+
+    protected override void OnDeactivated()
+    {
+        base.OnDeactivated();
+
+        _cacheData.PropertyChanged -= OnCacheDataOnPropertyChanged;
+    }
+
+    private void OnCacheDataOnPropertyChanged(object? _, PropertyChangedEventArgs args)
+    {
+        switch (args.PropertyName)
+        {
+            case nameof(IServerStatusData.PlayerCount):
+            case nameof(IServerStatusData.SoftMaxPlayerCount):
+                OnPropertyChanged(nameof(ServerStatusString));
+                break;
+
+            case nameof(IServerStatusData.Status):
+                OnPropertyChanged(nameof(IsOnline));
+                OnPropertyChanged(nameof(ServerStatusString));
+                OnPropertyChanged(nameof(Description));
+                CheckUpdateInfo();
+                break;
+
+            case nameof(IServerStatusData.Name):
+                OnPropertyChanged(nameof(Name));
+                break;
+
+            case nameof(IServerStatusData.Description):
+            case nameof(IServerStatusData.StatusInfo):
+                OnPropertyChanged(nameof(Description));
+                break;
+        }
     }
 }

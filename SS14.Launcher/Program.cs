@@ -1,11 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Net.Http.Headers;
-using System.Runtime.InteropServices;
-using System.Threading;
+using System.Text;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
@@ -38,6 +36,10 @@ internal static class Program
     // yet and stuff might break.
     public static void Main(string[] args)
     {
+#if DEBUG
+        Console.OutputEncoding = Encoding.UTF8;
+#endif
+
         var msgr = new LauncherMessaging();
         Locator.CurrentMutable.RegisterConstant(msgr);
 

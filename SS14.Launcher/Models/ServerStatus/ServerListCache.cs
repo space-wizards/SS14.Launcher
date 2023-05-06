@@ -1,11 +1,12 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Threading;
 using Serilog;
 using Splat;
 using SS14.Launcher.Utility;
-using DynamicData;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using SS14.Launcher.Api;
@@ -21,7 +22,8 @@ public sealed class ServerListCache : ReactiveObject, IServerSource
 
     private CancellationTokenSource? _refreshCancel;
 
-    public readonly ObservableCollection<ServerStatusDataWithFallbackName> AllServers = new();
+    public ObservableCollection<ServerStatusData> AllServers => _allServers;
+    private readonly ServerListCollection _allServers = new();
 
     [Reactive]
     public RefreshListStatus Status { get; private set; } = RefreshListStatus.NotUpdated;
@@ -48,14 +50,14 @@ public sealed class ServerListCache : ReactiveObject, IServerSource
     public void RequestRefresh()
     {
         _refreshCancel?.Cancel();
-        AllServers.Clear();
+        _allServers.Clear();
         _refreshCancel = new CancellationTokenSource();
         RefreshServerList(_refreshCancel.Token);
     }
 
     public async void RefreshServerList(CancellationToken cancel)
     {
-        AllServers.Clear();
+        _allServers.Clear();
         Status = RefreshListStatus.UpdatingMaster;
 
         try
@@ -64,11 +66,11 @@ public sealed class ServerListCache : ReactiveObject, IServerSource
 
             Status = RefreshListStatus.Updating;
 
-            AllServers.AddRange(entries.Select(entry =>
+            _allServers.AddItems(entries.Select(entry =>
             {
                 var statusData = new ServerStatusData(entry.Address, entry.HubAddress);
                 ServerStatusCache.ApplyStatus(statusData, entry.StatusData);
-                return new ServerStatusDataWithFallbackName(statusData, entry.StatusData.Name);
+                return statusData;
             }));
 
             Status = allSucceeded ? RefreshListStatus.Updated : RefreshListStatus.PartialError;
@@ -88,6 +90,19 @@ public sealed class ServerListCache : ReactiveObject, IServerSource
         ServerStatusCache.UpdateInfoForCore(
             statusData,
             async token => await _hubApi.GetServerInfo(statusData, token));
+    }
+
+    private sealed class ServerListCollection : ObservableCollection<ServerStatusData>
+    {
+        public void AddItems(IEnumerable<ServerStatusData> items)
+        {
+            foreach (var item in items)
+            {
+                Items.Add(item);
+            }
+
+            OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+        }
     }
 }
 

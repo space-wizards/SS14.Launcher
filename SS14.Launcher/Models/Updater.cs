@@ -484,14 +484,10 @@ public sealed class Updater : ReactiveObject
         Lazy<Task<EngineModuleManifest>> moduleManifest)
     {
         // If we have a manifest file, load module dependencies from manifest file.
-        if (ContentManager.OpenBlob(con, versionId, "manifest.yml") is not { } resourceManifest)
+        if (LoadManifestData(con, versionId) is not { } manifestData)
             return;
 
-        string[] modules;
-        using (resourceManifest)
-        {
-            modules = GetModuleNames(resourceManifest);
-        }
+        var modules = manifestData.Modules;
 
         if (modules.Length <= 0)
             return;
@@ -1185,20 +1181,20 @@ public sealed class Updater : ReactiveObject
         return sha.ComputeHash(stream);
     }
 
-    public static string[] GetModuleNames(Stream manifestContent)
+    public static ResourceManifestData? LoadManifestData(SqliteConnection contentConnection, long versionId)
     {
-        // Check zip file contents for manifest.yml and read the modules the server needs.
-        using var streamReader = new StreamReader(manifestContent);
-        var manifestData = ResourceManifestDeserializer.Deserialize<ResourceManifestData?>(streamReader);
-        if (manifestData != null)
-            return manifestData.Modules;
+        if (ContentManager.OpenBlob(contentConnection, versionId, "manifest.yml") is not { } resourceManifest)
+            return null;
 
-        return Array.Empty<string>();
+        using var streamReader = new StreamReader(resourceManifest);
+        var manifestData = ResourceManifestDeserializer.Deserialize<ResourceManifestData?>(streamReader);
+        return manifestData;
     }
 
-    private sealed class ResourceManifestData
+    public sealed class ResourceManifestData
     {
         public string[] Modules = Array.Empty<string>();
+        public bool MultiWindow = false;
     }
 
     public enum UpdateStatus

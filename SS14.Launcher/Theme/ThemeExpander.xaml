@@ -3,29 +3,32 @@ Taken & modified from Avalonia's git repo.
 -->
 
 <Styles xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:utility="clr-namespace:SS14.Launcher.Utility">
 
   <Style Selector="Expander /template/ ToggleButton#PART_toggle">
     <Setter Property="Template">
       <ControlTemplate>
         <Border BorderThickness="1">
-          <Grid ColumnDefinitions="Auto,*">
-            <Border Grid.Column="0" Width="20" Height="20" HorizontalAlignment="Center"
-                    VerticalAlignment="Center">
-              <Path Fill="{DynamicResource ThemeForegroundBrush}"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Data="M 0 0 L 6 6 L 0 12 Z" />
-            </Border>
-            <ContentPresenter Name="PART_ContentPresenter"
-                              Grid.Column="1"
-                              Background="Transparent"
-                              Content="{TemplateBinding Content}"
-                              VerticalAlignment="Center"
-                              HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                              VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
-                              Padding="{TemplateBinding Padding}" />
-          </Grid>
+          <utility:AlwaysHitTest>
+            <Grid ColumnDefinitions="Auto,*">
+              <Border Grid.Column="0" Width="20" Height="20" HorizontalAlignment="Center"
+                      VerticalAlignment="Center">
+                <Path Fill="{DynamicResource ThemeForegroundBrush}"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Center"
+                      Data="M 0 0 L 6 6 L 0 12 Z" />
+              </Border>
+              <ContentPresenter Name="PART_ContentPresenter"
+                                Grid.Column="1"
+                                Background="Transparent"
+                                Content="{TemplateBinding Content}"
+                                VerticalAlignment="Center"
+                                HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                Padding="{TemplateBinding Padding}" />
+            </Grid>
+          </utility:AlwaysHitTest>
         </Border>
       </ControlTemplate>
     </Setter>

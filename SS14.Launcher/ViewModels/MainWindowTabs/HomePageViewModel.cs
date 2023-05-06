@@ -31,7 +31,7 @@ public class HomePageViewModel : MainWindowTabViewModel
 
         _cfg.FavoriteServers
             .Connect()
-            .Select(x => new ServerEntryViewModel(MainWindowViewModel, _statusCache.GetStatusFor(x.Address), x, _statusCache) { ViewedInFavoritesPane = true })
+            .Select(x => new ServerEntryViewModel(MainWindowViewModel, _statusCache.GetStatusFor(x.Address), x, _statusCache, _cfg) { ViewedInFavoritesPane = true })
             .OnItemAdded(a =>
             {
                 if (IsSelected)

@@ -1,3 +1,4 @@
+using System;
 using Avalonia;
 using Avalonia.Controls.Shapes;
 using Avalonia.Media;
@@ -41,7 +42,7 @@ public class AngleBox : Shape
         var b = Bounds;
 
         context.BeginFigure(new(0, 0), isFilled: true);
-        if (style == AngleBoxSideStyle.OpenRight)
+        if ((style & AngleBoxSideStyle.OpenRight) != 0)
         {
             context.LineTo(new(b.Width, 0));
         }
@@ -53,7 +54,7 @@ public class AngleBox : Shape
 
         context.LineTo(new(b.Width, b.Height));
 
-        if (style == AngleBoxSideStyle.OpenLeft)
+        if ((style & AngleBoxSideStyle.OpenLeft) != 0)
         {
             context.LineTo(new(0, b.Height));
         }
@@ -69,9 +70,11 @@ public class AngleBox : Shape
     }
 }
 
+[Flags]
 public enum AngleBoxSideStyle
 {
-    Full,
-    OpenLeft,
-    OpenRight
+    Full = 0,
+    OpenLeft = 1 << 0,
+    OpenRight = 1 << 1,
+    OpenBoth = OpenLeft | OpenRight
 }

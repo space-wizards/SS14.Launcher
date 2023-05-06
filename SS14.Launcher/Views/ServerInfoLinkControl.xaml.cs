@@ -60,6 +60,6 @@ public sealed partial class ServerInfoLinkControl : UserControl
             return;
         }
 
-        Icon.Source = (IImage)this.FindResource($"InfoIcon-{link.Icon}")!;
+        IconLabel.Icon = (IImage)this.FindResource($"InfoIcon-{link.Icon}")!;
     }
 }

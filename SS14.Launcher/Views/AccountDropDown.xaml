@@ -11,7 +11,7 @@
     <vm:AccountDropDownViewModel />
   </Design.DataContext>
 
-  <v:DropDown HeaderContent="{Binding LoginText}" IsDropDownOpen="{Binding IsDropDownOpen, Mode=TwoWay}">
+  <v:DropDown HeaderContent="{Binding LoginText}" IsDropDownOpen="{Binding IsDropDownOpen, Mode=TwoWay}" Classes="OpenRight">
     <Panel>
       <v:AngleBox Fill="{DynamicResource ThemeBackgroundBrush}" SideStyle="OpenRight" />
       <StackPanel Orientation="Vertical">

@@ -1,5 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="../Launcher.props"/>
+  <Import Project="../Launcher.props" />
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <OutputType Condition="'$(Configuration)' == 'Release'">WinExe</OutputType>
@@ -18,58 +18,62 @@
     <AvaloniaResource Include="**\*.xaml">
       <SubType>Designer</SubType>
     </AvaloniaResource>
-    <AvaloniaResource Include="Assets\**"/>
+    <AvaloniaResource Include="Assets\**" />
     <AvaloniaResource Update="Views\MainWindowLogin.xaml">
       <SubType>Designer</SubType>
     </AvaloniaResource>
 
-    <AdditionalFiles Include="**\*.xaml"/>
+    <AdditionalFiles Include="**\*.xaml" />
+
+    <Compile Update="Views\MainWindowTabs\ServerFilterView.xaml.cs">
+      <DependentUpon>ServerFilterView.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Avalonia"/>
-    <PackageReference Include="Avalonia.Desktop"/>
-    <PackageReference Include="Avalonia.ReactiveUI"/>
-    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics"/>
-    <PackageReference Include="CodeHollow.FeedReader"/>
-    <PackageReference Include="Dapper"/>
-    <PackageReference Include="DynamicData"/>
-    <PackageReference Include="Microsoft.Data.Sqlite"/>
-    <PackageReference Include="Microsoft.Toolkit.Mvvm"/>
-    <PackageReference Include="ReactiveUI"/>
-    <PackageReference Include="ReactiveUI.Fody"/>
-    <PackageReference Include="Robust.Shared.AuthLib"/>
-    <PackageReference Include="Serilog"/>
-    <PackageReference Include="Serilog.Sinks.Console"/>
-    <PackageReference Include="Serilog.Sinks.File"/>
-    <PackageReference Include="XamlNameReferenceGenerator"/>
-    <PackageReference Include="YamlDotNet"/>
-    <PackageReference Include="TerraFX.Interop.Windows"/>
-    <PackageReference Include="NSec.Cryptography"/>
-    <PackageReference Include="Mono.Posix.NETStandard"/>
-    <PackageReference Include="SharpZstd.Interop"/>
-    <PackageReference Include="SpaceWizards.Sodium"/>
+    <PackageReference Include="Avalonia" />
+    <PackageReference Include="Avalonia.Desktop" />
+    <PackageReference Include="Avalonia.ReactiveUI" />
+    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" />
+    <PackageReference Include="CodeHollow.FeedReader" />
+    <PackageReference Include="Dapper" />
+    <PackageReference Include="DynamicData" />
+    <PackageReference Include="Microsoft.Data.Sqlite" />
+    <PackageReference Include="Microsoft.Toolkit.Mvvm" />
+    <PackageReference Include="ReactiveUI" />
+    <PackageReference Include="ReactiveUI.Fody" />
+    <PackageReference Include="Robust.Shared.AuthLib" />
+    <PackageReference Include="Serilog" />
+    <PackageReference Include="Serilog.Sinks.Console" />
+    <PackageReference Include="Serilog.Sinks.File" />
+    <PackageReference Include="XamlNameReferenceGenerator" />
+    <PackageReference Include="YamlDotNet" />
+    <PackageReference Include="TerraFX.Interop.Windows" />
+    <PackageReference Include="NSec.Cryptography" />
+    <PackageReference Include="Mono.Posix.NETStandard" />
+    <PackageReference Include="SharpZstd.Interop" />
+    <PackageReference Include="SpaceWizards.Sodium" />
   </ItemGroup>
   <ItemGroup>
-    <None Remove="Utility\runtime.json"/>
+    <None Remove="Utility\runtime.json" />
     <EmbeddedResource Include="Utility\runtime.json">
       <LogicalName>Utility.runtime.json</LogicalName>
     </EmbeddedResource>
-    <None Remove="Models\Data\Migrations\*.sql"/>
-    <EmbeddedResource Include="Models\Data\Migrations\*.sql"/>
-    <None Remove="Models\ContentManagement\Migrations\*.sql"/>
-    <EmbeddedResource Include="Models\ContentManagement\Migrations\*.sql"/>
-    <None Remove="Models\OverrideAssets\Migrations\*.sql"/>
-    <EmbeddedResource Include="Models\OverrideAssets\Migrations\*.sql"/>
+    <None Remove="Models\Data\Migrations\*.sql" />
+    <EmbeddedResource Include="Models\Data\Migrations\*.sql" />
+    <None Remove="Models\ContentManagement\Migrations\*.sql" />
+    <EmbeddedResource Include="Models\ContentManagement\Migrations\*.sql" />
+    <None Remove="Models\OverrideAssets\Migrations\*.sql" />
+    <EmbeddedResource Include="Models\OverrideAssets\Migrations\*.sql" />
   </ItemGroup>
   <ItemGroup>
-    <RobustLinkRoots Include="SS14.Launcher"/>
-    <RobustLinkAssemblies Include="TerraFX.Interop.Windows"/>
+    <RobustLinkRoots Include="SS14.Launcher" />
+    <RobustLinkAssemblies Include="TerraFX.Interop.Windows" />
   </ItemGroup>
   <ItemGroup>
-    <None Remove="signing_key"/>
+    <None Remove="signing_key" />
     <Content Include="signing_key">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-  <Import Project="..\MSBuild\Robust.Trimming.targets"/>
+  <Import Project="..\MSBuild\Robust.Trimming.targets" />
 </Project>

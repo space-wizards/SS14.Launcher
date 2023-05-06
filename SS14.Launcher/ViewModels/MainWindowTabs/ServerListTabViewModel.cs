@@ -1,14 +1,9 @@
 using System;
-using System.Linq;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Net.Http;
-using System.Threading;
-using System.Threading.Tasks;
-using Avalonia.Threading;
+using System.Collections.Specialized;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
-using Serilog;
 using Splat;
 using SS14.Launcher.Models.ServerStatus;
 using SS14.Launcher.Utility;
@@ -18,14 +13,10 @@ namespace SS14.Launcher.ViewModels.MainWindowTabs;
 public class ServerListTabViewModel : MainWindowTabViewModel
 {
     private readonly MainWindowViewModel _windowVm;
-    private readonly HttpClient _http;
     private readonly ServerListCache _serverListCache;
 
     public ObservableCollection<ServerEntryViewModel> SearchedServers { get; } = new();
 
-    private List<ServerEntryViewModel> _allServers => _serverListCache.AllServers.Select(
-        x => new ServerEntryViewModel(_windowVm, x, _serverListCache)
-    ).ToList();
     private string? _searchString;
 
     public override string Name => "Servers";
@@ -62,11 +53,11 @@ public class ServerListTabViewModel : MainWindowTabViewModel
                     return "";
                 case RefreshListStatus.Updated:
                 default:
-                    if (SearchedServers.Count == 0 && _allServers.Count != 0)
+                    if (SearchedServers.Count == 0 && _serverListCache.AllServers.Count != 0)
                         // TODO: Actually make this show up or just remove it entirely
-                        return "No servers match your search.";
+                        return "No servers match your search or filter settings.";
 
-                    if (_allServers.Count == 0)
+                    if (_serverListCache.AllServers.Count == 0)
                         return "There are no public servers. Ensure your hub configuration is correct.";
 
                     return "";
@@ -74,13 +65,20 @@ public class ServerListTabViewModel : MainWindowTabViewModel
         }
     }
 
+    [Reactive] public bool FiltersVisible { get; set; }
+
+    public ServerListFiltersViewModel Filters { get; }
+
     public ServerListTabViewModel(MainWindowViewModel windowVm)
     {
+        Filters = new ServerListFiltersViewModel(windowVm.Cfg);
+        Filters.FiltersUpdated += FiltersOnFiltersUpdated;
+
         _windowVm = windowVm;
-        _http = Locator.Current.GetRequiredService<HttpClient>();
         _serverListCache = Locator.Current.GetRequiredService<ServerListCache>();
 
-        _serverListCache.AllServers.CollectionChanged += (_, _) => UpdateSearchedList();
+        _serverListCache.AllServers.CollectionChanged += ServerListUpdated;
+
         _serverListCache.PropertyChanged += (_, args) =>
         {
             switch (args.PropertyName)
@@ -94,6 +92,11 @@ public class ServerListTabViewModel : MainWindowTabViewModel
         };
     }
 
+    private void FiltersOnFiltersUpdated()
+    {
+        UpdateSearchedList();
+    }
+
     public override void Selected()
     {
         _serverListCache.RequestInitialUpdate();
@@ -104,32 +107,64 @@ public class ServerListTabViewModel : MainWindowTabViewModel
         _serverListCache.RequestRefresh();
     }
 
+    private void ServerListUpdated(object? sender, NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)
+    {
+        Filters.UpdatePresentFilters(_serverListCache.AllServers);
+
+        UpdateSearchedList();
+    }
+
     private void UpdateSearchedList()
     {
-        var sortList = new List<ServerEntryViewModel>();
+        var sortList = new List<ServerStatusData>();
 
-        foreach (var server in _allServers)
+        foreach (var server in _serverListCache.AllServers)
         {
-            if (DoesSearchMatch(server))
-                sortList.Add(server);
+            if (!DoesSearchMatch(server))
+                continue;
+
+            sortList.Add(server);
         }
 
-        sortList.Sort(Comparer<ServerEntryViewModel>.Create((a, b) =>
-            b.CacheData.PlayerCount.CompareTo(a.CacheData.PlayerCount)));
+        Filters.ApplyFilters(sortList);
+
+        sortList.Sort(ServerSortComparer.Instance);
 
         SearchedServers.Clear();
         foreach (var server in sortList)
         {
-            SearchedServers.Add(server);
+            var vm = new ServerEntryViewModel(_windowVm, server, _serverListCache, _windowVm.Cfg);
+            SearchedServers.Add(vm);
         }
     }
 
-    private bool DoesSearchMatch(ServerEntryViewModel vm)
+    private bool DoesSearchMatch(ServerStatusData data)
     {
         if (string.IsNullOrWhiteSpace(SearchString))
             return true;
 
-        return vm.CacheData.Name != null &&
-               vm.CacheData.Name.Contains(SearchString, StringComparison.CurrentCultureIgnoreCase);
+        return data.Name != null &&
+               data.Name.Contains(SearchString, StringComparison.CurrentCultureIgnoreCase);
+    }
+
+    private sealed class ServerSortComparer : NotNullComparer<ServerStatusData>
+    {
+        public static readonly ServerSortComparer Instance = new();
+
+        public override int Compare(ServerStatusData x, ServerStatusData y)
+        {
+            // Sort by player count descending.
+            var res = x.PlayerCount.CompareTo(y.PlayerCount);
+            if (res != 0)
+                return -res;
+
+            // Sort by name.
+            res = string.Compare(x.Name, y.Name, StringComparison.CurrentCultureIgnoreCase);
+            if (res != 0)
+                return res;
+
+            // Sort by address.
+            return string.Compare(x.Address, y.Address, StringComparison.Ordinal);
+        }
     }
 }

@@ -6,6 +6,7 @@ using System.Runtime.Intrinsics.Arm;
 using System.Runtime.Intrinsics.X86;
 using System.Text;
 using Serilog;
+using SQLitePCL;
 using X86Aes = System.Runtime.Intrinsics.X86.Aes;
 using ArmAes = System.Runtime.Intrinsics.Arm.Aes;
 
@@ -27,6 +28,8 @@ internal static class LauncherDiagnostics
             "Processor: {ProcessorCount}x {ProcessorModel}",
             Environment.ProcessorCount,
             GetProcessorModel());
+
+        Log.Information("SQLite version: {SqliteVersion}", raw.sqlite3_libversion().utf8_to_string());
     }
 
     private static string GetIntrinsics()

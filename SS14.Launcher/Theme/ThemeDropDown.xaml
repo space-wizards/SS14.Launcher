@@ -49,4 +49,12 @@
   <Style Selector="views|DropDown:disabled">
     <Setter Property="Opacity" Value="{DynamicResource ThemeDisabledOpacity}" />
   </Style>
+
+  <Style Selector="views|DropDown.OpenLeft /template/ views|AngleBox">
+    <Setter Property="SideStyle" Value="OpenLeft" />
+  </Style>
+
+  <Style Selector="views|DropDown.OpenRight /template/ views|AngleBox">
+    <Setter Property="SideStyle" Value="OpenRight" />
+  </Style>
 </Styles>

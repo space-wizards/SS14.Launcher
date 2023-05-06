@@ -6,7 +6,7 @@
         xmlns:mainWindowTabs="clr-namespace:SS14.Launcher.ViewModels.MainWindowTabs"
         xmlns:v="clr-namespace:SS14.Launcher.Views"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-        MinWidth="650" MinHeight="400"
+        MinWidth="800" MinHeight="500"
         Width="650" Height="400"
         x:Class="SS14.Launcher.Views.MainWindow"
         Icon="{DynamicResource WindowIcon}"
@@ -31,16 +31,20 @@
                  Source="{DynamicResource LogoLong}" />
           <!--<v:Logo DockPanel.Dock="Left" Height="60" HorizontalAlignment="Left" Margin="0, 8"></v:Logo>-->
           <Grid DockPanel.Dock="Right" HorizontalAlignment="Right" VerticalAlignment="Center"
-                ColumnDefinitions="Auto, Auto" RowDefinitions="Auto, Auto">
+                ColumnDefinitions="Auto, Auto" RowDefinitions="Auto, Auto" Margin="0, 0, 3, 0">
             <!-- Discord link -->
-            <Button Content="Discord" Grid.Row="0" Grid.Column="0" MinWidth="90"
-                    Command="{Binding OnDiscordButtonPressed}"
-                    Margin="0, 6, 4, 6" />
+            <Button Grid.Row="0" Grid.Column="0" MinWidth="90"
+                    Command="{Binding OnDiscordButtonPressed}" Classes="OpenBoth"
+                    Margin="0, 6, 2, 2">
+              <v:IconLabel Icon="{DynamicResource InfoIcon-discord}" Content="Discord" />
+            </Button>
 
             <!-- Website link -->
-            <Button Content="Website" Grid.Row="0" Grid.Column="1" MinWidth="90"
-                    Command="{Binding OnWebsiteButtonPressed}"
-                    Margin="0, 6" />
+            <Button Grid.Row="0" Grid.Column="1" MinWidth="90"
+                    Command="{Binding OnWebsiteButtonPressed}" Classes="OpenLeft"
+                    Margin="0, 6, 0, 2">
+              <v:IconLabel Icon="{DynamicResource InfoIcon-web}" Content="Website" />
+            </Button>
 
             <!-- Account drop down -->
             <v:AccountDropDown Grid.ColumnSpan="2" Grid.Row="1"

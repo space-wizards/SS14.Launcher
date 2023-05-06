@@ -5,7 +5,7 @@ Taken & modified from Avalonia's git repo.
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:views="clr-namespace:SS14.Launcher.Views">
-  <Style Selector="Button">
+  <Style Selector="ToggleButton">
     <Setter Property="Template">
       <ControlTemplate>
         <Panel>
@@ -28,45 +28,39 @@ Taken & modified from Avalonia's git repo.
     <Setter Property="Padding" Value="0, 2" />
     <Setter Property="Margin" Value="1" />
   </Style>
-  <Style Selector="Button /template/ Panel#PART_Margin">
+  <Style Selector="ToggleButton /template/ Panel#PART_Margin">
     <Setter Property="Margin" Value="14 0" />
   </Style>
 
-  <Style Selector="Button.OpenLeft">
+  <Style Selector="ToggleButton.OpenLeft">
     <Setter Property="Padding" Value="7, 2, 0, 2" />
   </Style>
-  <Style Selector="Button.OpenLeft /template/ views|AngleBox">
+  <Style Selector="ToggleButton.OpenLeft /template/ views|AngleBox">
     <Setter Property="SideStyle" Value="OpenLeft" />
   </Style>
-  <Style Selector="Button.OpenLeft /template/ Panel#PART_Margin">
+  <Style Selector="ToggleButton.OpenLeft /template/ Panel#PART_Margin">
     <Setter Property="Margin" Value="0 0 14 0" />
   </Style>
 
-  <Style Selector="Button.OpenRight">
+  <Style Selector="ToggleButton.OpenRight">
     <Setter Property="Padding" Value="0, 2, 7, 2" />
   </Style>
-  <Style Selector="Button.OpenRight /template/ views|AngleBox">
+  <Style Selector="ToggleButton.OpenRight /template/ views|AngleBox">
     <Setter Property="SideStyle" Value="OpenRight" />
   </Style>
-  <Style Selector="Button.OpenRight /template/ Panel#PART_Margin">
+  <Style Selector="ToggleButton.OpenRight /template/ Panel#PART_Margin">
     <Setter Property="Margin" Value="14 0 0 0" />
   </Style>
 
-  <Style Selector="Button.OpenBoth">
-    <Setter Property="Padding" Value="0, 2" />
-  </Style>
-  <Style Selector="Button.OpenBoth /template/ views|AngleBox">
-    <Setter Property="SideStyle" Value="OpenBoth" />
-  </Style>
-  <Style Selector="Button.OpenBoth /template/ Panel#PART_Margin">
-    <Setter Property="Margin" Value="0" />
-  </Style>
-
-  <Style Selector="Button:pointerover">
+  <Style Selector="ToggleButton:pointerover">
     <Setter Property="Background" Value="{DynamicResource ThemeButtonHoveredBrush}" />
   </Style>
 
-  <Style Selector="Button:pressed">
+  <Style Selector="ToggleButton:pressed">
+    <Setter Property="Background" Value="{DynamicResource ThemeControlHighBrush}" />
+  </Style>
+
+  <Style Selector="ToggleButton:checked">
     <Setter Property="Background" Value="{DynamicResource ThemeControlHighBrush}" />
   </Style>
 </Styles>

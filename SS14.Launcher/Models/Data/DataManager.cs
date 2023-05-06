@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -6,7 +7,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
 using Dapper;
@@ -16,6 +16,7 @@ using Microsoft.Data.Sqlite;
 using Microsoft.Toolkit.Mvvm.Messaging;
 using ReactiveUI;
 using Serilog;
+using SS14.Launcher.Utility;
 
 namespace SS14.Launcher.Models.Data;
 
@@ -47,6 +48,8 @@ public sealed class DataManager : ReactiveObject
     // When using dynamic engine management, this is used to keep track of installed engine versions.
     private readonly SourceCache<InstalledEngineVersion, string> _engineInstallations = new(v => v.Version);
 
+    private readonly HashSet<ServerFilter> _filters = new();
+
     private readonly Dictionary<string, CVarEntry> _configEntries = new();
 
     // TODO: I got lazy and this is a flat list.
@@ -65,6 +68,7 @@ public sealed class DataManager : ReactiveObject
 
     public DataManager()
     {
+        Filters = new ServerFilterCollection(this);
         // Set up subscriptions to listen for when the list-data (e.g. logins) changes in any way.
         // All these operations match directly SQL UPDATE/INSERT/DELETE.
 
@@ -120,6 +124,7 @@ public sealed class DataManager : ReactiveObject
     public IObservableCache<LoginInfo, Guid> Logins => _logins;
     public IObservableCache<InstalledEngineVersion, string> EngineInstallations => _engineInstallations;
     public IEnumerable<InstalledEngineModule> EngineModules => _modules;
+    public ICollection<ServerFilter> Filters { get; }
 
     public bool ActuallyMultiAccounts =>
 #if DEBUG
@@ -274,6 +279,8 @@ public sealed class DataManager : ReactiveObject
 
             void Set<T>(T value) => ((CVarEntry<T>)entry).ValueInternal = value;
         }
+
+        _filters.UnionWith(sqliteConnection.Query<ServerFilter>("SELECT Category, Data FROM ServerFilter"));
 
         // Avoid DB commands from config load.
         _dbCommandQueue.Clear();
@@ -484,6 +491,58 @@ public sealed class DataManager : ReactiveObject
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Value)));
         }
+    }
+
+    private sealed class ServerFilterCollection : ICollection<ServerFilter>
+    {
+        private readonly DataManager _parent;
+
+        public ServerFilterCollection(DataManager parent)
+        {
+            _parent = parent;
+        }
+
+        public IEnumerator<ServerFilter> GetEnumerator() => _parent._filters.GetEnumerator();
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+        public void Add(ServerFilter item)
+        {
+            if (!_parent._filters.Add(item))
+                return;
+
+            _parent.AddDbCommand(cmd => cmd.Execute(
+                "INSERT INTO ServerFilter (Category, Data) VALUES (@Category, @Data)",
+                new { item.Category, item.Data}));
+        }
+
+        public void Clear()
+        {
+            _parent._filters.Clear();
+
+            _parent.AddDbCommand(cmd => cmd.Execute("DELETE FROM ServerFilter"));
+        }
+
+        public bool Remove(ServerFilter item)
+        {
+            if (!_parent._filters.Remove(item))
+                return false;
+
+            _parent.AddDbCommand(cmd => cmd.Execute(
+                "DELETE FROM ServerFilter WHERE Category = @Category AND Data = @Data",
+                new { item.Category, item.Data}));
+
+            return true;
+        }
+
+        public bool Contains(ServerFilter item) => _parent._filters.Contains(item);
+
+        public void CopyTo(ServerFilter[] array, int arrayIndex)
+        {
+            _parent._filters.CopyTo(array, arrayIndex);
+        }
+
+        public int Count => _parent._filters.Count;
+        public bool IsReadOnly => false;
     }
 }
 

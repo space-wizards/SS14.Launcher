@@ -318,6 +318,8 @@ public class Connector : ReactiveObject
             EnvVar("GLIBC_TUNABLES", "glibc.rtld.dynamic_sort=1");
         }
 
+        ConfigureMultiWindow(launchInfo, startInfo);
+
         // DON'T ENABLE THIS THE LOADER USES THE LAUNCHER .NET VERSION ALWAYS SO ROLLFORWARD SHOULDN'T BE SPECIFIED.
         // DON'T KEEP FORGETTING THAT ABOVE LINE LIKE I DID.
         // EnvVar("DOTNET_ROLL_FORWARD", "Major");
@@ -365,6 +367,11 @@ public class Connector : ReactiveObject
             startInfo.EnvironmentVariables[envVar] = value;
             // Log.Debug("Env: {EnvVar} = {Value}", envVar, value);
         }
+    }
+
+    private static void ConfigureMultiWindow(ContentLaunchInfo launchInfo, ProcessStartInfo startInfo)
+    {
+        // Implemented in private repo for Steam.
     }
 
     private static async void PipeOutput(Process process, Stream targetStdout, Stream targetStderr)

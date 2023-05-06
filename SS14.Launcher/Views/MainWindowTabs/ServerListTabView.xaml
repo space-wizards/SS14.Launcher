@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:mainWindowTabs="clr-namespace:SS14.Launcher.ViewModels.MainWindowTabs"
              xmlns:views="clr-namespace:SS14.Launcher.Views"
+             xmlns:mainWindowTabs1="clr-namespace:SS14.Launcher.Views.MainWindowTabs"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SS14.Launcher.Views.MainWindowTabs.ServerListTabView">
   <Design.DataContext>
@@ -11,37 +12,60 @@
   </Design.DataContext>
 
   <DockPanel LastChildFill="True">
-    <DockPanel DockPanel.Dock="Top" Margin="4, 0, 4, 2">
-      <!--TODO: These measurements are just golfed based on approximations of where the sections *probably* are, and assumes a scroll bar is present. This might prove a bit wonky with localization and excessive screen sizes. It'd be ideal if this header section could dynamically adapt to the section sizes in the server list.-->
-      <Control DockPanel.Dock="Right" MinWidth="105" />
-      <Rectangle DockPanel.Dock="Right" Classes="VerticalSeparator"/>
-      <TextBlock DockPanel.Dock="Right" Text="Players" Classes="SubText" TextAlignment="Center" MinWidth="80" Margin="10 0"/>
-      <Rectangle DockPanel.Dock="Right" Classes="VerticalSeparator" />
-      <TextBlock DockPanel.Dock="Right" Text="Server Name" Classes="SubText"/>
-    </DockPanel>
 
     <DockPanel DockPanel.Dock="Bottom" Margin="4 4 4 0">
-      <Button DockPanel.Dock="Right" Content="Refresh" Command="{Binding RefreshPressed}" />
+      <Button DockPanel.Dock="Right" Content="Refresh" Command="{Binding RefreshPressed}"  Classes="OpenLeft" />
+      <ToggleButton DockPanel.Dock="Right" IsChecked="{Binding FiltersVisible}" Classes="OpenRight">
+        <ToggleButton.Content>
+          <MultiBinding StringFormat="{}Filters ({0} / {1})">
+            <Binding Path="Filters.FilteredServers" />
+            <Binding Path="Filters.TotalServers" />
+          </MultiBinding>
+        </ToggleButton.Content>
+      </ToggleButton>
       <TextBox DockPanel.Dock="Right" Text="{Binding SearchString, Mode=TwoWay}" Watermark="Search For Servers..."
                UseFloatingWatermark="False"
                Margin="0 0 8 0" />
     </DockPanel>
 
     <Panel DockPanel.Dock="Bottom" Classes="ScrollViewerSep" />
-    <Panel DockPanel.Dock="Top" Classes="ScrollViewerSep" />
-    <Panel>
-      <Panel.Background>
-        <SolidColorBrush Color="#1e1e22" />
-      </Panel.Background>
-      <ScrollViewer MinHeight="150" HorizontalScrollBarVisibility="Disabled">
-        <Grid RowDefinitions="Auto,Auto,Auto">
-          <ItemsControl Grid.Row="0" Items="{Binding SearchedServers}" Classes="ServerList" />
-          <TextBlock Grid.Row="1" IsVisible="{Binding ListTextVisible}" TextAlignment="Center" VerticalAlignment="Center"
-                     Text="{Binding ListText}" />
-          <views:DungSpinner Grid.Row="2" IsVisible="{Binding SpinnerVisible}" HorizontalAlignment="Center" />
-        </Grid>
-      </ScrollViewer>
-      <StackPanel Orientation="Vertical" VerticalAlignment="Center" />
-    </Panel>
+
+    <Grid>
+      <!-- Main server list table -->
+      <DockPanel ZIndex="-1">
+        <DockPanel DockPanel.Dock="Top" Margin="4, 0, 4, 2">
+          <!--TODO: These measurements are just golfed based on approximations of where the sections *probably* are, and assumes a scroll bar is present. This might prove a bit wonky with localization and excessive screen sizes. It'd be ideal if this header section could dynamically adapt to the section sizes in the server list.-->
+          <Control DockPanel.Dock="Right" MinWidth="105" />
+          <Rectangle DockPanel.Dock="Right" Classes="VerticalSeparator"/>
+          <TextBlock DockPanel.Dock="Right" Text="Players" Classes="SubText" TextAlignment="Center" MinWidth="80" Margin="10 0"/>
+          <Rectangle DockPanel.Dock="Right" Classes="VerticalSeparator" />
+          <TextBlock Text="Server Name" Classes="SubText"/>
+        </DockPanel>
+
+        <Panel DockPanel.Dock="Top" Classes="ScrollViewerSep" />
+
+        <Panel>
+          <Panel.Background>
+            <SolidColorBrush Color="#1e1e22" />
+          </Panel.Background>
+          <ScrollViewer MinHeight="150" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Visible">
+            <Grid RowDefinitions="Auto,Auto,Auto">
+              <ItemsControl Grid.Row="0" Items="{Binding SearchedServers}" Classes="ServerList" />
+              <TextBlock Grid.Row="1" IsVisible="{Binding ListTextVisible}" TextAlignment="Center" VerticalAlignment="Center"
+                         Text="{Binding ListText}" />
+              <views:DungSpinner Grid.Row="2" IsVisible="{Binding SpinnerVisible}" HorizontalAlignment="Center" />
+            </Grid>
+          </ScrollViewer>
+          <StackPanel Orientation="Vertical" VerticalAlignment="Center" />
+        </Panel>
+      </DockPanel>
+
+      <!-- Filters dialog -->
+      <Border Height="175" VerticalAlignment="Bottom"  IsVisible="{Binding FiltersVisible}" BoxShadow="0 -2 4 Black">
+        <Panel Background="{DynamicResource ThemeBackgroundBrush}" >
+          <mainWindowTabs1:ServerListFiltersView DataContext="{Binding Filters}" />
+        </Panel>
+      </Border>
+    </Grid>
   </DockPanel>
 </UserControl>

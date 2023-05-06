@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text.Json;
@@ -122,6 +123,11 @@ public sealed class ServerStatusCache : IServerSource
         data.Name = status.Name;
         data.PlayerCount = status.PlayerCount;
         data.SoftMaxPlayerCount = status.SoftMaxPlayerCount;
+
+        var baseTags = status.Tags ?? Array.Empty<string>();
+        var inferredTags = ServerTagInfer.InferTags(status);
+
+        data.Tags = baseTags.Concat(inferredTags).ToArray();
     }
 
     public static async void UpdateInfoForCore(ServerStatusData data, Func<CancellationToken, Task<ServerInfo?>> fetch)
@@ -148,7 +154,6 @@ public sealed class ServerStatusCache : IServerSource
             {
                 linkedToken.CancelAfter(ConfigConstants.ServerStatusTimeout);
 
-                var statusAddr = UriHelper.GetServerInfoAddress(data.Address);
                 info = await fetch(linkedToken.Token) ?? throw new InvalidDataException();
             }
 

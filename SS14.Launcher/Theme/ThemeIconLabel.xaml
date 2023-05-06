@@ -1,0 +1,21 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:views="clr-namespace:SS14.Launcher.Views">
+
+  <Style Selector="views|IconLabel">
+    <Setter Property="Template">
+      <ControlTemplate>
+        <Grid ColumnDefinitions="Auto,*" HorizontalAlignment="Stretch">
+          <Image Grid.Column="0" Name="Icon"
+                 Source="{TemplateBinding Icon}" />
+          <ContentPresenter Grid.Column="1"
+                            Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}" />
+        </Grid>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+
+  <Style Selector="views|IconLabel /template/ Image#Icon">
+    <Setter Property="Margin" Value="0, 0, 4, 0" />
+  </Style>
+</Styles>
