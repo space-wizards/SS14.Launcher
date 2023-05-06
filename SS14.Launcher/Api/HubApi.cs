@@ -31,7 +31,7 @@ public sealed class HubApi
         var entries = new List<HubServerListEntry>();
         var allSucceeded = true;
 
-        foreach (var url in ConfigConstants.HubUrls)
+        foreach (var url in ConfigConstants.DefaultHubUrls)
         {
             try
             {

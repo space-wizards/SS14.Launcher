@@ -1,0 +1,83 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:SS14.Launcher.ViewModels"
+        mc:Ignorable="d" d:DesignWidth="300" d:DesignHeight="100"
+        MinWidth="500" MinHeight="130"
+        Width="500" Height="200"
+        x:Class="SS14.Launcher.Views.HubSettingsDialog"
+        Icon="{DynamicResource WindowIcon}"
+        Title="Hub Settings"
+        Padding="4"
+        WindowStartupLocation="CenterOwner">
+  <Window.DataContext>
+    <vm:HubSettingsViewModel />
+  </Window.DataContext>
+  <Design.DataContext>
+    <vm:HubSettingsViewModel />
+  </Design.DataContext>
+  <DockPanel>
+    <DockPanel Height="30" Margin="0 4 0 0" DockPanel.Dock="Bottom" LastChildFill="False">
+      <Button DockPanel.Dock="Right" Click="Done" Content="Done" />
+      <Button DockPanel.Dock="Right" Click="Cancel" Content="Cancel" />
+      <Button DockPanel.Dock="Right" Command="{Binding Reset}" Content="Reset" />
+      <Button DockPanel.Dock="Left" Command="{Binding Add}" Content="+" />
+    </DockPanel>
+    <ScrollViewer DockPanel.Dock="Top">
+      <ItemsControl Items="{Binding HubList}" Name="Hubs">
+        <ItemsControl.ItemsPanel>
+          <ItemsPanelTemplate>
+            <StackPanel Spacing="2" />
+          </ItemsPanelTemplate>
+        </ItemsControl.ItemsPanel>
+        <ItemsControl.ItemTemplate>
+          <DataTemplate>
+            <DockPanel>
+              <Button DockPanel.Dock="Right"
+                      HorizontalAlignment="Right"
+                      Margin="4 0 0 0"
+                      Content="-"
+                      Command="{Binding Remove}" />
+              <TextBox Text="{Binding Uri}" Watermark="https://example.com/hub/" />
+            </DockPanel>
+          </DataTemplate>
+        </ItemsControl.ItemTemplate>
+      </ItemsControl>
+      <!--
+      <StackPanel Name="HubList" Spacing="2">
+        <StackPanel.Resources>
+          <DockPanel x:Key="HubTemplate">
+            <Button DockPanel.Dock="Right" HorizontalAlignment="Right" Margin="4 0 0 0" Content="-" Click="RemoveHubTextBox" />
+            <TextBox Watermark="https://example.com/hub/" />
+          </DockPanel>
+        </StackPanel.Resources>
+        <DockPanel>
+          <Button DockPanel.Dock="Right" HorizontalAlignment="Right" Margin="4 0 0 0" Name="MinusButton1" Content="-" />
+          <TextBox Watermark="https://example.com/hub/" />
+        </DockPanel>
+        <DockPanel>
+          <Button DockPanel.Dock="Right" HorizontalAlignment="Right" Margin="4 0 0 0" Name="MinusButton2" Content="-" />
+          <TextBox Watermark="https://example.com/hub/" />
+        </DockPanel>
+        <DockPanel>
+          <Button DockPanel.Dock="Right" HorizontalAlignment="Right" Margin="4 0 0 0" Name="MinusButton3" Content="-" />
+          <TextBox Watermark="https://example.com/hub/" />
+        </DockPanel>
+        <DockPanel>
+          <Button DockPanel.Dock="Right" HorizontalAlignment="Right" Margin="4 0 0 0" Name="MinusButton4" Content="-" />
+          <TextBox Watermark="https://example.com/hub/" />
+        </DockPanel>
+      </StackPanel>-->
+    </ScrollViewer>
+    <!--<DockPanel DockPanel.Dock="Bottom">
+      <TextBlock Text="Address is invalid"  VerticalAlignment="Center" Name="TxtInvalid" />
+    </DockPanel>
+    <Grid Margin="4" ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto">
+      <TextBlock VerticalAlignment="Center" Margin="0,0,4,0" Grid.Column="0" Grid.Row="0" Text="Name:" />
+      <TextBlock VerticalAlignment="Center" Margin="0,0,4,0" Grid.Column="0" Grid.Row="1" Text="Address:" />
+      <TextBox Grid.Column="1" Grid.Row="0" Name="NameBox" Watermark="Honk Station" />
+      <TextBox Grid.Column="1" Grid.Row="1" Name="AddressBox" Watermark="ss14://example.com" />
+    </Grid>-->
+  </DockPanel>
+</Window>

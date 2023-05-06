@@ -6,7 +6,7 @@
         MinWidth="500" MinHeight="130"
         Width="500" Height="130"
         x:Class="SS14.Launcher.Views.AddFavoriteDialog"
-        Icon="/Assets/icon.ico"
+        Icon="{DynamicResource WindowIcon}"
         Title="Add Favorite Server"
         Padding="4"
         WindowStartupLocation="CenterOwner">

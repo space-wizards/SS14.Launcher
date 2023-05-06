@@ -6,7 +6,7 @@
         MinWidth="350" MinHeight="100"
         Width="350" Height="100"
         x:Class="SS14.Launcher.Views.DirectConnectDialog"
-        Icon="/Assets/icon.ico"
+        Icon="{DynamicResource WindowIcon}"
         Title="Direct Connect..."
         WindowStartupLocation="CenterOwner">
 
