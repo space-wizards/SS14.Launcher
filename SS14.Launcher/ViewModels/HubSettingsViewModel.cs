@@ -1,24 +1,49 @@
+using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
+using DynamicData;
+using Splat;
+using SS14.Launcher.Models.Data;
+using SS14.Launcher.Utility;
 
 namespace SS14.Launcher.ViewModels;
 
 public class HubSettingsViewModel : ViewModelBase
 {
-    public ObservableCollection<Hub> HubList { get; set; } = new();
+    public ObservableCollection<HubViewModel> HubList { get; set; } = new();
+
+    private readonly DataManager _dataManager =  Locator.Current.GetRequiredService<DataManager>();
 
     public void Save()
     {
-        // TODO
+        var hubs = new List<Hub>();
+
+        for (var i = 0; i < HubList.Count; i++)
+        {
+            var uri = new Uri(HubList[i].Address, UriKind.Absolute);
+
+            // Automatically add trailing slashes for the user
+            if (!uri.AbsoluteUri.EndsWith("/"))
+            {
+                uri = new Uri(uri.AbsoluteUri + "/", UriKind.Absolute);
+            }
+
+            hubs.Add(new Hub(uri, i));
+        }
+
+        _dataManager.SetHubs(hubs);
     }
 
     public void Populate()
     {
-        // TODO
+        HubList.AddRange(_dataManager.Hubs.OrderBy(h => h.Priority)
+            .Select(h => new HubViewModel(h.Address.AbsoluteUri, this)));
     }
 
-    private void Add()
+    public void Add()
     {
-        HubList.Add(new Hub("", this));
+        HubList.Add(new HubViewModel("", this));
     }
 
     private void Reset()
@@ -26,24 +51,52 @@ public class HubSettingsViewModel : ViewModelBase
         HubList.Clear();
         foreach (var url in ConfigConstants.DefaultHubUrls)
         {
-            HubList.Add(new Hub(url, this));
+            HubList.Add(new HubViewModel(url, this));
         }
+    }
+
+    public static bool IsValidHubUri(string url)
+    {
+        return Uri.TryCreate(url, UriKind.Absolute, out var uri)
+               && (uri.Scheme == Uri.UriSchemeHttp || uri.Scheme == Uri.UriSchemeHttps);
     }
 }
 
-public class Hub : ViewModelBase
+public class HubViewModel : ViewModelBase
 {
-    public string Uri { get; set; }
+    public string Address { get; set; }
     private readonly HubSettingsViewModel _parentVm;
 
-    public Hub(string uri, HubSettingsViewModel parentVm)
+    public HubViewModel(string address, HubSettingsViewModel parentVm)
     {
-        Uri = uri;
+        Address = address;
         _parentVm = parentVm;
     }
 
     public void Remove()
     {
         _parentVm.HubList.Remove(this);
+    }
+
+    public void Up()
+    {
+        var i = _parentVm.HubList.IndexOf(this);
+
+        if (i == 0)
+            return;
+
+        _parentVm.HubList[i] = _parentVm.HubList[i - 1];
+        _parentVm.HubList[i - 1] = this;
+    }
+
+    public void Down()
+    {
+        var i = _parentVm.HubList.IndexOf(this);
+
+        if (i == _parentVm.HubList.Count - 1)
+            return;
+
+        _parentVm.HubList[i] = _parentVm.HubList[i + 1];
+        _parentVm.HubList[i + 1] = this;
     }
 }

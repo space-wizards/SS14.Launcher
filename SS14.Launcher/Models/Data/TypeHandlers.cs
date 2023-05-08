@@ -31,3 +31,20 @@ public sealed class DateTimeOffsetTypeHandler : SqlMapper.TypeHandler<DateTimeOf
         return DateTimeOffset.Parse((string) value);
     }
 }
+
+public sealed class UriTypeHandler : SqlMapper.TypeHandler<Uri>
+{
+    public override void SetValue(IDbDataParameter parameter, Uri value)
+    {
+        if (!value.IsAbsoluteUri)
+            throw new ArgumentException("Refusing to store relative URI to database");
+
+        parameter.DbType = DbType.String;
+        parameter.Value = value.AbsoluteUri;
+    }
+
+    public override Uri Parse(object value)
+    {
+        return new Uri((string) value);
+    }
+}

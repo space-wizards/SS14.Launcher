@@ -8,14 +8,18 @@ using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using Serilog;
+using Splat;
 using SS14.Launcher.Models;
+using SS14.Launcher.Models.Data;
 using SS14.Launcher.Models.ServerStatus;
+using SS14.Launcher.Utility;
 
 namespace SS14.Launcher.Api;
 
 public sealed class HubApi
 {
     private readonly HttpClient _http;
+    private readonly DataManager _dataManager = Locator.Current.GetRequiredService<DataManager>();
 
     public HubApi(HttpClient http)
     {
@@ -29,23 +33,72 @@ public sealed class HubApi
     public async Task<(bool AllSucceeded, List<HubServerListEntry> Entries)> GetServers(CancellationToken cancel)
     {
         var entries = new List<HubServerListEntry>();
+        var requests = new List<(Task<ServerListEntry[]?> Request, Hub Hub)>();
         var allSucceeded = true;
 
-        foreach (var url in ConfigConstants.DefaultHubUrls)
+        // Queue requests
+        foreach (var hub in _dataManager.Hubs)
+        {
+            // Sanity check, this should be enforced with code
+            if (!hub.Address.AbsoluteUri.EndsWith('/'))
+                throw new Exception("URI doesn't have trailing slash");
+
+            requests.Add((_http.GetFromJsonAsync<ServerListEntry[]>(new Uri(hub.Address, "api/servers"), cancel), hub));
+        }
+
+        // Await all requests
+        var tasks = Task.WhenAll(requests.Select(t => t.Request));
+        try
+        {
+            await tasks;
+        }
+        catch (Exception e)
+        {
+            if (e is not (HttpRequestException or JsonException))
+                throw;
+
+            if (tasks.Exception?.InnerExceptions != null)
+            {
+                foreach (var ex in tasks.Exception.InnerExceptions)
+                {
+                    Log.Warning("Failed fetching servers from a hub: {Message}", ex.Message);
+                }
+            }
+
+            allSucceeded = false;
+        }
+
+        // Process responses
+        foreach (var (request, hub) in requests.OrderBy(x => x.Hub.Priority))
         {
             try
             {
-                var response = await _http.GetFromJsonAsync<ServerListEntry[]>(url + "api/servers", cancel)
-                               ?? throw new JsonException("Server list is null!");
+                var response = await request;
 
-                entries.AddRange(response.Select(s => new HubServerListEntry(s.Address, url, s.StatusData)));
+                if (response == null)
+                {
+                    allSucceeded = false;
+                    continue;
+                }
+
+                // Remove duplicate servers
+                // This only removes
+                var deduped = response.Where(e => !entries
+                    .Select(x => x.Address)
+                    .Contains(e.Address)
+                    ).ToArray();
+
+                foreach (var dupe in response.Except(deduped))
+                {
+                    Log.Debug("Removed duplicate server {Address}", dupe.Address);
+                }
+
+                entries.AddRange(deduped.Select(s =>
+                    new HubServerListEntry(s.Address, hub.Address.AbsoluteUri, s.StatusData)));
             }
-            catch (Exception e)
+            catch
             {
-                // Only continue if this specific hub server is acting weird, otherwise throw
-                if (e is not (HttpRequestException or JsonException)) throw;
-
-                allSucceeded = false;
+                // Handled by WhenAll
             }
         }
 

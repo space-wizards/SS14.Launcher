@@ -33,7 +33,7 @@ Taken & modified from Avalonia's git repo.
   </Style>
 
   <Style Selector="Button.OpenLeft">
-    <Setter Property="Padding" Value="7, 2, 0, 2" />
+    <Setter Property="Padding" Value="10, 2, 0, 2" />
   </Style>
   <Style Selector="Button.OpenLeft /template/ views|AngleBox">
     <Setter Property="SideStyle" Value="OpenLeft" />
@@ -43,7 +43,7 @@ Taken & modified from Avalonia's git repo.
   </Style>
 
   <Style Selector="Button.OpenRight">
-    <Setter Property="Padding" Value="0, 2, 7, 2" />
+    <Setter Property="Padding" Value="0, 2, 10, 2" />
   </Style>
   <Style Selector="Button.OpenRight /template/ views|AngleBox">
     <Setter Property="SideStyle" Value="OpenRight" />
@@ -53,7 +53,7 @@ Taken & modified from Avalonia's git repo.
   </Style>
 
   <Style Selector="Button.OpenBoth">
-    <Setter Property="Padding" Value="0, 2" />
+    <Setter Property="Padding" Value="10, 2" />
   </Style>
   <Style Selector="Button.OpenBoth /template/ views|AngleBox">
     <Setter Property="SideStyle" Value="OpenBoth" />

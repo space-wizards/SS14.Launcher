@@ -4,25 +4,60 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:SS14.Launcher.ViewModels"
         mc:Ignorable="d" d:DesignWidth="300" d:DesignHeight="100"
-        MinWidth="500" MinHeight="130"
-        Width="500" Height="200"
+        MinWidth="600" MinHeight="130"
+        Width="600" Height="250"
         x:Class="SS14.Launcher.Views.HubSettingsDialog"
         Icon="{DynamicResource WindowIcon}"
         Title="Hub Settings"
         Padding="4"
         WindowStartupLocation="CenterOwner">
-  <Window.DataContext>
-    <vm:HubSettingsViewModel />
-  </Window.DataContext>
   <Design.DataContext>
     <vm:HubSettingsViewModel />
   </Design.DataContext>
+  <Window.DataContext>
+    <vm:HubSettingsViewModel />
+  </Window.DataContext>
+  <Window.Styles>
+    <Style Selector="TextBox.Duplicate /template/ Border#border">
+      <Setter Property="BorderBrush" Value="Orange" />
+    </Style>
+    <Style Selector="TextBox.Invalid /template/ Border#border">
+      <Setter Property="BorderBrush" Value="Red" />
+    </Style>
+    <Style Selector="Button.InfoButton:pointerover">
+      <Setter Property="Background" Value="{DynamicResource ThemeControlHighBrush}" />
+    </Style>
+  </Window.Styles>
   <DockPanel>
     <DockPanel Height="30" Margin="0 4 0 0" DockPanel.Dock="Bottom" LastChildFill="False">
-      <Button DockPanel.Dock="Right" Click="Done" Content="Done" />
-      <Button DockPanel.Dock="Right" Click="Cancel" Content="Cancel" />
-      <Button DockPanel.Dock="Right" Command="{Binding Reset}" Content="Reset" />
-      <Button DockPanel.Dock="Left" Command="{Binding Add}" Content="+" />
+      <Button DockPanel.Dock="Right" Name="DoneButton" Click="Done" Content="Done" Classes="OpenLeft" />
+      <Button DockPanel.Dock="Right" Click="Cancel" Content="Cancel" Classes="OpenBoth" />
+      <Button DockPanel.Dock="Right" Command="{Binding Reset}" Content="Reset" Classes="OpenRight">
+        <ToolTip.Tip>Reset to default settings</ToolTip.Tip>
+      </Button>
+      <Button DockPanel.Dock="Left" Command="{Binding Add}" Classes="OpenRight" Padding="0 9 10 9">
+        <ToolTip.Tip>Add hub</ToolTip.Tip>
+        <Path Fill="{DynamicResource ThemeForegroundBrush}"
+              HorizontalAlignment="Center"
+              VerticalAlignment="Center"
+              Stretch="Uniform"
+              Data="M 0 2 L 2 0 L 6 4 L 10 0 L 12 2 L 8 6 L 12 10 L 10 12 L 6 8 L 2 12 L 0 10 L 4 6 L 0 2 Z">
+          <Path.RenderTransform>
+            <RotateTransform Angle="45" />
+          </Path.RenderTransform>
+        </Path>
+      </Button>
+      <Button DockPanel.Dock="Left" Content="?" Classes="InfoButton OpenLeft">
+        <ToolTip.Tip>
+Here you can add extra hubs to fetch game servers from.
+You should only add hubs that you trust, as they can 'spoof' game servers
+from other hubs. The order of the hubs matters; if two hubs advertise the
+same game server the hub with the higher priority (higher in the list) will
+take precedence.
+        </ToolTip.Tip>
+        <ToolTip.ShowDelay>0</ToolTip.ShowDelay>
+      </Button>
+      <TextBlock DockPanel.Dock="Left" Text="" Name="Warning" Margin="4 0 0 0" Height="30" Foreground="Gray" FontSize="15" Padding="4" />
     </DockPanel>
     <ScrollViewer DockPanel.Dock="Top">
       <ItemsControl Items="{Binding HubList}" Name="Hubs">
@@ -35,49 +70,54 @@
           <DataTemplate>
             <DockPanel>
               <Button DockPanel.Dock="Right"
-                      HorizontalAlignment="Right"
-                      Margin="4 0 0 0"
-                      Content="-"
-                      Command="{Binding Remove}" />
-              <TextBox Text="{Binding Uri}" Watermark="https://example.com/hub/" />
+                      Margin="1 0 0 0"
+                      Classes="OpenLeft"
+                      Width="30"
+                      Padding="8 0 0 0"
+                      Command="{Binding Remove}">
+                <ToolTip.Tip>Remove hub</ToolTip.Tip>
+                <Path Fill="{DynamicResource ThemeForegroundBrush}"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Center"
+                      Data="M 0 2 L 2 0 L 6 4 L 10 0 L 12 2 L 8 6 L 12 10 L 10 12 L 6 8 L 2 12 L 0 10 L 4 6 L 0 2 Z" />
+              </Button>
+              <Button DockPanel.Dock="Right"
+                      Margin="1 0"
+                      Classes="OpenBoth"
+                      Width="30"
+                      Name="UpButton"
+                      Command="{Binding Up}">
+                <ToolTip.Tip>Increase priority</ToolTip.Tip>
+                <Path Fill="{DynamicResource ThemeForegroundBrush}"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Center"
+                      Data="M 0 0 L 8 8 L 0 16 Z M 30 0">
+                  <Path.RenderTransform>
+                    <RotateTransform Angle="-90" />
+                  </Path.RenderTransform>
+                </Path>
+              </Button>
+              <Button DockPanel.Dock="Right"
+                      Margin="4 0 1 0"
+                      Classes="OpenRight"
+                      Width="30"
+                      Name="DownButton"
+                      Command="{Binding Down}">
+                <ToolTip.Tip>Decrease priority</ToolTip.Tip>
+                <Path Fill="{DynamicResource ThemeForegroundBrush}"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Center"
+                      Data="M 0 0 L 8 8 L 0 16 Z M 30 0">
+                  <Path.RenderTransform>
+                    <RotateTransform Angle="90" />
+                  </Path.RenderTransform>
+                </Path>
+              </Button>
+              <TextBox Text="{Binding Address}" PropertyChanged="HubTextChanged" Watermark="https://example.com/hub/" />
             </DockPanel>
           </DataTemplate>
         </ItemsControl.ItemTemplate>
       </ItemsControl>
-      <!--
-      <StackPanel Name="HubList" Spacing="2">
-        <StackPanel.Resources>
-          <DockPanel x:Key="HubTemplate">
-            <Button DockPanel.Dock="Right" HorizontalAlignment="Right" Margin="4 0 0 0" Content="-" Click="RemoveHubTextBox" />
-            <TextBox Watermark="https://example.com/hub/" />
-          </DockPanel>
-        </StackPanel.Resources>
-        <DockPanel>
-          <Button DockPanel.Dock="Right" HorizontalAlignment="Right" Margin="4 0 0 0" Name="MinusButton1" Content="-" />
-          <TextBox Watermark="https://example.com/hub/" />
-        </DockPanel>
-        <DockPanel>
-          <Button DockPanel.Dock="Right" HorizontalAlignment="Right" Margin="4 0 0 0" Name="MinusButton2" Content="-" />
-          <TextBox Watermark="https://example.com/hub/" />
-        </DockPanel>
-        <DockPanel>
-          <Button DockPanel.Dock="Right" HorizontalAlignment="Right" Margin="4 0 0 0" Name="MinusButton3" Content="-" />
-          <TextBox Watermark="https://example.com/hub/" />
-        </DockPanel>
-        <DockPanel>
-          <Button DockPanel.Dock="Right" HorizontalAlignment="Right" Margin="4 0 0 0" Name="MinusButton4" Content="-" />
-          <TextBox Watermark="https://example.com/hub/" />
-        </DockPanel>
-      </StackPanel>-->
     </ScrollViewer>
-    <!--<DockPanel DockPanel.Dock="Bottom">
-      <TextBlock Text="Address is invalid"  VerticalAlignment="Center" Name="TxtInvalid" />
-    </DockPanel>
-    <Grid Margin="4" ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto">
-      <TextBlock VerticalAlignment="Center" Margin="0,0,4,0" Grid.Column="0" Grid.Row="0" Text="Name:" />
-      <TextBlock VerticalAlignment="Center" Margin="0,0,4,0" Grid.Column="0" Grid.Row="1" Text="Address:" />
-      <TextBox Grid.Column="1" Grid.Row="0" Name="NameBox" Watermark="Honk Station" />
-      <TextBox Grid.Column="1" Grid.Row="1" Name="AddressBox" Watermark="ss14://example.com" />
-    </Grid>-->
   </DockPanel>
 </Window>

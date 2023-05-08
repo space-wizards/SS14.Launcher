@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Net.Sockets;
@@ -19,7 +20,8 @@ public static class HappyEyeballsHttp
         var handler = new SocketsHttpHandler
         {
             ConnectCallback = OnConnect,
-            AutomaticDecompression = DecompressionMethods.All
+            AutomaticDecompression = DecompressionMethods.All,
+            ConnectTimeout = new TimeSpan(0, 0, 10),
         };
 
         return new HttpClient(handler);

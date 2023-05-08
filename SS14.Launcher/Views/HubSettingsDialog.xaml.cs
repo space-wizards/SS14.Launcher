@@ -1,7 +1,9 @@
 using System;
+using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
+using Avalonia.LogicalTree;
 using SS14.Launcher.ViewModels;
 
 namespace SS14.Launcher.Views;
@@ -36,12 +38,55 @@ public partial class HubSettingsDialog : Window
 
     private void Cancel(object? sender, RoutedEventArgs args) => Close();
 
-    private void UpdateSubmitValid()
+    private void HubTextChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
     {
-        /*var validAddr = DirectConnectDialog.IsAddressValid(_addressBox.Text);
-        var valid = validAddr && !string.IsNullOrEmpty(_nameBox.Text);
+        if (sender is not TextBox textBox || e.Property != TextBox.TextProperty)
+            return;
 
-        SubmitButton.IsEnabled = valid;*/
-        //TxtInvalid.IsVisible = !validAddr;
+        if (!HubSettingsViewModel.IsValidHubUri(textBox.Text))
+            textBox.Classes.Add("Invalid");
+        else
+            textBox.Classes.Remove("Invalid");
+
+        string Normalize(string address)
+        {
+            if (!Uri.TryCreate(address, UriKind.Absolute, out var uri))
+                return address;
+
+            if (!uri.AbsoluteUri.EndsWith('/'))
+            {
+                return uri.AbsoluteUri + '/';
+            }
+
+            return uri.AbsoluteUri;
+        }
+
+        var dupes = _viewModel.HubList.GroupBy(h => Normalize(h.Address))
+            .Where(group => group.Count() > 1)
+            .Select(x => x.Key)
+            .ToList();
+
+        if (textBox.Parent?.Parent?.Parent is { } stack)
+        {
+            foreach (var t in stack.GetLogicalDescendants().OfType<TextBox>())
+            {
+                if (dupes.Contains(Normalize(t.Text)))
+                    t.Classes.Add("Duplicate");
+                else
+                    t.Classes.Remove("Duplicate");
+            }
+        }
+
+        var allValid = _viewModel.HubList.All(h => HubSettingsViewModel.IsValidHubUri(h.Address));
+        var noDupes = !dupes.Any();
+
+        DoneButton.IsEnabled = allValid && noDupes;
+
+        if (!noDupes)
+            Warning.Text = "Duplicate hubs";
+        else if (!allValid)
+            Warning.Text = "Invalid hub (don't forget http(s)://)";
+        else
+            Warning.Text = "";
     }
 }

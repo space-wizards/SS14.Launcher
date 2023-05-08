@@ -49,6 +49,7 @@ public sealed class DataManager : ReactiveObject
     private readonly SourceCache<InstalledEngineVersion, string> _engineInstallations = new(v => v.Version);
 
     private readonly HashSet<ServerFilter> _filters = new();
+    private readonly List<Hub> _hubs = new();
 
     private readonly Dictionary<string, CVarEntry> _configEntries = new();
 
@@ -64,11 +65,13 @@ public sealed class DataManager : ReactiveObject
     {
         SqlMapper.AddTypeHandler(new GuidTypeHandler());
         SqlMapper.AddTypeHandler(new DateTimeOffsetTypeHandler());
+        SqlMapper.AddTypeHandler(new UriTypeHandler());
     }
 
     public DataManager()
     {
         Filters = new ServerFilterCollection(this);
+        Hubs = new HubCollection(this);
         // Set up subscriptions to listen for when the list-data (e.g. logins) changes in any way.
         // All these operations match directly SQL UPDATE/INSERT/DELETE.
 
@@ -125,6 +128,7 @@ public sealed class DataManager : ReactiveObject
     public IObservableCache<InstalledEngineVersion, string> EngineInstallations => _engineInstallations;
     public IEnumerable<InstalledEngineModule> EngineModules => _modules;
     public ICollection<ServerFilter> Filters { get; }
+    public ICollection<Hub> Hubs { get; }
 
     public bool ActuallyMultiAccounts =>
 #if DEBUG
@@ -195,6 +199,19 @@ public sealed class DataManager : ReactiveObject
         {
             SelectedLoginId = null;
         }
+    }
+
+    /// <summary>
+    /// Overwrites hubs in database with a new list of hubs.
+    /// </summary>
+    public void SetHubs(List<Hub> hubs)
+    {
+        Hubs.Clear();
+        foreach (var hub in hubs)
+        {
+            Hubs.Add(hub);
+        }
+        CommitConfig();
     }
 
     /// <summary>
@@ -281,6 +298,7 @@ public sealed class DataManager : ReactiveObject
         }
 
         _filters.UnionWith(sqliteConnection.Query<ServerFilter>("SELECT Category, Data FROM ServerFilter"));
+        _hubs.AddRange(sqliteConnection.Query<Hub>("SELECT Address,Priority FROM Hubs"));
 
         // Avoid DB commands from config load.
         _dbCommandQueue.Clear();
@@ -535,13 +553,54 @@ public sealed class DataManager : ReactiveObject
         }
 
         public bool Contains(ServerFilter item) => _parent._filters.Contains(item);
+        public void CopyTo(ServerFilter[] array, int arrayIndex) => _parent._filters.CopyTo(array, arrayIndex);
+        public int Count => _parent._filters.Count;
+        public bool IsReadOnly => false;
+    }
 
-        public void CopyTo(ServerFilter[] array, int arrayIndex)
+    private sealed class HubCollection : ICollection<Hub>
+    {
+        private readonly DataManager _parent;
+
+        public HubCollection(DataManager parent)
         {
-            _parent._filters.CopyTo(array, arrayIndex);
+            _parent = parent;
         }
 
-        public int Count => _parent._filters.Count;
+        public IEnumerator<Hub> GetEnumerator() => _parent._hubs.GetEnumerator();
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+        public void Add(Hub item)
+        {
+            _parent._hubs.Add(item);
+
+            _parent.AddDbCommand(cmd => cmd.Execute(
+            "INSERT INTO Hubs (Address, Priority) VALUES (@Address, @Priority)",
+            new { item.Address, item.Priority }));
+        }
+
+        public void Clear()
+        {
+            _parent._hubs.Clear();
+
+            _parent.AddDbCommand(cmd => cmd.Execute("DELETE FROM Hubs"));
+        }
+
+        public bool Remove(Hub item)
+        {
+            if (!_parent._hubs.Remove(item))
+                return false;
+
+            _parent.AddDbCommand(cmd => cmd.Execute(
+                "DELETE FROM Hubs WHERE Address = @Address AND Priority = @Priority",
+                new { item.Address, item.Priority }));
+
+            return true;
+        }
+
+        public void CopyTo(Hub[] array, int arrayIndex) => _parent._hubs.CopyTo(array, arrayIndex);
+        public bool Contains(Hub item) => _parent._hubs.Contains(item);
+        public int Count => _parent._hubs.Count;
         public bool IsReadOnly => false;
     }
 }
