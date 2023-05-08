@@ -21,6 +21,7 @@ public partial class HubSettingsDialog : Window
 #endif
 
         _viewModel = (DataContext as HubSettingsViewModel)!; // Should have been set in XAML
+        _viewModel.HubList.CollectionChanged += (_, _) => Verify();
     }
 
     protected override void OnOpened(EventArgs e)
@@ -38,16 +39,10 @@ public partial class HubSettingsDialog : Window
 
     private void Cancel(object? sender, RoutedEventArgs args) => Close();
 
-    private void HubTextChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
+    private void HubTextChanged(object? sender, AvaloniaPropertyChangedEventArgs e) => Verify();
+
+    private void Verify()
     {
-        if (sender is not TextBox textBox || e.Property != TextBox.TextProperty)
-            return;
-
-        if (!HubSettingsViewModel.IsValidHubUri(textBox.Text))
-            textBox.Classes.Add("Invalid");
-        else
-            textBox.Classes.Remove("Invalid");
-
         string Normalize(string address)
         {
             if (!Uri.TryCreate(address, UriKind.Absolute, out var uri))
@@ -66,15 +61,17 @@ public partial class HubSettingsDialog : Window
             .Select(x => x.Key)
             .ToList();
 
-        if (textBox.Parent?.Parent?.Parent is { } stack)
+        foreach (var t in Hubs.GetLogicalDescendants().OfType<TextBox>())
         {
-            foreach (var t in stack.GetLogicalDescendants().OfType<TextBox>())
-            {
-                if (dupes.Contains(Normalize(t.Text)))
-                    t.Classes.Add("Duplicate");
-                else
-                    t.Classes.Remove("Duplicate");
-            }
+            if (!HubSettingsViewModel.IsValidHubUri(t.Text))
+                t.Classes.Add("Invalid");
+            else
+                t.Classes.Remove("Invalid");
+
+            if (dupes.Contains(Normalize(t.Text)))
+                t.Classes.Add("Duplicate");
+            else
+                t.Classes.Remove("Duplicate");
         }
 
         var allValid = _viewModel.HubList.All(h => HubSettingsViewModel.IsValidHubUri(h.Address));
@@ -82,10 +79,10 @@ public partial class HubSettingsDialog : Window
 
         DoneButton.IsEnabled = allValid && noDupes;
 
-        if (!noDupes)
-            Warning.Text = "Duplicate hubs";
-        else if (!allValid)
+        if (!allValid)
             Warning.Text = "Invalid hub (don't forget http(s)://)";
+        else if (!noDupes)
+            Warning.Text = "Duplicate hubs";
         else
             Warning.Text = "";
     }
