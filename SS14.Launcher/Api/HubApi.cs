@@ -52,11 +52,8 @@ public sealed class HubApi
         {
             await tasks;
         }
-        catch (Exception e)
+        catch (Exception e) when (e is HttpRequestException or JsonException)
         {
-            if (e is not (HttpRequestException or JsonException))
-                throw;
-
             if (tasks.Exception?.InnerExceptions != null)
             {
                 foreach (var ex in tasks.Exception.InnerExceptions)
