@@ -54,9 +54,9 @@ public sealed class HubApi
         }
         catch (Exception e) when (e is HttpRequestException or JsonException)
         {
-            if (tasks.Exception?.InnerExceptions != null)
+            if (tasks.Exception?.InnerExceptions is { } inner)
             {
-                foreach (var ex in tasks.Exception.InnerExceptions)
+                foreach (var ex in inner)
                 {
                     Log.Warning("Failed fetching servers from a hub: {Message}", ex.Message);
                 }
