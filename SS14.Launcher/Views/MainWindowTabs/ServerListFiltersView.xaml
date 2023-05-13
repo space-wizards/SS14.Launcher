@@ -2,6 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:views="clr-namespace:SS14.Launcher.Views"
              xmlns:mainWindowTabs="clr-namespace:SS14.Launcher.ViewModels.MainWindowTabs"
              xmlns:mainWindowTabs1="clr-namespace:SS14.Launcher.Views.MainWindowTabs"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
@@ -24,10 +25,22 @@
 
     <ScrollViewer>
       <StackPanel Orientation="Vertical">
-        <DockPanel Classes="ServerFilterGroup">
-          <TextBlock MinWidth="150" DockPanel.Dock="Left" Classes="SubText" Text="Language" />
-          <ItemsControl Items="{Binding FiltersLanguage}"
-                        ItemsPanel="{StaticResource PanelTemplate}" ItemTemplate="{StaticResource FilterTemplate}"/>
+        <DockPanel Classes="ServerFilterGroup" HorizontalAlignment="Left">
+          <views:DropDown HeaderContent="Language" Width="300">
+            <Panel>
+              <views:AngleBox Fill="{DynamicResource ThemeBackgroundBrush}" SideStyle="OpenRight" />
+              <StackPanel Orientation="Vertical">
+                <ItemsControl Items="{Binding FiltersLanguage}"
+                              ItemsPanel="{StaticResource PanelTemplate}" ItemTemplate="{StaticResource FilterTemplate}">
+                  <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                      <WrapPanel Orientation="Vertical" />
+                    </ItemsPanelTemplate>
+                  </ItemsControl.ItemsPanel>
+                </ItemsControl>
+              </StackPanel>
+            </Panel>
+          </views:DropDown>
         </DockPanel>
         <DockPanel Classes="ServerFilterGroup">
           <TextBlock MinWidth="150" DockPanel.Dock="Left" Classes="SubText" Text="Region" />
