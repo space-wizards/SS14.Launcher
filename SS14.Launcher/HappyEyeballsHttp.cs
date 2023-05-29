@@ -20,8 +20,7 @@ public static class HappyEyeballsHttp
         var handler = new SocketsHttpHandler
         {
             ConnectCallback = OnConnect,
-            AutomaticDecompression = DecompressionMethods.All,
-            ConnectTimeout = new TimeSpan(0, 0, 10),
+            AutomaticDecompression = DecompressionMethods.All
         };
 
         return new HttpClient(handler);

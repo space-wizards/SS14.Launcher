@@ -51,7 +51,7 @@ public sealed class ServerListCache : ReactiveObject, IServerSource
     {
         _refreshCancel?.Cancel();
         _allServers.Clear();
-        _refreshCancel = new CancellationTokenSource();
+        _refreshCancel = new CancellationTokenSource(10000);
         RefreshServerList(_refreshCancel.Token);
     }
 
