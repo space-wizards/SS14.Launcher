@@ -30,9 +30,9 @@ public sealed class HubApi
     /// Get a list of servers on all hubs. Returns the list of servers as well as a boolean stating whether all fetches
     /// succeeded.
     /// </summary>
-    public async Task<(bool AllSucceeded, List<HubServerListEntry> Entries)> GetServers(CancellationToken cancel)
+    public async Task<(bool AllSucceeded, HashSet<HubServerListEntry> Entries)> GetServers(CancellationToken cancel)
     {
-        var entries = new List<HubServerListEntry>();
+        var entries = new HashSet<HubServerListEntry>();
         var requests = new List<(Task<ServerListEntry[]?> Request, Hub Hub)>();
         var allSucceeded = true;
 
@@ -78,20 +78,13 @@ public sealed class HubApi
                     continue;
                 }
 
-                // Remove duplicate servers
-                // This only removes
-                var deduped = response.Where(e => !entries
-                    .Select(x => x.Address)
-                    .Contains(e.Address)
-                    ).ToArray();
-
-                foreach (var dupe in response.Except(deduped))
+                foreach (var entry in response)
                 {
-                    Log.Debug("Removed duplicate server {Address}", dupe.Address);
+                    if (!entries.Add(new HubServerListEntry(entry.Address, hub.Address.AbsoluteUri, entry.StatusData)))
+                    {
+                        Log.Debug("Not adding duplicate server {Address}", entry.Address);
+                    }
                 }
-
-                entries.AddRange(deduped.Select(s =>
-                    new HubServerListEntry(s.Address, hub.Address.AbsoluteUri, s.StatusData)));
             }
             catch
             {
