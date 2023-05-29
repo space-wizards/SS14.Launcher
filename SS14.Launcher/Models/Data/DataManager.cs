@@ -592,7 +592,7 @@ public sealed class DataManager : ReactiveObject
                 return false;
 
             _parent.AddDbCommand(cmd => cmd.Execute(
-                "DELETE FROM Hubs WHERE Address = @Address AND Priority = @Priority",
+                "DELETE FROM Hubs WHERE Address = @Address",
                 new { item.Address, item.Priority }));
 
             return true;
