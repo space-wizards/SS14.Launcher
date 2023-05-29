@@ -298,7 +298,7 @@ public sealed class DataManager : ReactiveObject
         }
 
         _filters.UnionWith(sqliteConnection.Query<ServerFilter>("SELECT Category, Data FROM ServerFilter"));
-        _hubs.AddRange(sqliteConnection.Query<Hub>("SELECT Address,Priority FROM Hubs"));
+        _hubs.AddRange(sqliteConnection.Query<Hub>("SELECT Address,Priority FROM Hub"));
 
         // Avoid DB commands from config load.
         _dbCommandQueue.Clear();
@@ -575,7 +575,7 @@ public sealed class DataManager : ReactiveObject
             _parent._hubs.Add(item);
 
             _parent.AddDbCommand(cmd => cmd.Execute(
-            "INSERT INTO Hubs (Address, Priority) VALUES (@Address, @Priority)",
+            "INSERT INTO Hub (Address, Priority) VALUES (@Address, @Priority)",
             new { item.Address, item.Priority }));
         }
 
@@ -583,7 +583,7 @@ public sealed class DataManager : ReactiveObject
         {
             _parent._hubs.Clear();
 
-            _parent.AddDbCommand(cmd => cmd.Execute("DELETE FROM Hubs"));
+            _parent.AddDbCommand(cmd => cmd.Execute("DELETE FROM Hub"));
         }
 
         public bool Remove(Hub item)
@@ -592,7 +592,7 @@ public sealed class DataManager : ReactiveObject
                 return false;
 
             _parent.AddDbCommand(cmd => cmd.Execute(
-                "DELETE FROM Hubs WHERE Address = @Address",
+                "DELETE FROM Hub WHERE Address = @Address",
                 new { item.Address, item.Priority }));
 
             return true;
