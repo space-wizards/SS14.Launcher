@@ -1,4 +1,4 @@
-﻿namespace SS14.Launcher.Utility;
+namespace SS14.Launcher.Utility;
 
 /// <summary>
 /// Specifies a single filter checkbox the user can toggle to filter servers.
@@ -49,5 +49,6 @@ public enum ServerFilterCategory : byte
     Language = 1,
     Region = 2,
     RolePlay = 3,
-    EighteenPlus = 4
+    EighteenPlus = 4,
+    IsServerFull = 5
 }

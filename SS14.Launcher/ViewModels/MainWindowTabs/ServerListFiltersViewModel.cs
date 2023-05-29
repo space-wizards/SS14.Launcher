@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
@@ -23,11 +23,13 @@ public sealed partial class ServerListFiltersViewModel : ObservableObject
     private readonly FilterListCollection _filtersRegion = new();
     private readonly FilterListCollection _filtersRolePlay = new();
     private readonly FilterListCollection _filtersEighteenPlus = new();
+    private readonly FilterListCollection _filtersIsServerFull = new();
 
     public ObservableCollection<ServerFilterViewModel> FiltersLanguage => _filtersLanguage;
     public ObservableCollection<ServerFilterViewModel> FiltersRegion => _filtersRegion;
     public ObservableCollection<ServerFilterViewModel> FiltersRolePlay => _filtersRolePlay;
     public ObservableCollection<ServerFilterViewModel> FiltersEighteenPlus => _filtersEighteenPlus;
+    public ObservableCollection<ServerFilterViewModel> FiltersIsServerFull => _filtersIsServerFull;
 
     public event Action? FiltersUpdated;
 
@@ -51,6 +53,8 @@ public sealed partial class ServerListFiltersViewModel : ObservableObject
             new ServerFilter(ServerFilterCategory.EighteenPlus, ServerFilter.DataTrue), this));
         FiltersEighteenPlus.Add(new ServerFilterViewModel("No", "No",
             new ServerFilter(ServerFilterCategory.EighteenPlus, ServerFilter.DataFalse), this));
+        FiltersIsServerFull.Add(new ServerFilterViewModel("Filter Full Servers", "Filter Full",
+            new ServerFilter(ServerFilterCategory.IsServerFull, ServerFilter.DataTrue), this));
     }
 
     /// <summary>
@@ -168,6 +172,7 @@ public sealed partial class ServerListFiltersViewModel : ObservableObject
         var categorySetLanguage = GetCategoryFilterSet(FiltersLanguage);
         var categorySetRegion = GetCategoryFilterSet(FiltersRegion);
         var categorySetRolePlay = GetCategoryFilterSet(FiltersRolePlay);
+        bool isFull = GetFilter(new ServerFilter(ServerFilterCategory.IsServerFull, ServerFilter.DataTrue));
 
         // Precache 18+ bool.
         bool? eighteenPlus = null;
@@ -199,6 +204,10 @@ public sealed partial class ServerListFiltersViewModel : ObservableObject
 
         bool DoesServerMatch(ServerStatusData server)
         {
+            // Max Player Count Being 0 means an infinite amount of slots
+            if (isFull && server.SoftMaxPlayerCount > 0 && server.PlayerCount >= server.SoftMaxPlayerCount)
+                return false;
+
             // 18+ checks
             if (eighteenPlus != null)
             {

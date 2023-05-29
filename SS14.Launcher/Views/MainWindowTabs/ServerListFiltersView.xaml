@@ -44,6 +44,11 @@
           <ItemsControl Items="{Binding FiltersEighteenPlus}"
                         ItemsPanel="{StaticResource PanelTemplate}" ItemTemplate="{StaticResource FilterTemplate}"/>
         </DockPanel>
+        <DockPanel Classes="ServerFilterGroup">
+          <TextBlock MinWidth="150" DockPanel.Dock="Left" Classes="SubText" Text="Filter Player Count" />
+          <ItemsControl Items="{Binding FiltersIsServerFull}"
+                        ItemsPanel="{StaticResource PanelTemplate}" ItemTemplate="{StaticResource FilterTemplate}"/>
+        </DockPanel>
       </StackPanel>
     </ScrollViewer>
   </DockPanel>
