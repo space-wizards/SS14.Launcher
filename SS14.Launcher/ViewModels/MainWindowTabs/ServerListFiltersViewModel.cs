@@ -85,9 +85,7 @@ public sealed partial class ServerListFiltersViewModel : ObservableObject
                 else if (Tags.TryLanguage(tag, out var language))
                 {
                     // Don't use anything except the primary tag for now.
-                    var primaryTagIdx = language.IndexOf('-');
-                    var primaryTag = primaryTagIdx == -1 ? language : language[..primaryTagIdx];
-
+                    var primaryTag = PrimaryLanguageTag(language);
                     var filter = new ServerFilter(ServerFilterCategory.Language, primaryTag);
                     if (!alreadyAdded.Add(filter))
                         continue;
@@ -209,7 +207,7 @@ public sealed partial class ServerListFiltersViewModel : ObservableObject
                     return false;
             }
 
-            if (!CheckCategoryFilterSet(categorySetLanguage, server.Tags, Tags.TagLanguage))
+            if (!CheckCategoryFilterSet(categorySetLanguage, server.Tags, Tags.TagLanguage, PrimaryLanguageTag))
                 return false;
 
             if (!CheckCategoryFilterSet(categorySetRegion, server.Tags, Tags.TagRegion))
@@ -235,7 +233,11 @@ public sealed partial class ServerListFiltersViewModel : ObservableObject
             return set.Count == 0 ? null : set;
         }
 
-        bool CheckCategoryFilterSet(HashSet<string>? filterSet, string[] serverTags, string tagPrefix)
+        bool CheckCategoryFilterSet(
+            HashSet<string>? filterSet,
+            string[] serverTags,
+            string tagPrefix,
+            Func<string, string>? transformTagContents = null)
         {
             if (filterSet == null)
                 return true;
@@ -245,6 +247,9 @@ public sealed partial class ServerListFiltersViewModel : ObservableObject
             {
                 if (!Tags.TryTagPrefix(tag, tagPrefix, out var tagValue))
                     continue;
+
+                if (transformTagContents != null)
+                    tagValue = transformTagContents(tagValue);
 
                 isUnspecified = false;
                 if (filterSet.Contains(tagValue))
@@ -256,6 +261,12 @@ public sealed partial class ServerListFiltersViewModel : ObservableObject
 
             return false;
         }
+    }
+
+    private static string PrimaryLanguageTag(string fullTag)
+    {
+        var primaryTagIdx = fullTag.IndexOf('-');
+        return primaryTagIdx == -1 ? fullTag : fullTag[..primaryTagIdx];
     }
 
     private sealed class ServerFilterShortNameComparer : NotNullComparer<ServerFilterViewModel>
