@@ -11,7 +11,6 @@ using Serilog;
 using Splat;
 using SS14.Launcher.Models;
 using SS14.Launcher.Models.Data;
-using SS14.Launcher.Models.ServerStatus;
 using SS14.Launcher.Utility;
 
 namespace SS14.Launcher.Api;
@@ -93,15 +92,9 @@ public sealed class HubApi
         return (allSucceeded, entries);
     }
 
-
-    public async Task<ServerInfo> GetServerInfo(ServerStatusData statusData, CancellationToken cancel)
+    public async Task<ServerInfo> GetServerInfo(string serverAddress, string hubAddress, CancellationToken cancel)
     {
-        if (statusData.HubAddress == null)
-        {
-            Log.Error("Tried to get server info for hubbed server {Name} without HubAddress set", statusData.Name);
-        }
-
-        var url = $"{statusData.HubAddress}api/servers/info?url={Uri.EscapeDataString(statusData.Address)}";
+        var url = $"{hubAddress}api/servers/info?url={Uri.EscapeDataString(serverAddress)}";
         return await _http.GetFromJsonAsync<ServerInfo>(url, cancel) ?? throw new InvalidDataException();
     }
 

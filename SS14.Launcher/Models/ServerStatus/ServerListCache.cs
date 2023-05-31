@@ -87,9 +87,15 @@ public sealed class ServerListCache : ReactiveObject, IServerSource
 
     void IServerSource.UpdateInfoFor(ServerStatusData statusData)
     {
+        if (statusData.HubAddress == null)
+        {
+            Log.Error("Tried to get server info for hubbed server {Name} without HubAddress set", statusData.Name);
+            return;
+        }
+
         ServerStatusCache.UpdateInfoForCore(
             statusData,
-            async token => await _hubApi.GetServerInfo(statusData, token));
+            async token => await _hubApi.GetServerInfo(statusData.Address, statusData.HubAddress, token));
     }
 
     private sealed class ServerListCollection : ObservableCollection<ServerStatusData>
