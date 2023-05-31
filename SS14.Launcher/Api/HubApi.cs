@@ -68,27 +68,25 @@ public sealed class HubApi
         // Process responses
         foreach (var (request, hub) in requests.OrderBy(x => x.Hub.Priority))
         {
-            try
+            if (request.IsFaulted)
             {
-                var response = await request;
-
-                if (response == null)
-                {
-                    allSucceeded = false;
-                    continue;
-                }
-
-                foreach (var entry in response)
-                {
-                    if (!entries.Add(new HubServerListEntry(entry.Address, hub.Address.AbsoluteUri, entry.StatusData)))
-                    {
-                        Log.Debug("Not adding duplicate server {Address}", entry.Address);
-                    }
-                }
+                Log.Warning("Request to hub {HubAddress} failed", hub.Address);
+                continue;
             }
-            catch
+
+            if (request.Result is not { } response)
             {
-                // Handled by WhenAll
+                Log.Warning("Response of hub {HubAddress} was null", hub.Address);
+                allSucceeded = false;
+                continue;
+            }
+
+            foreach (var entry in response)
+            {
+                if (!entries.Add(new HubServerListEntry(entry.Address, hub.Address.AbsoluteUri, entry.StatusData)))
+                {
+                    Log.Debug("Not adding duplicate server {EntryAddress}", entry.Address);
+                }
             }
         }
 
