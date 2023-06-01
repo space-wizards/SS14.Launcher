@@ -23,13 +23,14 @@ public sealed partial class ServerListFiltersViewModel : ObservableObject
     private readonly FilterListCollection _filtersRegion = new();
     private readonly FilterListCollection _filtersRolePlay = new();
     private readonly FilterListCollection _filtersEighteenPlus = new();
-    private readonly FilterListCollection _filtersIsServerFull = new();
+    private readonly FilterListCollection _filtersPlayerCount = new();
+    private readonly FilterListCollection _filtersPlayerCountLimits = new();
 
-    public ObservableCollection<ServerFilterViewModel> FiltersLanguage => _filtersLanguage;
-    public ObservableCollection<ServerFilterViewModel> FiltersRegion => _filtersRegion;
-    public ObservableCollection<ServerFilterViewModel> FiltersRolePlay => _filtersRolePlay;
-    public ObservableCollection<ServerFilterViewModel> FiltersEighteenPlus => _filtersEighteenPlus;
-    public ObservableCollection<ServerFilterViewModel> FiltersIsServerFull => _filtersIsServerFull;
+    public ObservableCollection<ServerFilterBaseViewModel> FiltersLanguage => _filtersLanguage;
+    public ObservableCollection<ServerFilterBaseViewModel> FiltersRegion => _filtersRegion;
+    public ObservableCollection<ServerFilterBaseViewModel> FiltersRolePlay => _filtersRolePlay;
+    public ObservableCollection<ServerFilterBaseViewModel> FiltersEighteenPlus => _filtersEighteenPlus;
+    public ObservableCollection<ServerFilterBaseViewModel> FiltersPlayerCount => _filtersPlayerCount;
 
     public event Action? FiltersUpdated;
 
@@ -53,8 +54,15 @@ public sealed partial class ServerListFiltersViewModel : ObservableObject
             new ServerFilter(ServerFilterCategory.EighteenPlus, ServerFilter.DataTrue), this));
         FiltersEighteenPlus.Add(new ServerFilterViewModel("No", "No",
             new ServerFilter(ServerFilterCategory.EighteenPlus, ServerFilter.DataFalse), this));
-        FiltersIsServerFull.Add(new ServerFilterViewModel("Filter Full Servers", "Filter Full",
+        FiltersPlayerCount.Add(new ServerFilterViewModel("Filter Full Servers", "Filter Full",
             new ServerFilter(ServerFilterCategory.IsServerFull, ServerFilter.DataTrue), this));
+
+        ServerFilter maxFilter = FilterCategoryExists(ServerFilterCategory.PlayerMax) ? GetFilterByCategory(ServerFilterCategory.PlayerMax) : new ServerFilter(ServerFilterCategory.PlayerMax, ServerFilter.DataUnspecified);
+        ServerFilter minFilter = FilterCategoryExists(ServerFilterCategory.PlayerMin) ? GetFilterByCategory(ServerFilterCategory.PlayerMin) : new ServerFilter(ServerFilterCategory.PlayerMin, ServerFilter.DataUnspecified);
+        FiltersPlayerCount.Add(new ServerFilterIntegerViewModel("Max Player Count", "Filter Max",
+            maxFilter, 1, this, min: 0));
+        FiltersPlayerCount.Add(new ServerFilterIntegerViewModel("Min Player Count", "Filter Min",
+            minFilter, 1, this, min: 0));
     }
 
     /// <summary>
@@ -143,7 +151,10 @@ public sealed partial class ServerListFiltersViewModel : ObservableObject
         _filtersRolePlay.SetItems(filtersRolePlay);
     }
 
-    public bool GetFilter(ServerFilter filter) => _dataManager.Filters.Contains(filter);
+    public bool FilterExists(ServerFilter filter) => _dataManager.Filters.Contains(filter);
+    public bool FilterCategoryExists(ServerFilterCategory category) => _dataManager.Filters.Where((filter) => filter.Category == category).Count() > 0;
+
+    public ServerFilter GetFilterByCategory(ServerFilterCategory category) => _dataManager.Filters.Where((filter) => filter.Category == category).FirstOrDefault();
 
     public void SetFilter(ServerFilter filter, bool value)
     {
@@ -161,6 +172,15 @@ public sealed partial class ServerListFiltersViewModel : ObservableObject
         }
     }
 
+    public void ReplaceFilter(ServerFilter new_filter, ServerFilter old_filter)
+    {
+        if (_dataManager.Filters.Contains(old_filter))
+            _dataManager.Filters.Remove(old_filter);
+        _dataManager.Filters.Add(new_filter);
+        _dataManager.CommitConfig();
+        FiltersUpdated?.Invoke();
+    }
+
     /// <summary>
     /// Apply active filter preferences to a list, removing all servers that do not fit the criteria.
     /// </summary>
@@ -172,16 +192,20 @@ public sealed partial class ServerListFiltersViewModel : ObservableObject
         var categorySetLanguage = GetCategoryFilterSet(FiltersLanguage);
         var categorySetRegion = GetCategoryFilterSet(FiltersRegion);
         var categorySetRolePlay = GetCategoryFilterSet(FiltersRolePlay);
-        bool isFull = GetFilter(new ServerFilter(ServerFilterCategory.IsServerFull, ServerFilter.DataTrue));
+        bool isFull = FilterExists(new ServerFilter(ServerFilterCategory.IsServerFull, ServerFilter.DataTrue));
+
+        // Precache PlayerMax & PlayerMin
+        bool isValidMax = int.TryParse(GetFilterByCategory(ServerFilterCategory.PlayerMax).Data, out int player_max);
+        bool isValidMin = int.TryParse(GetFilterByCategory(ServerFilterCategory.PlayerMin).Data, out int player_min);
 
         // Precache 18+ bool.
         bool? eighteenPlus = null;
-        if (GetFilter(new ServerFilter(ServerFilterCategory.EighteenPlus, ServerFilter.DataTrue)))
+        if (FilterExists(new ServerFilter(ServerFilterCategory.EighteenPlus, ServerFilter.DataTrue)))
         {
             eighteenPlus = true;
         }
 
-        if (GetFilter(new ServerFilter(ServerFilterCategory.EighteenPlus, ServerFilter.DataFalse)))
+        if (FilterExists(new ServerFilter(ServerFilterCategory.EighteenPlus, ServerFilter.DataFalse)))
         {
             // Having both
             if (eighteenPlus == true)
@@ -207,6 +231,10 @@ public sealed partial class ServerListFiltersViewModel : ObservableObject
             // Max Player Count Being 0 means an infinite amount of slots
             if (isFull && server.SoftMaxPlayerCount > 0 && server.PlayerCount >= server.SoftMaxPlayerCount)
                 return false;
+            if (isValidMax && server.PlayerCount > player_max)
+                return false;
+            if (isValidMin && server.PlayerCount < player_min)
+                return false;
 
             // 18+ checks
             if (eighteenPlus != null)
@@ -228,7 +256,7 @@ public sealed partial class ServerListFiltersViewModel : ObservableObject
             return true;
         }
 
-        HashSet<string>? GetCategoryFilterSet(IEnumerable<ServerFilterViewModel> visible)
+        HashSet<string>? GetCategoryFilterSet(IEnumerable<ServerFilterBaseViewModel> visible)
         {
             // Filters are persisted, so it's possible to get a filter that isn't visible
             // (because no servers have the tag right now),
@@ -307,9 +335,9 @@ public sealed partial class ServerListFiltersViewModel : ObservableObject
         }
     }
 
-    private sealed class FilterListCollection : ObservableCollection<ServerFilterViewModel>
+    private sealed class FilterListCollection : ObservableCollection<ServerFilterBaseViewModel>
     {
-        public void SetItems(IEnumerable<ServerFilterViewModel> items)
+        public void SetItems(IEnumerable<ServerFilterBaseViewModel> items)
         {
             Items.Clear();
 

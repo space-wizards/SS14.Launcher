@@ -1,19 +1,14 @@
-﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
 using SS14.Launcher.Utility;
 
 namespace SS14.Launcher.ViewModels.MainWindowTabs;
 
-public sealed class ServerFilterViewModel : ObservableObject
+public sealed class ServerFilterViewModel : ServerFilterBaseViewModel
 {
-    public ServerFilter Filter { get; }
-    private readonly ServerListFiltersViewModel _parent;
-
-    public string Name { get; }
-    public string ShortName { get; }
 
     public bool Selected
     {
-        get => _parent.GetFilter(Filter);
+        get => _parent.FilterExists(Filter);
         set => _parent.SetFilter(Filter, value);
     }
 
@@ -21,11 +16,7 @@ public sealed class ServerFilterViewModel : ObservableObject
         string name,
         string shortName,
         ServerFilter filter,
-        ServerListFiltersViewModel parent)
+        ServerListFiltersViewModel parent) : base(name, shortName, filter, parent)
     {
-        Filter = filter;
-        _parent = parent;
-        Name = name;
-        ShortName = shortName;
     }
 }

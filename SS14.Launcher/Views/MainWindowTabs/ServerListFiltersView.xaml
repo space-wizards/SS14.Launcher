@@ -12,12 +12,19 @@
 
   <UserControl.Resources>
     <ItemsPanelTemplate x:Key="PanelTemplate">
-      <WrapPanel />
+      <WrapPanel>
+      </WrapPanel>
     </ItemsPanelTemplate>
-    <DataTemplate x:Key="FilterTemplate" DataType="mainWindowTabs:ServerFilterViewModel">
+  </UserControl.Resources>
+
+  <UserControl.DataTemplates>
+    <DataTemplate DataType="mainWindowTabs:ServerFilterViewModel">
       <mainWindowTabs1:ServerFilterView DataContext="{Binding}" />
     </DataTemplate>
-  </UserControl.Resources>
+    <DataTemplate DataType="mainWindowTabs:ServerFilterIntegerViewModel">
+      <mainWindowTabs1:ServerFilterIntegerView DataContext="{Binding}" />
+    </DataTemplate>
+  </UserControl.DataTemplates>
 
   <DockPanel>
     <TextBlock DockPanel.Dock="Top" Text="Filters" Classes="SubText" Margin="4 4 4 8" />
@@ -27,27 +34,27 @@
         <DockPanel Classes="ServerFilterGroup">
           <TextBlock MinWidth="150" DockPanel.Dock="Left" Classes="SubText" Text="Language" />
           <ItemsControl Items="{Binding FiltersLanguage}"
-                        ItemsPanel="{StaticResource PanelTemplate}" ItemTemplate="{StaticResource FilterTemplate}"/>
+                        ItemsPanel="{StaticResource PanelTemplate}"/>
         </DockPanel>
         <DockPanel Classes="ServerFilterGroup">
           <TextBlock MinWidth="150" DockPanel.Dock="Left" Classes="SubText" Text="Region" />
           <ItemsControl Items="{Binding FiltersRegion}"
-                        ItemsPanel="{StaticResource PanelTemplate}" ItemTemplate="{StaticResource FilterTemplate}"/>
+                        ItemsPanel="{StaticResource PanelTemplate}"/>
         </DockPanel>
         <DockPanel Classes="ServerFilterGroup">
           <TextBlock MinWidth="150" DockPanel.Dock="Left" Classes="SubText" Text="Role-play level" />
           <ItemsControl Items="{Binding FiltersRolePlay}"
-                        ItemsPanel="{StaticResource PanelTemplate}" ItemTemplate="{StaticResource FilterTemplate}"/>
+                        ItemsPanel="{StaticResource PanelTemplate}"/>
         </DockPanel>
         <DockPanel Classes="ServerFilterGroup">
           <TextBlock MinWidth="150" DockPanel.Dock="Left" Classes="SubText" Text="18+" />
           <ItemsControl Items="{Binding FiltersEighteenPlus}"
-                        ItemsPanel="{StaticResource PanelTemplate}" ItemTemplate="{StaticResource FilterTemplate}"/>
+                        ItemsPanel="{StaticResource PanelTemplate}"/>
         </DockPanel>
         <DockPanel Classes="ServerFilterGroup">
           <TextBlock MinWidth="150" DockPanel.Dock="Left" Classes="SubText" Text="Filter Player Count" />
-          <ItemsControl Items="{Binding FiltersIsServerFull}"
-                        ItemsPanel="{StaticResource PanelTemplate}" ItemTemplate="{StaticResource FilterTemplate}"/>
+          <ItemsControl Items="{Binding FiltersPlayerCount}"
+                        ItemsPanel="{StaticResource PanelTemplate}"/>
         </DockPanel>
       </StackPanel>
     </ScrollViewer>
