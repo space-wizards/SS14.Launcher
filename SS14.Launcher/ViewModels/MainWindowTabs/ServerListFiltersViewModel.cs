@@ -14,6 +14,9 @@ namespace SS14.Launcher.ViewModels.MainWindowTabs;
 
 public sealed partial class ServerListFiltersViewModel : ObservableObject
 {
+    private const int NO_PLAYER_MAX_NUM = -1;
+    private const int NO_PLAYER_MIN_NUM = 0;
+
     private readonly DataManager _dataManager;
 
     private int _totalServers;
@@ -24,7 +27,6 @@ public sealed partial class ServerListFiltersViewModel : ObservableObject
     private readonly FilterListCollection _filtersRolePlay = new();
     private readonly FilterListCollection _filtersEighteenPlus = new();
     private readonly FilterListCollection _filtersPlayerCount = new();
-    private readonly FilterListCollection _filtersPlayerCountLimits = new();
 
     public ObservableCollection<ServerFilterBaseViewModel> FiltersLanguage => _filtersLanguage;
     public ObservableCollection<ServerFilterBaseViewModel> FiltersRegion => _filtersRegion;
@@ -57,12 +59,12 @@ public sealed partial class ServerListFiltersViewModel : ObservableObject
         FiltersPlayerCount.Add(new ServerFilterViewModel("Filter Full Servers", "Filter Full",
             new ServerFilter(ServerFilterCategory.IsServerFull, ServerFilter.DataTrue), this));
 
-        ServerFilter maxFilter = FilterCategoryExists(ServerFilterCategory.PlayerMax) ? GetFilterByCategory(ServerFilterCategory.PlayerMax) : new ServerFilter(ServerFilterCategory.PlayerMax, ServerFilter.DataUnspecified);
-        ServerFilter minFilter = FilterCategoryExists(ServerFilterCategory.PlayerMin) ? GetFilterByCategory(ServerFilterCategory.PlayerMin) : new ServerFilter(ServerFilterCategory.PlayerMin, ServerFilter.DataUnspecified);
-        FiltersPlayerCount.Add(new ServerFilterIntegerViewModel("Max Player Count", "Filter Max",
-            maxFilter, 1, this, min: 0));
+        ServerFilter maxFilter = FilterCategoryExists(ServerFilterCategory.PlayerMax) ? GetFilterByCategory(ServerFilterCategory.PlayerMax) : new ServerFilter(ServerFilterCategory.PlayerMax, NO_PLAYER_MAX_NUM.ToString());
+        ServerFilter minFilter = FilterCategoryExists(ServerFilterCategory.PlayerMin) ? GetFilterByCategory(ServerFilterCategory.PlayerMin) : new ServerFilter(ServerFilterCategory.PlayerMin, NO_PLAYER_MIN_NUM.ToString());
+        FiltersPlayerCount.Add(new ServerFilterIntegerViewModel("Max Player Count (-1 means no filter)", "Filter Max",
+            maxFilter, 1, this, min: NO_PLAYER_MAX_NUM));
         FiltersPlayerCount.Add(new ServerFilterIntegerViewModel("Min Player Count", "Filter Min",
-            minFilter, 1, this, min: 0));
+            minFilter, 1, this, min: NO_PLAYER_MIN_NUM));
     }
 
     /// <summary>
@@ -195,8 +197,8 @@ public sealed partial class ServerListFiltersViewModel : ObservableObject
         bool isFull = FilterExists(new ServerFilter(ServerFilterCategory.IsServerFull, ServerFilter.DataTrue));
 
         // Precache PlayerMax & PlayerMin
-        bool isValidMax = int.TryParse(GetFilterByCategory(ServerFilterCategory.PlayerMax).Data, out int player_max);
-        bool isValidMin = int.TryParse(GetFilterByCategory(ServerFilterCategory.PlayerMin).Data, out int player_min);
+        bool isValidMax = int.TryParse(GetFilterByCategory(ServerFilterCategory.PlayerMax).Data, out int playerMax);
+        bool isValidMin = int.TryParse(GetFilterByCategory(ServerFilterCategory.PlayerMin).Data, out int playerMin);
 
         // Precache 18+ bool.
         bool? eighteenPlus = null;
@@ -231,9 +233,9 @@ public sealed partial class ServerListFiltersViewModel : ObservableObject
             // Max Player Count Being 0 means an infinite amount of slots
             if (isFull && server.SoftMaxPlayerCount > 0 && server.PlayerCount >= server.SoftMaxPlayerCount)
                 return false;
-            if (isValidMax && server.PlayerCount > player_max)
+            if (isValidMax && playerMax != NO_PLAYER_MAX_NUM && server.PlayerCount > playerMax)
                 return false;
-            if (isValidMin && server.PlayerCount < player_min)
+            if (isValidMin && server.PlayerCount < playerMin)
                 return false;
 
             // 18+ checks
