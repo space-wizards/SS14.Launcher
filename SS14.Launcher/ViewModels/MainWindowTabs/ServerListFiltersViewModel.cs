@@ -50,6 +50,7 @@ public sealed partial class ServerListFiltersViewModel : ObservableObject
 
     public ServerListFiltersViewModel(DataManager dataManager)
     {
+        const int PLAYER_COUNT_INCREMENT = 1;
         _dataManager = dataManager;
 
         FiltersEighteenPlus.Add(new ServerFilterViewModel("Yes", "Yes",
@@ -61,10 +62,10 @@ public sealed partial class ServerListFiltersViewModel : ObservableObject
 
         ServerFilter maxFilter = FilterCategoryExists(ServerFilterCategory.PlayerMax) ? GetFilterByCategory(ServerFilterCategory.PlayerMax) : new ServerFilter(ServerFilterCategory.PlayerMax, NO_PLAYER_MAX_NUM.ToString());
         ServerFilter minFilter = FilterCategoryExists(ServerFilterCategory.PlayerMin) ? GetFilterByCategory(ServerFilterCategory.PlayerMin) : new ServerFilter(ServerFilterCategory.PlayerMin, NO_PLAYER_MIN_NUM.ToString());
-        FiltersPlayerCount.Add(new ServerFilterIntegerViewModel("Max Player Count (-1 means no filter)", "Filter Max",
-            maxFilter, 1, this, min: NO_PLAYER_MAX_NUM));
+        FiltersPlayerCount.Add(new ServerFilterIntegerViewModel($"Max Player Count ({NO_PLAYER_MAX_NUM} means no filter)", "Filter Max",
+            maxFilter, PLAYER_COUNT_INCREMENT, this, min: NO_PLAYER_MAX_NUM));
         FiltersPlayerCount.Add(new ServerFilterIntegerViewModel("Min Player Count", "Filter Min",
-            minFilter, 1, this, min: NO_PLAYER_MIN_NUM));
+            minFilter, PLAYER_COUNT_INCREMENT, this, min: NO_PLAYER_MIN_NUM));
     }
 
     /// <summary>
