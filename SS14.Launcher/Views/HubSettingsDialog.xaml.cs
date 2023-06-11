@@ -5,6 +5,7 @@ using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.LogicalTree;
 using SS14.Launcher.ViewModels;
+using static SS14.Launcher.ViewModels.HubSettingsViewModel;
 
 namespace SS14.Launcher.Views;
 
@@ -43,38 +44,22 @@ public partial class HubSettingsDialog : Window
 
     private void Verify()
     {
-        string Normalize(string address)
-        {
-            if (!Uri.TryCreate(address, UriKind.Absolute, out var uri))
-                return address;
-
-            if (!uri.AbsoluteUri.EndsWith('/'))
-            {
-                return uri.AbsoluteUri + '/';
-            }
-
-            return uri.AbsoluteUri;
-        }
-
-        var dupes = _viewModel.HubList.GroupBy(h => Normalize(h.Address))
-            .Where(group => group.Count() > 1)
-            .Select(x => x.Key)
-            .ToList();
+        var dupes = _viewModel.GetDupes();
 
         foreach (var t in Hubs.GetLogicalDescendants().OfType<TextBox>())
         {
-            if (!HubSettingsViewModel.IsValidHubUri(t.Text))
+            if (!IsValidHubUri(t.Text))
                 t.Classes.Add("Invalid");
             else
                 t.Classes.Remove("Invalid");
 
-            if (dupes.Contains(Normalize(t.Text)))
+            if (dupes.Contains(NormalizeHubUri(t.Text)))
                 t.Classes.Add("Duplicate");
             else
                 t.Classes.Remove("Duplicate");
         }
 
-        var allValid = _viewModel.HubList.All(h => HubSettingsViewModel.IsValidHubUri(h.Address));
+        var allValid = _viewModel.HubList.All(h => IsValidHubUri(h.Address));
         var noDupes = !dupes.Any();
 
         DoneButton.IsEnabled = allValid && noDupes;

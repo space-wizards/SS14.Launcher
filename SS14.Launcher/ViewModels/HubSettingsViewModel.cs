@@ -55,10 +55,31 @@ public class HubSettingsViewModel : ViewModelBase
         }
     }
 
+    public List<string> GetDupes()
+    {
+        return HubList.GroupBy(h => NormalizeHubUri(h.Address))
+            .Where(group => group.Count() > 1)
+            .Select(x => x.Key)
+            .ToList();
+    }
+
     public static bool IsValidHubUri(string url)
     {
         return Uri.TryCreate(url, UriKind.Absolute, out var uri)
                && (uri.Scheme == Uri.UriSchemeHttp || uri.Scheme == Uri.UriSchemeHttps);
+    }
+
+    public static string NormalizeHubUri(string address)
+    {
+        if (!Uri.TryCreate(address, UriKind.Absolute, out var uri))
+            return address;
+
+        if (!uri.AbsoluteUri.EndsWith('/'))
+        {
+            return uri.AbsoluteUri + '/';
+        }
+
+        return uri.AbsoluteUri;
     }
 }
 
