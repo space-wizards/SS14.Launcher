@@ -4,12 +4,14 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using Serilog;
 using Splat;
 using SS14.Launcher.Utility;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using SS14.Launcher.Api;
+using SS14.Launcher.Models.Data;
 
 namespace SS14.Launcher.Models.ServerStatus;
 
@@ -19,6 +21,7 @@ namespace SS14.Launcher.Models.ServerStatus;
 public sealed class ServerListCache : ReactiveObject, IServerSource
 {
     private readonly HubApi _hubApi;
+    private readonly DataManager _dataManager;
 
     private CancellationTokenSource? _refreshCancel;
 
@@ -31,6 +34,7 @@ public sealed class ServerListCache : ReactiveObject, IServerSource
     public ServerListCache()
     {
         _hubApi = Locator.Current.GetRequiredService<HubApi>();
+        _dataManager = Locator.Current.GetRequiredService<DataManager>();
     }
 
     /// <summary>
@@ -62,7 +66,49 @@ public sealed class ServerListCache : ReactiveObject, IServerSource
 
         try
         {
-            var (allSucceeded, entries) = await _hubApi.GetServers(cancel);
+            var entries = new HashSet<HubApi.HubServerListEntry>();
+            var requests = new List<(Task<HubApi.ServerListEntry[]> Request, Hub Hub)>();
+            var allSucceeded = true;
+
+            // Queue requests
+            foreach (var hub in _dataManager.Hubs)
+            {
+                requests.Add((_hubApi.GetServers(hub.Address, cancel), hub));
+            }
+
+            // Await all requests
+            try
+            {
+                await Task.WhenAll(requests.Select(t => t.Request));
+            }
+            catch
+            {
+                // Let's handle any exceptions later, when we have more context
+            }
+
+            // Process responses
+            foreach (var (request, hub) in requests.OrderBy(x => x.Hub.Priority))
+            {
+                if (request.IsFaulted)
+                {
+                    // request.Exception is non-null, see https://learn.microsoft.com/en-us/dotnet/api/system.threading.tasks.task.isfaulted?view=net-7.0#remarks
+                    foreach (var ex in request.Exception!.InnerExceptions)
+                    {
+                        Log.Warning("Request to hub {HubAddress} failed: {Message}", hub.Address, ex.Message);
+                    }
+
+                    allSucceeded = false;
+                    continue;
+                }
+
+                foreach (var entry in request.Result)
+                {
+                    if (!entries.Add(new HubApi.HubServerListEntry(entry.Address, hub.Address.AbsoluteUri, entry.StatusData)))
+                    {
+                        Log.Debug("Not adding duplicate server {EntryAddress}", entry.Address);
+                    }
+                }
+            }
 
             Status = RefreshListStatus.Updating;
 
