@@ -14,7 +14,7 @@ namespace SS14.Launcher.ViewModels.MainWindowTabs;
 
 public sealed partial class ServerListFiltersViewModel : ObservableObject
 {
-    private const int NO_PLAYER_MAX_NUM = -1;
+    private const int NO_PLAYER_MAX_NUM = 0;
     private const int NO_PLAYER_MIN_NUM = 0;
 
     private readonly DataManager _dataManager;
@@ -57,15 +57,19 @@ public sealed partial class ServerListFiltersViewModel : ObservableObject
             new ServerFilter(ServerFilterCategory.EighteenPlus, ServerFilter.DataTrue), this));
         FiltersEighteenPlus.Add(new ServerFilterViewModel("No", "No",
             new ServerFilter(ServerFilterCategory.EighteenPlus, ServerFilter.DataFalse), this));
-        FiltersPlayerCount.Add(new ServerFilterViewModel("Filter Full Servers", "Filter Full",
-            new ServerFilter(ServerFilterCategory.IsServerFull, ServerFilter.DataTrue), this));
 
         ServerFilter maxFilter = FilterCategoryExists(ServerFilterCategory.PlayerMax) ? GetFilterByCategory(ServerFilterCategory.PlayerMax) : new ServerFilter(ServerFilterCategory.PlayerMax, NO_PLAYER_MAX_NUM.ToString());
         ServerFilter minFilter = FilterCategoryExists(ServerFilterCategory.PlayerMin) ? GetFilterByCategory(ServerFilterCategory.PlayerMin) : new ServerFilter(ServerFilterCategory.PlayerMin, NO_PLAYER_MIN_NUM.ToString());
-        FiltersPlayerCount.Add(new ServerFilterIntegerViewModel($"Max Player Count ({NO_PLAYER_MAX_NUM} means no filter)", "Filter Max",
-            maxFilter, PLAYER_COUNT_INCREMENT, this, min: NO_PLAYER_MAX_NUM));
+        FiltersPlayerCount.Add(new ServerFilterViewModel("Filter Full Servers", "Filter Full",
+            new ServerFilter(ServerFilterCategory.IsServerFull, ServerFilter.DataTrue), this));
+        FiltersPlayerCount.Add(new ServerFilterViewModel("Enable Min Filter", "Filter Min",
+            new ServerFilter(ServerFilterCategory.MinEnabled, ServerFilter.DataTrue), this));
         FiltersPlayerCount.Add(new ServerFilterIntegerViewModel("Min Player Count", "Filter Min",
             minFilter, PLAYER_COUNT_INCREMENT, this, min: NO_PLAYER_MIN_NUM));
+        FiltersPlayerCount.Add(new ServerFilterViewModel("Enable Max Filter", "Filter Max",
+            new ServerFilter(ServerFilterCategory.MaxEnabled, ServerFilter.DataTrue), this));
+        FiltersPlayerCount.Add(new ServerFilterIntegerViewModel($"Max Player Count", "Filter Max",
+            maxFilter, PLAYER_COUNT_INCREMENT, this, min: NO_PLAYER_MAX_NUM));
     }
 
     /// <summary>
@@ -196,10 +200,12 @@ public sealed partial class ServerListFiltersViewModel : ObservableObject
         var categorySetRegion = GetCategoryFilterSet(FiltersRegion);
         var categorySetRolePlay = GetCategoryFilterSet(FiltersRolePlay);
         bool isFull = FilterExists(new ServerFilter(ServerFilterCategory.IsServerFull, ServerFilter.DataTrue));
+        bool isMaxEnabled = FilterExists(new ServerFilter(ServerFilterCategory.MaxEnabled, ServerFilter.DataTrue));
+        bool isMinEnabled = FilterExists(new ServerFilter(ServerFilterCategory.MinEnabled, ServerFilter.DataTrue));
 
         // Precache PlayerMax & PlayerMin
-        bool isValidMax = int.TryParse(GetFilterByCategory(ServerFilterCategory.PlayerMax).Data, out int playerMax);
-        bool isValidMin = int.TryParse(GetFilterByCategory(ServerFilterCategory.PlayerMin).Data, out int playerMin);
+        bool isValidMax = int.TryParse(GetFilterByCategory(ServerFilterCategory.PlayerMax).Data, out int playerMax) && isMaxEnabled;
+        bool isValidMin = int.TryParse(GetFilterByCategory(ServerFilterCategory.PlayerMin).Data, out int playerMin) && isMinEnabled;
 
         // Precache 18+ bool.
         bool? eighteenPlus = null;
@@ -234,7 +240,7 @@ public sealed partial class ServerListFiltersViewModel : ObservableObject
             // Max Player Count Being 0 means an infinite amount of slots
             if (isFull && server.SoftMaxPlayerCount > 0 && server.PlayerCount >= server.SoftMaxPlayerCount)
                 return false;
-            if (isValidMax && playerMax != NO_PLAYER_MAX_NUM && server.PlayerCount > playerMax)
+            if (isValidMax && server.PlayerCount > playerMax)
                 return false;
             if (isValidMin && server.PlayerCount < playerMin)
                 return false;

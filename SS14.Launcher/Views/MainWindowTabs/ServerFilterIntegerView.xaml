@@ -15,6 +15,6 @@
         <TextBlock Text="{Binding Name}" />
       </ToolTip.Tip>
     </NumericUpDown>
-    <TextBlock Text="{Binding ShortName}" VerticalAlignment="Center" Margin="10,0"/>
+    <TextBlock Text="{Binding ShortName}" VerticalAlignment="Center" Margin="5,0,25,0"/>
   </WrapPanel>
 </UserControl>

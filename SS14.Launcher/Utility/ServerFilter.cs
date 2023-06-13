@@ -52,5 +52,7 @@ public enum ServerFilterCategory : byte
     EighteenPlus = 4,
     IsServerFull = 5,
     PlayerMin = 6,
-    PlayerMax = 7
+    PlayerMax = 7,
+    MinEnabled = 8,
+    MaxEnabled = 9
 }
