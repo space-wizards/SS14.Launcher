@@ -30,7 +30,7 @@ public class ServerAuthInformation
 public class ServerBuildInformation
 {
     [JsonInclude, JsonPropertyName("download_url")]
-    public string DownloadUrl = default!;
+    public string? DownloadUrl = default!;
 
     [JsonInclude, JsonPropertyName("manifest_url")]
     public string? ManifestUrl;
