@@ -41,6 +41,8 @@ public static class ConfigConstants
     public const string UrlOverrideAssets = "https://central.spacestation14.io/launcher/override_assets.json";
     public const string UrlAssetsBase = "https://central.spacestation14.io/launcher/assets/";
 
+    public const string FallbackUsername = "JoeGenero";
+
     static ConfigConstants()
     {
         var envVarAuthUrl = Environment.GetEnvironmentVariable("SS14_LAUNCHER_OVERRIDE_AUTH");

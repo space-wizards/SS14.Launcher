@@ -69,6 +69,20 @@ public sealed class Updater : ReactiveObject
         ServerBuildInformation buildInformation,
         CancellationToken cancel = default)
     {
+        return await GuardUpdateAsync(() => RunUpdate(buildInformation, cancel));
+    }
+
+    public async Task<ContentLaunchInfo?> InstallContentBundleForLaunchAsync(
+        ZipArchive archive,
+        byte[] zipHash,
+        ContentBundleMetadata metadata,
+        CancellationToken cancel = default)
+    {
+        return await GuardUpdateAsync(() => InstallContentBundle(archive, zipHash, metadata, cancel));
+    }
+
+    private async Task<T?> GuardUpdateAsync<T>(Func<Task<T>> func) where T : class
+    {
         if (_updating)
         {
             throw new InvalidOperationException("Update already in progress.");
@@ -78,9 +92,9 @@ public sealed class Updater : ReactiveObject
 
         try
         {
-            var launchInfo = await RunUpdate(buildInformation, cancel);
+            var ret = await func();
             Status = UpdateStatus.Ready;
-            return launchInfo;
+            return ret;
         }
         catch (OperationCanceledException)
         {
@@ -115,7 +129,7 @@ public sealed class Updater : ReactiveObject
         // ReSharper disable once UseAwaitUsing
         using var con = ContentManager.GetSqliteConnection();
         var versionRowId = await Task.Run(
-            () => TouchOrDownloadContentUpdate(buildInfo, con, moduleManifest, cancel),
+            () => TouchOrDownloadContentUpdateTransacted(buildInfo, con, moduleManifest, cancel),
             CancellationToken.None);
 
         Log.Debug("Checking to cull old content versions...");
@@ -160,6 +174,175 @@ public sealed class Updater : ReactiveObject
         Log.Information("Update done!");
         return new ContentLaunchInfo(versionRowId, modules);
     }
+
+    private async Task<ContentLaunchInfo> InstallContentBundle(
+        ZipArchive archive,
+        byte[] zipHash,
+        ContentBundleMetadata metadata,
+        CancellationToken cancel)
+    {
+        // ReSharper disable once UseAwaitUsing
+        using var con = ContentManager.GetSqliteConnection();
+
+        Status = UpdateStatus.LoadingContentBundle;
+
+        // Both content downloading and engine downloading MAY need the manifest.
+        // So use a Lazy<Task<T>> to avoid loading it twice.
+        var moduleManifest = new Lazy<Task<EngineModuleManifest>>(
+            () => _engineManager.GetEngineModuleManifest(cancel)
+        );
+
+        var versionId = await Task.Run(async () =>
+        {
+            // ReSharper disable once UseAwaitUsing
+            using var transaction = con.BeginTransaction();
+
+            // The launcher interprets a "content bundle" zip differently from one loaded via server download.
+            // As such, we must keep these distinct in the database, even if the file is the same.
+            // We do this by just doing another unique transformation on the hash.
+            var transformedZipHash = TransformContentBundleZipHash(zipHash);
+            var transformedZipHashHex = Convert.ToHexString(transformedZipHash);
+
+            Log.Debug(
+                "Real zip file hash is {Hash}. Transformed is {TransformedHash}",
+                Convert.ToHexString(zipHash),
+                transformedZipHashHex
+            );
+
+            Log.Debug("Checking if we already have this content bundle ingested...");
+            var existing = CheckExisting(
+                con,
+                new ServerBuildInformation { Hash = transformedZipHashHex }
+            );
+
+            long versionId;
+            if (existing == null)
+            {
+                versionId = con.ExecuteScalar<long>(
+                    @"INSERT INTO ContentVersion(Hash, ForkId, ForkVersion, LastUsed, ZipHash)
+                    VALUES (zeroblob(32), 'AnonymousContentBundle', @ForkVersion, datetime('now'), @ZipHash)
+                    RETURNING Id",
+                    new
+                    {
+                        ZipHash = transformedZipHash,
+                        ForkVersion = transformedZipHashHex
+                    }
+                );
+
+                Log.Debug("Did not already have this content bundle, ingesting as new version {Version}", versionId);
+
+                if (metadata.BaseBuild is { } baseBuildData)
+                {
+                    Log.Debug("Content bundle has base build info, downloading...");
+
+                    // We have a base build to download.
+                    // Copy it into the new AnonymousContentBundle version before loading the rest of the zip contents.
+                    var baseBuildId = await TouchOrDownloadContentUpdate(
+                        new ServerBuildInformation
+                        {
+                            DownloadUrl = baseBuildData.DownloadUrl,
+                            ManifestUrl = baseBuildData.ManifestUrl,
+                            ManifestDownloadUrl = baseBuildData.ManifestDownloadUrl,
+                            EngineVersion = metadata.EngineVersion,
+                            Version = baseBuildData.Version,
+                            ForkId = baseBuildData.ForkId,
+                            Hash = baseBuildData.Hash,
+                            ManifestHash = baseBuildData.ManifestHash,
+                            Acz = false
+                        },
+                        con,
+                        moduleManifest,
+                        cancel
+                    );
+
+                    // Copy base build manifest into new version
+                    con.Execute(
+                        @"INSERT INTO ContentManifest (VersionId, Path, ContentId)
+                        SELECT @NewVersion, Path, ContentId
+                        FROM ContentManifest
+                        WHERE VersionId = @OldVersion",
+                        new
+                        {
+                            NewVersion = versionId,
+                            OldVersion = baseBuildId
+                        }
+                    );
+                }
+
+                Status = UpdateStatus.LoadingIntoDb;
+
+                Log.Debug("Ingesting zip file...");
+                IngestZip(con, versionId, archive, true, cancel);
+
+                // Insert real manifest hash into the database.
+                var manifestHash = GenerateContentManifestHash(con, versionId);
+                con.Execute("UPDATE ContentVersion SET Hash = @Hash WHERE Id = @Version",
+                    new { Hash = manifestHash, Version = versionId });
+
+                Log.Debug("Manifest hash of new version is {Hash}", Convert.ToHexString(manifestHash));
+                Log.Debug("Resolving content dependencies...");
+
+                // TODO: This could copy from base build modules in certain cases.
+                await ResolveContentDependencies(con, versionId, metadata.EngineVersion, moduleManifest);
+            }
+            else
+            {
+                Log.Debug("Already had content bundle, updating last used time.");
+
+                TouchVersion(con, existing.Id);
+                versionId = existing.Id;
+            }
+
+            Status = UpdateStatus.CommittingDownload;
+
+            transaction.Commit();
+
+            Log.Debug("Checking to cull old content versions...");
+
+            CullOldContentVersions(con);
+
+            return versionId;
+        }, CancellationToken.None);
+
+        (string, string)[] modules;
+
+        {
+            Status = UpdateStatus.CheckingClientUpdate;
+            modules = con.Query<(string, string)>(
+                "SELECT ModuleName, moduleVersion FROM ContentEngineDependency WHERE VersionId = @Version",
+                new { Version = versionId }).ToArray();
+
+            foreach (var (name, version) in modules)
+            {
+                if (name == "Robust")
+                {
+                    await InstallEngineVersionIfMissing(version, cancel);
+                }
+                else
+                {
+                    Status = UpdateStatus.DownloadingEngineModules;
+
+                    var manifest = await moduleManifest.Value;
+                    await _engineManager.DownloadModuleIfNecessary(
+                        name,
+                        version,
+                        manifest,
+                        DownloadProgressCallback,
+                        cancel);
+                }
+            }
+        }
+
+        Status = UpdateStatus.CullingEngine;
+        await CullEngineVersionsMaybe(con);
+
+        Status = UpdateStatus.CommittingDownload;
+        _cfg.CommitConfig();
+
+        Log.Information("Update done!");
+        return new ContentLaunchInfo(versionId, modules);
+    }
+
 
     private void CullOldContentVersions(SqliteConnection con)
     {
@@ -276,9 +459,6 @@ public sealed class Updater : ReactiveObject
         Lazy<Task<EngineModuleManifest>> moduleManifest,
         CancellationToken cancel)
     {
-        // ReSharper disable once UseAwaitUsing
-        using var transaction = con.BeginTransaction();
-
         // Check if we already have this version KNOWN GOOD installed in the content DB.
         var existingVersion = CheckExisting(con, buildInfo);
 
@@ -294,6 +474,20 @@ public sealed class Updater : ReactiveObject
         }
 
         Status = UpdateStatus.CommittingDownload;
+
+        return versionId;
+    }
+
+    private async Task<long> TouchOrDownloadContentUpdateTransacted(
+        ServerBuildInformation buildInfo,
+        SqliteConnection con,
+        Lazy<Task<EngineModuleManifest>> moduleManifest,
+        CancellationToken cancel)
+    {
+        // ReSharper disable once UseAwaitUsing
+        using var transaction = con.BeginTransaction();
+
+        var versionId = await TouchOrDownloadContentUpdate(buildInfo, con, moduleManifest, cancel);
 
         transaction.Commit();
 
@@ -410,11 +604,16 @@ public sealed class Updater : ReactiveObject
         {
             versionId = existingVersion.Id;
             // If we do have an exact match we are not changing anything, *except* the LastUsed column.
-            con.Execute("UPDATE ContentVersion SET LastUsed = datetime('now') WHERE Id = @Version",
-                new { Version = existingVersion.Id });
+            TouchVersion(con, versionId);
         }
 
         return versionId;
+    }
+
+    private static void TouchVersion(SqliteConnection con, long versionId)
+    {
+        con.Execute("UPDATE ContentVersion SET LastUsed = datetime('now') WHERE Id = @Version",
+            new { Version = versionId });
     }
 
     /// <returns>The manifest hash</returns>
@@ -448,9 +647,13 @@ public sealed class Updater : ReactiveObject
         {
             manifestHash = await DownloadNewVersionManifest(buildInfo, con, versionId, cancel);
         }
-        else
+        else if (buildInfo.DownloadUrl != null)
         {
             manifestHash = await DownloadNewVersionZip(buildInfo, con, versionId, cancel);
+        }
+        else
+        {
+            throw new InvalidOperationException("No download information provided at all!");
         }
 
         Log.Debug("Manifest hash: {ManifestHash}", Convert.ToHexString(manifestHash));
@@ -460,17 +663,6 @@ public sealed class Updater : ReactiveObject
             new { Hash = manifestHash, Id = versionId });
 
         // Insert engine dependencies.
-
-        // Engine version.
-        con.Execute(
-            @"INSERT INTO ContentEngineDependency(VersionId, ModuleName, ModuleVersion)
-                VALUES (@Version, 'Robust', @EngineVersion)",
-            new
-            {
-                Version = versionId, EngineVersion = engineVersion
-            });
-
-        Log.Debug("Inserting dependency: {ModuleName} {ModuleVersion}", "Robust", engineVersion);
 
         await ResolveContentDependencies(con, versionId, engineVersion, moduleManifest);
 
@@ -483,6 +675,17 @@ public sealed class Updater : ReactiveObject
         string engineVersion,
         Lazy<Task<EngineModuleManifest>> moduleManifest)
     {
+        // Engine version.
+        con.Execute(
+            @"INSERT INTO ContentEngineDependency(VersionId, ModuleName, ModuleVersion)
+                VALUES (@Version, 'Robust', @EngineVersion)",
+            new
+            {
+                Version = versionId, EngineVersion = engineVersion
+            });
+
+        Log.Debug("Inserting dependency: {ModuleName} {ModuleVersion}", "Robust", engineVersion);
+
         // If we have a manifest file, load module dependencies from manifest file.
         if (LoadManifestData(con, versionId) is not { } manifestData)
             return;
@@ -557,6 +760,11 @@ public sealed class Updater : ReactiveObject
             swZstd.ElapsedMilliseconds,
             swSqlite.ElapsedMilliseconds,
             swBlake.ElapsedMilliseconds);
+
+#if DEBUG
+        var testHash = GenerateContentManifestHash(con, versionId);
+        Debug.Assert(testHash.AsSpan().SequenceEqual(manifestHash));
+#endif
 
         return manifestHash;
     }
@@ -699,7 +907,6 @@ public sealed class Updater : ReactiveObject
         Stopwatch swBlake,
         CancellationToken cancel)
     {
-
         await CheckManifestDownloadServerProtocolVersions(buildInfo.ManifestDownloadUrl!, cancel);
 
         // Alright well we support the protocol. Now to start the HTTP request!
@@ -985,11 +1192,18 @@ public sealed class Updater : ReactiveObject
 
         var zip = new ZipArchive(tempFile, ZipArchiveMode.Read, leaveOpen: true);
 
-        // TODO: hash incrementally without buffering in-memory
-        var manifestStream = new MemoryStream();
-        var manifestWriter = new StreamWriter(manifestStream, new UTF8Encoding(false));
-        manifestWriter.Write("Robust Content Manifest 1\n");
+        IngestZip(con, versionId, zip, false, cancel);
 
+        return GenerateContentManifestHash(con, versionId);
+    }
+
+    private void IngestZip(
+        SqliteConnection con,
+        long versionId,
+        ZipArchive zip,
+        bool underlay,
+        CancellationToken cancel)
+    {
         var totalSize = 0L;
         var sw = new Stopwatch();
 
@@ -1002,9 +1216,8 @@ public sealed class Updater : ReactiveObject
             var compressBuffer = new MemoryStream();
             using var zStdCompressor = new ZStdCompressStream(compressBuffer);
 
-            // Sort by full name for manifest building.
             var count = 0;
-            foreach (var entry in zip.Entries.OrderBy(e => e.FullName, StringComparer.Ordinal))
+            foreach (var entry in zip.Entries)
             {
                 cancel.ThrowIfCancellationRequested();
 
@@ -1014,6 +1227,23 @@ public sealed class Updater : ReactiveObject
                 // Ignore directory entries.
                 if (entry.Name == "")
                     continue;
+
+                if (underlay)
+                {
+                    // Ignore files from the zip file we already have.
+                    var exists = con.ExecuteScalar<bool>(
+                        @"SELECT COUNT(*) FROM ContentManifest
+                        WHERE Path = @Path AND VersionId = @VersionId",
+                        new
+                        {
+                            Path = entry.FullName,
+                            VersionId = versionId
+                        }
+                    );
+
+                    if (exists)
+                        continue;
+                }
 
                 // Log.Verbose("Storing file {EntryName}", entry.FullName);
 
@@ -1091,8 +1321,6 @@ public sealed class Updater : ReactiveObject
                         Path = entry.FullName,
                         ContentId = row,
                     });
-
-                manifestWriter.Write($"{Convert.ToHexString(hash)} {entry.FullName}\n");
             }
         }
         finally
@@ -1103,6 +1331,38 @@ public sealed class Updater : ReactiveObject
         Log.Debug("Compression report: {ElapsedMs} ms elapsed, {TotalSize} B total size", sw.ElapsedMilliseconds,
             totalSize);
         Log.Debug("New files: {NewFilesCount}", newFileCount);
+    }
+
+    private static byte[] GenerateContentManifestHash(SqliteConnection con, long versionId)
+    {
+        var manifestQuery = con.Query<(string, byte[])>(
+            @"SELECT
+                Path, Hash
+            FROM
+                ContentManifest
+            INNER JOIN
+                Content
+            ON
+                Content.Id = ContentManifest.ContentId
+            WHERE
+                ContentManifest.VersionId = @VersionId
+            ORDER BY
+                Path
+            ",
+            new
+            {
+                VersionId = versionId
+            }
+        );
+
+        var manifestStream = new MemoryStream();
+        var manifestWriter = new StreamWriter(manifestStream, new UTF8Encoding(false));
+        manifestWriter.Write("Robust Content Manifest 1\n");
+
+        foreach (var (path, hash) in manifestQuery)
+        {
+            manifestWriter.Write($"{Convert.ToHexString(hash)} {path}\n");
+        }
 
         manifestWriter.Flush();
 
@@ -1127,7 +1387,7 @@ public sealed class Updater : ReactiveObject
         Log.Information("Downloading content update from {ContentDownloadUrl}", buildInformation.DownloadUrl);
 
         await _http.DownloadToStream(
-            buildInformation.DownloadUrl,
+            buildInformation.DownloadUrl!,
             file,
             DownloadProgressCallback,
             cancel);
@@ -1138,7 +1398,7 @@ public sealed class Updater : ReactiveObject
 
         Status = UpdateStatus.Verifying;
 
-        var hash = await Task.Run(() => HashFile(file), cancel);
+        var hash = await Task.Run(() => HashFileSha256(file), cancel);
         file.Position = 0;
 
         var newFileHashString = Convert.ToHexString(hash);
@@ -1175,7 +1435,7 @@ public sealed class Updater : ReactiveObject
         Dispatcher.UIThread.Post(() => Progress = (downloaded, total, ProgressUnit.Bytes));
     }
 
-    internal static byte[] HashFile(Stream stream)
+    internal static byte[] HashFileSha256(Stream stream)
     {
         using var sha = SHA256.Create();
         return sha.ComputeHash(stream);
@@ -1189,6 +1449,17 @@ public sealed class Updater : ReactiveObject
         using var streamReader = new StreamReader(resourceManifest);
         var manifestData = ResourceManifestDeserializer.Deserialize<ResourceManifestData?>(streamReader);
         return manifestData;
+    }
+
+    private static byte[] TransformContentBundleZipHash(ReadOnlySpan<byte> zipHash)
+    {
+        // Append some data to it and hash it again. No way you're finding a collision against THAT.
+        var modifiedData = new byte[zipHash.Length * 2];
+        zipHash.CopyTo(modifiedData);
+
+        "content bundle change"u8.CopyTo(modifiedData.AsSpan(zipHash.Length));
+
+        return SHA256.HashData(modifiedData);
     }
 
     public sealed class ResourceManifestData
@@ -1212,6 +1483,7 @@ public sealed class Updater : ReactiveObject
         CullingContent,
         Ready,
         Error,
+        LoadingContentBundle,
     }
 
     public enum ProgressUnit

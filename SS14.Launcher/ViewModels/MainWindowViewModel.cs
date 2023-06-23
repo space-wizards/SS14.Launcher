@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Net.Http;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
@@ -251,5 +252,26 @@ public sealed class MainWindowViewModel : ViewModelBase, IErrorOverlayOwner
     public void OverlayOk()
     {
         OverlayViewModel = null;
+    }
+
+    public bool IsContentBundleDropValid(string fileName)
+    {
+        // Can only load content bundles if logged in, in some capacity.
+        if (!LoggedIn)
+            return false;
+
+        // Disallow if currently connecting to a server.
+        if (ConnectingVM != null)
+            return false;
+
+        return Path.GetExtension(fileName) == ".zip";
+    }
+
+    public void Dropped(string fileName)
+    {
+        // Trust view validated this.
+        Debug.Assert(IsContentBundleDropValid(fileName));
+
+        ConnectingViewModel.StartContentBundle(this, fileName);
     }
 }

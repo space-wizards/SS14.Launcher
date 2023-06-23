@@ -2,11 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Runtime.InteropServices;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
 using DynamicData;
@@ -20,6 +22,10 @@ using SS14.Launcher.Utility;
 
 namespace SS14.Launcher.Models;
 
+/// <summary>
+/// Responsible for actually launching the game.
+/// Either by connecting to a game server, or by launching a local content bundle.
+/// </summary>
 public class Connector : ReactiveObject
 {
     private readonly Updater _updater;
@@ -70,6 +76,26 @@ public class Connector : ReactiveObject
         }
     }
 
+    public async void LaunchContentBundle(string fileName, CancellationToken cancel = default)
+    {
+        Log.Information("Launching content bundle: {FileName}", fileName);
+
+        try
+        {
+            await LaunchContentBundleInternal(fileName, cancel);
+        }
+        catch (ConnectException e)
+        {
+            Log.Error(e, "Failed to launch: {status}", e.Status);
+            Status = e.Status;
+        }
+        catch (OperationCanceledException e)
+        {
+            Log.Information(e, "Cancelled launch");
+            Status = ConnectionStatus.Cancelled;
+        }
+    }
+
     private async Task ConnectInternalAsync(string address, CancellationToken cancel)
     {
         Status = ConnectionStatus.Connecting;
@@ -83,9 +109,85 @@ public class Connector : ReactiveObject
 
         var connectAddress = GetConnectAddress(info, infoAddr);
 
+        await LaunchClientWrap(installation, info, info.BuildInformation, connectAddress, parsedAddr, false, cancel);
+    }
+
+    private async Task LaunchContentBundleInternal(string fileName, CancellationToken cancel)
+    {
+        Status = ConnectionStatus.Updating;
+
+        ContentLaunchInfo installation;
+        using (var zipStream = File.OpenRead(fileName))
+        {
+            var zipHash = await Task.Run(() => Updater.HashFileSha256(zipStream), cancel);
+
+            zipStream.Seek(0, SeekOrigin.Begin);
+
+            using var zipFile = new ZipArchive(zipStream, ZipArchiveMode.Read);
+
+            var metadataJson = zipFile.GetEntry("rt_content_bundle.json");
+            if (metadataJson == null)
+            {
+                Log.Error("Zip file did not contain rt_content_bundle.json");
+                throw new ConnectException(ConnectionStatus.NotAContentBundle);
+            }
+
+            ContentBundleMetadata? metadata;
+            using (var metadataStream = metadataJson.Open())
+            {
+                metadata = JsonSerializer.Deserialize<ContentBundleMetadata>(metadataStream);
+            }
+
+            if (metadata == null)
+            {
+                Log.Error("rt_content_bundle.json deserialized as null");
+                throw new ConnectException(ConnectionStatus.NotAContentBundle);
+            }
+
+            Log.Debug("Loaded metadata for content bundle, continuing with launch");
+
+            //
+            // Big comment time
+            //
+            // Originally, I wanted to implement content bundles by not touching the Content DB at all.
+            // (At least, if you're not using a base build)
+            // The loader would open the zip file directly and provide the engine with both files simultaneously.
+            //
+            // That all kinda fell apart when I realized that manifest.yml has to be interpreted by the launcher.
+            // And then also stuff like dependent engine versions have to be tracked and all that.
+            // So, instead we merge the provided content bundle into the Content DB and start the game as normal.
+            //
+            // I don't like this solution much, as content bundles for SS14 replays will be quite bug (150+ MB).
+            // It's a lot of data that needs to get uselessly shoved between the Content DB.
+            //
+            // In the future, a "hybrid" mode may be best:
+            // The launcher will create a new version in the Content DB that contains just the manifest.yml.
+            // (or base build data overlaid if necessary)
+            // The loader would still be in charge of transparently merging in the zip file at runtime.
+            //
+
+            installation = await InstallContentBundleAsync(zipFile, zipHash, metadata, cancel);
+        }
+
+        Log.Debug("Launching client");
+
+        // I originally wanted to pass through build info,
+        // but then realized I'd need to pipe the entries in the SQLite DB ("AnonymousContentBundle") up and ehhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh.
+        await LaunchClientWrap(installation, null, null, null, null, true, cancel);
+    }
+
+    private async Task LaunchClientWrap(
+        ContentLaunchInfo launchInfo,
+        ServerInfo? info = null,
+        ServerBuildInformation? buildInfo = null,
+        Uri? connectAddress = null,
+        Uri? parsedAddr = null,
+        bool contentBundle = false,
+        CancellationToken cancel = default)
+    {
         Status = ConnectionStatus.StartingClient;
 
-        var clientProc = await ConnectLaunchClient(info, installation, connectAddress, parsedAddr);
+        var clientProc = await ConnectLaunchClient(launchInfo, info, buildInfo, connectAddress, parsedAddr, contentBundle);
 
         if (clientProc != null)
         {
@@ -112,14 +214,16 @@ public class Connector : ReactiveObject
         Status = ConnectionStatus.ClientExited;
     }
 
-    private async Task<Process?> ConnectLaunchClient(
-        ServerInfo info,
-        ContentLaunchInfo launchInfo,
-        Uri connectAddress, Uri parsedAddr)
+    private async Task<Process?> ConnectLaunchClient(ContentLaunchInfo launchInfo,
+        ServerInfo? info,
+        ServerBuildInformation? serverBuildInformation,
+        Uri? connectAddress,
+        Uri? parsedAddr,
+        bool contentBundle)
     {
         var cVars = new List<(string, string)>();
 
-        if (info.AuthInformation.Mode != AuthMode.Disabled && _loginManager.ActiveAccount != null)
+        if (info != null && info.AuthInformation.Mode != AuthMode.Disabled && _loginManager.ActiveAccount != null)
         {
             var account = _loginManager.ActiveAccount;
 
@@ -131,25 +235,65 @@ public class Connector : ReactiveObject
 
         try
         {
-            // Launch client.
-            return await LaunchClient(launchInfo, new[]
+            var args = new List<string>
             {
-                // We are using the launcher. Don't show main menu etc..
-                "--launcher",
-
                 // Pass username to launched client.
                 // We don't load username from client_config.toml when launched via launcher.
-                "--username", _loginManager.ActiveAccount?.Username ?? "JoeGenero",
-
-                // Connection address
-                "--connect-address", connectAddress.ToString(),
-
-                // ss14(s):// address passed in. Only used for feedback in the client.
-                "--ss14-address", parsedAddr.ToString(),
+                "--username", _loginManager.ActiveAccount?.Username ?? ConfigConstants.FallbackUsername,
 
                 // GLES2 forcing or using default fallback
                 "--cvar", $"display.compat={_cfg.GetCVar(CVars.CompatMode)}",
-            }, cVars);
+
+                // Tell game we are launcher
+                "--cvar", "launch.launcher=true"
+            };
+
+            if (contentBundle)
+            {
+                args.Add("--cvar");
+                args.Add("launch.content_bundle=true");
+            }
+
+            if (connectAddress != null)
+            {
+                // We are using the launcher. Don't show main menu etc..
+                // Note: --launcher also implied --connect.
+                // For this reason, content bundles do not set --launcher.
+                args.Add("--launcher");
+
+                args.Add("--connect-address");
+                args.Add(connectAddress.ToString());
+            }
+
+            if (parsedAddr != null)
+            {
+                args.Add("--ss14-address");
+                args.Add(parsedAddr.ToString());
+            }
+
+            // Pass build info to client. This is not critical to the client's function,
+            // it was added to aid client replay recording.
+
+            // No point reporting engine version: obviously the client already knows that.
+            BuildCVar("download_url", serverBuildInformation?.DownloadUrl);
+            BuildCVar("manifest_url", serverBuildInformation?.ManifestUrl);
+            BuildCVar("manifest_download_url", serverBuildInformation?.ManifestDownloadUrl);
+            BuildCVar("version", serverBuildInformation?.Version);
+            BuildCVar("fork_id", serverBuildInformation?.ForkId);
+            BuildCVar("hash", serverBuildInformation?.Hash);
+            BuildCVar("manifest_hash", serverBuildInformation?.ManifestHash);
+
+            void BuildCVar(string name, string? value)
+            {
+                if (value == null)
+                    return;
+
+                args.Add("--cvar");
+                args.Add($"build.{name}={value}");
+            }
+
+            // Launch client.
+            return await LaunchClient(launchInfo, args, cVars);
         }
         catch (Exception e)
         {
@@ -188,6 +332,21 @@ public class Connector : ReactiveObject
         Debug.Assert(info.BuildInformation != null, "info.BuildInformation != null");
 
         var installation = await _updater.RunUpdateForLaunchAsync(info.BuildInformation, cancel);
+        if (installation == null)
+        {
+            throw new ConnectException(ConnectionStatus.UpdateError);
+        }
+
+        return installation;
+    }
+
+    private async Task<ContentLaunchInfo> InstallContentBundleAsync(
+        ZipArchive archive,
+        byte[] zipHash,
+        ContentBundleMetadata metadata,
+        CancellationToken cancel)
+    {
+        var installation = await _updater.InstallContentBundleForLaunchAsync(archive, zipHash, metadata, cancel);
         if (installation == null)
         {
             throw new ConnectException(ConnectionStatus.UpdateError);
@@ -519,7 +678,8 @@ public class Connector : ReactiveObject
         StartingClient,
         ClientRunning,
         ClientExited,
-        Cancelled
+        Cancelled,
+        NotAContentBundle
     }
 
     private sealed class ConnectException : Exception
@@ -538,3 +698,20 @@ public class Connector : ReactiveObject
         }
     }
 }
+
+public sealed record ContentBundleMetadata(
+    [property: JsonPropertyName("engine_version")] string EngineVersion,
+    [property: JsonPropertyName("base_build")] ContentBundleBaseBuild? BaseBuild
+);
+
+public sealed record ContentBundleBaseBuild(
+    [property: JsonPropertyName("fork_id")] string ForkId,
+    [property: JsonPropertyName("version")] string Version,
+    // Old zip-download system.
+    [property: JsonPropertyName("download_url")] string? DownloadUrl,
+    [property: JsonPropertyName("hash")] string? Hash,
+    // Newer manifest download system.
+    [property: JsonPropertyName("manifest_download_url")] string? ManifestDownloadUrl,
+    [property: JsonPropertyName("manifest_url")] string? ManifestUrl,
+    [property: JsonPropertyName("manifest_hash")] string? ManifestHash
+);
