@@ -50,7 +50,7 @@
           </Panel.Background>
           <ScrollViewer MinHeight="150" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Visible">
             <Grid RowDefinitions="Auto,Auto,Auto">
-              <ItemsControl Grid.Row="0" Items="{Binding SearchedServers}" Classes="ServerList" />
+              <ItemsControl Grid.Row="0" ItemsSource="{Binding SearchedServers}" Classes="ServerList" />
               <TextBlock Grid.Row="1" IsVisible="{Binding ListTextVisible}" TextAlignment="Center" VerticalAlignment="Center"
                          Text="{Binding ListText}" />
               <views:DungSpinner Grid.Row="2" IsVisible="{Binding SpinnerVisible}" HorizontalAlignment="Center" />

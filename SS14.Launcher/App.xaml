@@ -7,8 +7,7 @@
   </Application.DataTemplates>
 
   <Application.Styles>
-    <StyleInclude Source="avares://Avalonia.Themes.Default/DefaultTheme.xaml" />
-    <StyleInclude Source="avares://Avalonia.Themes.Default/Accents/BaseDark.xaml" />
+    <StyleInclude Source="avares://Avalonia.Themes.Simple/SimpleTheme.xaml" />
     <StyleInclude Source="/Theme/Theme.xaml" />
     <StyleInclude Source="/Theme/ThemeResources.xaml" />
     <StyleInclude Source="/Theme/ThemeAngleBox.xaml" />

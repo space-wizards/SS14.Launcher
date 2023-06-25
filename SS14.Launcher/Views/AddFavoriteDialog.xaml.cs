@@ -1,5 +1,4 @@
 using System;
-using Avalonia;
 using Avalonia.Controls;
 using ReactiveUI;
 
@@ -24,12 +23,6 @@ public partial class AddFavoriteDialog : Window
 
         this.WhenAnyValue(x => x._addressBox.Text)
             .Subscribe(_ => UpdateSubmitValid());
-
-#if DEBUG
-
-        this.AttachDevTools();
-
-#endif
     }
 
     protected override void OnOpened(EventArgs e)

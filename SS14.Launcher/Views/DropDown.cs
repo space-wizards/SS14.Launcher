@@ -14,10 +14,10 @@ public sealed class DropDown : TemplatedControl
         AvaloniaProperty.RegisterDirect<DropDown, bool>(nameof(IsDropDownOpen), down => down.IsDropDownOpen,
             (down, b) => down.IsDropDownOpen = b);
 
-    public static readonly StyledProperty<object> ContentProperty =
+    public static readonly StyledProperty<object?> ContentProperty =
         ContentControl.ContentProperty.AddOwner<DropDown>();
 
-    public static readonly StyledProperty<IDataTemplate> ContentTemplateProperty =
+    public static readonly StyledProperty<IDataTemplate?> ContentTemplateProperty =
         ContentControl.ContentTemplateProperty.AddOwner<DropDown>();
 
     public static readonly StyledProperty<object> HeaderContentProperty =
@@ -30,13 +30,13 @@ public sealed class DropDown : TemplatedControl
     private Popup? _popup;
 
     [Content]
-    public object Content
+    public object? Content
     {
         get => GetValue(ContentProperty);
         set => SetValue(ContentProperty, value);
     }
 
-    public IDataTemplate ContentTemplate
+    public IDataTemplate? ContentTemplate
     {
         get => GetValue(ContentTemplateProperty);
         set => SetValue(ContentTemplateProperty, value);
@@ -74,7 +74,7 @@ public sealed class DropDown : TemplatedControl
     {
         if (!e.Handled)
         {
-            if (e.Source != null && _popup?.IsInsidePopup((IVisual) e.Source) == false)
+            if (e.Source != null && _popup?.IsInsidePopup((Visual) e.Source) == false)
             {
                 IsDropDownOpen ^= true;
                 e.Handled = true;
