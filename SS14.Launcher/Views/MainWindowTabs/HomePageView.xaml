@@ -20,9 +20,14 @@
       <Button DockPanel.Dock="Right" Content="Refresh" Classes="OpenRight" Command="{Binding RefreshPressed}" />
     </DockPanel>
 
-    <Button DockPanel.Dock="Bottom" Margin="0, 5, 5, 1" HorizontalAlignment="Right"
-            Content="Direct Connect To Server..."
-            Command="{Binding DirectConnectPressed}" />
+    <DockPanel DockPanel.Dock="Bottom" LastChildFill="False" Margin="0, 5, 5, 1">
+      <Button DockPanel.Dock="Right" HorizontalAlignment="Right"  Classes="OpenLeft"
+              Content="Direct Connect To Server..."
+              Command="{Binding DirectConnectPressed}" />
+      <Button DockPanel.Dock="Right" HorizontalAlignment="Right" Classes="OpenRight"
+              Content="Run content bundle/replay"
+              Click="OpenReplayClicked" />
+    </DockPanel>
 
     <Panel DockPanel.Dock="Bottom" Classes="ScrollViewerSep" />
     <Panel DockPanel.Dock="Top" Classes="ScrollViewerSep" />
