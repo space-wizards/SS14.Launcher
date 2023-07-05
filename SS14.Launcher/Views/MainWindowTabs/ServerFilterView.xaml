@@ -9,7 +9,7 @@
     <mainWindowTabs:ServerFilterViewModel />
   </Design.DataContext>
 
-  <CheckBox Content="{Binding ShortName}" Classes="ServerFilter" IsChecked="{Binding Selected}">
+  <CheckBox Content="{Binding ShortName}" IsChecked="{Binding Selected}">
     <ToolTip.Tip>
       <TextBlock Text="{Binding Name}" />
     </ToolTip.Tip>

@@ -4,9 +4,6 @@
       <SolidColorBrush Color="#262626" />
     </Setter>
   </Style>
-  <Style Selector="CheckBox.ServerFilter">
-    <Setter Property="Width" Value="150" />
-  </Style>
   <Style Selector=":is(Panel).ServerFilterGroup">
     <Setter Property="Margin" Value="4" />
   </Style>

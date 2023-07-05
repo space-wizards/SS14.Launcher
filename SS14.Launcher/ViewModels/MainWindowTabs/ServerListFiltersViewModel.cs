@@ -23,11 +23,13 @@ public sealed partial class ServerListFiltersViewModel : ObservableObject
     private readonly FilterListCollection _filtersRegion = new();
     private readonly FilterListCollection _filtersRolePlay = new();
     private readonly FilterListCollection _filtersEighteenPlus = new();
+    private readonly FilterListCollection _filtersHub = new();
 
     public ObservableCollection<ServerFilterViewModel> FiltersLanguage => _filtersLanguage;
     public ObservableCollection<ServerFilterViewModel> FiltersRegion => _filtersRegion;
     public ObservableCollection<ServerFilterViewModel> FiltersRolePlay => _filtersRolePlay;
     public ObservableCollection<ServerFilterViewModel> FiltersEighteenPlus => _filtersEighteenPlus;
+    public ObservableCollection<ServerFilterViewModel> FiltersHub => _filtersHub;
 
     public event Action? FiltersUpdated;
 
@@ -54,13 +56,14 @@ public sealed partial class ServerListFiltersViewModel : ObservableObject
     }
 
     /// <summary>
-    /// Update the set of visible filters, to avoid redundant servers that would match no servers.
+    /// Update the set of visible filters, to avoid redundant filters that would match no servers.
     /// </summary>
     public void UpdatePresentFilters(IEnumerable<ServerStatusData> servers)
     {
         var filtersLanguage = new List<ServerFilterViewModel>();
         var filtersRegion = new List<ServerFilterViewModel>();
         var filtersRolePlay = new List<ServerFilterViewModel>();
+        var filtersHub = new List<ServerFilterViewModel>();
 
         var alreadyAdded = new HashSet<ServerFilter>();
 
@@ -118,12 +121,27 @@ public sealed partial class ServerListFiltersViewModel : ObservableObject
                     filtersRolePlay.Add(vm);
                 }
             }
+
+            if (server.HubAddress is { } hub)
+            {
+                var filter = new ServerFilter(ServerFilterCategory.Hub, hub);
+                if (!alreadyAdded.Add(filter))
+                    continue;
+
+                var shortName = Uri.TryCreate(hub, UriKind.Absolute, out var uri)
+                    ? uri.Host
+                    : hub;
+
+                var vm = new ServerFilterViewModel(hub, shortName, filter, this);
+                filtersHub.Add(vm);
+            }
         }
 
         // Sort.
         filtersLanguage.Sort(ServerFilterShortNameComparer.Instance);
         filtersRegion.Sort(ServerFilterShortNameComparer.Instance);
         filtersRolePlay.Sort(ServerFilterDataOrderComparer.InstanceRolePlay);
+        filtersHub.Sort(ServerFilterShortNameComparer.Instance);
 
         // Unspecified always comes last.
         filtersLanguage.Add(new ServerFilterViewModel("Unspecified", "Unspecified",
@@ -137,6 +155,7 @@ public sealed partial class ServerListFiltersViewModel : ObservableObject
         _filtersLanguage.SetItems(filtersLanguage);
         _filtersRegion.SetItems(filtersRegion);
         _filtersRolePlay.SetItems(filtersRolePlay);
+        _filtersHub.SetItems(filtersHub);
     }
 
     public bool GetFilter(ServerFilter filter) => _dataManager.Filters.Contains(filter);
@@ -168,6 +187,7 @@ public sealed partial class ServerListFiltersViewModel : ObservableObject
         var categorySetLanguage = GetCategoryFilterSet(FiltersLanguage);
         var categorySetRegion = GetCategoryFilterSet(FiltersRegion);
         var categorySetRolePlay = GetCategoryFilterSet(FiltersRolePlay);
+        var categorySetHub = GetCategoryFilterSet(FiltersHub);
 
         // Precache 18+ bool.
         bool? eighteenPlus = null;
@@ -214,6 +234,9 @@ public sealed partial class ServerListFiltersViewModel : ObservableObject
                 return false;
 
             if (!CheckCategoryFilterSet(categorySetRolePlay, server.Tags, Tags.TagRolePlay))
+                return false;
+
+            if (categorySetHub != null && server.HubAddress != null && !categorySetHub.Contains(server.HubAddress))
                 return false;
 
             return true;
@@ -275,7 +298,7 @@ public sealed partial class ServerListFiltersViewModel : ObservableObject
 
         public override int Compare(ServerFilterViewModel x, ServerFilterViewModel y)
         {
-            return string.Compare(x.Name, y.Name, StringComparison.CurrentCultureIgnoreCase);
+            return string.Compare(x.ShortName, y.ShortName, StringComparison.CurrentCultureIgnoreCase);
         }
     }
 

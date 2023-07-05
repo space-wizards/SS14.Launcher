@@ -15,7 +15,10 @@
       <WrapPanel />
     </ItemsPanelTemplate>
     <DataTemplate x:Key="FilterTemplate" DataType="mainWindowTabs:ServerFilterViewModel">
-      <mainWindowTabs1:ServerFilterView DataContext="{Binding}" />
+      <mainWindowTabs1:ServerFilterView DataContext="{Binding}" Width="150" />
+    </DataTemplate>
+    <DataTemplate x:Key="WideFilterTemplate" DataType="mainWindowTabs:ServerFilterViewModel">
+      <mainWindowTabs1:ServerFilterView DataContext="{Binding}" Width="300" />
     </DataTemplate>
   </UserControl.Resources>
 
@@ -43,6 +46,13 @@
           <TextBlock MinWidth="150" DockPanel.Dock="Left" Classes="SubText" Text="18+" />
           <ItemsControl Items="{Binding FiltersEighteenPlus}"
                         ItemsPanel="{StaticResource PanelTemplate}" ItemTemplate="{StaticResource FilterTemplate}"/>
+        </DockPanel>
+
+        <DockPanel Classes="ServerFilterGroup">
+          <TextBlock MinWidth="150" DockPanel.Dock="Left" Classes="SubText" Text="Hub" />
+          <ItemsControl Items="{Binding FiltersHub}"
+                        ItemsPanel="{StaticResource PanelTemplate}" ItemTemplate="{StaticResource WideFilterTemplate}">
+          </ItemsControl>
         </DockPanel>
       </StackPanel>
     </ScrollViewer>
