@@ -59,12 +59,15 @@ public partial class HubSettingsDialog : Window
                 t.Classes.Remove("Duplicate");
         }
 
+        var anyHubs = Hubs.ItemCount > 0;
         var allValid = _viewModel.HubList.All(h => IsValidHubUri(h.Address));
         var noDupes = !dupes.Any();
 
-        DoneButton.IsEnabled = allValid && noDupes;
+        DoneButton.IsEnabled = anyHubs && allValid && noDupes;
 
-        if (!allValid)
+        if (!anyHubs)
+            Warning.Text = "Specify at least one hub";
+        else if (!allValid)
             Warning.Text = "Invalid hub (don't forget http(s)://)";
         else if (!noDupes)
             Warning.Text = "Duplicate hubs";
