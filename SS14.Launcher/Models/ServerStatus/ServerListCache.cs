@@ -12,6 +12,7 @@ using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using SS14.Launcher.Api;
 using SS14.Launcher.Models.Data;
+using static SS14.Launcher.Api.HubApi;
 
 namespace SS14.Launcher.Models.ServerStatus;
 
@@ -66,8 +67,8 @@ public sealed class ServerListCache : ReactiveObject, IServerSource
 
         try
         {
-            var entries = new HashSet<HubApi.HubServerListEntry>();
-            var requests = new List<(Task<HubApi.ServerListEntry[]> Request, Hub Hub)>();
+            var entries = new HashSet<HubServerListEntry>();
+            var requests = new List<(Task<ServerListEntry[]> Request, Hub Hub)>();
             var allSucceeded = true;
 
             // Queue requests
@@ -103,9 +104,17 @@ public sealed class ServerListCache : ReactiveObject, IServerSource
 
                 foreach (var entry in request.Result)
                 {
-                    if (!entries.Add(new HubApi.HubServerListEntry(entry.Address, hub.Address.AbsoluteUri, entry.StatusData)))
+                    // Don't add server if it was already provided by another hub with higher priority
+                    if (entries.FirstOrDefault(e => e.Address == entry.Address) is not { } existingEntry)
                     {
-                        Log.Debug("Not adding duplicate server {EntryAddress}", entry.Address);
+                        entries.Add(new HubServerListEntry(entry.Address, hub.Address.AbsoluteUri, entry.StatusData));
+                    }
+                    else
+                    {
+                        Log.Debug("Not adding {Entry} from {ThisHub} because it was already provided by {PreviousHub}",
+                            entry.Address,
+                            hub.Address.AbsoluteUri,
+                            existingEntry.HubAddress);
                     }
                 }
             }
