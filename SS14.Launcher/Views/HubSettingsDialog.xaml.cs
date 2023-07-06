@@ -30,6 +30,7 @@ public partial class HubSettingsDialog : Window
         base.OnOpened(e);
 
         _viewModel.Populate();
+        Verify(); // Just in case the settings are messed up somehow.
     }
 
     private void Done(object? sender, RoutedEventArgs args)
