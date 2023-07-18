@@ -29,22 +29,6 @@
 , zlib
 , glib
 , gdk-pixbuf
-, nss
-, nspr
-, at-spi2-atk
-, libdrm
-, expat
-, libxkbcommon
-, libxcb
-, libXcomposite
-, libXdamage
-, libXfixes
-, libxshmfence
-, mesa
-, alsa-lib
-, dbus
-, at-spi2-core
-, cups
 }:
 let
   version = "0.22.1";
