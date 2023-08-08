@@ -305,6 +305,7 @@ public sealed class AuthApi
         AccountUnconfirmed =  2,
         TfaRequired        =  3,
         TfaInvalid         =  4,
+        AccountLocked      =  5,
 
         // Not actually from the API, but used internally.
         UnknownError       = -1,

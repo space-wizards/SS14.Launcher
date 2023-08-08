@@ -109,7 +109,7 @@ public class Connector : ReactiveObject
 
         var connectAddress = GetConnectAddress(info, infoAddr);
 
-        await LaunchClientWrap(installation, info, connectAddress, parsedAddr, false, cancel);
+        await LaunchClientWrap(installation, info, info.BuildInformation, connectAddress, parsedAddr, false, cancel);
     }
 
     private async Task LaunchContentBundleInternal(string fileName, CancellationToken cancel)
@@ -171,12 +171,15 @@ public class Connector : ReactiveObject
 
         Log.Debug("Launching client");
 
-        await LaunchClientWrap(installation, null, null, null, true, cancel);
+        // I originally wanted to pass through build info,
+        // but then realized I'd need to pipe the entries in the SQLite DB ("AnonymousContentBundle") up and ehhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh.
+        await LaunchClientWrap(installation, null, null, null, null, true, cancel);
     }
 
     private async Task LaunchClientWrap(
         ContentLaunchInfo launchInfo,
         ServerInfo? info = null,
+        ServerBuildInformation? buildInfo = null,
         Uri? connectAddress = null,
         Uri? parsedAddr = null,
         bool contentBundle = false,
@@ -184,7 +187,7 @@ public class Connector : ReactiveObject
     {
         Status = ConnectionStatus.StartingClient;
 
-        var clientProc = await ConnectLaunchClient(launchInfo, info, connectAddress, parsedAddr, contentBundle);
+        var clientProc = await ConnectLaunchClient(launchInfo, info, buildInfo, connectAddress, parsedAddr, contentBundle);
 
         if (clientProc != null)
         {
@@ -211,12 +214,12 @@ public class Connector : ReactiveObject
         Status = ConnectionStatus.ClientExited;
     }
 
-    private async Task<Process?> ConnectLaunchClient(
-        ContentLaunchInfo launchInfo,
-        ServerInfo? info = null,
-        Uri? connectAddress = null,
-        Uri? parsedAddr = null,
-        bool contentBundle = false)
+    private async Task<Process?> ConnectLaunchClient(ContentLaunchInfo launchInfo,
+        ServerInfo? info,
+        ServerBuildInformation? serverBuildInformation,
+        Uri? connectAddress,
+        Uri? parsedAddr,
+        bool contentBundle)
     {
         var cVars = new List<(string, string)>();
 
@@ -266,6 +269,27 @@ public class Connector : ReactiveObject
             {
                 args.Add("--ss14-address");
                 args.Add(parsedAddr.ToString());
+            }
+
+            // Pass build info to client. This is not critical to the client's function,
+            // it was added to aid client replay recording.
+
+            // No point reporting engine version: obviously the client already knows that.
+            BuildCVar("download_url", serverBuildInformation?.DownloadUrl);
+            BuildCVar("manifest_url", serverBuildInformation?.ManifestUrl);
+            BuildCVar("manifest_download_url", serverBuildInformation?.ManifestDownloadUrl);
+            BuildCVar("version", serverBuildInformation?.Version);
+            BuildCVar("fork_id", serverBuildInformation?.ForkId);
+            BuildCVar("hash", serverBuildInformation?.Hash);
+            BuildCVar("manifest_hash", serverBuildInformation?.ManifestHash);
+
+            void BuildCVar(string name, string? value)
+            {
+                if (value == null)
+                    return;
+
+                args.Add("--cvar");
+                args.Add($"build.{name}={value}");
             }
 
             // Launch client.

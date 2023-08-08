@@ -29,8 +29,10 @@ public class AuthErrorsOverlayViewModel : ViewModelBase
 
             // Never shown I hope.
             AuthApi.AuthenticateDenyResponseCode.TfaRequired => "2-factor authentication required",
-
             AuthApi.AuthenticateDenyResponseCode.TfaInvalid => "2-factor authentication code invalid",
+
+            AuthApi.AuthenticateDenyResponseCode.AccountLocked =>
+                "Account has been locked. Please contact us if you believe this to be in error.",
             _ => "Unknown error"
         };
 

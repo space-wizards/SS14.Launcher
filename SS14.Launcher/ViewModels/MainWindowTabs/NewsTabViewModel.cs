@@ -8,7 +8,7 @@ namespace SS14.Launcher.ViewModels.MainWindowTabs;
 
 public class NewsTabViewModel : MainWindowTabViewModel
 {
-    private const string FeedUrl = "https://spacestation14.io/index.xml";
+    private const string FeedUrl = "https://spacestation14.io/post/index.xml";
 
     private bool _startedPullingNews;
     private bool _newsPulled;
