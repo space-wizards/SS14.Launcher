@@ -42,6 +42,11 @@ public record struct ServerFilter(ServerFilterCategory Category, string Data)
     public const string DataTrue = "true";
 
     public const string DataFalse = "false";
+
+    public static readonly ServerFilter PlayerCountHideFull = new(ServerFilterCategory.PlayerCount, "hide_full");
+    public static readonly ServerFilter PlayerCountHideEmpty = new(ServerFilterCategory.PlayerCount, "hide_empty");
+    public static readonly ServerFilter PlayerCountMax = new(ServerFilterCategory.PlayerCount, "max");
+    public static readonly ServerFilter PlayerCountMin = new(ServerFilterCategory.PlayerCount, "min");
 }
 
 public enum ServerFilterCategory : byte
