@@ -1,5 +1,6 @@
 ﻿using System;
 using JetBrains.Annotations;
+using SS14.Launcher.Utility;
 
 namespace SS14.Launcher.Models.Data;
 
@@ -81,6 +82,18 @@ public static class CVars
     /// Whether to display override assets (trans rights).
     /// </summary>
     public static readonly CVarDef<bool> OverrideAssets = CVarDef.Create("OverrideAssets", true);
+
+    /// <summary>
+    /// Stores the minimum player count value used by the "minimum player count" filter.
+    /// </summary>
+    /// <seealso cref="ServerFilter.PlayerCountMin"/>
+    public static readonly CVarDef<int> FilterPlayerCountMinValue = CVarDef.Create("FilterPlayerCountMinValue", 0);
+
+    /// <summary>
+    /// Stores the maximum player count value used by the "maximum player count" filter.
+    /// </summary>
+    /// <seealso cref="ServerFilter.PlayerCountMax"/>
+    public static readonly CVarDef<int> FilterPlayerCountMaxValue = CVarDef.Create("FilterPlayerCountMaxValue", 0);
 }
 
 /// <summary>

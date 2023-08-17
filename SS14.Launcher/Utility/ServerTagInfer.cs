@@ -48,7 +48,7 @@ public static partial class ServerTagInfer
         // Infer 18+
         if (!currentTags.Contains(Tags.TagEighteenPlus))
         {
-            if (tagLikes.Contains("18+") || tagLikes.Contains("+18"))
+            if (tagLikes.Contains("18+") || tagLikes.Contains("+18") || tagLikes.Contains("18"))
                 addedTags.Add(Tags.TagEighteenPlus);
         }
 

@@ -232,17 +232,8 @@ public sealed class DataManager : ReactiveObject
 
         Log.Debug("Did migrations in {MigrationTime}", sw.Elapsed);
 
-        if (connection.ExecuteScalar<bool>("SELECT COUNT(*) > 0 FROM Config"))
-        {
-            // Load from SQLite DB.
-            LoadSqliteConfig(connection);
-        }
-        else
-        {
-            // SQLite DB empty, fresh launcher!
-            // Add an unused config key so the above count check is always correct.
-            AddDbCommand(con => con.Execute("INSERT INTO Config VALUES ('Populated', TRUE)"));
-        }
+        // Load from SQLite DB.
+        LoadSqliteConfig(connection);
 
         if (GetCVar(CVars.Fingerprint) == "")
         {

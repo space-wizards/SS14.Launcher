@@ -68,6 +68,9 @@ public class ServerStatusData : ObservableObject, IServerStatusData
         set => SetProperty(ref _playerCount, value);
     }
 
+    /// <summary>
+    /// 0 means there's no maximum.
+    /// </summary>
     public int SoftMaxPlayerCount
     {
         get => _softMaxPlayerCount;

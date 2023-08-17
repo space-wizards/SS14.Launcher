@@ -1,0 +1,23 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:mainWindowTabs="clr-namespace:SS14.Launcher.ViewModels.MainWindowTabs"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             Width="300"
+             x:Class="SS14.Launcher.Views.MainWindowTabs.ServerFilterCounterView">
+  <Design.DataContext>
+    <mainWindowTabs:ServerFilterCounterViewModel />
+  </Design.DataContext>
+
+  <Grid ColumnDefinitions="Auto,*">
+    <CheckBox Content="{Binding ShortName}" Classes="ServerFilter" IsChecked="{Binding Selected}">
+      <ToolTip.Tip>
+        <TextBlock Text="{Binding Name}" />
+      </ToolTip.Tip>
+    </CheckBox>
+    <NumericUpDown Grid.Column="1" MinWidth="50" HorizontalAlignment="Left"
+                   Value="{Binding CounterValue}" IsEnabled="{Binding Selected}"
+                   Maximum="999" Minimum="0" />
+  </Grid>
+</UserControl>
