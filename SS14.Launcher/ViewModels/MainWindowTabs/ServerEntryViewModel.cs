@@ -4,6 +4,7 @@ using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Messaging;
 using SS14.Launcher.Models.Data;
 using SS14.Launcher.Models.ServerStatus;
+using static SS14.Launcher.Utility.HubUtility;
 
 namespace SS14.Launcher.ViewModels.MainWindowTabs;
 
@@ -131,6 +132,20 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
     }
 
     public ServerStatusData CacheData => _cacheData;
+
+    public string? FetchedFrom
+    {
+        get
+        {
+            if (_cfg.Hubs.Count > 1)
+            {
+                return _cacheData.HubAddress == null ? null : $"Fetched from {GetHubShortName(_cacheData.HubAddress)}";
+            }
+
+            return null;
+        }
+    }
+    public bool ShowFetchedFrom => _cfg.Hubs.Count > 1 && !ViewedInFavoritesPane;
 
     public void FavoriteButtonPressed()
     {

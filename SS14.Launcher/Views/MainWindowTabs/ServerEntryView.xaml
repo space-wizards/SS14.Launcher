@@ -27,8 +27,19 @@
         </DockPanel>
       </Expander.Header>
       <DockPanel Margin="4">
-        <TextBlock DockPanel.Dock="Top" Name="Description" Margin="4,0,4,16"
-                   Text="{Binding Description}" TextWrapping="Wrap" />
+        <TextBlock DockPanel.Dock="Top"
+                   Name="Description" Margin="4,0,4,4"
+                   Text="{Binding Description}"
+                   TextWrapping="Wrap" />
+
+        <TextBlock DockPanel.Dock="Top"
+                   Margin="4,0,4,4"
+                   TextWrapping="Wrap"
+                   Foreground="{DynamicResource ThemeSubTextBrush}"
+                   Text="{Binding FetchedFrom}"
+                   IsVisible="{Binding ShowFetchedFrom}" />
+
+        <Control DockPanel.Dock="Top" Height="8" />
 
         <Grid DockPanel.Dock="Right" VerticalAlignment="Bottom" RowDefinitions="Auto,Auto">
           <!-- Favorite add/remove button -->

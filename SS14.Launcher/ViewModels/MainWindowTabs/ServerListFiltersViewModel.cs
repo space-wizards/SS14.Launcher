@@ -9,6 +9,7 @@ using SS14.Launcher.Models.Data;
 using SS14.Launcher.Models.ServerStatus;
 using SS14.Launcher.Utility;
 using static SS14.Launcher.Api.ServerApi;
+using static SS14.Launcher.Utility.HubUtility;
 
 namespace SS14.Launcher.ViewModels.MainWindowTabs;
 
@@ -159,11 +160,7 @@ public sealed partial class ServerListFiltersViewModel : ObservableObject
                 if (!alreadyAdded.Add(filter))
                     continue;
 
-                var shortName = Uri.TryCreate(hub, UriKind.Absolute, out var uri)
-                    ? uri.Host
-                    : hub;
-
-                var vm = new ServerFilterViewModel(hub, shortName, filter, this);
+                var vm = new ServerFilterViewModel(hub, GetHubShortName(hub), filter, this);
                 filtersHub.Add(vm);
             }
         }

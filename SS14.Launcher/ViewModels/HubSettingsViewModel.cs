@@ -13,7 +13,7 @@ public class HubSettingsViewModel : ViewModelBase
 {
     public ObservableCollection<HubViewModel> HubList { get; set; } = new();
 
-    private readonly DataManager _dataManager =  Locator.Current.GetRequiredService<DataManager>();
+    private readonly DataManager _dataManager = Locator.Current.GetRequiredService<DataManager>();
 
     public void Save()
     {
