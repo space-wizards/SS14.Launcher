@@ -38,7 +38,9 @@ public class HubSettingsViewModel : ViewModelBase
     public void Populate()
     {
         HubList.AddRange(_dataManager.Hubs.OrderBy(h => h.Priority)
-            .Select(h => new HubViewModel(h.Address.AbsoluteUri, this)));
+            .Select(h => new HubViewModel(h.Address.AbsoluteUri,
+                this,
+                !ConfigConstants.DefaultHubUrls.Contains(h.Address.AbsoluteUri))));
     }
 
     public void Add()
@@ -87,11 +89,13 @@ public class HubViewModel : ViewModelBase
 {
     public string Address { get; set; }
     private readonly HubSettingsViewModel _parentVm;
+    private bool RemoveButtonEnabled { get; }
 
-    public HubViewModel(string address, HubSettingsViewModel parentVm)
+    public HubViewModel(string address, HubSettingsViewModel parentVm, bool removeButtonEnabled = true)
     {
         Address = address;
         _parentVm = parentVm;
+        RemoveButtonEnabled = removeButtonEnabled;
     }
 
     public void Remove()
