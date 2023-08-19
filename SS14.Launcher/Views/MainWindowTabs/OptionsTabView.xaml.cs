@@ -35,7 +35,7 @@ public partial class OptionsTabView : UserControl
 
     public async void ClearServerContentPressed(object? _1, RoutedEventArgs _2)
     {
-        (DataContext as OptionsTabViewModel)!.ClearServerContent();
+        ((OptionsTabViewModel)DataContext)!.ClearServerContent();
         await ClearServerContentButton.DisplayDoneMessage();
     }
 }
