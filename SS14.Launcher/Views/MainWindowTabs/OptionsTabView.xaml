@@ -13,10 +13,10 @@
   <ScrollViewer HorizontalScrollBarVisibility="Disabled">
     <DockPanel>
       <Button Content="*flip" DockPanel.Dock="Bottom" HorizontalAlignment="Right" Name="Flip" />
-      <Button Content="Clear installed engines" DockPanel.Dock="Bottom" HorizontalAlignment="Left"
-              Command="{Binding ClearEngines}"/>
-      <Button Content="Clear installed server content" DockPanel.Dock="Bottom" HorizontalAlignment="Left"
-              Command="{Binding ClearServerContent}"/>
+      <Button Name="ClearEnginesButton" Content="Clear installed engines" DockPanel.Dock="Bottom"
+              HorizontalAlignment="Left" Click="ClearEnginesPressed" />
+      <Button Name="ClearServerContentButton" Content="Clear installed server content" DockPanel.Dock="Bottom"
+              HorizontalAlignment="Left" Click="ClearServerContentPressed" />
       <Button Content="Open log directory" DockPanel.Dock="Bottom" HorizontalAlignment="Left"
               Command="{Binding OpenLogDirectory}"/>
 

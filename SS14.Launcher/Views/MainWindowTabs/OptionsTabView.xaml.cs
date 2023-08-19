@@ -1,8 +1,10 @@
 using System;
 using Avalonia.Controls;
-using Avalonia.Markup.Xaml;
+using Avalonia.Interactivity;
 using Avalonia.Threading;
 using ReactiveUI;
+using SS14.Launcher.Utility;
+using SS14.Launcher.ViewModels.MainWindowTabs;
 
 namespace SS14.Launcher.Views.MainWindowTabs;
 
@@ -23,5 +25,17 @@ public partial class OptionsTabView : UserControl
 
             DispatcherTimer.RunOnce(() => { window.Classes.Remove("DoAFlip"); }, TimeSpan.FromSeconds(1));
         });
+    }
+
+    public async void ClearEnginesPressed(object? _1, RoutedEventArgs _2)
+    {
+        (DataContext as OptionsTabViewModel)!.ClearEngines();
+        await ClearEnginesButton.DisplayDoneMessage();
+    }
+
+    public async void ClearServerContentPressed(object? _1, RoutedEventArgs _2)
+    {
+        (DataContext as OptionsTabViewModel)!.ClearServerContent();
+        await ClearServerContentButton.DisplayDoneMessage();
     }
 }
