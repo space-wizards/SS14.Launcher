@@ -29,7 +29,7 @@ public partial class OptionsTabView : UserControl
 
     public async void ClearEnginesPressed(object? _1, RoutedEventArgs _2)
     {
-        (DataContext as OptionsTabViewModel)!.ClearEngines();
+        ((OptionsTabViewModel)DataContext)!.ClearEngines();
         await ClearEnginesButton.DisplayDoneMessage();
     }
 
