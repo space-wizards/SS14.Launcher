@@ -29,13 +29,13 @@ public partial class OptionsTabView : UserControl
 
     public async void ClearEnginesPressed(object? _1, RoutedEventArgs _2)
     {
-        ((OptionsTabViewModel)DataContext)!.ClearEngines();
+        ((OptionsTabViewModel)DataContext!).ClearEngines();
         await ClearEnginesButton.DisplayDoneMessage();
     }
 
     public async void ClearServerContentPressed(object? _1, RoutedEventArgs _2)
     {
-        ((OptionsTabViewModel)DataContext)!.ClearServerContent();
+        ((OptionsTabViewModel)DataContext!).ClearServerContent();
         await ClearServerContentButton.DisplayDoneMessage();
     }
 }
