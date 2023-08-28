@@ -1,5 +1,5 @@
 CREATE TABLE Hub (
-    Address TEXT NOT NULL UNIQUE PRIMARY KEY,
+    Address TEXT NOT NULL PRIMARY KEY,
     Priority INTEGER NOT NULL UNIQUE, -- 0 is highest priority
 
     -- Address can't be empty
