@@ -90,12 +90,20 @@ public sealed class ServerListCache : ReactiveObject, IServerSource
             // Process responses
             foreach (var (request, hub) in requests.OrderBy(x => x.Hub.Priority))
             {
-                if (request.IsFaulted)
+                if (!request.IsCompletedSuccessfully)
                 {
-                    // request.Exception is non-null, see https://learn.microsoft.com/en-us/dotnet/api/system.threading.tasks.task.isfaulted?view=net-7.0#remarks
-                    foreach (var ex in request.Exception!.InnerExceptions)
+                    if (request.IsFaulted)
                     {
-                        Log.Warning("Request to hub {HubAddress} failed: {Message}", hub.Address, ex.Message);
+                        // request.Exception is non-null, see https://learn.microsoft.com/en-us/dotnet/api/system.threading.tasks.task.isfaulted?view=net-7.0#remarks
+                        foreach (var ex in request.Exception!.InnerExceptions)
+                        {
+                            Log.Warning("Request to hub {HubAddress} failed: {Message}", hub.Address, ex.Message);
+                        }
+                    }
+                    else if (request.IsCanceled)
+                    {
+                        Log.Warning("Request to hub {HubAddress} failed: canceled", hub.Address);
+
                     }
 
                     allSucceeded = false;
