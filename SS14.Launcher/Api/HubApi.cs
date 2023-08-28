@@ -35,7 +35,5 @@ public sealed class HubApi
     }
 
     public sealed record ServerListEntry(string Address, ServerApi.ServerStatus StatusData);
-
-    public sealed record HubServerListEntry(string Address, string HubAddress, ServerApi.ServerStatus StatusData);
 }
 

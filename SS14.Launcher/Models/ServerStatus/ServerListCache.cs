@@ -220,3 +220,4 @@ public enum RefreshListStatus
     Error,
 }
 
+public sealed record HubServerListEntry(string Address, string HubAddress, ServerApi.ServerStatus StatusData);
