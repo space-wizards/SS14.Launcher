@@ -75,7 +75,7 @@ take precedence.
                       Width="30"
                       Padding="8 0 0 0"
                       Command="{Binding Remove}"
-                      IsEnabled="{Binding RemoveButtonEnabled}">
+                      IsEnabled="{Binding IsNotDefault}">
                 <ToolTip.Tip>Remove hub</ToolTip.Tip>
                 <Path Fill="{DynamicResource ThemeForegroundBrush}"
                       HorizontalAlignment="Center"
@@ -114,7 +114,10 @@ take precedence.
                   </Path.RenderTransform>
                 </Path>
               </Button>
-              <TextBox Text="{Binding Address}" PropertyChanged="HubTextChanged" Watermark="https://example.com/hub/" />
+              <TextBox Text="{Binding Address}"
+                       PropertyChanged="HubTextChanged"
+                       Watermark="https://example.com/hub/"
+                       IsEnabled="{Binding IsNotDefault}" />
             </DockPanel>
           </DataTemplate>
         </ItemsControl.ItemTemplate>

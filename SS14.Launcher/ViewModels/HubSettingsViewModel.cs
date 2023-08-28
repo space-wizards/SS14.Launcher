@@ -89,13 +89,13 @@ public class HubViewModel : ViewModelBase
 {
     public string Address { get; set; }
     private readonly HubSettingsViewModel _parentVm;
-    private bool RemoveButtonEnabled { get; }
+    private bool IsNotDefault { get; }
 
-    public HubViewModel(string address, HubSettingsViewModel parentVm, bool removeButtonEnabled = true)
+    public HubViewModel(string address, HubSettingsViewModel parentVm, bool isNotDefault = true)
     {
         Address = address;
         _parentVm = parentVm;
-        RemoveButtonEnabled = removeButtonEnabled;
+        IsNotDefault = isNotDefault;
     }
 
     public void Remove()
