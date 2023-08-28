@@ -105,6 +105,8 @@ public sealed partial class ServerListFiltersViewModel : ObservableObject
             {
                 if (Tags.TryRegion(tag, out var region))
                 {
+                    region = region.ToLowerInvariant();
+
                     if (!RegionNamesEnglish.TryGetValue(region, out var name))
                         continue;
 
@@ -120,7 +122,7 @@ public sealed partial class ServerListFiltersViewModel : ObservableObject
                 else if (Tags.TryLanguage(tag, out var language))
                 {
                     // Don't use anything except the primary tag for now.
-                    var primaryTag = PrimaryLanguageTag(language);
+                    var primaryTag = PrimaryLanguageTag(language).ToLowerInvariant();
                     var filter = new ServerFilter(ServerFilterCategory.Language, primaryTag);
                     if (!alreadyAdded.Add(filter))
                         continue;
@@ -142,6 +144,8 @@ public sealed partial class ServerListFiltersViewModel : ObservableObject
                 }
                 else if (Tags.TryRolePlay(tag, out var rolePlay))
                 {
+                    rolePlay = rolePlay.ToLowerInvariant();
+
                     if (!RolePlayNames.TryGetValue(rolePlay, out var rpName))
                         continue;
 

@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Text.Json.Serialization;
 
 namespace SS14.Launcher.Api;
@@ -75,7 +76,7 @@ public static class ServerApi
 
         public static bool TryTagPrefix(string tag, string prefix, [NotNullWhen(true)] out string? value)
         {
-            if (!tag.StartsWith(prefix))
+            if (!tag.StartsWith(prefix, StringComparison.OrdinalIgnoreCase))
             {
                 value = null;
                 return false;

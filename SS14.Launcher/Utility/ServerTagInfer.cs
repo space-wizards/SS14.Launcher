@@ -33,7 +33,7 @@ public static partial class ServerTagInfer
 
         // Infer language tags for [EN] and [RU] if there's no language tags.
         // Not adding any other languages, advertise it properly with the API.
-        if (!currentTags.Any(t => t.StartsWith(Tags.TagLanguage)))
+        if (!currentTags.Any(t => t.StartsWith(Tags.TagLanguage, StringComparison.OrdinalIgnoreCase)))
         {
             if (tagLikes.Contains("en"))
             {
@@ -53,7 +53,7 @@ public static partial class ServerTagInfer
         }
 
         // Infer NRP/LRP/MRP/HRP if no RP tags.
-        if (!currentTags.Any(t => t.StartsWith(Tags.TagRolePlay)))
+        if (!currentTags.Any(t => t.StartsWith(Tags.TagRolePlay, StringComparison.OrdinalIgnoreCase)))
         {
             if (tagLikes.Contains("nrp"))
                 addedTags.Add(Tags.TagRolePlay + Tags.RolePlayNone);
