@@ -47,8 +47,8 @@
           <WrapPanel>
             <mwtv:ServerFilterCounterView DataContext="{Binding FilterPlayerCountMinimum}" />
             <mwtv:ServerFilterCounterView DataContext="{Binding FilterPlayerCountMaximum}" />
-            <mwtv:ServerFilterView DataContext="{Binding FilterPlayerCountHideEmpty}" />
-            <mwtv:ServerFilterView DataContext="{Binding FilterPlayerCountHideFull}" />
+            <mwtv:ServerFilterView Width="150" DataContext="{Binding FilterPlayerCountHideEmpty}" />
+            <mwtv:ServerFilterView Width="150" DataContext="{Binding FilterPlayerCountHideFull}" />
           </WrapPanel>
         </DockPanel>
         <DockPanel Classes="ServerFilterGroup">

@@ -11,7 +11,7 @@
   </Design.DataContext>
 
   <Grid ColumnDefinitions="Auto,*">
-    <CheckBox Content="{Binding ShortName}" Classes="ServerFilter" IsChecked="{Binding Selected}">
+    <CheckBox Content="{Binding ShortName}" Width="150" IsChecked="{Binding Selected}">
       <ToolTip.Tip>
         <TextBlock Text="{Binding Name}" />
       </ToolTip.Tip>
