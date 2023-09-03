@@ -113,16 +113,13 @@ public sealed class ServerListCache : ReactiveObject, IServerSource
                 foreach (var entry in request.Result)
                 {
                     // Don't add server if it was already provided by another hub with higher priority
-                    if (entries.FirstOrDefault(e => e.Address == entry.Address) is not { } existingEntry)
-                    {
-                        entries.Add(new HubServerListEntry(entry.Address, hub.Address.AbsoluteUri, entry.StatusData));
-                    }
-                    else
+                    var maybeNewEntry = new HubServerListEntry(entry.Address, hub.Address.AbsoluteUri, entry.StatusData);
+                    if (!entries.Add(maybeNewEntry))
                     {
                         Log.Debug("Not adding {Entry} from {ThisHub} because it was already provided by {PreviousHub}",
                             entry.Address,
                             hub.Address.AbsoluteUri,
-                            existingEntry.HubAddress);
+                            maybeNewEntry.HubAddress);
                     }
                 }
             }
