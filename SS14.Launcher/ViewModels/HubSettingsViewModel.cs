@@ -68,7 +68,9 @@ public class HubSettingsViewModel : ViewModelBase
     public static bool IsValidHubUri(string url)
     {
         return Uri.TryCreate(url, UriKind.Absolute, out var uri)
-               && (uri.Scheme == Uri.UriSchemeHttp || uri.Scheme == Uri.UriSchemeHttps);
+               && (uri.Scheme == Uri.UriSchemeHttp || uri.Scheme == Uri.UriSchemeHttps)
+               && string.IsNullOrEmpty(uri.Fragment)
+               && string.IsNullOrEmpty(uri.Query);
     }
 
     public static string NormalizeHubUri(string address)
