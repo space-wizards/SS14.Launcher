@@ -535,28 +535,26 @@ public class Connector : ReactiveObject
 
     private static async void PipeOutput(Process process, Stream targetStdout, Stream targetStderr)
     {
-        await using var writerOut = new StreamWriter(targetStdout) {AutoFlush = true};
-        await using var writerErr = new StreamWriter(targetStderr) {AutoFlush = true};
-
-        async Task DoPipe(TextReader reader, TextWriter writer)
+        async Task DoPipe(StreamReader reader, Stream writer)
         {
+            var readStream = reader.BaseStream;
+            var buf = new byte[4096];
             while (true)
             {
-                var read = await reader.ReadLineAsync();
-
-                if (read == null)
+                var read = await readStream.ReadAsync(buf);
+                if (read == 0)
                 {
                     Log.Debug("EOF, ending pipe logging for {pid}.", process.Id);
                     return;
                 }
 
-                await writer.WriteLineAsync(read);
+                await writer.WriteAsync(buf.AsMemory(0, read));
             }
         }
 
         await Task.WhenAll(
-            DoPipe(process.StandardOutput, writerOut),
-            DoPipe(process.StandardError, writerErr));
+            DoPipe(process.StandardOutput, targetStdout),
+            DoPipe(process.StandardError, targetStderr));
     }
 
     private static void PipeLogOutput(Process process)
