@@ -5,7 +5,7 @@
 }:
 
 let
-  space-station-14-launcher = callPackage ./package.nix { };
+  launcher = callPackage ./package.nix { };
 
   # Workaround for hardcoded soundfont paths in downloaded engine assemblies.
   soundfont-fluid-fixed = runCommand "soundfont-fluid-fixed" { } ''
@@ -14,10 +14,10 @@ let
   '';
 in
 buildFHSEnv rec {
-  name = "space-station-14-launcher-wrapped";
+  name = "${launcher.pname}-wrapped-${launcher.version}";
 
   targetPkgs = pkgs: [
-    space-station-14-launcher
+    launcher
     soundfont-fluid-fixed
   ];
 
@@ -25,16 +25,16 @@ buildFHSEnv rec {
 
   extraInstallCommands = ''
     mkdir -p $out/share/applications
-    ln -s ${space-station-14-launcher}/share/icons $out/share
-    cp ${space-station-14-launcher}/share/applications/space-station-14-launcher.desktop "$out/share/applications"
+    ln -s ${launcher}/share/icons $out/share
+    cp ${launcher}/share/applications/space-station-14-launcher.desktop "$out/share/applications"
     substituteInPlace "$out/share/applications/space-station-14-launcher.desktop" \
-        --replace ${space-station-14-launcher.meta.mainProgram} ${meta.mainProgram}
+        --replace ${launcher.meta.mainProgram} ${meta.mainProgram}
   '';
 
-  passthru = space-station-14-launcher.passthru // {
-    unwrapped = space-station-14-launcher;
+  passthru = launcher.passthru // {
+    unwrapped = launcher;
   };
-  meta = space-station-14-launcher.meta // {
+  meta = launcher.meta // {
     mainProgram = name;
   };
 }
