@@ -130,6 +130,8 @@ public sealed class DataManager : ReactiveObject
     public ICollection<ServerFilter> Filters { get; }
     public ICollection<Hub> Hubs { get; }
 
+    public bool HasCustomHubs => Hubs.Count > 0;
+
     public bool ActuallyMultiAccounts =>
 #if DEBUG
         true;

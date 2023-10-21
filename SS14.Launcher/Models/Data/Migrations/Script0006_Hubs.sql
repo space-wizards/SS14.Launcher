@@ -7,6 +7,3 @@ CREATE TABLE Hub (
     -- Ensure priority is >= 0
     CONSTRAINT PriorityNotNegative CHECK (Priority >= 0)
 );
-
--- Set Space Wizards hub as default
-INSERT INTO Hub (Address, Priority) VALUES ('https://central.spacestation14.io/hub/', 0);

@@ -11,6 +11,7 @@ namespace SS14.Launcher.ViewModels;
 
 public class HubSettingsViewModel : ViewModelBase
 {
+    public Uri[] DefaultHubs => ConfigConstants.DefaultHubUrls;
     public ObservableCollection<HubViewModel> HubList { get; set; } = new();
 
     private readonly DataManager _dataManager = Locator.Current.GetRequiredService<DataManager>();
@@ -38,9 +39,7 @@ public class HubSettingsViewModel : ViewModelBase
     public void Populate()
     {
         HubList.AddRange(_dataManager.Hubs.OrderBy(h => h.Priority)
-            .Select(h => new HubViewModel(h.Address.AbsoluteUri,
-                this,
-                !ConfigConstants.DefaultHubUrls.Contains(h.Address.AbsoluteUri))));
+            .Select(h => new HubViewModel(h.Address.AbsoluteUri, this, true)));
     }
 
     public void Add()
@@ -51,15 +50,13 @@ public class HubSettingsViewModel : ViewModelBase
     private void Reset()
     {
         HubList.Clear();
-        foreach (var url in ConfigConstants.DefaultHubUrls)
-        {
-            HubList.Add(new HubViewModel(url, this));
-        }
     }
 
     public List<string> GetDupes()
     {
-        return HubList.GroupBy(h => NormalizeHubUri(h.Address))
+        return DefaultHubs
+            .Select(h => h.AbsoluteUri)
+            .Concat(HubList.Select(h => NormalizeHubUri(h.Address))).GroupBy(h => h)
             .Where(group => group.Count() > 1)
             .Select(x => x.Key)
             .ToList();

@@ -26,11 +26,6 @@
                    Text="You can manage your account settings, such as changing email or password, through our website."
                    Margin="8" />
 
-        <Button Click="OpenHubSettings" Content="Hub Settings" Margin="4" HorizontalAlignment="Left" />
-        <TextBlock VerticalAlignment="Center" TextWrapping="Wrap"
-                   Text="Change what hub server or servers you would like to use to fetch the server list."
-                   Margin="8" />
-
         <CheckBox VerticalAlignment="Center" Margin="4" IsChecked="{Binding CompatMode}">Compatibility Mode</CheckBox>
         <TextBlock VerticalAlignment="Center" TextWrapping="Wrap"
                    Text="This uses OpenGL ES 2 (via ANGLE if necessary), which is less likely to suffer from driver bugs. Try this if you are experiencing graphical issues or crashes."
@@ -64,6 +59,11 @@
         <CheckBox VerticalAlignment="Center" IsVisible="{Binding !HideDisableSigning}" Margin="4" IsChecked="{Binding DisableSigning}">Disable Engine Signature Checks</CheckBox>
         <TextBlock VerticalAlignment="Center" IsVisible="{Binding !HideDisableSigning}" TextWrapping="Wrap"
                    Text="[DEV ONLY] Disables verification of engine signatures. DO NOT ENABLE UNLESS YOU KNOW EXACTLY WHAT YOU'RE DOING."
+                   Margin="8" />
+
+        <Button Click="OpenHubSettings" Content="Hub Settings" Margin="4" HorizontalAlignment="Left" />
+        <TextBlock VerticalAlignment="Center" TextWrapping="Wrap"
+                   Text="Change what hub server or servers you would like to use to fetch the server list."
                    Margin="8" />
       </StackPanel>
     </DockPanel>

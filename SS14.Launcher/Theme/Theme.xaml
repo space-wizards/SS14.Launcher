@@ -14,6 +14,12 @@
     <Setter Property="FontSize" Value="20" />
   </Style>
 
+  <Style Selector="TextBlock.NanoHeadingSmall">
+    <Setter Property="Foreground" Value="{DynamicResource ThemeNanoGoldBrush}" />
+    <Setter Property="FontWeight" Value="Bold" />
+    <Setter Property="FontSize" Value="15" />
+  </Style>
+
   <Style Selector="TextBlock.SubText">
     <Setter Property="Foreground" Value="{DynamicResource ThemeSubTextBrush}" />
   </Style>

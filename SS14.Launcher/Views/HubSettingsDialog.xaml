@@ -27,6 +27,13 @@
     <Style Selector="Button.InfoButton:pointerover">
       <Setter Property="Background" Value="{DynamicResource ThemeControlHighBrush}" />
     </Style>
+    <Style Selector="ItemsControl.Spaced">
+      <Setter Property="ItemsPanel">
+        <ItemsPanelTemplate>
+          <StackPanel Spacing="2" />
+        </ItemsPanelTemplate>
+      </Setter>
+    </Style>
   </Window.Styles>
   <DockPanel>
     <DockPanel Height="30" Margin="0 4 0 0" DockPanel.Dock="Bottom" LastChildFill="False">
@@ -49,79 +56,86 @@
       </Button>
       <Button DockPanel.Dock="Left" Content="?" Classes="InfoButton OpenLeft">
         <ToolTip.Tip>
-Here you can add extra hubs to fetch game servers from.
-You should only add hubs that you trust, as they can 'spoof' game servers
-from other hubs. The order of the hubs matters; if two hubs advertise the
-same game server the hub with the higher priority (higher in the list) will
-take precedence.
+          Here you can add extra hubs to fetch game servers from.
+          You should only add hubs that you trust, as they can 'spoof' game servers
+          from other hubs. The order of the hubs matters; if two hubs advertise the
+          same game server the hub with the higher priority (higher in the list) will
+          take precedence.
         </ToolTip.Tip>
         <ToolTip.ShowDelay>0</ToolTip.ShowDelay>
       </Button>
-      <TextBlock DockPanel.Dock="Left" Text="" Name="Warning" Margin="4 0 0 0" Height="30" Foreground="Gray" FontSize="15" Padding="4" />
+      <TextBlock DockPanel.Dock="Left" Text="" Name="Warning" Margin="4 0 0 0" Height="30" Foreground="Gray"
+                 FontSize="15" Padding="4" />
     </DockPanel>
     <ScrollViewer DockPanel.Dock="Top">
-      <ItemsControl Items="{Binding HubList}" Name="Hubs">
-        <ItemsControl.ItemsPanel>
-          <ItemsPanelTemplate>
-            <StackPanel Spacing="2" />
-          </ItemsPanelTemplate>
-        </ItemsControl.ItemsPanel>
-        <ItemsControl.ItemTemplate>
-          <DataTemplate>
-            <DockPanel>
-              <Button DockPanel.Dock="Right"
-                      Margin="1 0 0 0"
-                      Classes="OpenLeft"
-                      Width="30"
-                      Padding="8 0 0 0"
-                      Command="{Binding Remove}"
-                      IsEnabled="{Binding IsNotDefault}">
-                <ToolTip.Tip>Remove hub</ToolTip.Tip>
-                <Path Fill="{DynamicResource ThemeForegroundBrush}"
-                      HorizontalAlignment="Center"
-                      VerticalAlignment="Center"
-                      Data="M 0 2 L 2 0 L 6 4 L 10 0 L 12 2 L 8 6 L 12 10 L 10 12 L 6 8 L 2 12 L 0 10 L 4 6 L 0 2 Z" />
-              </Button>
-              <Button DockPanel.Dock="Right"
-                      Margin="1 0"
-                      Classes="OpenBoth"
-                      Width="30"
-                      Name="UpButton"
-                      Command="{Binding Up}">
-                <ToolTip.Tip>Increase priority</ToolTip.Tip>
-                <Path Fill="{DynamicResource ThemeForegroundBrush}"
-                      HorizontalAlignment="Center"
-                      VerticalAlignment="Center"
-                      Data="M 0 0 L 8 8 L 0 16 Z M 30 0">
-                  <Path.RenderTransform>
-                    <RotateTransform Angle="-90" />
-                  </Path.RenderTransform>
-                </Path>
-              </Button>
-              <Button DockPanel.Dock="Right"
-                      Margin="4 0 1 0"
-                      Classes="OpenRight"
-                      Width="30"
-                      Name="DownButton"
-                      Command="{Binding Down}">
-                <ToolTip.Tip>Decrease priority</ToolTip.Tip>
-                <Path Fill="{DynamicResource ThemeForegroundBrush}"
-                      HorizontalAlignment="Center"
-                      VerticalAlignment="Center"
-                      Data="M 0 0 L 8 8 L 0 16 Z M 30 0">
-                  <Path.RenderTransform>
-                    <RotateTransform Angle="90" />
-                  </Path.RenderTransform>
-                </Path>
-              </Button>
-              <TextBox Text="{Binding Address}"
-                       PropertyChanged="HubTextChanged"
-                       Watermark="https://example.com/hub/"
-                       IsEnabled="{Binding IsNotDefault}" />
-            </DockPanel>
-          </DataTemplate>
-        </ItemsControl.ItemTemplate>
-      </ItemsControl>
+      <StackPanel Spacing="2">
+        <TextBlock DockPanel.Dock="Left" Text="Default" Classes="NanoHeadingSmall" />
+        <ItemsControl Items="{Binding DefaultHubs}" Classes="Spaced">
+          <ItemsControl.ItemTemplate>
+            <DataTemplate>
+              <TextBox Text="{Binding}" IsEnabled="False" />
+            </DataTemplate>
+          </ItemsControl.ItemTemplate>
+        </ItemsControl>
+        <TextBlock DockPanel.Dock="Left" Text="Custom" Classes="NanoHeadingSmall" />
+        <ItemsControl Items="{Binding HubList}" Name="Hubs" Classes="Spaced">
+          <ItemsControl.ItemTemplate>
+            <DataTemplate>
+              <DockPanel>
+                <Button DockPanel.Dock="Right"
+                        Margin="1 0 0 0"
+                        Classes="OpenLeft"
+                        Width="30"
+                        Padding="8 0 0 0"
+                        Command="{Binding Remove}"
+                        IsEnabled="{Binding IsNotDefault}">
+                  <ToolTip.Tip>Remove hub</ToolTip.Tip>
+                  <Path Fill="{DynamicResource ThemeForegroundBrush}"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Data="M 0 2 L 2 0 L 6 4 L 10 0 L 12 2 L 8 6 L 12 10 L 10 12 L 6 8 L 2 12 L 0 10 L 4 6 L 0 2 Z" />
+                </Button>
+                <Button DockPanel.Dock="Right"
+                        Margin="1 0"
+                        Classes="OpenBoth"
+                        Width="30"
+                        Name="UpButton"
+                        Command="{Binding Up}">
+                  <ToolTip.Tip>Increase priority</ToolTip.Tip>
+                  <Path Fill="{DynamicResource ThemeForegroundBrush}"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Data="M 0 0 L 8 8 L 0 16 Z M 30 0">
+                    <Path.RenderTransform>
+                      <RotateTransform Angle="-90" />
+                    </Path.RenderTransform>
+                  </Path>
+                </Button>
+                <Button DockPanel.Dock="Right"
+                        Margin="4 0 1 0"
+                        Classes="OpenRight"
+                        Width="30"
+                        Name="DownButton"
+                        Command="{Binding Down}">
+                  <ToolTip.Tip>Decrease priority</ToolTip.Tip>
+                  <Path Fill="{DynamicResource ThemeForegroundBrush}"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Data="M 0 0 L 8 8 L 0 16 Z M 30 0">
+                    <Path.RenderTransform>
+                      <RotateTransform Angle="90" />
+                    </Path.RenderTransform>
+                  </Path>
+                </Button>
+                <TextBox Text="{Binding Address}"
+                         PropertyChanged="HubTextChanged"
+                         Watermark="https://example.com/hub/"
+                         IsEnabled="{Binding IsNotDefault}" />
+              </DockPanel>
+            </DataTemplate>
+          </ItemsControl.ItemTemplate>
+        </ItemsControl>
+      </StackPanel>
     </ScrollViewer>
   </DockPanel>
 </Window>

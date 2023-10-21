@@ -137,7 +137,7 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
     {
         get
         {
-            if (_cfg.Hubs.Count > 1)
+            if (_cfg.HasCustomHubs)
             {
                 return _cacheData.HubAddress == null ? null : $"Fetched from {GetHubShortName(_cacheData.HubAddress)}";
             }
@@ -145,7 +145,7 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
             return null;
         }
     }
-    public bool ShowFetchedFrom => _cfg.Hubs.Count > 1 && !ViewedInFavoritesPane;
+    public bool ShowFetchedFrom => _cfg.HasCustomHubs && !ViewedInFavoritesPane;
 
     public void FavoriteButtonPressed()
     {

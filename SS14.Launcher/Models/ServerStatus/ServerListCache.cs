@@ -68,13 +68,18 @@ public sealed class ServerListCache : ReactiveObject, IServerSource
         try
         {
             var entries = new HashSet<HubServerListEntry>();
-            var requests = new List<(Task<ServerListEntry[]> Request, Hub Hub)>();
+            var requests = new List<(Task<ServerListEntry[]> Request, Uri Hub)>();
             var allSucceeded = true;
 
             // Queue requests
-            foreach (var hub in _dataManager.Hubs)
+            foreach (var hub in ConfigConstants.DefaultHubUrls)
             {
-                requests.Add((_hubApi.GetServers(hub.Address, cancel), hub));
+                requests.Add((_hubApi.GetServers(hub, cancel), hub));
+            }
+
+            foreach (var hub in _dataManager.Hubs.OrderBy(h => h.Priority))
+            {
+                requests.Add((_hubApi.GetServers(hub.Address, cancel), hub.Address));
             }
 
             // Await all requests
@@ -88,7 +93,7 @@ public sealed class ServerListCache : ReactiveObject, IServerSource
             }
 
             // Process responses
-            foreach (var (request, hub) in requests.OrderBy(x => x.Hub.Priority))
+            foreach (var (request, hub) in requests)
             {
                 if (!request.IsCompletedSuccessfully)
                 {
@@ -97,12 +102,12 @@ public sealed class ServerListCache : ReactiveObject, IServerSource
                         // request.Exception is non-null, see https://learn.microsoft.com/en-us/dotnet/api/system.threading.tasks.task.isfaulted?view=net-7.0#remarks
                         foreach (var ex in request.Exception!.InnerExceptions)
                         {
-                            Log.Warning("Request to hub {HubAddress} failed: {Message}", hub.Address, ex.Message);
+                            Log.Warning("Request to hub {HubAddress} failed: {Message}", hub, ex.Message);
                         }
                     }
                     else if (request.IsCanceled)
                     {
-                        Log.Warning("Request to hub {HubAddress} failed: canceled", hub.Address);
+                        Log.Warning("Request to hub {HubAddress} failed: canceled", hub);
 
                     }
 
@@ -113,12 +118,12 @@ public sealed class ServerListCache : ReactiveObject, IServerSource
                 foreach (var entry in request.Result)
                 {
                     // Don't add server if it was already provided by another hub with higher priority
-                    var maybeNewEntry = new HubServerListEntry(entry.Address, hub.Address.AbsoluteUri, entry.StatusData);
+                    var maybeNewEntry = new HubServerListEntry(entry.Address, hub.AbsoluteUri, entry.StatusData);
                     if (!entries.Add(maybeNewEntry))
                     {
                         Log.Debug("Not adding {Entry} from {ThisHub} because it was already provided by {PreviousHub}",
                             entry.Address,
-                            hub.Address.AbsoluteUri,
+                            hub.AbsoluteUri,
                             maybeNewEntry.HubAddress);
                     }
                 }
