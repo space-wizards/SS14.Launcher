@@ -114,9 +114,9 @@ public partial class MainWindow : Window
 
     private static string? GetDragDropFileName(IDataObject dataObject)
     {
-        if (!dataObject.Contains(DataFormats.FileNames))
+        if (!dataObject.Contains(DataFormats.Files))
             return null;
 
-        return dataObject.GetFileNames()?.SingleOrDefault();
+        return dataObject.GetFiles()?.SingleOrDefault()?.Path.AbsolutePath;
     }
 }
