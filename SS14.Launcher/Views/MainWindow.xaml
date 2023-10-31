@@ -57,7 +57,7 @@
       <Panel DockPanel.Dock="Top" Classes="GoldLineHorizontal" />
       <Grid>
         <!-- Main tabbed layout when logged in -->
-        <TabControl IsVisible="{Binding LoggedIn}" Items="{Binding Tabs}" TabStripPlacement="Bottom"
+        <TabControl IsVisible="{Binding LoggedIn}" ItemsSource="{Binding Tabs}" TabStripPlacement="Bottom"
                     SelectedIndex="{Binding SelectedIndex,Mode=TwoWay}" Margin="0 4 0 0">
           <TabControl.ItemTemplate>
             <DataTemplate DataType="mainWindowTabs:MainWindowTabViewModel">

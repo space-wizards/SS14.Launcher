@@ -70,7 +70,7 @@ take precedence.
     <ScrollViewer DockPanel.Dock="Top">
       <StackPanel Spacing="2">
         <TextBlock DockPanel.Dock="Left" Text="Default" Classes="NanoHeadingSmall" />
-        <ItemsControl Items="{Binding DefaultHubs}" Classes="Spaced">
+        <ItemsControl ItemsSource="{Binding DefaultHubs}" Classes="Spaced">
           <ItemsControl.ItemTemplate>
             <DataTemplate>
               <TextBox Text="{Binding}" IsEnabled="False" />
@@ -78,7 +78,7 @@ take precedence.
           </ItemsControl.ItemTemplate>
         </ItemsControl>
         <TextBlock DockPanel.Dock="Left" Text="Custom" Classes="NanoHeadingSmall" />
-        <ItemsControl Items="{Binding HubList}" Name="Hubs" Classes="Spaced">
+        <ItemsControl ItemsSource="{Binding HubList}" Name="Hubs" Classes="Spaced">
           <ItemsControl.ItemTemplate>
             <DataTemplate>
               <DockPanel>

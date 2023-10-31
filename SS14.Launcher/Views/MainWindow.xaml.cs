@@ -5,7 +5,6 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
-using Avalonia.Win32;
 using SS14.Launcher.ViewModels;
 using TerraFX.Interop.Windows;
 using IDataObject = Avalonia.Input.IDataObject;
@@ -21,10 +20,6 @@ public partial class MainWindow : Window
         InitializeComponent();
 
         DarkMode();
-
-#if DEBUG
-        this.AttachDevTools();
-#endif
 
         AddHandler(DragDrop.DragEnterEvent, DragEnter);
         AddHandler(DragDrop.DragLeaveEvent, DragLeave);
@@ -51,18 +46,16 @@ public partial class MainWindow : Window
 
     private unsafe void DarkMode()
     {
-        if (PlatformImpl is not WindowImpl windowImpl || Environment.OSVersion.Version.Build < 22000)
+        if (!OperatingSystem.IsWindows() || Environment.OSVersion.Version.Build < 22000)
             return;
 
-        var type = windowImpl.GetType();
-        var prop = type.GetProperty("Hwnd", BindingFlags.NonPublic | BindingFlags.Instance);
-        if (prop == null)
+        if (TryGetPlatformHandle() is not { HandleDescriptor: "HWND" } handle)
         {
             // No need to log a warning, PJB will notice when this breaks.
             return;
         }
 
-        var hWnd = (HWND)(nint)prop.GetValue(windowImpl)!;
+        var hWnd = (HWND)handle.Handle;
 
         COLORREF r = 0x00262121;
         Windows.DwmSetWindowAttribute(hWnd, 35, &r, (uint) sizeof(COLORREF));

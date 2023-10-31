@@ -29,17 +29,17 @@
       <StackPanel Orientation="Vertical">
         <DockPanel Classes="ServerFilterGroup">
           <TextBlock MinWidth="150" DockPanel.Dock="Left" Classes="SubText" Text="Language" />
-          <ItemsControl Items="{Binding FiltersLanguage}"
+          <ItemsControl ItemsSource="{Binding FiltersLanguage}"
                         ItemsPanel="{StaticResource PanelTemplate}" ItemTemplate="{StaticResource FilterTemplate}"/>
         </DockPanel>
         <DockPanel Classes="ServerFilterGroup">
           <TextBlock MinWidth="150" DockPanel.Dock="Left" Classes="SubText" Text="Region" />
-          <ItemsControl Items="{Binding FiltersRegion}"
+          <ItemsControl ItemsSource="{Binding FiltersRegion}"
                         ItemsPanel="{StaticResource PanelTemplate}" ItemTemplate="{StaticResource FilterTemplate}"/>
         </DockPanel>
         <DockPanel Classes="ServerFilterGroup">
           <TextBlock MinWidth="150" DockPanel.Dock="Left" Classes="SubText" Text="Role-play level" />
-          <ItemsControl Items="{Binding FiltersRolePlay}"
+          <ItemsControl ItemsSource="{Binding FiltersRolePlay}"
                         ItemsPanel="{StaticResource PanelTemplate}" ItemTemplate="{StaticResource FilterTemplate}"/>
         </DockPanel>
         <DockPanel Classes="ServerFilterGroup">
@@ -53,13 +53,13 @@
         </DockPanel>
         <DockPanel Classes="ServerFilterGroup">
           <TextBlock MinWidth="150" DockPanel.Dock="Left" VerticalAlignment="Center" Classes="SubText" Text="18+" />
-          <ItemsControl Items="{Binding FiltersEighteenPlus}"
+          <ItemsControl ItemsSource="{Binding FiltersEighteenPlus}"
                         ItemsPanel="{StaticResource PanelTemplate}" ItemTemplate="{StaticResource FilterTemplate}"/>
         </DockPanel>
 
         <DockPanel Classes="ServerFilterGroup">
           <TextBlock MinWidth="150" DockPanel.Dock="Left" Classes="SubText" Text="Hub" />
-          <ItemsControl Items="{Binding FiltersHub}"
+          <ItemsControl ItemsSource="{Binding FiltersHub}"
                         ItemsPanel="{StaticResource PanelTemplate}" ItemTemplate="{StaticResource WideFilterTemplate}">
           </ItemsControl>
         </DockPanel>

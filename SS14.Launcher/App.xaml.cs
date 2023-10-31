@@ -48,11 +48,9 @@ public class App : Application
 
     private void LoadBaseAssets()
     {
-        var loader = AvaloniaLocator.Current.GetService<IAssetLoader>()!;
-
         foreach (var (name, (path, type)) in AssetDefs)
         {
-            using var dataStream = loader.Open(new Uri($"avares://SS14.Launcher/Assets/{path}"));
+            using var dataStream = AssetLoader.Open(new Uri($"avares://SS14.Launcher/Assets/{path}"));
 
             var asset = LoadAsset(type, dataStream);
 

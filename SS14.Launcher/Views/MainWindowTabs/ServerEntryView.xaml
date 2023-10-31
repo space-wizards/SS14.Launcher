@@ -54,7 +54,7 @@
                   Command="{Binding FavoriteRaiseButtonPressed}" />
         </Grid>
 
-        <ItemsControl VerticalAlignment="Bottom" Items="{Binding CacheData.Links}">
+        <ItemsControl VerticalAlignment="Bottom" ItemsSource="{Binding CacheData.Links}">
           <ItemsControl.ItemsPanel>
             <ItemsPanelTemplate>
               <WrapPanel Orientation="Horizontal" />
