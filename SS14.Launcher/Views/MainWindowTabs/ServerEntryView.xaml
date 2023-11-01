@@ -22,8 +22,7 @@
                      MinWidth="80"
                      Margin="10, 0" />
           <Rectangle DockPanel.Dock="Right" Classes="VerticalSeparator" />
-          <!-- TODO: Enable text trimming here when Avalonia 0.10 is out of preview and we switch to it. -->
-          <TextBlock VerticalAlignment="Center" Text="{Binding Name}" />
+          <TextBlock VerticalAlignment="Center" Text="{Binding Name}" TextTrimming="CharacterEllipsis"/>
         </DockPanel>
       </Expander.Header>
       <DockPanel Margin="4">
