@@ -11,11 +11,11 @@
     <!-- Loader -->
     <PackageVersion Include="Robust.Natives" Version="0.1.1"/>
     <!-- Launcher -->
-    <PackageVersion Include="Avalonia" Version="11.0.4"/>
-    <PackageVersion Include="Avalonia.Desktop" Version="11.0.4"/>
-    <PackageVersion Include="Avalonia.ReactiveUI" Version="11.0.4"/>
-    <PackageVersion Include="Avalonia.Diagnostics" Version="11.0.4"/>
-    <PackageVersion Include="Avalonia.Themes.Simple" Version="11.0.4"/>
+    <PackageVersion Include="Avalonia" Version="11.0.5"/>
+    <PackageVersion Include="Avalonia.Desktop" Version="11.0.5"/>
+    <PackageVersion Include="Avalonia.ReactiveUI" Version="11.0.5"/>
+    <PackageVersion Include="Avalonia.Diagnostics" Version="11.0.5"/>
+    <PackageVersion Include="Avalonia.Themes.Simple" Version="11.0.5"/>
     <PackageVersion Include="CodeHollow.FeedReader" Version="1.2.6"/>
     <PackageVersion Include="Dapper" Version="2.0.123"/>
     <PackageVersion Include="DynamicData" Version="7.13.1"/>

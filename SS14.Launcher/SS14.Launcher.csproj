@@ -23,7 +23,7 @@
       <SubType>Designer</SubType>
     </AvaloniaResource>
 
-    <AdditionalFiles Include="**\*.xaml" />
+    <AdditionalFiles Include="**\*.xaml" SourceItemGroup="AvaloniaXaml" />
 
     <Compile Update="Views\MainWindowTabs\ServerFilterView.xaml.cs">
       <DependentUpon>ServerFilterView.xaml</DependentUpon>
