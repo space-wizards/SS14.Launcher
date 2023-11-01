@@ -11,9 +11,7 @@ public sealed partial class ResendConfirmationView : UserControl
     {
         InitializeComponent();
 
-        var emailBox = this.FindControl<TextBox>("EmailBox");
-
-        emailBox.KeyDown += InputBoxOnKeyDown;
+        EmailBox.KeyDown += InputBoxOnKeyDown;
     }
 
     private void InputBoxOnKeyDown(object? sender, KeyEventArgs args)

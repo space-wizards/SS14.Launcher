@@ -11,12 +11,10 @@ public partial class RegisterView : UserControl
     {
         InitializeComponent();
 
-        void AddKeyDown(string name) => this.FindControl<TextBox>(name).KeyDown += OnTextBoxKeyDown;
-
-        AddKeyDown("NameBox");
-        AddKeyDown("EmailBox");
-        AddKeyDown("PasswordBox");
-        AddKeyDown("PasswordConfirmBox");
+        NameBox.KeyDown += OnTextBoxKeyDown;
+        EmailBox.KeyDown += OnTextBoxKeyDown;
+        PasswordBox.KeyDown += OnTextBoxKeyDown;
+        PasswordConfirmBox.KeyDown += OnTextBoxKeyDown;
     }
 
     private void OnTextBoxKeyDown(object? sender, KeyEventArgs args)
