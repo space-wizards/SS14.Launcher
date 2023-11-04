@@ -29,6 +29,11 @@
 , zlib
 , glib
 , gdk-pixbuf
+, soundfont-fluid
+
+# Path to set ROBUST_SOUNDFONT_OVERRIDE to, essentially the default soundfont used.
+, soundfont-path ? "${soundfont-fluid}/share/soundfonts/FluidR3_GM2-2.sf2"
+
 }:
 let
   version = "0.24.0";
@@ -107,6 +112,8 @@ buildDotnetModule rec {
     # TODO: Figure out dependencies for CEF support.
   ];
 
+  makeWrapperArgs = [ ''--set ROBUST_SOUNDFONT_OVERRIDE "${soundfont-path}"'' ];
+
   executables = [ "SS14.Launcher" ];
 
   desktopItems = [
@@ -123,7 +130,7 @@ buildDotnetModule rec {
 
   postInstall = ''
     mkdir -p $out/lib/space-station-14-launcher/loader
-    cp -r SS14.Loader/bin/${buildType}/*/* $out/lib/space-station-14-launcher/loader/
+    cp -r SS14.Loader/bin/${buildType}/net7.0/* $out/lib/space-station-14-launcher/loader/
 
     icoFileToHiColorTheme SS14.Launcher/Assets/icon.ico space-station-14-launcher $out
   '';
