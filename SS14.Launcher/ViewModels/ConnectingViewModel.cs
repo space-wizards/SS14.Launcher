@@ -28,6 +28,8 @@ public class ConnectingViewModel : ViewModelBase
                              _connectorStatus == Connector.ConnectionStatus.ClientExited &&
                              _connector.ClientExitedBadly;
 
+    public static event Action? StartedConnecting;
+
     public ConnectingViewModel(Connector connector, MainWindowViewModel windowVm, string? givenReason)
     {
         _updater = Locator.Current.GetRequiredService<Updater>();
@@ -186,6 +188,7 @@ public class ConnectingViewModel : ViewModelBase
         var vm = new ConnectingViewModel(connector, windowVm, givenReason);
         windowVm.ConnectingVM = vm;
         vm.Start(address);
+        StartedConnecting?.Invoke();
     }
 
     public static void StartContentBundle(MainWindowViewModel windowVm, string fileName)
@@ -194,6 +197,7 @@ public class ConnectingViewModel : ViewModelBase
         var vm = new ConnectingViewModel(connector, windowVm, null);
         windowVm.ConnectingVM = vm;
         vm.StartContentBundle(fileName);
+        StartedConnecting?.Invoke();
     }
 
     private void Start(string address)

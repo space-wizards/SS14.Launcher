@@ -1,6 +1,5 @@
 using System;
 using System.ComponentModel;
-using Avalonia.Input;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Messaging;
 using SS14.Launcher.Models.Data;
@@ -50,7 +49,6 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
 
     public void ConnectPressed()
     {
-        FocusManager.Instance?.Focus(null);
         ConnectingViewModel.StartConnect(_windowVm, Address);
     }
 
