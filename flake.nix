@@ -14,7 +14,7 @@
       packages = forAllSystems (pkgs: {
         default = self.packages.${pkgs.system}.space-station-14-launcher;
         space-station-14-launcher =
-          pkgs.callPackage ./nix/wrapper.nix { };
+          pkgs.callPackage ./nix/package.nix { };
       });
 
       overlays = {
