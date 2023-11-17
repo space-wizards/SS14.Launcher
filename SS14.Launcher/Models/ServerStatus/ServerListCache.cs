@@ -121,7 +121,7 @@ public sealed class ServerListCache : ReactiveObject, IServerSource
                     var maybeNewEntry = new HubServerListEntry(entry.Address, hub.AbsoluteUri, entry.StatusData);
                     if (!entries.Add(maybeNewEntry))
                     {
-                        Log.Debug("Not adding {Entry} from {ThisHub} because it was already provided by {PreviousHub}",
+                        Log.Verbose("Not adding {Entry} from {ThisHub} because it was already provided by {PreviousHub}",
                             entry.Address,
                             hub.AbsoluteUri,
                             maybeNewEntry.HubAddress);
