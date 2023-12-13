@@ -406,10 +406,4 @@ public class AuthApiException : Exception
     public AuthApiException(string message, Exception inner) : base(message, inner)
     {
     }
-
-    protected AuthApiException(
-        SerializationInfo info,
-        StreamingContext context) : base(info, context)
-    {
-    }
 }
