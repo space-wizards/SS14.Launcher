@@ -56,7 +56,7 @@ public partial class HomePageView : UserControl
         };
 
         var result = await dialog.ShowAsync(window);
-        if (result == null)
+        if (result == null || result.Length == 0) // Canceled
             return;
 
         var file = result[0];
