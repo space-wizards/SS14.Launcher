@@ -22,49 +22,41 @@
                      MinWidth="80"
                      Margin="10, 0" />
           <Rectangle DockPanel.Dock="Right" Classes="VerticalSeparator" />
-          <TextBlock VerticalAlignment="Center" Text="{Binding Name}" TextTrimming="CharacterEllipsis"/>
+          <!-- TODO: Enable text trimming here when Avalonia 0.10 is out of preview and we switch to it. -->
+          <TextBlock VerticalAlignment="Center" Text="{Binding Name}" />
         </DockPanel>
       </Expander.Header>
       <DockPanel Margin="4">
-        <TextBlock DockPanel.Dock="Top"
-                   Name="Description" Margin="4,0,4,4"
-                   Text="{Binding Description}"
-                   TextWrapping="Wrap" />
+        <TextBlock DockPanel.Dock="Top" Name="Description" Margin="4,0,4,16"
+                   Text="{Binding Description}" TextWrapping="Wrap" />
 
-        <TextBlock DockPanel.Dock="Top"
-                   Margin="4,0,4,4"
-                   TextWrapping="Wrap"
-                   Foreground="{DynamicResource ThemeSubTextBrush}"
-                   Text="{Binding FetchedFrom}"
-                   IsVisible="{Binding ShowFetchedFrom}" />
+        <views:RowSideAlignedPanel>
+          <ItemsControl VerticalAlignment="Bottom" ItemsSource="{Binding CacheData.Links}" Name="Links">
+            <ItemsControl.ItemsPanel>
+              <ItemsPanelTemplate>
+                <WrapPanel Orientation="Horizontal" />
+              </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+              <DataTemplate x:DataType="models:ServerInfoLink">
+                <views:ServerInfoLinkControl DataContext="{Binding}" />
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
 
-        <Control DockPanel.Dock="Top" Height="8" />
+          <DockPanel Dock="Right">
+            <!-- Favorite add/remove button -->
+            <Button Classes="OpenRight"
+                    Content="{Binding FavoriteButtonText}"
+                    Command="{Binding FavoriteButtonPressed}" />
 
-        <Grid DockPanel.Dock="Right" VerticalAlignment="Bottom" RowDefinitions="Auto,Auto">
-          <!-- Favorite add/remove button -->
-          <Button Grid.Row="0" HorizontalAlignment="Right"
-                  Content="{Binding FavoriteButtonText}"
-                  Command="{Binding FavoriteButtonPressed}" />
-
-          <!-- Raise to top button. -->
-          <Button Grid.Row="1" HorizontalAlignment="Right"
-                  IsVisible="{Binding ViewedInFavoritesPane}" Classes="OpenRight"
-                  Content="Raise to top"
-                  Command="{Binding FavoriteRaiseButtonPressed}" />
-        </Grid>
-
-        <ItemsControl VerticalAlignment="Bottom" ItemsSource="{Binding CacheData.Links}">
-          <ItemsControl.ItemsPanel>
-            <ItemsPanelTemplate>
-              <WrapPanel Orientation="Horizontal" />
-            </ItemsPanelTemplate>
-          </ItemsControl.ItemsPanel>
-          <ItemsControl.ItemTemplate>
-            <DataTemplate x:DataType="models:ServerInfoLink">
-              <views:ServerInfoLinkControl DataContext="{Binding}" />
-            </DataTemplate>
-          </ItemsControl.ItemTemplate>
-        </ItemsControl>
+            <!-- Raise to top button. -->
+            <Button IsVisible="{Binding ViewedInFavoritesPane}"
+                    Classes="OpenLeft"
+                    Content="Raise to top"
+                    Command="{Binding FavoriteRaiseButtonPressed}" />
+          </DockPanel>
+        </views:RowSideAlignedPanel>
       </DockPanel>
     </Expander>
   </Panel>
