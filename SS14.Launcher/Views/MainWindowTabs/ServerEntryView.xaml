@@ -22,13 +22,23 @@
                      MinWidth="80"
                      Margin="10, 0" />
           <Rectangle DockPanel.Dock="Right" Classes="VerticalSeparator" />
-          <!-- TODO: Enable text trimming here when Avalonia 0.10 is out of preview and we switch to it. -->
-          <TextBlock VerticalAlignment="Center" Text="{Binding Name}" />
+          <TextBlock VerticalAlignment="Center" Text="{Binding Name}" TextTrimming="CharacterEllipsis"/>
         </DockPanel>
       </Expander.Header>
       <DockPanel Margin="4">
-        <TextBlock DockPanel.Dock="Top" Name="Description" Margin="4,0,4,16"
-                   Text="{Binding Description}" TextWrapping="Wrap" />
+        <TextBlock DockPanel.Dock="Top"
+                   Name="Description" Margin="4,0,4,4"
+                   Text="{Binding Description}"
+                   TextWrapping="Wrap" />
+
+        <TextBlock DockPanel.Dock="Top"
+                   Margin="4,0,4,4"
+                   TextWrapping="Wrap"
+                   Foreground="{DynamicResource ThemeSubTextBrush}"
+                   Text="{Binding FetchedFrom}"
+                   IsVisible="{Binding ShowFetchedFrom}" />
+
+        <Control DockPanel.Dock="Top" Height="8" />
 
         <views:RowSideAlignedPanel>
           <ItemsControl VerticalAlignment="Bottom" ItemsSource="{Binding CacheData.Links}" Name="Links">
