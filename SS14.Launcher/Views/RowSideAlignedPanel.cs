@@ -47,7 +47,6 @@ public sealed class RowSideAlignedPanel : Panel
         {
             // They both fit on one row, easy.
             left.Arrange(new Rect(0, 0, leftSize.Width, finalSize.Height));
-
             right.Arrange(new Rect(finalSize.Width - rightSize.Width, 0, rightSize.Width, finalSize.Height));
 
             return finalSize;
