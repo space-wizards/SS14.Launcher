@@ -56,11 +56,13 @@
       </Button>
       <Button DockPanel.Dock="Left" Content="?" Classes="InfoButton OpenLeft">
         <ToolTip.Tip>
-Here you can add extra hubs to fetch game servers from.
-You should only add hubs that you trust, as they can 'spoof' game servers
-from other hubs. The order of the hubs matters; if two hubs advertise the
-same game server the hub with the higher priority (higher in the list) will
-take precedence.
+          <StackPanel>
+            <TextBlock>Here you can add extra hubs to fetch game servers from.</TextBlock>
+            <TextBlock>You should only add hubs that you trust, as they can 'spoof' game</TextBlock>
+            <TextBlock>servers from other hubs. The order of the hubs matters; if two hubs</TextBlock>
+            <TextBlock>advertise the same game server the hub with the higher priority</TextBlock>
+            <TextBlock>(higher in the list) will take precedence.</TextBlock>
+          </StackPanel>
         </ToolTip.Tip>
         <ToolTip.ShowDelay>0</ToolTip.ShowDelay>
       </Button>
