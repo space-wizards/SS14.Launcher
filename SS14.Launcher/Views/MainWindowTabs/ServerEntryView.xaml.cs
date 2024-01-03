@@ -4,22 +4,53 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Presenters;
 using Avalonia.LogicalTree;
+using Avalonia.Media;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
+using Serilog;
+using SS14.Launcher.ViewModels.MainWindowTabs;
 
 namespace SS14.Launcher.Views.MainWindowTabs;
 
 public partial class ServerEntryView : UserControl
 {
+    private readonly IImage _starIcon;
+    private readonly IImage _starOutlineIcon;
+
     public ServerEntryView()
     {
         InitializeComponent();
 
-        Links.LayoutUpdated += ApplyStyle;
+        Links.LayoutUpdated += UpdateLinkButtons;
+        FavoriteButtonIconLabel.LayoutUpdated += UpdateFavoriteButton;
+
+        if (Application.Current?.FindResource("ButtonIcon-star") as IImage is not { } starIcon ||
+            Application.Current.FindResource("ButtonIcon-star-outline") as IImage is not { } starOutlineIcon)
+        {
+            throw new Exception("Failed to load favorite icons");
+        }
+
+        _starIcon = starIcon;
+        _starOutlineIcon = starOutlineIcon;
     }
 
+    private void UpdateFavoriteButton(object? _1, EventArgs _2)
+    {
+        if (DataContext as ServerEntryViewModel is not { } context)
+        {
+            Log.Error($"Failed to get DataContext in {nameof(UpdateFavoriteButton)}");
+            return;
+        }
+
+        if (context.ViewedInFavoritesPane)
+            FavoriteButton.Classes.Add("OpenRight");
+        else
+            FavoriteButton.Classes.Remove("OpenRight");
+
+        FavoriteButtonIconLabel.Icon = context.IsFavorite ? _starIcon : _starOutlineIcon;
+    }
 
     // Sets the style for the link buttons correctly so that they look correct
-    private void ApplyStyle(object? _1, EventArgs _2)
+    private void UpdateLinkButtons(object? _1, EventArgs _2)
     {
         for (var i = 0; i < Links.ItemCount; i++)
         {

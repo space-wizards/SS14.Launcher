@@ -14,7 +14,10 @@
   <DockPanel LastChildFill="True">
 
     <DockPanel DockPanel.Dock="Bottom" Margin="4 4 4 0">
-      <Button DockPanel.Dock="Right" Content="Refresh" Command="{Binding RefreshPressed}"  Classes="OpenLeft" />
+      <Button DockPanel.Dock="Right" Command="{Binding RefreshPressed}"  Classes="OpenLeft">
+        <views:IconLabel Icon="{DynamicResource ButtonIcon-refresh}" Height="20" Width="20" />
+        <ToolTip.Tip>Refresh</ToolTip.Tip>
+      </Button>
       <ToggleButton DockPanel.Dock="Right" IsChecked="{Binding FiltersVisible}" Classes="OpenRight">
         <ToggleButton.Content>
           <MultiBinding StringFormat="{}Filters ({0} / {1})">

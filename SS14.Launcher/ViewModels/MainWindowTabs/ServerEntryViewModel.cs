@@ -65,8 +65,8 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
     }
 
     public string Name => Favorite?.Name ?? _cacheData.Name ?? _fallbackName;
-    public string FavoriteButtonText => IsFavorite ? "Remove Favorite" : "Add Favorite";
-    private bool IsFavorite => _cfg.FavoriteServers.Lookup(Address).HasValue;
+    public string FavoriteButtonText => IsFavorite ? "Unfavorite" : "Favorite";
+    public bool IsFavorite => _cfg.FavoriteServers.Lookup(Address).HasValue;
 
     public bool ViewedInFavoritesPane { get; set; }
 
