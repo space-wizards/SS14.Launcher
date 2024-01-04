@@ -83,7 +83,7 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
                     if (_cacheData.PanicBunker == null)
                         statusappend += " ?";
                     else if (_cacheData.PanicBunker == true)
-                        statusappend += " 🔒";
+                        statusappend += " 🔒"; //TODO: replace this with a proper lock icon. we know Visne's currently working on iconing up the launcher in #126; they might be interested in giving this a proper icon
                     // Give a ratio for servers with a defined player count, or just a current number for those without.
                     if (_cacheData.SoftMaxPlayerCount > 0)
                     {
