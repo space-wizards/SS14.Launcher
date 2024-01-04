@@ -25,12 +25,14 @@ public sealed partial class ServerListFiltersViewModel : ObservableObject
     private readonly FilterListCollection _filtersRolePlay = new();
     private readonly FilterListCollection _filtersEighteenPlus = new();
     private readonly FilterListCollection _filtersHub = new();
+    private readonly FilterListCollection _filtersBunker = new();
 
     public ObservableCollection<ServerFilterViewModel> FiltersLanguage => _filtersLanguage;
     public ObservableCollection<ServerFilterViewModel> FiltersRegion => _filtersRegion;
     public ObservableCollection<ServerFilterViewModel> FiltersRolePlay => _filtersRolePlay;
     public ObservableCollection<ServerFilterViewModel> FiltersEighteenPlus => _filtersEighteenPlus;
     public ObservableCollection<ServerFilterViewModel> FiltersHub => _filtersHub;
+    public ObservableCollection<ServerFilterViewModel> FiltersBunker => _filtersBunker;
 
     public ServerFilterViewModel FilterPlayerCountHideEmpty { get; }
     public ServerFilterViewModel FilterPlayerCountHideFull { get; }
@@ -59,6 +61,11 @@ public sealed partial class ServerListFiltersViewModel : ObservableObject
             new ServerFilter(ServerFilterCategory.EighteenPlus, ServerFilter.DataTrue), this));
         FiltersEighteenPlus.Add(new ServerFilterViewModel("No", "No",
             new ServerFilter(ServerFilterCategory.EighteenPlus, ServerFilter.DataFalse), this));
+
+        FiltersBunker.Add(new ServerFilterViewModel("Yes", "Yes",
+            new ServerFilter(ServerFilterCategory.Bunker, ServerFilter.DataTrue), this));
+        FiltersBunker.Add(new ServerFilterViewModel("No", "No",
+            new ServerFilter(ServerFilterCategory.Bunker, ServerFilter.DataFalse), this));
 
         FilterPlayerCountHideEmpty = new ServerFilterViewModel(
             "Servers with no players will not be shown",
@@ -256,6 +263,21 @@ public sealed partial class ServerListFiltersViewModel : ObservableObject
                 eighteenPlus = false;
         }
 
+        bool? panicBunker = null;
+        if (GetFilter(ServerFilterCategory.Bunker, ServerFilter.DataTrue))
+        {
+            panicBunker = true;
+        }
+
+        if (GetFilter(ServerFilterCategory.Bunker, ServerFilter.DataFalse))
+        {
+            // Having both
+            if (panicBunker == true)
+                panicBunker = null;
+            else
+                panicBunker = false;
+        }
+
         for (var i = 0; i < list.Count; i++)
         {
             var server = list[i];
@@ -275,6 +297,12 @@ public sealed partial class ServerListFiltersViewModel : ObservableObject
             {
                 var serverEighteenPlus = server.Tags.Contains(Tags.TagEighteenPlus);
                 if (eighteenPlus != serverEighteenPlus)
+                    return false;
+            }
+
+            if (panicBunker != null)
+            {
+                if (panicBunker != server.PanicBunker)
                     return false;
             }
 

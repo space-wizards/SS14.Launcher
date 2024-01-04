@@ -123,6 +123,7 @@ public sealed class ServerStatusCache : IServerSource
         data.Name = status.Name;
         data.PlayerCount = status.PlayerCount;
         data.SoftMaxPlayerCount = status.SoftMaxPlayerCount;
+        data.PanicBunker = status.PanicBunker;
 
         var baseTags = status.Tags ?? Array.Empty<string>();
         var inferredTags = ServerTagInfer.InferTags(status);

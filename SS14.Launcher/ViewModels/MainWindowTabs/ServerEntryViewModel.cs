@@ -79,14 +79,19 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
                 case ServerStatusCode.Offline:
                     return "OFFLINE";
                 case ServerStatusCode.Online:
+                    var statusappend = $"";
+                    if (_cacheData.PanicBunker == null)
+                        statusappend += " ?";
+                    else if (_cacheData.PanicBunker == true)
+                        statusappend += " 🔒";
                     // Give a ratio for servers with a defined player count, or just a current number for those without.
                     if (_cacheData.SoftMaxPlayerCount > 0)
                     {
-                        return $"{_cacheData.PlayerCount} / {_cacheData.SoftMaxPlayerCount}";
+                        return $"{_cacheData.PlayerCount} / {_cacheData.SoftMaxPlayerCount}{statusappend}";
                     }
                     else
                     {
-                        return $"{_cacheData.PlayerCount} / ∞";
+                        return $"{_cacheData.PlayerCount} / ∞ {statusappend}";
                     }
                 case ServerStatusCode.FetchingStatus:
                     return "Fetching...";
@@ -210,6 +215,7 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
         {
             case nameof(IServerStatusData.PlayerCount):
             case nameof(IServerStatusData.SoftMaxPlayerCount):
+            case nameof(IServerStatusData.PanicBunker):
                 OnPropertyChanged(nameof(ServerStatusString));
                 break;
 
