@@ -79,24 +79,51 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
                 case ServerStatusCode.Offline:
                     return "OFFLINE";
                 case ServerStatusCode.Online:
-                    var statusappend = $"";
-                    if (_cacheData.PanicBunker == null)
-                        statusappend += " ?";
-                    else if (_cacheData.PanicBunker == true)
-                        statusappend += " 🔒"; //TODO: replace this with a proper lock icon. we know Visne's currently working on iconing up the launcher in #126; they might be interested in giving this a proper icon
                     // Give a ratio for servers with a defined player count, or just a current number for those without.
                     if (_cacheData.SoftMaxPlayerCount > 0)
                     {
-                        return $"{_cacheData.PlayerCount} / {_cacheData.SoftMaxPlayerCount}{statusappend}";
+                        return $"{_cacheData.PlayerCount} / {_cacheData.SoftMaxPlayerCount}";
                     }
                     else
                     {
-                        return $"{_cacheData.PlayerCount} / ∞ {statusappend}";
+                        return $"{_cacheData.PlayerCount} / ∞";
                     }
                 case ServerStatusCode.FetchingStatus:
                     return "Fetching...";
                 default:
                     throw new NotSupportedException();
+            }
+        }
+    }
+
+    public string BunkerIcon
+    {
+        get
+        {
+            switch (_cacheData.PanicBunker)
+            {
+                case true:
+                    return "🚪"; //TODO: replace this with a proper icon. This might be doable in 126? We'd rather not step on Visne's toes for now, so a system-dependant emoji will do.
+                case null:
+                    return "?";
+                default:
+                    return "";
+            }
+        }
+    }
+
+    public string BunkerText
+    {
+        get
+        {
+            switch (_cacheData.PanicBunker)
+            {
+                case true:
+                    return "Panic Bunker Enabled";
+                case false:
+                    return "Panic Bunker Disabled";
+                default:
+                    return "Missing Panic Bunker Information";
             }
         }
     }
@@ -215,8 +242,13 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
         {
             case nameof(IServerStatusData.PlayerCount):
             case nameof(IServerStatusData.SoftMaxPlayerCount):
+                OnPropertyChanged(nameof(ServerStatusString));
+                break;
+
             case nameof(IServerStatusData.PanicBunker):
                 OnPropertyChanged(nameof(ServerStatusString));
+                OnPropertyChanged(nameof(BunkerIcon));
+                OnPropertyChanged(nameof(BunkerText));
                 break;
 
             case nameof(IServerStatusData.Status):
