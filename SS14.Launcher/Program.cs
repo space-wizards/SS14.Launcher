@@ -2,6 +2,7 @@ using Microsoft.Data.Sqlite;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Net.Http.Headers;
 using System.Text;
@@ -102,14 +103,11 @@ internal static class Program
         // Bad antivirus check disabled: I assume Avast/AVG fixed their shit.
         // CheckBadAntivirus();
 
-        if (cfg.GetCVar(CVars.LogLauncher))
-        {
-            Log.Logger = new LoggerConfiguration()
-                .MinimumLevel.Is(cfg.GetCVar(CVars.LogLauncherVerbose) ? LogEventLevel.Verbose : LogEventLevel.Debug)
-                .WriteTo.Console(theme: AnsiConsoleTheme.Sixteen)
-                .WriteTo.File(LauncherPaths.PathLauncherLog)
-                .CreateLogger();
-        }
+        Log.Logger = new LoggerConfiguration()
+            .MinimumLevel.Is(cfg.GetCVar(CVars.LogLauncherVerbose) ? LogEventLevel.Verbose : LogEventLevel.Debug)
+            .WriteTo.Console(theme: AnsiConsoleTheme.Sixteen)
+            .WriteTo.File(LauncherPaths.PathLauncherLog, rollingInterval: RollingInterval.Day, retainedFileCountLimit: 1)
+            .CreateLogger();
 
         LauncherDiagnostics.LogDiagnostics();
 

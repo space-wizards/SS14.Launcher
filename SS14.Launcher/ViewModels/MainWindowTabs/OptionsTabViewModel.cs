@@ -58,16 +58,6 @@ public class OptionsTabViewModel : MainWindowTabViewModel
         }
     }
 
-    public bool LogLauncher
-    {
-        get => Cfg.GetCVar(CVars.LogLauncher);
-        set
-        {
-            Cfg.SetCVar(CVars.LogLauncher, value);
-            Cfg.CommitConfig();
-        }
-    }
-
     public bool LogLauncherVerbose
     {
         get => Cfg.GetCVar(CVars.LogLauncherVerbose);

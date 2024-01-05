@@ -16,8 +16,6 @@
     <DockPanel Background="{DynamicResource ThemeStripeBackBrush}" DockPanel.Dock="Bottom"
                LastChildFill="False">
 
-      <CheckBox DockPanel.Dock="Left" VerticalAlignment="Center" Margin="4" IsChecked="{Binding LogLauncher}">Log Launcher</CheckBox>
-
       <TextBlock Text="{Binding Version}" DockPanel.Dock="Right" VerticalAlignment="Center" Margin="4"
                  Classes="SubText" />
     </DockPanel>

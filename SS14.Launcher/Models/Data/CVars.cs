@@ -62,11 +62,6 @@ public static class CVars
     public static readonly CVarDef<bool> LogClient = CVarDef.Create("LogClient", false);
 
     /// <summary>
-    /// Enable logging of launched client instances to file.
-    /// </summary>
-    public static readonly CVarDef<bool> LogLauncher = CVarDef.Create("LogLauncher", false);
-
-    /// <summary>
     /// Verbose logging of launcher logs.
     /// </summary>
     public static readonly CVarDef<bool> LogLauncherVerbose = CVarDef.Create("LogLauncherVerbose", false);

@@ -41,11 +41,6 @@
                    Text="Enables logging of any game client output. Useful for developers."
                    Margin="8" />
 
-        <CheckBox VerticalAlignment="Center" Margin="4" IsChecked="{Binding LogLauncher}">Log Launcher</CheckBox>
-        <TextBlock VerticalAlignment="Center" TextWrapping="Wrap"
-                   Text="Enables logging of the launcher. Useful for developers. (requires launcher restart)"
-                   Margin="8" />
-
         <CheckBox VerticalAlignment="Center" Margin="4" IsChecked="{Binding LogLauncherVerbose}">Verbose Launcher Logging</CheckBox>
         <TextBlock VerticalAlignment="Center" TextWrapping="Wrap"
                    Text="For when the developers are *very* stumped with your problem. (requires launcher restart)"
