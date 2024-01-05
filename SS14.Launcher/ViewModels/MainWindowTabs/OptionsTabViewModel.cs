@@ -38,16 +38,6 @@ public class OptionsTabViewModel : MainWindowTabViewModel
         }
     }
 
-    public bool DynamicPgo
-    {
-        get => Cfg.GetCVar(CVars.DynamicPgo);
-        set
-        {
-            Cfg.SetCVar(CVars.DynamicPgo, value);
-            Cfg.CommitConfig();
-        }
-    }
-
     public bool LogClient
     {
         get => Cfg.GetCVar(CVars.LogClient);
