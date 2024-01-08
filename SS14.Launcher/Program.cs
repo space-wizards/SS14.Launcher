@@ -98,7 +98,7 @@ internal static class Program
         cfg.Load();
         Locator.CurrentMutable.RegisterConstant(cfg);
 
-        CheckWindows7();
+        CheckWindowsVersion();
         // Bad antivirus check disabled: I assume Avast/AVG fixed their shit.
         // CheckBadAntivirus();
 
@@ -139,10 +139,10 @@ internal static class Program
         _serverTask?.Wait();
     }
 
-    private static unsafe void CheckWindows7()
+    private static unsafe void CheckWindowsVersion()
     {
-        // 9600 is Windows 8.1, minimum we currently support.
-        if (!OperatingSystem.IsWindows() || Environment.OSVersion.Version.Build >= 9600)
+        // 10240 is Windows 10 version 1507, minimum we currently support.
+        if (!OperatingSystem.IsWindows() || Environment.OSVersion.Version.Build >= 10240)
             return;
 
         var text =
