@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net.Http.Headers;
+using System.Security;
 using System.Text;
 using System.Threading.Tasks;
 using Avalonia;
@@ -11,6 +12,7 @@ using Avalonia.Controls;
 using Avalonia.Logging;
 using Avalonia.Media;
 using Avalonia.ReactiveUI;
+using Microsoft.Win32;
 using Serilog;
 using Serilog.Sinks.SystemConsole.Themes;
 using Splat;
@@ -101,6 +103,7 @@ internal static class Program
         CheckWindows7();
         // Bad antivirus check disabled: I assume Avast/AVG fixed their shit.
         // CheckBadAntivirus();
+        CheckWine();
 
         if (cfg.GetCVar(CVars.LogLauncher))
         {
@@ -199,6 +202,30 @@ internal static class Program
         {
             _ = Windows.MessageBoxW(HWND.NULL, (ushort*)pText, (ushort*)pCaption, MB.MB_OK | MB.MB_ICONWARNING);
         }
+    }
+
+    private static unsafe void CheckWine()
+    {
+        if (OperatingSystem.IsWindows())
+            try
+            {
+                Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Wine", true);
+            }
+            // So uh if you are denied access to the registry key, it means you have the key... thus wine... unsure if wine will complain about access. But Windows does!
+            catch (SecurityException)
+            {
+                Log.Debug("Wine detected, showing warning.");
+                var text =
+                    $"You seem to be running the launcher under Wine.\n\nWe recommend you run the native linux version instead.";
+                var caption = $"Wine detected!";
+
+                fixed (char* pText = text)
+                fixed (char* pCaption = caption)
+                {
+                    _ = Windows.MessageBoxW(HWND.NULL, (ushort*)pText, (ushort*)pCaption,
+                        MB.MB_OK | MB.MB_ICONWARNING);
+                }
+            }
     }
 
     // Avalonia configuration, don't remove; also used by visual designer.
