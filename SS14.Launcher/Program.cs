@@ -197,7 +197,7 @@ internal static class Program
         Helpers.MessageBoxHelper(text, caption, type);
     }
 
-    private static unsafe void CheckWine(DataManager dataManager)
+    private static void CheckWine(DataManager dataManager)
     {
         if (!OperatingSystem.IsWindows())
             return;
