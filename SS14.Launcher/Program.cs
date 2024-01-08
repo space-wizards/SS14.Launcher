@@ -1,10 +1,8 @@
-using Microsoft.Data.Sqlite;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net.Http.Headers;
-using System.Security;
 using System.Text;
 using System.Threading.Tasks;
 using Avalonia;
@@ -103,7 +101,7 @@ internal static class Program
         CheckWindows7();
         // Bad antivirus check disabled: I assume Avast/AVG fixed their shit.
         // CheckBadAntivirus();
-        CheckWine();
+        CheckWine(cfg);
 
         if (cfg.GetCVar(CVars.LogLauncher))
         {
@@ -199,9 +197,12 @@ internal static class Program
         Helpers.MessageBoxHelper(text, caption, type);
     }
 
-    private static unsafe void CheckWine()
+    private static unsafe void CheckWine(DataManager dataManager)
     {
         if (!OperatingSystem.IsWindows())
+            return;
+
+        if (dataManager.GetCVar(CVars.WineWarningShown))
             return;
 
         using var key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Wine", false);
@@ -209,11 +210,13 @@ internal static class Program
         if (key != null)
         {
             Log.Debug("Wine detected");
-            var text = $"You seem to be running the launcher under Wine.\n\nWe recommend you run the native linux version instead.";
+            var text =
+                $"You seem to be running the launcher under Wine.\n\nWe recommend you run the native Linux version instead.\n\nThis is the only time you will see this message.";
             var caption = $"Wine detected!";
             uint type = MB.MB_OK | MB.MB_ICONWARNING;
 
             Helpers.MessageBoxHelper(text, caption, type);
+            dataManager.SetCVar(CVars.WineWarningShown, true);
         }
     }
 

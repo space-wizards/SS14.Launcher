@@ -109,6 +109,11 @@ public static class CVars
     /// </summary>
     /// <seealso cref="ServerFilter.PlayerCountMax"/>
     public static readonly CVarDef<int> FilterPlayerCountMaxValue = CVarDef.Create("FilterPlayerCountMaxValue", 0);
+
+    /// <summary>
+    /// Stores whether the user has seen the Wine warning.
+    /// </summary>
+    public static readonly CVarDef<bool> WineWarningShown = CVarDef.Create("WineWarningShown", false);
 }
 
 /// <summary>
