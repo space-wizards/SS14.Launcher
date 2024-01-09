@@ -141,7 +141,7 @@ internal static class Program
 
     private static unsafe void CheckWindowsVersion()
     {
-        // 10240 is Windows 10 version 1507, minimum we currently support.
+        // 14393 is Windows 10 version 1607, minimum we currently support.
         if (!OperatingSystem.IsWindows() || Environment.OSVersion.Version.Build >= 14393)
             return;
 
