@@ -175,7 +175,8 @@ public static class Helpers
     {
         fixed (char* pText = text)
         fixed (char* pCaption = caption)
-
-        return Windows.MessageBoxW(HWND.NULL, (ushort*)pText, (ushort*)pCaption, type);
+        {
+            return Windows.MessageBoxW(HWND.NULL, (ushort*)pText, (ushort*)pCaption, type);
+        }
     }
 }
