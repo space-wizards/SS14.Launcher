@@ -173,13 +173,9 @@ public static class Helpers
     }
     public static unsafe int MessageBoxHelper(string text, string caption, uint type)
     {
-        int ret;
-
         fixed (char* pText = text)
         fixed (char* pCaption = caption)
 
-            ret = Windows.MessageBoxW(HWND.NULL, (ushort*)pText, (ushort*)pCaption, type);
-
-        return ret;
+        return Windows.MessageBoxW(HWND.NULL, (ushort*)pText, (ushort*)pCaption, type);
     }
 }
