@@ -464,7 +464,6 @@ public class Connector : ReactiveObject
 
         // Performance tweaks
         EnvVar("DOTNET_TieredPGO", "1");
-        EnvVar("DOTNET_TC_QuickJitForLoops", "1");
         EnvVar("DOTNET_ReadyToRun", "0");
 
         if (OperatingSystem.IsLinux())
