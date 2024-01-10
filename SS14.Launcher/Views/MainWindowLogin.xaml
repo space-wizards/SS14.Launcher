@@ -15,9 +15,10 @@
     <!-- The bottom -->
     <DockPanel Background="{DynamicResource ThemeStripeBackBrush}" DockPanel.Dock="Bottom"
                LastChildFill="False">
-
       <TextBlock Text="{Binding Version}" DockPanel.Dock="Right" VerticalAlignment="Center" Margin="4"
                  Classes="SubText" />
+      <Button Content="Open log directory" DockPanel.Dock="Left" HorizontalAlignment="Left"
+              Command="{Binding OpenLogDirectory}"/>
     </DockPanel>
     <Panel Background="{DynamicResource ThemeStripebackEdgeBrush}" MinHeight="2" DockPanel.Dock="Bottom" />
 

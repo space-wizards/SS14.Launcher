@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using ReactiveUI;
 using Splat;
 using SS14.Launcher.Api;
@@ -70,5 +71,14 @@ public class MainWindowLoginViewModel : ViewModelBase
     public void SwitchToRegisterNeedsConfirmation(string username, string password)
     {
         Screen = new RegisterNeedsConfirmationViewModel(this, _authApi, username, password, _loginMgr, _cfg);
+    }
+
+    public void OpenLogDirectory()
+    {
+        Process.Start(new ProcessStartInfo
+        {
+            UseShellExecute = true,
+            FileName = LauncherPaths.DirLogs
+        });
     }
 }
