@@ -155,8 +155,8 @@ public class ConnectingViewModel : ViewModelBase
             Connector.ConnectionStatus.None => "Starting connection..." + _reasonSuffix,
             Connector.ConnectionStatus.UpdateError =>
                 "There was an error while downloading server content. If this persists try some of the following:" +
-                "\n1. Try enabling a VPN, or disabling it if you already got one active." +
-                "\n2. Try connecting to another SS14 server to see if the problem persists." +
+                "\n1. Try connecting to another game server to see if the problem persists." +
+                "\n2. Try enabling a VPN, or disabling it if you already have one active." +
                 "\n3. If all else fails, get support from the server you are attempting to join.",
             Connector.ConnectionStatus.Updating => ("Updating: " + _updaterStatus switch
             {
