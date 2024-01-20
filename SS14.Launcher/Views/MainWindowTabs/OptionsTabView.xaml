@@ -19,6 +19,8 @@
               HorizontalAlignment="Left" Click="ClearServerContentPressed" />
       <Button Content="Open log directory" DockPanel.Dock="Bottom" HorizontalAlignment="Left"
               Command="{Binding OpenLogDirectory}"/>
+      <Button Name="Protocols" Content="Register/Deregister Protocols" DockPanel.Dock="Bottom"
+              HorizontalAlignment="Left" Click="RegisterProtocols" />
 
       <StackPanel Orientation="Vertical">
         <Button Content="Account Settings" Margin="4" Command="{Binding OpenAccountSettings}" HorizontalAlignment="Left" />

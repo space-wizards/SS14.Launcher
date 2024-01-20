@@ -19,7 +19,7 @@ namespace SS14.Launcher.Bootstrap
             var exeDir = Path.Combine(ourDir, "bin", "SS14.Launcher.exe");
 
             Environment.SetEnvironmentVariable("DOTNET_ROOT", dotnetDir);
-            Process.Start(new ProcessStartInfo(exeDir));
+            Process.Start(new ProcessStartInfo(exeDir, args[0]));
         }
 
         private static void UnfuckDotnetRoot()
