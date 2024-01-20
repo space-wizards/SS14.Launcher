@@ -2,6 +2,9 @@
 using System.Diagnostics;
 using System.IO;
 using Microsoft.Win32;
+using System.Linq;
+using System.Security;
+using System.Security.Principal;
 
 namespace SS14.Launcher.Bootstrap
 {
@@ -11,6 +14,28 @@ namespace SS14.Launcher.Bootstrap
         {
             UnfuckDotnetRoot();
 
+            if (args.Contains("--register-protocol"))
+            {
+                var key1 = Registry.ClassesRoot.CreateSubKey("ss14s");
+                key1!.SetValue("URL Protocol", "");
+                key1 = key1.CreateSubKey("Shell\\Open\\Command");
+                key1!.SetValue("", $"\"{AppDomain.CurrentDomain.BaseDirectory}Space Station 14 Launcher.exe\" \"%1\"");
+                key1.Close();
+
+                var key2 = Registry.ClassesRoot.CreateSubKey("ss14");
+                key2!.SetValue("URL Protocol", "");
+                key2 = key2.CreateSubKey("Shell\\Open\\Command");
+                key2!.SetValue("", $"\"{AppDomain.CurrentDomain.BaseDirectory}Space Station 14 Launcher.exe\" \"%1\"");
+                key2.Close();
+                Environment.Exit(0);
+            }
+            if (args.Contains("--unregister-protocol"))
+            {
+                Registry.ClassesRoot.DeleteSubKeyTree("ss14s");
+                Registry.ClassesRoot.DeleteSubKeyTree("ss14");
+                Environment.Exit(0);
+            }
+
             var path = typeof(Program).Assembly.Location;
             var ourDir = Path.GetDirectoryName(path);
             Debug.Assert(ourDir != null);
@@ -19,7 +44,15 @@ namespace SS14.Launcher.Bootstrap
             var exeDir = Path.Combine(ourDir, "bin", "SS14.Launcher.exe");
 
             Environment.SetEnvironmentVariable("DOTNET_ROOT", dotnetDir);
-            Process.Start(new ProcessStartInfo(exeDir, args[0]));
+            if (args.Length > 0)
+            {
+                var arguments = string.Join(" ", args);
+                Process.Start(new ProcessStartInfo(exeDir, arguments));
+            }
+            else
+            {
+                Process.Start(new ProcessStartInfo(exeDir));
+            }
         }
 
         private static void UnfuckDotnetRoot()

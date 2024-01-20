@@ -23,6 +23,10 @@ public static class ProtocolSetup
 
         if (OperatingSystem.IsLinux())
         {
+            var proc = new Process();
+            proc.StartInfo.FileName = "sh";
+            proc.StartInfo.Arguments = "xdg-mime default x-scheme-handler/ss14;xdg-mime default x-scheme-handler/ss14";
+            proc.Start();
         }
 
         return result;
@@ -37,9 +41,8 @@ public static class ProtocolSetup
             try
             {
                 var proc = new Process();
-                proc.StartInfo.FileName = "powershell.exe";
-                proc.StartInfo.Arguments = $"-executionpolicy bypass -windowstyle hidden -noninteractive -nologo " +
-                                           $"-file \"{AppDomain.CurrentDomain.BaseDirectory}windows_protocol_register.ps1\"";
+                proc.StartInfo.FileName = "Space Station 14 Launcher.exe";
+                proc.StartInfo.Arguments = "--register-protocol";
                 proc.StartInfo.UseShellExecute = true;
                 proc.StartInfo.Verb = "runas";
                 proc.Start();
@@ -56,6 +59,10 @@ public static class ProtocolSetup
 
         if (OperatingSystem.IsLinux())
         {
+            var proc = new Process();
+            proc.StartInfo.FileName = "xdg-mime";
+            proc.StartInfo.Arguments = "xdg-mime default SS14.desktop x-scheme-handler/ss14;xdg-mime default SS14.desktop x-scheme-handler/ss14s";
+            proc.Start();
         }
     }
     public static void UnregisterProtocol()
@@ -65,9 +72,8 @@ public static class ProtocolSetup
             try
             {
                 var proc = new Process();
-                proc.StartInfo.FileName = "powershell.exe";
-                proc.StartInfo.Arguments = $"-executionpolicy bypass -windowstyle hidden -noninteractive -nologo " +
-                                           $"-file \"{AppDomain.CurrentDomain.BaseDirectory}windows_protocol_unregister.ps1\"";
+                proc.StartInfo.FileName = "Space Station 14 Launcher.exe";
+                proc.StartInfo.Arguments = "--unregister-protocol";
                 proc.StartInfo.UseShellExecute = true;
                 proc.StartInfo.Verb = "runas";
                 proc.Start();
