@@ -67,6 +67,16 @@ public static class CVars
     public static readonly CVarDef<bool> LogLauncherVerbose = CVarDef.Create("LogLauncherVerbose", false);
 
     /// <summary>
+    /// Sentry error reporting
+    /// </summary>
+    public static readonly CVarDef<bool> EnableSentry = CVarDef.Create("EnableSentry", true);
+
+    /// <summary>
+    /// The DSN used for sentry.
+    /// </summary>
+    public static readonly CVarDef<string> SentryDsn = CVarDef.Create("SentryDsn", "");
+
+    /// <summary>
     /// Enable multi-account support on release builds.
     /// </summary>
     public static readonly CVarDef<bool> MultiAccounts = CVarDef.Create("MultiAccounts", false);

@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Net.Http.Headers;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
@@ -11,6 +13,7 @@ using Avalonia.Logging;
 using Avalonia.Media;
 using Avalonia.ReactiveUI;
 using Microsoft.Win32;
+using Sentry;
 using Serilog;
 using Serilog.Sinks.SystemConsole.Themes;
 using Splat;
@@ -87,7 +90,8 @@ internal static class Program
 
         var logCfg = new LoggerConfiguration()
             .MinimumLevel.Debug()
-            .WriteTo.Console(theme: AnsiConsoleTheme.Sixteen);
+            .WriteTo.Console(theme: AnsiConsoleTheme.Sixteen)
+            .WriteTo.Sentry();
 
         Log.Logger = logCfg.CreateLogger();
 
@@ -109,9 +113,23 @@ internal static class Program
                 .MinimumLevel.Is(cfg.GetCVar(CVars.LogLauncherVerbose) ? LogEventLevel.Verbose : LogEventLevel.Debug)
                 .WriteTo.Console(theme: AnsiConsoleTheme.Sixteen)
                 .WriteTo.File(LauncherPaths.PathLauncherLog)
+                .WriteTo.Sentry()
                 .CreateLogger();
         }
-
+#if !DEBUG
+        if (cfg.GetCVar(CVars.EnableSentry))
+        {
+            SentrySdk.Init(o =>
+            {
+                o.Dsn = cfg.GetCVar(CVars.SentryDsn);
+                o.Debug = true;
+                o.AutoSessionTracking = true;
+                o.IsGlobalModeEnabled = true;
+                o.SendDefaultPii = false;
+                o.SetupFilters();
+            });
+        }
+#endif
         LauncherDiagnostics.LogDiagnostics();
 
 #if DEBUG
