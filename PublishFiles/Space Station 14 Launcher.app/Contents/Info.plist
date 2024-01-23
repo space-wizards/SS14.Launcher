@@ -16,5 +16,28 @@
     -->
     <key>CFBundleIconFile</key>
     <string>ss14</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.spacestation14.launcher</string>
+    <key>CFBundleURLTypes</key>
+    <array>
+        <dict>
+            <key>CFBundleURLName</key>
+            <string>com.spacestation14.launcher</string>
+            <key>CFBundleURLSchemes</key>
+            <array>
+                <string>ss14</string>
+            </array>
+        </dict>
+    </array>
+    <array>
+        <dict>
+            <key>CFBundleURLName</key>
+            <string>com.spacestation14.launcher</string>
+            <key>CFBundleURLSchemes</key>
+            <array>
+                <string>ss14s</string>
+            </array>
+        </dict>
+    </array>
 </dict>
 </plist>
