@@ -8,7 +8,6 @@ public static class SentryExceptionFilter
 {
     private static IEnumerable<string> IgnoredSentryMessageFilter => new[]
     {
-        //"ThisWillNeverAppear"
         "HappyEyeballsHttp"
     };
 
