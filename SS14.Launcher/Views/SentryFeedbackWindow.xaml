@@ -1,0 +1,51 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="300" d:DesignHeight="100"
+        MinWidth="550" MinHeight="300"
+        Width="550" Height="300"
+        x:Class="SS14.Launcher.Views.SentryFeedbackWindow"
+        Icon="{DynamicResource WindowIcon}"
+        Title="Launcher Error"
+        Padding="8"
+        WindowStartupLocation="CenterOwner">
+
+  <Window.Styles>
+    <Style Selector="TextBox.Invalid /template/ Border#border">
+      <Setter Property="BorderBrush" Value="#e23229" />
+    </Style>
+    <Style>
+      <Style.Resources>
+        <Pen x:Key="Pen0" Brush="#e23229" Thickness="2" LineCap="Round" LineJoin="Round" MiterLimit="4" />
+      </Style.Resources>
+    </Style>
+  </Window.Styles>
+
+  <DockPanel>
+    <StackPanel Margin="0 4" Orientation="Horizontal" DockPanel.Dock="Top" HorizontalAlignment="Stretch">
+      <Image Name="WarningIcon" Height="32" Width="32" Margin="8 0">
+        <DrawingImage>
+          <DrawingGroup>
+            <GeometryDrawing Pen="{DynamicResource Pen0}" Geometry="F1 M10.29 3.86L1.82 18Q1.78743 18.0564 1.7586 18.1148Q1.72977 18.1732 1.7048 18.2334Q1.67983 18.2935 1.65883 18.3552Q1.63782 18.4168 1.62087 18.4797Q1.60393 18.5426 1.59111 18.6065Q1.57829 18.6703 1.56965 18.7349Q1.56101 18.7994 1.55659 18.8644Q1.55217 18.9294 1.55199 18.9945Q1.55181 19.0597 1.55586 19.1247Q1.55992 19.1897 1.56819 19.2543Q1.57647 19.3189 1.58893 19.3828Q1.6014 19.4467 1.61799 19.5097Q1.63459 19.5727 1.65524 19.6345Q1.6759 19.6962 1.70053 19.7565Q1.72517 19.8168 1.75367 19.8754Q1.78217 19.9339 1.81443 19.9905Q1.84668 20.0471 1.88255 20.1015Q1.91841 20.1558 1.95774 20.2078Q1.99707 20.2597 2.03969 20.3089Q2.08231 20.3582 2.12805 20.4046Q2.17379 20.4509 2.22244 20.4942Q2.2711 20.5375 2.32247 20.5776Q2.37384 20.6176 2.42771 20.6542Q2.48157 20.6908 2.53771 20.7239Q2.59384 20.7569 2.65201 20.7862Q2.71017 20.8155 2.77012 20.841Q2.83007 20.8664 2.89155 20.8879Q2.95303 20.9094 3.01577 20.9269Q3.07852 20.9444 3.14227 20.9577Q3.20602 20.971 3.2705 20.9802Q3.33499 20.9894 3.39993 20.9943Q3.46487 20.9993 3.53 21L20.47 21Q20.5351 20.9993 20.6001 20.9943Q20.665 20.9894 20.7295 20.9802Q20.794 20.971 20.8577 20.9577Q20.9215 20.9444 20.9842 20.9269Q21.047 20.9094 21.1085 20.8879Q21.1699 20.8664 21.2299 20.841Q21.2898 20.8155 21.348 20.7862Q21.4062 20.7569 21.4623 20.7238Q21.5184 20.6908 21.5723 20.6542Q21.6262 20.6176 21.6775 20.5776Q21.7289 20.5375 21.7776 20.4942Q21.8262 20.4509 21.872 20.4045Q21.9177 20.3582 21.9603 20.3089Q22.0029 20.2597 22.0423 20.2078Q22.0816 20.1558 22.1175 20.1015Q22.1533 20.0471 22.1856 19.9905Q22.2178 19.9339 22.2463 19.8754Q22.2748 19.8168 22.2995 19.7565Q22.3241 19.6962 22.3448 19.6345Q22.3654 19.5727 22.382 19.5097Q22.3986 19.4467 22.4111 19.3828Q22.4235 19.3189 22.4318 19.2543Q22.4401 19.1897 22.4441 19.1247Q22.4482 19.0596 22.448 18.9945Q22.4478 18.9294 22.4434 18.8644Q22.439 18.7994 22.4303 18.7349Q22.4217 18.6703 22.4089 18.6065Q22.3961 18.5426 22.3791 18.4797Q22.3622 18.4168 22.3412 18.3552Q22.3202 18.2935 22.2952 18.2334Q22.2702 18.1732 22.2414 18.1148Q22.2126 18.0564 22.18 18L13.71 3.86Q13.6767 3.80518 13.64 3.7526Q13.6034 3.70002 13.5634 3.6499Q13.5234 3.59978 13.4803 3.55232Q13.4371 3.50487 13.3911 3.46027Q13.345 3.41567 13.2962 3.37412Q13.2473 3.33256 13.1959 3.29422Q13.1446 3.25588 13.0908 3.22091Q13.0371 3.18594 12.9812 3.15448Q12.9253 3.12303 12.8676 3.09521Q12.8098 3.0674 12.7503 3.04334Q12.6909 3.01929 12.6301 2.99909Q12.5692 2.97889 12.5072 2.96263Q12.4452 2.94637 12.3822 2.93412Q12.3193 2.92186 12.2557 2.91367Q12.1921 2.90547 12.1281 2.90136Q12.0641 2.89726 12 2.89726Q11.9359 2.89726 11.8719 2.90136Q11.8079 2.90547 11.7443 2.91367Q11.6807 2.92186 11.6178 2.93412Q11.5548 2.94637 11.4928 2.96263Q11.4308 2.97889 11.3699 2.99909Q11.3091 3.01929 11.2497 3.04334Q11.1902 3.0674 11.1325 3.09521Q11.0747 3.12303 11.0188 3.15448Q10.9629 3.18594 10.9092 3.22091Q10.8554 3.25588 10.8041 3.29422Q10.7527 3.33256 10.7038 3.37412Q10.655 3.41567 10.6089 3.46027Q10.5629 3.50487 10.5197 3.55232Q10.4766 3.59978 10.4366 3.6499Q10.3966 3.70002 10.36 3.7526Q10.3233 3.80518 10.29 3.86Z" />
+            <GeometryDrawing Pen="{DynamicResource Pen0}" Geometry="F1 M12 9L12 13" />
+            <GeometryDrawing Pen="{DynamicResource Pen0}" Geometry="F1 M12 17L12.01 17" />
+          </DrawingGroup>
+        </DrawingImage>
+      </Image>
+      <TextBlock Width="350" TextWrapping="Wrap" Name="Content" HorizontalAlignment="Left" DockPanel.Dock="Top"
+                 Text="An error occured and an anonymous report will automatically be sent."/>
+    </StackPanel>
+
+    <TextBlock DockPanel.Dock="Top" Text="Feedback" Classes="NanoHeadingSmall"/>
+    <TextBox Name="FeedbackField" Margin="4" DockPanel.Dock="Top"  Watermark="Write what happened..."
+             NewLine="&#x0a;" AcceptsReturn="True" HorizontalAlignment="Stretch" Height="180"
+             PropertyChanged="FeedbackTextChanged"/>
+
+    <TextBlock DockPanel.Dock="Top" Name="ValidationText" Classes="SubText"/>
+
+    <StackPanel Orientation="Horizontal" FlowDirection="RightToLeft"  HorizontalAlignment="Stretch" VerticalAlignment="Bottom" DockPanel.Dock="Bottom" Height="42">
+      <Button HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="4 0" Name="SendButton" Content="Send" />
+    </StackPanel>
+  </DockPanel>
+</Window>

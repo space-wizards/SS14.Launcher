@@ -289,6 +289,8 @@ internal static class Program
         };
         viewModel.OnWindowInitialized();
 
+        SentryExceptionFilter.Window = new WeakReference<MainWindow>(window);
+
         var lc = new LauncherCommands(viewModel);
         lc.RunCommandTask();
         Locator.CurrentMutable.RegisterConstant(lc);

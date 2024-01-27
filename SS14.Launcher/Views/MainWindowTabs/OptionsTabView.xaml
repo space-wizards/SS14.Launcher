@@ -46,6 +46,11 @@
                    Text="For when the developers are *very* stumped with your problem. (requires launcher restart)"
                    Margin="8" />
 
+        <CheckBox VerticalAlignment="Center" Margin="4" IsChecked="{Binding EnableSentry}">Error Reporting</CheckBox>
+        <TextBlock VerticalAlignment="Center" TextWrapping="Wrap"
+                   Text="Automatically report errors. (requires launcher restart)"
+                   Margin="8" />
+
         <CheckBox VerticalAlignment="Center" Margin="4" IsChecked="{Binding OverrideAssets}">Seasonal Branding</CheckBox>
         <TextBlock VerticalAlignment="Center" TextWrapping="Wrap"
                    Text="Whatever temporally relevant icons and logos we can come up with."

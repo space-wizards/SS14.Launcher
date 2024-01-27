@@ -69,7 +69,12 @@ public static class CVars
     /// <summary>
     /// Sentry error reporting
     /// </summary>
-    public static readonly CVarDef<bool> EnableSentry = CVarDef.Create("EnableSentry", true);
+    public static readonly CVarDef<bool> HasSeenSentryInquiry = CVarDef.Create("HasSeenSentryInquiry", false);
+
+    /// <summary>
+    /// Sentry error reporting
+    /// </summary>
+    public static readonly CVarDef<bool> EnableSentry = CVarDef.Create("EnableSentry", false);
 
     /// <summary>
     /// The DSN used for sentry.
