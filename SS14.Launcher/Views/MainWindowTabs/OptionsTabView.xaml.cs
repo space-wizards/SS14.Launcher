@@ -47,16 +47,11 @@ public partial class OptionsTabView : UserControl
 
     private async void RegisterProtocols(object? _1, RoutedEventArgs _2)
     {
-        if (ProtocolSetup.CheckExisting())
-        {
-            Log.Information("We already have the protocols registered.");
-            ProtocolSetup.UnregisterProtocol();
-        }
-        else
-        {
-            Log.Information("We don't have the protocols registered.");
-            ProtocolSetup.RegisterProtocol();
-        }
+        ProtocolSetup.RegisterProtocol();
+    }
 
+    private async void UnregisterProtocols(object? _1, RoutedEventArgs _2)
+    {
+        ProtocolSetup.UnregisterProtocol();
     }
 }

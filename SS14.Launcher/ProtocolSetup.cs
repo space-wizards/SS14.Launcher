@@ -40,8 +40,6 @@ public static class ProtocolSetup
 
         return result;
     }
-
-
     public static void RegisterProtocol()
     {
         // Windows registration
@@ -65,7 +63,8 @@ public static class ProtocolSetup
         // macOS registration
         if (OperatingSystem.IsMacOS())
         {
-            //#if FULL_RELEASE
+            // Yeah you cant get this to work on dev builds
+            #if FULL_RELEASE
             var path = $"{AppDomain.CurrentDomain.BaseDirectory}";
 
             // > be me
@@ -94,7 +93,7 @@ public static class ProtocolSetup
             proc.StartInfo.FileName = "/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister";
             proc.StartInfo.Arguments = $"-f {newPath}";
             proc.Start();
-            //#endif
+            #endif
         }
         // Linux registration
         if (OperatingSystem.IsLinux())
@@ -105,6 +104,7 @@ public static class ProtocolSetup
             proc.StartInfo.Arguments = "xdg-mime default SS14.desktop x-scheme-handler/ss14;xdg-mime default SS14.desktop x-scheme-handler/ss14s";
             proc.Start();
         }
+        Log.Information("Successfully registered protocol");
     }
     public static void UnregisterProtocol()
     {
@@ -129,7 +129,8 @@ public static class ProtocolSetup
         // macOS unregistration
         if (OperatingSystem.IsMacOS())
         {
-            //#if FULL_RELEASE
+            #if FULL_RELEASE
+            Log.Information("Unregistering protocol for macos...");
             var path = $"{AppDomain.CurrentDomain.BaseDirectory}";
 
             var newPath = string.Empty;
@@ -143,12 +144,13 @@ public static class ProtocolSetup
             proc.StartInfo.FileName = "/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister";
             proc.StartInfo.Arguments = $"-u {newPath}";
             proc.Start();
-            //#endif
+            #endif
         }
         // Linux unregistration
         if (OperatingSystem.IsLinux())
         {
             // todo ditto (2)
         }
+        Log.Information("Successfully unregistered protocol");
     }
 }
