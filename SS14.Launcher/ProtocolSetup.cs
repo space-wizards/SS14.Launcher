@@ -19,7 +19,9 @@ public static class ProtocolSetup
 
         if (OperatingSystem.IsMacOS())
         {
-            // todo do this (1)
+            // todo do this
+            // I got no idea how to do this, lsregister does not report anything.
+            // Lets just assume theres no record
         }
 
         if (OperatingSystem.IsLinux())
@@ -60,19 +62,41 @@ public static class ProtocolSetup
                 Log.Warning("User declined UAC or doesn't have admin rights.");
             }
         }
+        // macOS registration
         if (OperatingSystem.IsMacOS())
         {
-            // todo ditto (1)
-            // https://eclecticlight.co/2019/03/25/lsregister-a-valuable-undocumented-command-for-launchservices/
-            // https://ss64.com/mac/lsregister.html
+            //#if FULL_RELEASE
+            var path = $"{AppDomain.CurrentDomain.BaseDirectory}";
+
+            // > be me
+            // > write protocol registration code
+            // > application runs in some wierd sandbox folder
+            // > :despair:
+            // > find out its about that its cause the user needs to move the app to the applications folder...
+            // > ... or any "suitable" folder...
+            // tldr user needs to move the app manually to get this sandbox restriction lifted. This can be done by
+            // making one of those installer dmg stuff
+            if (path.Contains("AppTranslocation"))
+            {
+                Log.Error("I have been put in apple jail... move me to your application folder");
+                return;
+            }
+
+            var newPath = string.Empty;
+            var appIndex = path.IndexOf(".app", StringComparison.Ordinal);
+            if (appIndex >= 0)
+            {
+                newPath = path.Substring(0, appIndex + 4);
+            }
 
             var proc = new Process();
             // Yes you have to manually go to this
             proc.StartInfo.FileName = "/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister";
-            proc.StartInfo.Arguments = "-f /path/to/your/app.app";
+            proc.StartInfo.Arguments = $"-f {newPath}";
             proc.Start();
+            //#endif
         }
-
+        // Linux registration
         if (OperatingSystem.IsLinux())
         {
             // todo ditto (2)
@@ -84,6 +108,7 @@ public static class ProtocolSetup
     }
     public static void UnregisterProtocol()
     {
+        // Windows unregistration
         if (OperatingSystem.IsWindows())
         {
             try
@@ -101,15 +126,26 @@ public static class ProtocolSetup
                 Log.Warning("User declined UAC or doesn't have admin rights.");
             }
         }
+        // macOS unregistration
         if (OperatingSystem.IsMacOS())
         {
-            // todo ditto (1)
+            //#if FULL_RELEASE
+            var path = $"{AppDomain.CurrentDomain.BaseDirectory}";
+
+            var newPath = string.Empty;
+            var appIndex = path.IndexOf(".app", StringComparison.Ordinal);
+            if (appIndex >= 0)
+            {
+                newPath = path.Substring(0, appIndex + 4);
+            }
+
             var proc = new Process();
             proc.StartInfo.FileName = "/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister";
-            proc.StartInfo.Arguments = "-u /path/to/your/app.app";
+            proc.StartInfo.Arguments = $"-u {newPath}";
             proc.Start();
+            //#endif
         }
-
+        // Linux unregistration
         if (OperatingSystem.IsLinux())
         {
             // todo ditto (2)

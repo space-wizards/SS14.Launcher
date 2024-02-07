@@ -26,15 +26,6 @@
             <key>CFBundleURLSchemes</key>
             <array>
                 <string>ss14</string>
-            </array>
-        </dict>
-    </array>
-    <array>
-        <dict>
-            <key>CFBundleURLName</key>
-            <string>com.spacestation14.launcher</string>
-            <key>CFBundleURLSchemes</key>
-            <array>
                 <string>ss14s</string>
             </array>
         </dict>
