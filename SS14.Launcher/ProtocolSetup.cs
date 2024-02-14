@@ -19,7 +19,7 @@ public static class ProtocolSetup
 
         if (OperatingSystem.IsMacOS())
         {
-            // todo do this
+            // todo macos check existing protocol setup
             // I got no idea how to do this, lsregister does not report anything.
             // Lets just assume theres no record
         }
@@ -30,8 +30,8 @@ public static class ProtocolSetup
             // this will assume you have downloaded the zip launcher
             // todo how do i get data to see the output of this
             var proc = new Process();
-            proc.StartInfo.FileName = "sh";
-            proc.StartInfo.Arguments = "xdg-mime default x-scheme-handler/ss14;xdg-mime default x-scheme-handler/ss14";
+            proc.StartInfo.FileName = "xdg-mime";
+            proc.StartInfo.Arguments = "default x-scheme-handler/ss14;xdg-mime default x-scheme-handler/ss14";
             proc.Start();
             // https://stackoverflow.com/questions/206323/how-to-execute-command-line-in-c-get-std-out-results
             string output = proc.StandardOutput.ReadToEnd();
@@ -64,6 +64,9 @@ public static class ProtocolSetup
         if (OperatingSystem.IsMacOS())
         {
             // Yeah you cant get this to work on dev builds
+            // NOTICE: I have given up on macos. More info on the pr. I cant get params to pass in cause
+            // apple is special. You are free to do it
+            //todo macos protocol pass params
             #if FULL_RELEASE
             var path = $"{AppDomain.CurrentDomain.BaseDirectory}";
 
@@ -98,10 +101,12 @@ public static class ProtocolSetup
         // Linux registration
         if (OperatingSystem.IsLinux())
         {
+            var desktopfile = "";
+
             // todo ditto (2)
             var proc = new Process();
             proc.StartInfo.FileName = "xdg-mime";
-            proc.StartInfo.Arguments = "xdg-mime default SS14.desktop x-scheme-handler/ss14;xdg-mime default SS14.desktop x-scheme-handler/ss14s";
+            proc.StartInfo.Arguments = $"default {desktopfile} x-scheme-handler/ss14;xdg-mime default SS14.desktop x-scheme-handler/ss14s";
             proc.Start();
         }
         Log.Information("Successfully registered protocol");
@@ -129,6 +134,8 @@ public static class ProtocolSetup
         // macOS unregistration
         if (OperatingSystem.IsMacOS())
         {
+            // This just... seems to do nothing. Its correct to my documentation...
+            // todo macos protocols remove logic
             #if FULL_RELEASE
             Log.Information("Unregistering protocol for macos...");
             var path = $"{AppDomain.CurrentDomain.BaseDirectory}";
