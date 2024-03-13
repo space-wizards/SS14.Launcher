@@ -16,23 +16,48 @@ namespace SS14.Launcher.Bootstrap
 
             if (args.Contains("--register-protocol"))
             {
-                var key1 = Registry.ClassesRoot.CreateSubKey("ss14s");
-                key1!.SetValue("URL Protocol", "");
-                key1 = key1.CreateSubKey("Shell\\Open\\Command");
-                key1!.SetValue("", $"\"{AppDomain.CurrentDomain.BaseDirectory}Space Station 14 Launcher.exe\" \"%1\"");
-                key1.Close();
+                // ss14s://
+                var key = Registry.ClassesRoot.CreateSubKey("ss14s");
+                key!.SetValue("URL Protocol", "Space Station 14 Secure protocol");
+                key = key.CreateSubKey("Shell\\Open\\Command");
+                key!.SetValue("", $"\"{AppDomain.CurrentDomain.BaseDirectory}Space Station 14 Launcher.exe\" \"%1\"");
+                key.Close();
 
-                var key2 = Registry.ClassesRoot.CreateSubKey("ss14");
-                key2!.SetValue("URL Protocol", "");
-                key2 = key2.CreateSubKey("Shell\\Open\\Command");
-                key2!.SetValue("", $"\"{AppDomain.CurrentDomain.BaseDirectory}Space Station 14 Launcher.exe\" \"%1\"");
-                key2.Close();
+                // ss14://
+                key = Registry.ClassesRoot.CreateSubKey("ss14");
+                key!.SetValue("URL Protocol", "Space Station 14 protocol");
+                key = key.CreateSubKey("Shell\\Open\\Command");
+                key!.SetValue("", $"\"{AppDomain.CurrentDomain.BaseDirectory}Space Station 14 Launcher.exe\" \"%1\"");
+                key.Close();
+
+                // RobustToolbox (required for the file extensions)
+                key = Registry.ClassesRoot.CreateSubKey("Robust Toolbox");
+                key!.SetValue("", "Robust Toolbox Bundle");
+                var icon = key.CreateSubKey("DefaultIcon");
+                icon!.SetValue("", $"{AppDomain.CurrentDomain.BaseDirectory}Space Station 14 Launcher.exe");
+                key = key.CreateSubKey("Shell\\Open\\Command");
+                key!.SetValue("", $"\"{AppDomain.CurrentDomain.BaseDirectory}Space Station 14 Launcher.exe\" \"%1\"");
+                key.Close();
+
+                // .rtbundle
+                key = Registry.ClassesRoot.CreateSubKey(".rtbundle");
+                key!.SetValue("", "Robust Toolbox");
+                key.Close();
+
+                // .rtreplay
+                key = Registry.ClassesRoot.CreateSubKey(".rtreplay");
+                key!.SetValue("", "Robust Toolbox");
+                key.Close();
+
                 Environment.Exit(0);
             }
             if (args.Contains("--unregister-protocol"))
             {
                 Registry.ClassesRoot.DeleteSubKeyTree("ss14s");
                 Registry.ClassesRoot.DeleteSubKeyTree("ss14");
+                Registry.ClassesRoot.DeleteSubKeyTree("Space Station 14");
+                Registry.ClassesRoot.DeleteSubKeyTree(".rtbundle");
+                Registry.ClassesRoot.DeleteSubKeyTree(".rtreplay");
                 Environment.Exit(0);
             }
 
