@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Net.Http.Headers;
 using System.Text;
@@ -53,13 +54,21 @@ internal static class Program
         // Parse arguments as early as possible for launcher messaging reasons.
         string[] commands = { LauncherCommands.PingCommand };
         var commandSendAnyway = false;
+        File.WriteAllText("args.txt", string.Join(", ", args));
         if (args.Length == 1)
         {
-            // Check if this is a valid Uri, since that indicates re-invocation.
-            if (Uri.TryCreate(args[0], UriKind.Absolute, out var result))
+            // Handle files being opened with the launcher.
+            if (args.Any(arg => arg.StartsWith("file://") || arg.EndsWith(".rtbundle") || arg.EndsWith(".rtreplay")))
             {
-                commands = new string[]
-                    { LauncherCommands.BlankReasonCommand, LauncherCommands.ConstructConnectCommand(result) };
+                commands = [LauncherCommands.BlankReasonCommand, LauncherCommands.ConstructContentBundleCommand(args[0])
+                ];
+                commandSendAnyway = true;
+            }
+
+            // Check if this is a valid Uri, since that indicates re-invocation.
+            else if (Uri.TryCreate(args[0], UriKind.Absolute, out var result))
+            {
+                commands = [LauncherCommands.BlankReasonCommand, LauncherCommands.ConstructConnectCommand(result)];
                 // This ensures we queue up the connection even if we're starting the launcher now.
                 commandSendAnyway = true;
             }

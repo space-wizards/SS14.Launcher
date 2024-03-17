@@ -31,8 +31,8 @@ namespace SS14.Launcher.Bootstrap
                 key.Close();
 
                 // RobustToolbox (required for the file extensions)
-                key = Registry.ClassesRoot.CreateSubKey("Robust Toolbox");
-                key!.SetValue("", "Robust Toolbox Bundle");
+                key = Registry.ClassesRoot.CreateSubKey("RobustToolbox");
+                key!.SetValue("", "Robust Toolbox Bundle File");
                 var icon = key.CreateSubKey("DefaultIcon");
                 icon!.SetValue("", $"{AppDomain.CurrentDomain.BaseDirectory}Space Station 14 Launcher.exe");
                 key = key.CreateSubKey("Shell\\Open\\Command");
@@ -41,12 +41,12 @@ namespace SS14.Launcher.Bootstrap
 
                 // .rtbundle
                 key = Registry.ClassesRoot.CreateSubKey(".rtbundle");
-                key!.SetValue("", "Robust Toolbox");
+                key!.SetValue("", "RobustToolbox");
                 key.Close();
 
                 // .rtreplay
                 key = Registry.ClassesRoot.CreateSubKey(".rtreplay");
-                key!.SetValue("", "Robust Toolbox");
+                key!.SetValue("", "RobustToolbox");
                 key.Close();
 
                 Environment.Exit(0);
@@ -55,7 +55,7 @@ namespace SS14.Launcher.Bootstrap
             {
                 Registry.ClassesRoot.DeleteSubKeyTree("ss14s");
                 Registry.ClassesRoot.DeleteSubKeyTree("ss14");
-                Registry.ClassesRoot.DeleteSubKeyTree("Space Station 14");
+                Registry.ClassesRoot.DeleteSubKeyTree("RobustToolbox");
                 Registry.ClassesRoot.DeleteSubKeyTree(".rtbundle");
                 Registry.ClassesRoot.DeleteSubKeyTree(".rtreplay");
                 Environment.Exit(0);
@@ -71,8 +71,9 @@ namespace SS14.Launcher.Bootstrap
             Environment.SetEnvironmentVariable("DOTNET_ROOT", dotnetDir);
             if (args.Length > 0)
             {
-                var arguments = string.Join(" ", args);
-                Process.Start(new ProcessStartInfo(exeDir, arguments));
+                // blursed
+                // thanks anonymous for how to make args pass in properly
+                Process.Start(new ProcessStartInfo(exeDir, string.Join("", args.Select((str) => $"\"{str}\" "))));
             }
             else
             {
