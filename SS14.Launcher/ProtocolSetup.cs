@@ -14,7 +14,9 @@ public static class ProtocolSetup
         {
             using var key1 = Registry.ClassesRoot.OpenSubKey("ss14s", false);
             using var key2 = Registry.ClassesRoot.OpenSubKey("ss14", false);
-            result = key1 != null && key2 != null;
+            using var key3 = Registry.ClassesRoot.OpenSubKey("RobustToolbox", false);
+            // no need to check the extension keys, they point to RobustToolbox
+            result = key1 != null && key2 != null && key3 != null;
         }
 
         if (OperatingSystem.IsMacOS())

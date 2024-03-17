@@ -54,7 +54,6 @@ internal static class Program
         // Parse arguments as early as possible for launcher messaging reasons.
         string[] commands = { LauncherCommands.PingCommand };
         var commandSendAnyway = false;
-        File.WriteAllText("args.txt", string.Join(", ", args));
         if (args.Length == 1)
         {
             // Handle files being opened with the launcher.
