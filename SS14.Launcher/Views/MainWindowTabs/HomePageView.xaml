@@ -3,6 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:mainWindowTabs="clr-namespace:SS14.Launcher.ViewModels.MainWindowTabs"
+             xmlns:views="clr-namespace:SS14.Launcher.Views"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SS14.Launcher.Views.MainWindowTabs.HomePageView">
   <Design.DataContext>
@@ -15,14 +16,20 @@
 
     <!-- Favorites -->
     <DockPanel DockPanel.Dock="Top" LastChildFill="False" Margin="4, 0, 4, 2">
-      <TextBlock DockPanel.Dock="Left" Text="Favorite Servers:" Classes="NanoHeadingMedium" />
-      <Button DockPanel.Dock="Right" Content="Add Favorite..." Classes="OpenLeft" Command="{Binding AddFavoritePressed}" />
-      <Button DockPanel.Dock="Right" Content="Refresh" Classes="OpenRight" Command="{Binding RefreshPressed}" />
+      <TextBlock DockPanel.Dock="Left" Text="Favorite Servers" Classes="NanoHeadingMedium" />
+      <Button DockPanel.Dock="Right" Classes="OpenLeft" Command="{Binding AddFavoritePressed}">
+        <views:IconLabel Icon="{DynamicResource ButtonIcon-plus}" Height="20" Width="20" />
+        <ToolTip.Tip>Add favorite server</ToolTip.Tip>
+      </Button>
+      <Button DockPanel.Dock="Right" Classes="OpenRight" Command="{Binding RefreshPressed}">
+        <views:IconLabel Icon="{DynamicResource ButtonIcon-refresh}" Height="20" Width="20" />
+        <ToolTip.Tip>Refresh</ToolTip.Tip>
+      </Button>
     </DockPanel>
 
     <DockPanel DockPanel.Dock="Bottom" LastChildFill="False" Margin="0, 5, 5, 1">
       <Button DockPanel.Dock="Right" HorizontalAlignment="Right"  Classes="OpenLeft"
-              Content="Direct Connect To Server..."
+              Content="Direct connect to server"
               Command="{Binding DirectConnectPressed}" />
       <Button DockPanel.Dock="Right" HorizontalAlignment="Right" Classes="OpenRight"
               Content="Run content bundle/replay"

@@ -56,9 +56,14 @@
 
           <DockPanel Dock="Right">
             <!-- Favorite add/remove button -->
-            <Button Classes="OpenRight"
-                    Content="{Binding FavoriteButtonText}"
-                    Command="{Binding FavoriteButtonPressed}" />
+            <Button Name="FavoriteButton"
+                    Classes="OpenRight"
+                    Command="{Binding FavoriteButtonPressed}">
+              <views:IconLabel Name="FavoriteButtonIconLabel"
+                               Icon="{DynamicResource ButtonIcon-star}"
+                               Content="{Binding FavoriteButtonText}"
+                               Height="20" />
+            </Button>
 
             <!-- Raise to top button. -->
             <Button IsVisible="{Binding ViewedInFavoritesPane}"
