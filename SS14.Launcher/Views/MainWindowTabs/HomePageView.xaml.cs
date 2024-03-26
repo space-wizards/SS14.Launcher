@@ -50,7 +50,7 @@ public partial class HomePageView : UserControl
         {
             Filters = new List<FileDialogFilter>
             {
-                new() { Extensions = new List<string> { "zip" }, Name = "Content bundle files" }
+                new() { Extensions = new List<string> { "zip", "rtbundle", "rtreplay" }, Name = "Content bundle files" }
             },
             Title = "Open replay or content bundle"
         };

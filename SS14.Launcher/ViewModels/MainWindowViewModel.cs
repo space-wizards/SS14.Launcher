@@ -267,7 +267,7 @@ public sealed class MainWindowViewModel : ViewModelBase, IErrorOverlayOwner
         if (ConnectingVM != null)
             return false;
 
-        return Path.GetExtension(fileName) == ".zip";
+        return new List<string> { ".zip", ".rtbundle", ".rtreplay" }.Contains(Path.GetExtension(fileName));
     }
 
     public void Dropped(string fileName)
