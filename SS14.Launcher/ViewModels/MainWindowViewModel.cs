@@ -277,4 +277,30 @@ public sealed class MainWindowViewModel : ViewModelBase, IErrorOverlayOwner
 
         ConnectingViewModel.StartContentBundle(this, fileName);
     }
+
+    public async Task OnWindowLoaded()
+    {
+#if !DEBUG
+            await InquireSentryPermission();
+#endif
+    }
+
+    private async Task InquireSentryPermission()
+    {
+        if (_cfg.GetCVar(CVars.HasSeenSentryInquiry))
+            return;
+
+
+        var dialog = new ConfirmDialog
+        {
+            Title = "Error Reporting",
+            DialogContent = "Allow errors to automatically be uploaded?",
+            ConfirmButtonText = "Allow",
+            CancelButtonText = "Deny"
+        };
+
+        var result = await dialog.ShowDialog<bool>(Control!);
+        _cfg.SetCVar(CVars.HasSeenSentryInquiry, true);
+        _cfg.SetCVar(CVars.EnableSentry, result);
+    }
 }
