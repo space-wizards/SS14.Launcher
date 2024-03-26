@@ -22,6 +22,14 @@
                      MinWidth="80"
                      Margin="10, 0" />
           <Rectangle DockPanel.Dock="Right" Classes="VerticalSeparator" />
+          <TextBlock DockPanel.Dock="Right" VerticalAlignment="Center"
+                     TextAlignment="Center" Text="{Binding BunkerIcon}"
+                     MinWidth="20" Margin="5, 0" ToolTip.ShowDelay="0">
+            <ToolTip.Tip>
+              <TextBlock Text="{Binding BunkerText}" />
+            </ToolTip.Tip>
+          </TextBlock>
+          <Rectangle DockPanel.Dock="Right" Classes="VerticalSeparator" />
           <TextBlock VerticalAlignment="Center" Text="{Binding Name}" TextTrimming="CharacterEllipsis"/>
         </DockPanel>
       </Expander.Header>
