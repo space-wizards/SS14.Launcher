@@ -6,6 +6,7 @@ using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
 using Serilog;
+using TerraFX.Interop.Windows;
 
 namespace SS14.Launcher;
 
@@ -28,6 +29,21 @@ public static class HappyEyeballsHttp
         if (!string.IsNullOrEmpty(proxyURL))
         {
             WebProxy webProxy = new WebProxy(proxyURL);
+            Uri proxyURLUri = new Uri(proxyURL);
+            Log.Debug(proxyURLUri.UserInfo);
+            if (!string.IsNullOrWhiteSpace(proxyURLUri.UserInfo))
+            {
+                string[] credentials = proxyURLUri.UserInfo.Split(new[] { ':' });
+                
+
+                if (credentials.Length > 1)
+                {
+                    webProxy.Credentials = new NetworkCredential(
+                        userName: credentials[0],
+                        password: credentials[1]);
+                }
+            }
+            
             handler.Proxy = webProxy;
         }
 
