@@ -30,7 +30,6 @@ public static class HappyEyeballsHttp
         {
             WebProxy webProxy = new WebProxy(proxyURL);
             Uri proxyURLUri = new Uri(proxyURL);
-            Log.Debug(proxyURLUri.UserInfo);
             if (!string.IsNullOrWhiteSpace(proxyURLUri.UserInfo))
             {
                 string[] credentials = proxyURLUri.UserInfo.Split(new[] { ':' });
