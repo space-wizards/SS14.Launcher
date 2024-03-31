@@ -17,7 +17,7 @@ public static class HappyEyeballsHttp
     // This is the workaround.
     //
     // Implementation taken from https://github.com/ppy/osu-framework/pull/4191/files
-    public static HttpClient CreateHttpClient(bool autoRedirect = true, String ?proxyURL = null)
+    public static HttpClient CreateHttpClient(bool autoRedirect = true, String? proxyURL = null)
     {
         var handler = new SocketsHttpHandler
         {
@@ -35,7 +35,6 @@ public static class HappyEyeballsHttp
             {
                 string[] credentials = proxyURLUri.UserInfo.Split(new[] { ':' });
                 
-
                 if (credentials.Length > 1)
                 {
                     webProxy.Credentials = new NetworkCredential(

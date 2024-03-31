@@ -224,7 +224,7 @@ internal static class Program
     private static AppBuilder BuildAvaloniaApp(DataManager cfg)
     {
         var locator = Locator.CurrentMutable;
-        var http = (cfg.GetCVar(CVars.ProxyEnable)) ? HappyEyeballsHttp.CreateHttpClient(true, cfg.GetCVar(CVars.ProxyURL)) : HappyEyeballsHttp.CreateHttpClient();
+        var http = (cfg.GetCVar(CVars.ProxyEnable)) ? HappyEyeballsHttp.CreateHttpClient(proxyURL: cfg.GetCVar(CVars.ProxyURL)) : HappyEyeballsHttp.CreateHttpClient();
         
         http.DefaultRequestHeaders.UserAgent.Add(
             new ProductInfoHeaderValue(LauncherVersion.Name, LauncherVersion.Version?.ToString()));
