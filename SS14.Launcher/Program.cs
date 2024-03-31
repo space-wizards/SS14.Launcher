@@ -224,8 +224,8 @@ internal static class Program
     private static AppBuilder BuildAvaloniaApp(DataManager cfg)
     {
         var locator = Locator.CurrentMutable;
-
-        var http = HappyEyeballsHttp.CreateHttpClient();
+        var http = (cfg.GetCVar(CVars.ProxyEnable)) ? HappyEyeballsHttp.CreateHttpClient(true, cfg.GetCVar(CVars.ProxyURL)) : HappyEyeballsHttp.CreateHttpClient();
+        
         http.DefaultRequestHeaders.UserAgent.Add(
             new ProductInfoHeaderValue(LauncherVersion.Name, LauncherVersion.Version?.ToString()));
         http.DefaultRequestHeaders.Add("SS14-Launcher-Fingerprint", cfg.Fingerprint.ToString());

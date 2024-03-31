@@ -88,6 +88,26 @@ public class OptionsTabViewModel : MainWindowTabViewModel
         }
     }
 
+    public bool ProxyEnable
+    {
+        get => Cfg.GetCVar(CVars.ProxyEnable);
+        set
+        {
+            Cfg.SetCVar(CVars.ProxyEnable, value);
+            Cfg.CommitConfig();
+        }
+    }
+
+    public string ProxyURL
+    {
+        get => Cfg.GetCVar(CVars.ProxyURL);
+        set
+        {
+            Cfg.SetCVar(CVars.ProxyURL, value);
+            Cfg.CommitConfig();
+        }
+    }
+
     public void ClearEngines()
     {
         _engineManager.ClearAllEngines();

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Net;
 using System.Net.Http;
@@ -16,7 +16,7 @@ public static class HappyEyeballsHttp
     // This is the workaround.
     //
     // Implementation taken from https://github.com/ppy/osu-framework/pull/4191/files
-    public static HttpClient CreateHttpClient(bool autoRedirect = true)
+    public static HttpClient CreateHttpClient(bool autoRedirect = true, String ?proxyURL = null)
     {
         var handler = new SocketsHttpHandler
         {
@@ -24,6 +24,12 @@ public static class HappyEyeballsHttp
             AutomaticDecompression = DecompressionMethods.All,
             AllowAutoRedirect = autoRedirect
         };
+
+        if (!string.IsNullOrEmpty(proxyURL))
+        {
+            WebProxy webProxy = new WebProxy(proxyURL);
+            handler.Proxy = webProxy;
+        }
 
         return new HttpClient(handler);
     }

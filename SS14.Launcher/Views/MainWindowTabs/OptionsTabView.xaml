@@ -55,6 +55,13 @@
         <TextBlock VerticalAlignment="Center" IsVisible="{Binding !HideDisableSigning}" TextWrapping="Wrap"
                    Text="[DEV ONLY] Disables verification of engine signatures. DO NOT ENABLE UNLESS YOU KNOW EXACTLY WHAT YOU'RE DOING."
                    Margin="8" />
+        <Grid ColumnDefinitions="Auto,*">
+          <CheckBox VerticalAlignment="Center" Margin="4" IsChecked="{Binding ProxyEnable}">Enable proxy</CheckBox>
+          <TextBox Grid.Column="1" Watermark="http://example.com:80" Text="{Binding ProxyURL}" />
+        </Grid>
+        <TextBlock VerticalAlignment="Center" TextWrapping="Wrap"
+                  Text="Proxy information for connect to hub and auth center."
+                  Margin="8" />
 
         <Button Click="OpenHubSettings" Content="Hub Settings" Margin="4" HorizontalAlignment="Left" />
         <TextBlock VerticalAlignment="Center" TextWrapping="Wrap"
