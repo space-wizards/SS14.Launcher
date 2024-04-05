@@ -3,8 +3,6 @@ using System.Diagnostics;
 using System.IO;
 using Microsoft.Win32;
 using System.Linq;
-using System.Security;
-using System.Security.Principal;
 
 namespace SS14.Launcher.Bootstrap
 {
