@@ -41,7 +41,6 @@ internal static class Program
     [STAThread]
     public static void Main(string[] args)
     {
-        UrlOpenedEventArgs? urlArgs = null;
 #if DEBUG
         Console.OutputEncoding = Encoding.UTF8;
 #endif
@@ -51,11 +50,6 @@ internal static class Program
 #endif
         var msgr = new LauncherMessaging();
         Locator.CurrentMutable.RegisterConstant(msgr);
-
-        if (urlArgs != null)
-        {
-            args = urlArgs.Urls.ToArray();
-        }
 
         // Parse arguments as early as possible for launcher messaging reasons.
         string[] commands = { LauncherCommands.PingCommand };
