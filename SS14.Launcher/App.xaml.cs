@@ -34,6 +34,13 @@ public class App : Application
     public App(OverrideAssetsManager overrideAssets)
     {
         _overrideAssets = overrideAssets;
+
+        UrlsOpened += OnOSXUrlsOpened;
+    }
+
+    private void OnOSXUrlsOpened(object? sender, UrlOpenedEventArgs e)
+    {
+        Log.Debug("Url opened: {Url}", e.Urls);
     }
 
     public override void Initialize()

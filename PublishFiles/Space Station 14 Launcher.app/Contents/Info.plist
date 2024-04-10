@@ -1,15 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>CFBundleName</key>
-	<string>SS14L</string>
-	<key>CFBundleDisplayName</key>
-	<string>Space Station 14 Launcher</string>
-	<key>CFBundleExecutable</key>
-	<string>SS14</string>
-	<key>CFBundleIconFile</key>
-	<string>ss14</string>
+    <key>CFBundleName</key>
+    <string>SS14L</string>
+    <key>CFBundleDisplayName</key>
+    <string>Space Station 14 Launcher</string>
+    <key>CFBundleExecutable</key>
+    <string>SS14</string>
+    <!--
+    Just a note about this icon.
+    MacOS seems REALLY iffy about this and even when the file is correct,
+    it can take forever before it decides to actually update it and display it.
+    TL;DR Apple is stupid.
+    -->
+    <key>CFBundleIconFile</key>
+    <string>ss14</string>
 	<key>CFBundleIdentifier</key>
 	<string>com.spacestation14.launcher</string>
 	<key>CFBundleURLTypes</key>
@@ -33,7 +39,7 @@
 				<string>rtbundle</string>
 			</array>
 			<key>CFBundleTypeIconFile</key>
-			<string>ss14.icns</string>
+			<string>ss14</string>
 			<key>LSHandlerRank</key>
 			<string>Owner</string>
 			<key>CFBundleTypeName</key>
