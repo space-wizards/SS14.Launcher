@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Net;
 using System.Net.Http;
@@ -6,6 +6,7 @@ using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
 using Serilog;
+using TerraFX.Interop.Windows;
 
 namespace SS14.Launcher;
 
@@ -16,7 +17,7 @@ public static class HappyEyeballsHttp
     // This is the workaround.
     //
     // Implementation taken from https://github.com/ppy/osu-framework/pull/4191/files
-    public static HttpClient CreateHttpClient(bool autoRedirect = true)
+    public static HttpClient CreateHttpClient(bool autoRedirect = true, String? proxyURL = null)
     {
         var handler = new SocketsHttpHandler
         {
@@ -24,6 +25,25 @@ public static class HappyEyeballsHttp
             AutomaticDecompression = DecompressionMethods.All,
             AllowAutoRedirect = autoRedirect
         };
+
+        if (!string.IsNullOrEmpty(proxyURL))
+        {
+            WebProxy webProxy = new WebProxy(proxyURL);
+            Uri proxyURLUri = new Uri(proxyURL);
+            if (!string.IsNullOrWhiteSpace(proxyURLUri.UserInfo))
+            {
+                string[] credentials = proxyURLUri.UserInfo.Split(new[] { ':' });
+                
+                if (credentials.Length > 1)
+                {
+                    webProxy.Credentials = new NetworkCredential(
+                        userName: credentials[0],
+                        password: credentials[1]);
+                }
+            }
+            
+            handler.Proxy = webProxy;
+        }
 
         return new HttpClient(handler);
     }

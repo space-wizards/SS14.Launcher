@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using JetBrains.Annotations;
 using SS14.Launcher.Utility;
 
@@ -109,6 +109,16 @@ public static class CVars
     /// Stores whether the user has seen the Wine warning.
     /// </summary>
     public static readonly CVarDef<bool> WineWarningShown = CVarDef.Create("WineWarningShown", false);
+
+    /// <summary>
+    /// Enabled proxy?
+    /// </summary>
+    public static readonly CVarDef<bool> ProxyEnable = CVarDef.Create("ProxyEnable", false);
+
+    /// <summary>
+    /// Proxy URL.
+    /// </summary>
+    public static readonly CVarDef<string> ProxyURL = CVarDef.Create("ProxyURL", "");
 }
 
 /// <summary>
