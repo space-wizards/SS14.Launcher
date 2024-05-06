@@ -117,6 +117,6 @@ public partial class MainWindow : Window
         if (!dataObject.Contains(DataFormats.Files))
             return null;
 
-        return dataObject.GetFiles()?.SingleOrDefault()?.Path.AbsolutePath.Replace("%20", " ");
+        return dataObject.GetFiles()?.SingleOrDefault()?.Path.LocalPath;
     }
 }
