@@ -1,4 +1,3 @@
-using Microsoft.Data.Sqlite;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -12,6 +11,7 @@ using Avalonia.Controls;
 using Avalonia.Logging;
 using Avalonia.Media;
 using Avalonia.ReactiveUI;
+using Microsoft.Win32;
 using Serilog;
 using Serilog.Sinks.SystemConsole.Themes;
 using Splat;
@@ -99,9 +99,10 @@ internal static class Program
         cfg.Load();
         Locator.CurrentMutable.RegisterConstant(cfg);
 
-        CheckWindows7();
+        CheckWindowsVersion();
         // Bad antivirus check disabled: I assume Avast/AVG fixed their shit.
         // CheckBadAntivirus();
+        CheckWine(cfg);
 
         Log.Logger = new LoggerConfiguration()
             .MinimumLevel.Is(cfg.GetCVar(CVars.LogLauncherVerbose) ? LogEventLevel.Verbose : LogEventLevel.Debug)
@@ -137,10 +138,10 @@ internal static class Program
         _serverTask?.Wait();
     }
 
-    private static unsafe void CheckWindows7()
+    private static unsafe void CheckWindowsVersion()
     {
-        // 9600 is Windows 8.1, minimum we currently support.
-        if (!OperatingSystem.IsWindows() || Environment.OSVersion.Version.Build >= 9600)
+        // 14393 is Windows 10 version 1607, minimum we currently support.
+        if (!OperatingSystem.IsWindows() || Environment.OSVersion.Version.Build >= 14393)
             return;
 
         var text =
@@ -148,6 +149,8 @@ internal static class Program
             "If anything breaks, DO NOT ASK FOR HELP OR SUPPORT.";
 
         var caption = "Unsupported Windows version";
+
+        uint type = MB.MB_OK | MB.MB_ICONWARNING;
 
         if (Language.UserHasLanguage("ru"))
         {
@@ -157,11 +160,7 @@ internal static class Program
             caption = "Неподдерживаемая версия Windows";
         }
 
-        fixed (char* pText = text)
-        fixed (char* pCaption = caption)
-        {
-            _ = Windows.MessageBoxW(HWND.NULL, (ushort*)pText, (ushort*)pCaption, MB.MB_OK | MB.MB_ICONWARNING);
-        }
+        Helpers.MessageBoxHelper(text, caption, type);
     }
 
     private static unsafe void CheckBadAntivirus()
@@ -191,11 +190,31 @@ internal static class Program
 
         var text = $"{longName} is detected on your system.\n\n{shortName} is known to cause the game to crash while loading. If the game fails to start, uninstall {shortName}.\n\nThis is {shortName}'s fault, do not ask us for help or support.";
         var caption = $"{longName} detected!";
+        uint type = MB.MB_OK | MB.MB_ICONWARNING;
 
-        fixed (char* pText = text)
-        fixed (char* pCaption = caption)
+        Helpers.MessageBoxHelper(text, caption, type);
+    }
+
+    private static void CheckWine(DataManager dataManager)
+    {
+        if (!OperatingSystem.IsWindows())
+            return;
+
+        if (dataManager.GetCVar(CVars.WineWarningShown))
+            return;
+
+        using var key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Wine", false);
+
+        if (key != null)
         {
-            _ = Windows.MessageBoxW(HWND.NULL, (ushort*)pText, (ushort*)pCaption, MB.MB_OK | MB.MB_ICONWARNING);
+            Log.Debug("Wine detected");
+            var text =
+                $"You seem to be running the launcher under Wine.\n\nWe recommend you run the native Linux version instead.\n\nThis is the only time you will see this message.";
+            var caption = $"Wine detected!";
+            uint type = MB.MB_OK | MB.MB_ICONWARNING;
+
+            Helpers.MessageBoxHelper(text, caption, type);
+            dataManager.SetCVar(CVars.WineWarningShown, true);
         }
     }
 

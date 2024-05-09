@@ -25,15 +25,13 @@ public static class VcRedistCheck
 
         // We could show this dialog all fancy with Avalonia but I'm lazy so.
         int ret;
-        fixed (char* title =
-                   "The game needs the VC++ 2015 redistributable installed, which you do not have.\nWould you like to download the installer for it?")
+
+        var text = "The game needs the VC++ 2015 redistributable installed, which you do not have.\nWould you like to download the installer for it?";
+        var caption = "VC++ 2015 redistributable not installed";
+        uint type = MB.MB_ICONERROR | MB.MB_YESNO;
         {
-            fixed (char* caption = "VC++ 2015 redistributable not installed")
             {
-                ret = Windows.MessageBoxW(HWND.NULL,
-                    (ushort*)title,
-                    (ushort*)caption,
-                    MB.MB_ICONERROR | MB.MB_YESNO);
+                ret = Helpers.MessageBoxHelper(text, caption, type);
             }
         }
 

@@ -4,7 +4,7 @@ namespace SS14.Launcher;
 
 public static class ConfigConstants
 {
-    public const string CurrentLauncherVersion = "42";
+    public const string CurrentLauncherVersion = "44";
     public static readonly bool DoVersionCheck = true;
 
     // Refresh login tokens if they're within <this much> of expiry.
@@ -37,6 +37,10 @@ public static class ConfigConstants
     public const string LauncherVersionUrl = "https://central.spacestation14.io/launcher_version.txt";
     public const string RobustBuildsManifest = "https://central.spacestation14.io/builds/robust/manifest.json";
     public const string RobustModulesManifest = "https://central.spacestation14.io/builds/robust/modules.json";
+
+    // How long to keep cached copies of Robust manifests.
+    // TODO: Take this from Cache-Control header responses instead.
+    public static readonly TimeSpan RobustManifestCacheTime = TimeSpan.FromMinutes(15);
 
     public const string UrlOverrideAssets = "https://central.spacestation14.io/launcher/override_assets.json";
     public const string UrlAssetsBase = "https://central.spacestation14.io/launcher/assets/";

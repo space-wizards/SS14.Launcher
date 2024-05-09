@@ -11,7 +11,7 @@
   </Design.DataContext>
   <ContentControl Classes="OverlayBox">
     <StackPanel Orientation="Vertical">
-      <TextBlock HorizontalAlignment="Center" Classes="NanoHeadingMedium" Text="Connecting..." />
+      <TextBlock HorizontalAlignment="Center" Classes="NanoHeadingMedium" Text="{Binding TitleText}" />
       <TextBlock HorizontalAlignment="Center" Margin="0 10" DockPanel.Dock="Top" Text="{Binding StatusText}"
                  TextWrapping="Wrap"  MaxWidth="400" />
       <ProgressBar DockPanel.Dock="Bottom" Maximum="1" Value="{Binding Progress}"
