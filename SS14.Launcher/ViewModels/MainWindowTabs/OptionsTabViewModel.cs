@@ -38,16 +38,6 @@ public class OptionsTabViewModel : MainWindowTabViewModel
         }
     }
 
-    public bool LogClient
-    {
-        get => Cfg.GetCVar(CVars.LogClient);
-        set
-        {
-            Cfg.SetCVar(CVars.LogClient, value);
-            Cfg.CommitConfig();
-        }
-    }
-
     public bool LogLauncherVerbose
     {
         get => Cfg.GetCVar(CVars.LogLauncherVerbose);

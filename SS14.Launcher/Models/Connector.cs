@@ -447,20 +447,16 @@ public class Connector : ReactiveObject
 
         EnvVar("SS14_LAUNCHER_PATH", Process.GetCurrentProcess().MainModule!.FileName);
 
-        // ReSharper disable once ReplaceWithSingleAssignment.False
-        var manualPipeLogging = false;
-        if (_cfg.GetCVar(CVars.LogClient))
+        // Enable client logging.
+        var manualPipeLogging = true;
+
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
         {
-            manualPipeLogging = true;
-
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
-            {
-                EnvVar("SS14_LOG_CLIENT", LauncherPaths.PathClientMacLog);
-            }
-
-            startInfo.RedirectStandardOutput = true;
-            startInfo.RedirectStandardError = true;
+            EnvVar("SS14_LOG_CLIENT", LauncherPaths.PathClientMacLog);
         }
+
+        startInfo.RedirectStandardOutput = true;
+        startInfo.RedirectStandardError = true;
 
         // Performance tweaks
         EnvVar("DOTNET_TieredPGO", "1");

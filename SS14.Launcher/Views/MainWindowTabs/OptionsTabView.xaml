@@ -31,11 +31,6 @@
                    Text="This uses OpenGL ES 2 (via ANGLE if necessary), which is less likely to suffer from driver bugs. Try this if you are experiencing graphical issues or crashes."
                    Margin="8" />
 
-        <CheckBox VerticalAlignment="Center" Margin="4" IsChecked="{Binding LogClient}">Log Client</CheckBox>
-        <TextBlock VerticalAlignment="Center" TextWrapping="Wrap"
-                   Text="Enables logging of any game client output. Useful for developers."
-                   Margin="8" />
-
         <CheckBox VerticalAlignment="Center" Margin="4" IsChecked="{Binding LogLauncherVerbose}">Verbose Launcher Logging</CheckBox>
         <TextBlock VerticalAlignment="Center" TextWrapping="Wrap"
                    Text="For when the developers are *very* stumped with your problem. (requires launcher restart)"

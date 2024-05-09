@@ -52,11 +52,6 @@ public static class CVars
     public static readonly CVarDef<string> EngineOverridePath = CVarDef.Create("EngineOverridePath", "");
 
     /// <summary>
-    /// Enable logging of launched client instances to file.
-    /// </summary>
-    public static readonly CVarDef<bool> LogClient = CVarDef.Create("LogClient", false);
-
-    /// <summary>
     /// Verbose logging of launcher logs.
     /// </summary>
     public static readonly CVarDef<bool> LogLauncherVerbose = CVarDef.Create("LogLauncherVerbose", false);
