@@ -157,6 +157,17 @@ public class LauncherCommands
             // Used by the "pass URI as argument" logic, doesn't need to bother with safety measures
             await Connect(cmd.Substring(1));
         }
+        else if (cmd.StartsWith("b"))
+        {
+            // Content bundle file
+            // Substring 9 to remove b and the file:///
+
+            // todo figure out why sometimes the file:/// is there and sometimes it isn't
+            if (cmd.StartsWith("file:///"))
+                await Task.Run(() => ConnectingViewModel.StartContentBundle(_windowVm, cmd.Substring(9)));
+            else
+                await Task.Run(() => ConnectingViewModel.StartContentBundle(_windowVm, cmd.Substring(1)));
+        }
         else
         {
             Log.Error($"Unhandled launcher command: {cmd}");
@@ -169,5 +180,6 @@ public class LauncherCommands
     public const string RedialWaitCommand = ":RedialWait";
     public const string BlankReasonCommand = "r";
     public static string ConstructConnectCommand(Uri uri) => "c" + uri.ToString();
+    public static string ConstructContentBundleCommand(string fileName) => "b" + fileName;
 }
 
