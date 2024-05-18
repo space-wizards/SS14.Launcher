@@ -15,6 +15,7 @@ using Serilog;
 using Serilog.Sinks.SystemConsole.Themes;
 using Splat;
 using SS14.Launcher.Api;
+using SS14.Launcher.Localization;
 using SS14.Launcher.Models;
 using SS14.Launcher.Models.ContentManagement;
 using SS14.Launcher.Models.Data;
@@ -231,12 +232,14 @@ internal static class Program
         http.DefaultRequestHeaders.Add("SS14-Launcher-Fingerprint", cfg.Fingerprint.ToString());
         Locator.CurrentMutable.RegisterConstant(http);
 
+        var loc = new LocalizationManager(cfg);
         var authApi = new AuthApi(http);
         var hubApi = new HubApi(http);
         var launcherInfo = new LauncherInfoManager(http);
         var overrideAssets = new OverrideAssetsManager(cfg, http, launcherInfo);
         var loginManager = new LoginManager(cfg, authApi);
 
+        locator.RegisterConstant(loc);
         locator.RegisterConstant(new ContentManager());
         locator.RegisterConstant<IEngineManager>(new EngineManagerDynamic());
         locator.RegisterConstant(new Updater());
@@ -261,13 +264,15 @@ internal static class Program
     // container, etc.
     private static void AppMain(Application app, string[] args)
     {
+        var loc = Locator.Current.GetRequiredService<LocalizationManager>();
         var msgr = Locator.Current.GetRequiredService<LauncherMessaging>();
         var contentManager = Locator.Current.GetRequiredService<ContentManager>();
         var overrideAssets = Locator.Current.GetRequiredService<OverrideAssetsManager>();
         var launcherInfo = Locator.Current.GetRequiredService<LauncherInfoManager>();
 
-        contentManager.Initialize();
+        loc.Initialize();
         launcherInfo.Initialize();
+        contentManager.Initialize();
         overrideAssets.Initialize();
 
         var viewModel = new MainWindowViewModel();
