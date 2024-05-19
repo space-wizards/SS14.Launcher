@@ -29,12 +29,13 @@ public static class ConfigConstants
     public static readonly string AuthUrl = "https://auth.spacestation14.com/";
     public static readonly Uri[] DefaultHubUrls = { new("https://hub.spacestation14.com/") };
     public const string DiscordUrl = "https://discord.ss14.io/";
-     public const string AccountBaseUrl = "https://account.spacestation14.com/Identity/Account/";
+    public const string AccountBaseUrl = "https://account.spacestation14.com/Identity/Account/";
     public const string AccountManagementUrl = $"{AccountBaseUrl}Manage";
     public const string AccountRegisterUrl = $"{AccountBaseUrl}Register";
     public const string AccountResendConfirmationUrl = $"{AccountBaseUrl}ResendEmailConfirmation";
     public const string WebsiteUrl = "https://spacestation14.com";
     public const string DownloadUrl = "https://spacestation14.com/about/nightlies/";
+    public const string NewsFeedUrl = "https://spacestation14.com/post/index.xml";
 
     private static readonly UrlFallbackSet RobustBuildsBaseUrl = new([
         "https://robust-builds.cdn.spacestation14.com/",
