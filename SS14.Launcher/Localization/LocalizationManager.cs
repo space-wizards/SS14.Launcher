@@ -6,10 +6,13 @@ using System.Text;
 using Avalonia.Platform;
 using Linguini.Bundle;
 using Linguini.Bundle.Builder;
+using Linguini.Shared.Types.Bundle;
 using Linguini.Syntax.Ast;
 using Linguini.Syntax.Parser;
 using Serilog;
+using Splat;
 using SS14.Launcher.Models.Data;
+using SS14.Launcher.Utility;
 
 namespace SS14.Launcher.Localization;
 
@@ -29,6 +32,32 @@ public sealed class LocalizationManager
     public string GetString(string key)
     {
         return _bundle.GetMessage(key) ?? key;
+    }
+
+    public string GetString(string key, params (string, object?)[] args)
+    {
+        var argsDict = new Dictionary<string, IFluentType>(args.Length);
+
+        foreach (var (argKey, argValue) in args)
+        {
+            argsDict.Add(argKey, ToFluentType(argValue));
+        }
+
+        return _bundle.GetMessage(key, args: argsDict) ?? key;
+    }
+
+    private static IFluentType ToFluentType(object? o)
+    {
+        return o switch
+        {
+            string s => new FluentString(s),
+            float f => (FluentNumber)f,
+            double d => (FluentNumber)d,
+            int i => (FluentNumber)i,
+            long l => (FluentNumber)l,
+            null => FluentNone.None,
+            _ => new FluentString(o.ToString())
+        };
     }
 
     public void Initialize()
@@ -60,4 +89,6 @@ public sealed class LocalizationManager
 
         _bundle = bundle;
     }
+
+    public static LocalizationManager Instance => Locator.Current.GetRequiredService<LocalizationManager>();
 }
