@@ -25,6 +25,12 @@ public partial class MainWindow : Window
         AddHandler(DragDrop.DragLeaveEvent, DragLeave);
         AddHandler(DragDrop.DragOverEvent, DragOver);
         AddHandler(DragDrop.DropEvent, Drop);
+        AddHandler(LoadedEvent, Load);
+    }
+
+    private async void Load(object? sender, RoutedEventArgs e)
+    {
+        await _viewModel!.OnWindowLoaded();
     }
 
     protected override void OnDataContextChanged(EventArgs e)
