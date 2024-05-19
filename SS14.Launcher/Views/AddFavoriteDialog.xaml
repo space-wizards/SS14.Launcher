@@ -2,24 +2,25 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:loc="clr-namespace:SS14.Launcher.Localization"
         mc:Ignorable="d" d:DesignWidth="300" d:DesignHeight="100"
         MinWidth="500" MinHeight="130"
         Width="500" Height="130"
         x:Class="SS14.Launcher.Views.AddFavoriteDialog"
         Icon="{DynamicResource WindowIcon}"
-        Title="Add Favorite Server"
+        Title="{loc:Loc add-favorite-window-title}"
         Padding="4"
         WindowStartupLocation="CenterOwner">
 
   <DockPanel LastChildFill="true">
     <DockPanel DockPanel.Dock="Bottom">
       <Button DockPanel.Dock="Right" HorizontalAlignment="Right" Name="SubmitButton" Content="Add" />
-      <TextBlock Text="Address is invalid"  VerticalAlignment="Center" Name="TxtInvalid" />
+      <TextBlock Text="{loc:Loc add-favorite-window-address-invalid}"  VerticalAlignment="Center" Name="TxtInvalid" />
     </DockPanel>
     <Grid Margin="4" ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto">
-      <TextBlock VerticalAlignment="Center" Margin="0,0,4,0" Grid.Column="0" Grid.Row="0" Text="Name:" />
-      <TextBlock VerticalAlignment="Center" Margin="0,0,4,0" Grid.Column="0" Grid.Row="1" Text="Address:" />
-      <TextBox Grid.Column="1" Grid.Row="0" Name="NameBox" Watermark="Honk Station" />
+      <TextBlock VerticalAlignment="Center" Margin="0,0,4,0" Grid.Column="0" Grid.Row="0" Text="{loc:Loc add-favorite-window-label-name}" />
+      <TextBlock VerticalAlignment="Center" Margin="0,0,4,0" Grid.Column="0" Grid.Row="1" Text="{loc:Loc add-favorite-window-label-address}" />
+      <TextBox Grid.Column="1" Grid.Row="0" Name="NameBox" Watermark="{loc:Loc add-favorite-window-default-name}" />
       <TextBox Grid.Column="1" Grid.Row="1" Name="AddressBox" Watermark="ss14://example.com" />
     </Grid>
   </DockPanel>

@@ -5,6 +5,7 @@ using System.Collections.Specialized;
 using System.Globalization;
 using System.Linq;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
+using SS14.Launcher.Localization;
 using SS14.Launcher.Models.Data;
 using SS14.Launcher.Models.ServerStatus;
 using SS14.Launcher.Utility;
@@ -15,6 +16,7 @@ namespace SS14.Launcher.ViewModels.MainWindowTabs;
 
 public sealed partial class ServerListFiltersViewModel : ObservableObject
 {
+    private readonly LocalizationManager _loc;
     private readonly DataManager _dataManager;
 
     private int _totalServers;
@@ -51,37 +53,43 @@ public sealed partial class ServerListFiltersViewModel : ObservableObject
         set => SetProperty(ref _filteredServers, value);
     }
 
-    public ServerListFiltersViewModel(DataManager dataManager)
+    public ServerListFiltersViewModel(DataManager dataManager, LocalizationManager loc)
     {
         _dataManager = dataManager;
+        _loc = loc;
 
-        FiltersEighteenPlus.Add(new ServerFilterViewModel("Yes", "Yes",
+        FiltersEighteenPlus.Add(new ServerFilterViewModel(
+            _loc.GetString("filters-18-yes-desc"),
+            _loc.GetString("filters-18-yes"),
             new ServerFilter(ServerFilterCategory.EighteenPlus, ServerFilter.DataTrue), this));
-        FiltersEighteenPlus.Add(new ServerFilterViewModel("No", "No",
+
+        FiltersEighteenPlus.Add(new ServerFilterViewModel(
+            _loc.GetString("filters-18-no-desc"),
+            _loc.GetString("filters-18-no"),
             new ServerFilter(ServerFilterCategory.EighteenPlus, ServerFilter.DataFalse), this));
 
         FilterPlayerCountHideEmpty = new ServerFilterViewModel(
-            "Servers with no players will not be shown",
-            "Hide empty",
+            _loc.GetString("filters-player-count-hide-empty-desc"),
+            _loc.GetString("filters-player-count-hide-empty"),
             ServerFilter.PlayerCountHideEmpty,
             this);
 
         FilterPlayerCountHideFull = new ServerFilterViewModel(
-            "Servers that are full will not be shown",
-            "Hide full",
+            _loc.GetString("filters-player-count-hide-full-desc"),
+            _loc.GetString("filters-player-count-hide-full"),
             ServerFilter.PlayerCountHideFull,
             this);
 
         FilterPlayerCountMinimum = new ServerFilterCounterViewModel(
-            "Servers with less players will not be shown",
-            "Minimum: ",
+            _loc.GetString("filters-player-count-minimum-desc"),
+            _loc.GetString("filters-player-count-minimum"),
             ServerFilter.PlayerCountMin,
             _dataManager.GetCVarEntry(CVars.FilterPlayerCountMinValue),
             this);
 
         FilterPlayerCountMaximum = new ServerFilterCounterViewModel(
-            "Servers with more players will not be shown",
-            "Maximum: ",
+            _loc.GetString("filters-player-count-maximum-desc"),
+            _loc.GetString("filters-player-count-maximum"),
             ServerFilter.PlayerCountMax,
             _dataManager.GetCVarEntry(CVars.FilterPlayerCountMaxValue),
             this);
@@ -107,14 +115,15 @@ public sealed partial class ServerListFiltersViewModel : ObservableObject
                 {
                     region = region.ToLowerInvariant();
 
-                    if (!RegionNamesEnglish.TryGetValue(region, out var name))
+                    if (!RegionNamesLoc.TryGetValue(region, out var name))
                         continue;
 
                     var filter = new ServerFilter(ServerFilterCategory.Region, region);
                     if (!alreadyAdded.Add(filter))
                         continue;
 
-                    var nameShort = RegionNamesShortEnglish[region];
+                    var nameShort = _loc.GetString(RegionNamesShortLoc[region]);
+                    name = _loc.GetString(name);
 
                     var vm = new ServerFilterViewModel(name, nameShort, filter, this);
                     filtersRegion.Add(vm);
@@ -138,7 +147,7 @@ public sealed partial class ServerListFiltersViewModel : ObservableObject
                         continue;
                     }
 
-                    var name = culture.EnglishName;
+                    var name = culture.DisplayName;
                     var vm = new ServerFilterViewModel(name, name, filter, this);
                     filtersLanguage.Add(vm);
                 }
@@ -146,14 +155,17 @@ public sealed partial class ServerListFiltersViewModel : ObservableObject
                 {
                     rolePlay = rolePlay.ToLowerInvariant();
 
-                    if (!RolePlayNames.TryGetValue(rolePlay, out var rpName))
+                    if (!RolePlayNames.TryGetValue(rolePlay, out var rpLocName))
                         continue;
+
+                    var rpName = _loc.GetString(rpLocName);
+                    var rpDesc = _loc.GetString(RolePlayNamesShort[rolePlay]);
 
                     var filter = new ServerFilter(ServerFilterCategory.RolePlay, rolePlay);
                     if (!alreadyAdded.Add(filter))
                         continue;
 
-                    var vm = new ServerFilterViewModel(rpName, rpName, filter, this);
+                    var vm = new ServerFilterViewModel(rpDesc, rpName, filter, this);
                     filtersRolePlay.Add(vm);
                 }
             }
@@ -175,12 +187,15 @@ public sealed partial class ServerListFiltersViewModel : ObservableObject
         filtersRolePlay.Sort(ServerFilterDataOrderComparer.InstanceRolePlay);
         filtersHub.Sort(ServerFilterShortNameComparer.Instance);
 
+        var unspecified = _loc.GetString("tab-servers-filters-unspecified");
+        var unspecifiedDesc = _loc.GetString("tab-servers-filters-unspecified-desc");
+
         // Unspecified always comes last.
-        filtersLanguage.Add(new ServerFilterViewModel("Unspecified", "Unspecified",
+        filtersLanguage.Add(new ServerFilterViewModel(unspecifiedDesc, unspecified,
             new ServerFilter(ServerFilterCategory.Language, ServerFilter.DataUnspecified), this));
-        filtersRegion.Add(new ServerFilterViewModel("Unspecified", "Unspecified",
+        filtersRegion.Add(new ServerFilterViewModel(unspecifiedDesc, unspecified,
             new ServerFilter(ServerFilterCategory.Region, ServerFilter.DataUnspecified), this));
-        filtersRolePlay.Add(new ServerFilterViewModel("Unspecified", "Unspecified",
+        filtersRolePlay.Add(new ServerFilterViewModel(unspecifiedDesc, unspecified,
             new ServerFilter(ServerFilterCategory.RolePlay, ServerFilter.DataUnspecified), this));
 
         // Set.

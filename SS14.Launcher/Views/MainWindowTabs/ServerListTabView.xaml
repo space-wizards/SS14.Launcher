@@ -5,6 +5,7 @@
              xmlns:mainWindowTabs="clr-namespace:SS14.Launcher.ViewModels.MainWindowTabs"
              xmlns:views="clr-namespace:SS14.Launcher.Views"
              xmlns:mainWindowTabs1="clr-namespace:SS14.Launcher.Views.MainWindowTabs"
+             xmlns:loc="clr-namespace:SS14.Launcher.Localization"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SS14.Launcher.Views.MainWindowTabs.ServerListTabView">
   <Design.DataContext>
@@ -14,15 +15,9 @@
   <DockPanel LastChildFill="True">
 
     <DockPanel DockPanel.Dock="Bottom" Margin="4 4 4 0">
-      <Button DockPanel.Dock="Right" Content="Refresh" Command="{Binding RefreshPressed}"  Classes="OpenLeft" />
-      <ToggleButton DockPanel.Dock="Right" IsChecked="{Binding FiltersVisible}" Classes="OpenRight">
-        <ToggleButton.Content>
-          <MultiBinding StringFormat="{}Filters ({0} / {1})">
-            <Binding Path="Filters.FilteredServers" />
-            <Binding Path="Filters.TotalServers" />
-          </MultiBinding>
-        </ToggleButton.Content>
-      </ToggleButton>
+      <Button DockPanel.Dock="Right" Content="{loc:Loc tab-servers-refresh}" Command="{Binding RefreshPressed}"  Classes="OpenLeft" />
+      <ToggleButton DockPanel.Dock="Right" IsChecked="{Binding FiltersVisible}" Classes="OpenRight"
+                    Content="{Binding FilterButtonText}" />
       <TextBox DockPanel.Dock="Right" Text="{Binding SearchString, Mode=TwoWay}" Watermark="Search For Servers..."
                UseFloatingWatermark="False"
                Margin="0 0 8 0" />
@@ -37,9 +32,9 @@
           <!--TODO: These measurements are just golfed based on approximations of where the sections *probably* are, and assumes a scroll bar is present. This might prove a bit wonky with localization and excessive screen sizes. It'd be ideal if this header section could dynamically adapt to the section sizes in the server list.-->
           <Control DockPanel.Dock="Right" MinWidth="105" />
           <Rectangle DockPanel.Dock="Right" Classes="VerticalSeparator"/>
-          <TextBlock DockPanel.Dock="Right" Text="Players" Classes="SubText" TextAlignment="Center" MinWidth="80" Margin="10 0"/>
+          <TextBlock DockPanel.Dock="Right" Text="{loc:Loc tab-servers-table-players}" Classes="SubText" TextAlignment="Center" MinWidth="80" Margin="10 0"/>
           <Rectangle DockPanel.Dock="Right" Classes="VerticalSeparator" />
-          <TextBlock Text="Server Name" Classes="SubText"/>
+          <TextBlock Text="{loc:Loc tab-servers-table-name}" Classes="SubText"/>
         </DockPanel>
 
         <Panel DockPanel.Dock="Top" Classes="ScrollViewerSep" />

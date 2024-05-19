@@ -3,6 +3,7 @@ using Avalonia.Threading;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using SS14.Launcher.Api;
+using SS14.Launcher.Localization;
 using SS14.Launcher.Models.Data;
 using SS14.Launcher.Models.Logins;
 
@@ -13,6 +14,7 @@ public class RegisterNeedsConfirmationViewModel : BaseLoginViewModel
     private const int TimeoutSeconds = 5;
 
     private readonly AuthApi _authApi;
+    private readonly LocalizationManager _loc = LocalizationManager.Instance;
 
     private readonly string _loginUsername;
     private readonly string _loginPassword;
@@ -25,7 +27,7 @@ public class RegisterNeedsConfirmationViewModel : BaseLoginViewModel
     {
         get
         {
-            var text = "I have confirmed my account";
+            var text = _loc.GetString("login-resend-button-confirm");
             if (TimeoutSecondsLeft != 0)
             {
                 text = $"{text} ({TimeoutSecondsLeft})";
@@ -42,7 +44,7 @@ public class RegisterNeedsConfirmationViewModel : BaseLoginViewModel
         AuthApi authApi, string username, string password, LoginManager loginMgr, DataManager dataManager)
         : base(parentVm)
     {
-        BusyText = "Logging in...";
+        BusyText = _loc.GetString("login-resend-busy");
         _authApi = authApi;
 
         _loginUsername = username;
