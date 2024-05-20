@@ -7,7 +7,6 @@ using Avalonia.Platform;
 using Linguini.Bundle;
 using Linguini.Bundle.Builder;
 using Linguini.Shared.Types.Bundle;
-using Linguini.Syntax.Ast;
 using Linguini.Syntax.Parser;
 using Serilog;
 using Splat;
@@ -20,13 +19,20 @@ public sealed class LocalizationManager
 {
     private readonly DataManager _dataManager;
 
-    private static readonly string Culture = "en-US";
+    private const string FallbackCulture = "en-US";
 
     private FluentBundle _bundle = default!;
 
     public LocalizationManager(DataManager dataManager)
     {
         _dataManager = dataManager;
+    }
+
+    public void Initialize()
+    {
+        // TODO: Base this on system language.
+        var language = _dataManager.GetCVar(CVars.Language) ?? FallbackCulture;
+        LoadCulture(new CultureInfo(language));
     }
 
     public string GetString(string key)
@@ -60,14 +66,33 @@ public sealed class LocalizationManager
         };
     }
 
-    public void Initialize()
-    {
-        LoadCulture(new CultureInfo(Culture));
-    }
-
     private void LoadCulture(CultureInfo culture)
     {
-        var resources = new List<Resource>();
+        Log.Debug("initializing localization for culture: {CultureName} ({CultureDisplayName})", culture.Name, culture.DisplayName);
+
+        var bundle = LinguiniBuilder.Builder()
+            .CultureInfo(culture)
+            .SkipResources()
+            .SetUseIsolating(false)
+            .UseConcurrent()
+            .UncheckedBuild();
+
+        if (culture.Name != FallbackCulture)
+            AddLanguageFiles(bundle, new CultureInfo(FallbackCulture));
+
+        AddLanguageFiles(bundle, culture);
+
+        _bundle = bundle;
+
+        CultureInfo.CurrentUICulture = culture;
+    }
+
+    private void AddLanguageFiles(FluentBundle bundle, CultureInfo culture)
+    {
+        if (!culture.Parent.Equals(CultureInfo.InvariantCulture))
+            AddLanguageFiles(bundle, culture.Parent);
+
+        var count = 0;
         foreach (var ftl in AssetLoader.GetAssets(new Uri($"avares://SS14.Launcher/Assets/Locale/{culture.Name}"), null))
         {
             using var asset = AssetLoader.Open(ftl);
@@ -77,17 +102,11 @@ public sealed class LocalizationManager
             {
                 Log.Error("Error in loc {LocFile}: {Error}", ftl, resourceError);
             }
-            resources.Add(resource);
+            bundle.AddResourceOverriding(resource);
+            count += 1;
         }
 
-        var bundle = LinguiniBuilder.Builder()
-            .CultureInfo(culture)
-            .AddResources(resources)
-            .SetUseIsolating(false)
-            .UseConcurrent()
-            .UncheckedBuild();
-
-        _bundle = bundle;
+        Log.Verbose("Loaded {Count} files for locale: {CultureName} ({CultureDisplayName})", count, culture.Name, culture.DisplayName);
     }
 
     public static LocalizationManager Instance => Locator.Current.GetRequiredService<LocalizationManager>();
