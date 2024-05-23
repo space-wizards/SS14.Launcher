@@ -70,11 +70,7 @@ hub-settings-button-remove-tooltip = Remove hub
 hub-settings-button-increase-priority-tooltip = Increase priority
 hub-settings-button-decrease-priority-tooltip = Decrease priority
 
-hub-settings-explanation = Here you can add extra hubs to fetch game servers from.
-    You should only add hubs that you trust, as they can 'spoof' game
-    servers from other hubs. The order of the hubs matters; if two hubs
-    advertise the same game server the hub with the higher priority
-    (higher in the list) will take precedence.
+hub-settings-explanation = Here you can add extra hubs to fetch game servers from. You should only add hubs that you trust, as they can 'spoof' game servers from other hubs. The order of the hubs matters; if two hubs advertise the same game server the hub with the higher priority (higher in the list) will take precedence.
 
 hub-settings-heading-default = Default
 hub-settings-heading-custom = Custom

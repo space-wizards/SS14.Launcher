@@ -53,8 +53,11 @@
           </Path.RenderTransform>
         </Path>
       </Button>
-      <Button DockPanel.Dock="Left" Content="?" Classes="InfoButton OpenLeft"
-              ToolTip.Tip="{loc:Loc hub-settings-explanation}" ToolTip.ShowDelay="0" />
+      <Button DockPanel.Dock="Left" Content="?" Classes="InfoButton OpenLeft" ToolTip.ShowDelay="0">
+        <ToolTip.Tip>
+          <TextBlock MaxWidth="500" Text="{loc:Loc hub-settings-explanation}" TextWrapping="Wrap" />
+        </ToolTip.Tip>
+      </Button>
       <TextBlock DockPanel.Dock="Left" Text="" Name="Warning" Margin="4 0 0 0" Height="30" Foreground="Gray"
                  FontSize="15" Padding="4" />
     </DockPanel>
