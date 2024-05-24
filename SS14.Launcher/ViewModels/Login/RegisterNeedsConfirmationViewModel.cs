@@ -27,7 +27,7 @@ public class RegisterNeedsConfirmationViewModel : BaseLoginViewModel
     {
         get
         {
-            var text = _loc.GetString("login-resend-button-confirm");
+            var text = _loc.GetString("login-confirmation-button-confirm");
             if (TimeoutSecondsLeft != 0)
             {
                 text = $"{text} ({TimeoutSecondsLeft})";
@@ -44,7 +44,7 @@ public class RegisterNeedsConfirmationViewModel : BaseLoginViewModel
         AuthApi authApi, string username, string password, LoginManager loginMgr, DataManager dataManager)
         : base(parentVm)
     {
-        BusyText = _loc.GetString("login-resend-busy");
+        BusyText = _loc.GetString("login-confirmation-busy");
         _authApi = authApi;
 
         _loginUsername = username;

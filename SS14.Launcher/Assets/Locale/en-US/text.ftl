@@ -137,13 +137,13 @@ login-login-button-register = Don't have an account? Register!
 login-login-busy-logging-in = Logging in...
 login-login-error-title = Unable to log in
 
-## Strings for the "resend confirmation" view on login
+## Strings for the "register confirmation" view on login
 
-login-resend-confirmation-title = Register confirmation
-login-resend-confirmation-message = Please check your email to confirm your account. Once you have confirmed your account, press the button below to log in.
-login-resend-button-confirm = I have confirmed my account
-login-resend-button-cancel = Cancel
-login-resend-busy = Logging in...
+login-confirmation-confirmation-title = Register confirmation
+login-confirmation-confirmation-message = Please check your email to confirm your account. Once you have confirmed your account, press the button below to log in.
+login-confirmation-button-confirm = I have confirmed my account
+login-confirmation-button-cancel = Cancel
+login-confirmation-busy = Logging in...
 
 ## Strings for the general main window layout of the launcher
 

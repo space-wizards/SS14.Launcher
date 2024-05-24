@@ -13,15 +13,15 @@
 
   <DockPanel LastChildFill="False">
     <TextBlock HorizontalAlignment="Center" DockPanel.Dock="Top" Classes="NanoHeadingMedium"
-               Text="{loc:Loc login-resend-confirmation-title}" />
+               Text="{loc:Loc login-confirmation-confirmation-title}" />
 
     <TextBlock HorizontalAlignment="Center" DockPanel.Dock="Top" TextWrapping="Wrap" MaxWidth="400"
-               Text="{loc:Loc login-resend-confirmation-message}" />
+               Text="{loc:Loc login-confirmation-confirmation-message}" />
 
     <Button Content="{Binding ConfirmButtonText}" Command="{Binding ConfirmButtonPressed}"
             IsEnabled="{Binding ConfirmButtonEnabled}" DockPanel.Dock="Top" HorizontalAlignment="Center" />
 
-    <Button Content="{loc:Loc login-resend-button-cancel}" Command="{Binding ParentVM.SwitchToRegister}"
+    <Button Content="{loc:Loc login-confirmation-button-cancel}" Command="{Binding ParentVM.SwitchToRegister}"
             DockPanel.Dock="Bottom" HorizontalAlignment="Center" />
   </DockPanel>
 </UserControl>
