@@ -140,7 +140,7 @@ login-error-account-unconfirmed = Το email για αυτό τον λογαρι
 # Error messages for login
 login-error-account-account-locked = Ο λογαριασμός σας έχει κλειδωθεί. Παρακαλώ επικοινωνήστε μαζί μας αν πιστεύετε ότι αυτό είναι λάθος.
 # Strings for 2FA login
-login-2fa-message = Παρακαλώ εισάγετε τον κωδικό αυθεντικοποίησης από την εφαρμογή σας
+login-2fa-message = Παρακαλώ εισάγετε τον κωδικό αυθεντικοποίησης από την εφαρμογή σας.
 # Strings for 2FA login
 login-2fa-input-watermark = Κωδικός αυθεντικοποίησης
 # Strings for 2FA login
@@ -148,4 +148,4 @@ login-2fa-button-confirm = Επιβεβαίωση
 # Strings for 2FA login
 login-2fa-button-recovery-code = Κωδικός επαναφοράς
 # Strings for the "login expired" view on login
-login-expired-title = Η συνδεσή σας έχει λύξει
+login-expired-title = Η σύνδεση σας έχει λέξει
