@@ -141,3 +141,5 @@ login-error-account-unconfirmed = Το email για αυτό τον λογαρι
 login-error-account-account-locked = Ο λογαριασμός σας έχει κλειδωθεί. Παρακαλώ επικοινωνήστε μαζί μας αν πιστεύετε ότι αυτό είναι λάθος.
 # Strings for 2FA login
 login-2fa-message = Παρακαλώ εισάγετε τον κωδικό αυθεντικοποίησης από την εφαρμογή σας
+# Strings for 2FA login
+login-2fa-input-watermark = Κωδικός αυθεντικοποίησης
