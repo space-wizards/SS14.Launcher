@@ -89,3 +89,5 @@ connecting-update-status-verifying = Γίνεται επαλήθευση αρχ�
 connecting-update-status-culling-engine = Γίνεται καθαρισμός παλιών αρχείων…
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-update-status-culling-content = Γίνεται καθαρισμός παλιών αρχείων διακομιστή…
+# Strings for the "connecting" menu that appears when connecting to a server.
+connecting-update-status-ready = Η ενημέρωση έγινε!
