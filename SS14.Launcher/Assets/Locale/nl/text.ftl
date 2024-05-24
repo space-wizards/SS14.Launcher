@@ -3,7 +3,7 @@ account-drop-down-not-logged-in = Niet ingelogd
 # Strings for the drop-down window to manage your active account
 account-drop-down-log-out = Uitloggen
 # Strings for the drop-down window to manage your active account
-account-drop-down-none-selected = Geen profiel geselecteerd
+account-drop-down-none-selected = Geen account geselecteerd
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-update-status-fetching-manifest = Ophalen lijst van serverinhoud…
 # Strings for the "connecting" menu that appears when connecting to a server.
@@ -27,7 +27,7 @@ connecting-update-status-unknown = Je hoort dit niet te zien
 # Strings for the "direct connect" dialog window.
 direct-connect-title = Direct verbinden…
 # Strings for the "direct connect" dialog window.
-direct-connect-text = Vul serveradres in om te connecteren:
+direct-connect-text = Voer serveradres in om te connecteren:
 # Strings for the "direct connect" dialog window.
 direct-connect-connect = Verbind
 # Strings for the "direct connect" dialog window.
@@ -53,9 +53,9 @@ account-drop-down-log-out-of = Van { $name } uitloggen
 # Localization for the "add favorite server" dialog window
 add-favorite-window-title = Voeg favoriete server toe
 # Strings for the drop-down window to manage your active account
-account-drop-down-switch-account = Wissel profiel:
+account-drop-down-switch-account = Wissel account:
 # Strings for the drop-down window to manage your active account
-account-drop-down-select-account = Selecteer profiel:
+account-drop-down-select-account = Selecteer account:
 # Localization for the "add favorite server" dialog window
 add-favorite-window-address-invalid = Adres is ongeldig
 # Localization for the "add favorite server" dialog window
@@ -96,6 +96,64 @@ hub-settings-title = Hubinstellingen
 # Strings for the "hub settings" dialog window.
 hub-settings-button-increase-priority-tooltip = Prioriteit verhogen
 # Strings for the drop-down window to manage your active account
-account-drop-down-add-account = Voeg profiel toe
+account-drop-down-add-account = Voeg account toe
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-update-error = Er was een fout tijdens het downloaden van serverinhoud. Vraag op Discord om ondersteuning als het probleem blijft bestaan.
+# Strings for the "forgot password" view on login
+login-forgot-title = Wachtwoord vergeten?
+# Strings for the "forgot password" view on login
+login-forgot-message = Als je jouw wachtwoord vergeten bent, kan je hier het e-mailadres van je account ingeven om een herstel-link te ontvangen.
+# Strings for the "hub settings" dialog window.
+hub-settings-explanation = Hier kan je extra hubs toevoegen om spelservers van te halen. Voeg alleen hubs toe die je vertrouwt, want ze kunnen spelservers van andere hubs vals nabootsen. De volgorde van de hubs is belangrijk; als twee hubs dezelfde spelserver adverteren zal de hub met hogere prioriteit (hoger in de lijst) voorrang krijgen.
+# Strings for the "hub settings" dialog window.
+hub-settings-heading-default = Standaard
+# Strings for the "hub settings" dialog window.
+hub-settings-heading-custom = Toegevoegd
+# Strings for the "hub settings" dialog window.
+hub-settings-warning-invalid = Ongeldige hub (vergeet http(s):// niet)
+# Strings for the "hub settings" dialog window.
+hub-settings-warning-duplicate = Dubbele hubs
+# Strings for the login screen
+login-log-launcher = Log Launcher
+# Error messages for login
+login-error-invalid-credentials = Ongeldige inloggegevens
+# Error messages for login
+login-error-account-unconfirmed = Het e-mailadres voor deze account moet nog bevestigd worden. Bevestig uw e-mailadres voordat u probeert in te loggen
+# Error messages for login
+login-error-account-2fa-required = 2-factor authenticatie vereist
+# Error messages for login
+login-error-account-2fa-invalid = 2-factor authenticatie code ongeldig
+# Error messages for login
+login-error-account-account-locked = Account is vergrendeld. Neem contact met ons op als u denkt dat dit een fout is.
+# Error messages for login
+login-error-unknown = Onbekende fout
+# Error messages for login
+login-errors-button-ok = OK
+# Strings for 2FA login
+login-2fa-title = 2-factor authenticatie vereist
+# Strings for 2FA login
+login-2fa-message = Voer de authenticatiecode van je app in.
+# Strings for 2FA login
+login-2fa-input-watermark = Authenticatiecode
+# Strings for 2FA login
+login-2fa-button-confirm = Bevestig
+# Strings for 2FA login
+login-2fa-button-recovery-code = Herstelcode
+# Strings for 2FA login
+login-2fa-button-cancel = Annuleer
+# Strings for the "login expired" view on login
+login-expired-title = Sessie verlopen
+# Strings for the "login expired" view on login
+login-expired-message =
+    De sessie voor deze account is verlopen.
+    Voer uw wachtwoord opnieuw in.
+# Strings for the "login expired" view on login
+login-expired-password-watermark = Wachtwoord
+# Strings for the "login expired" view on login
+login-expired-button-log-in = Inloggen
+# Strings for the "login expired" view on login
+login-expired-button-log-out = Uitloggen
+# Strings for the "login expired" view on login
+login-expired-button-forgot-password = Wachtwoord vergeten?
+# Strings for the "forgot password" view on login
+login-forgot-email-watermark = Jouw e-mailadres
