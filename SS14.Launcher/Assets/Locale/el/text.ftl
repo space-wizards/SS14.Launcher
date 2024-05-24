@@ -50,7 +50,7 @@ tab-home-favorite-servers = Αγαπημένοι διακομιστές:
 # 'Example' name shown as a watermark in the name input box
 add-favorite-window-example-name = Διαστημικός Σταθμός Χονκ
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-status-update-error = Υπήρχε σφάλμα στην λήψη αρχείων από τον εξυπηρετητής. Εάν το πρόβλημα επιμένει ζητείστε βοήθεια στο Discord.
+connecting-status-update-error = Υπήρχε σφάλμα στη λήψη αρχείων από τον εξυπηρετητή. Εάν το πρόβλημα επιμένει ζητείστε βοήθεια στο Discord.
 # Localization for the "add favorite server" dialog window
 add-favorite-window-label-address = Διεύθυνση IP:
 # Strings for the "connecting" menu that appears when connecting to a server.
@@ -64,4 +64,4 @@ account-drop-down-not-logged-in = Είστε Αποσυνδεμένοι
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-none = Αρχίζει η σύνδεση...
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-status-updating = Ενημέρωση:{ $status }
+connecting-status-updating = Ενημέρωση: { $status }
