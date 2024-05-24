@@ -411,3 +411,11 @@ region-asia-north = Azië Noord
 region-short-asia-north = Azië Noord
 # Strings for the server filters menu
 filters-player-count-hide-empty = Verberg lege
+# Strings for the server filters menu
+filters-title-rp = Rollenspelniveau
+# Strings for entries in the server list (including home page)
+server-entry-fetching = Ophalen…
+# Strings for entries in the server list (including home page)
+server-entry-description-offline = Kan de server niet bereiken
+# Strings for entries in the server list (including home page)
+server-entry-description-fetching = Serverstatus ophalen…
