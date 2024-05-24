@@ -92,7 +92,7 @@ connecting-update-status-culling-content = Γίνεται καθαρισμός �
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-update-status-ready = Η ενημέρωση έγινε!
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-update-status-committing-download = Γίνεται συνχρονισμός στον δίσκο…
+connecting-update-status-committing-download = Γίνεται συγχρονισμός στον δίσκο…
 # Strings for the "login" view on login
 login-login-button-log-in = Σύνδεση
 # Strings for the "connecting" menu that appears when connecting to a server.
