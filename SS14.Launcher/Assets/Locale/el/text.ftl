@@ -133,3 +133,5 @@ hub-settings-warning-invalid = Το hub δεν είναι έγκυρο (Μην �
 hub-settings-explanation = Εδώ μπορείτε να προσθέσετε επιπλέον hubs για την λύψη εξυπηρετητών. Συνιστάται να προσθέσετε μόνο hubs που εμπιστεύεσται, αφού μπορούν να υποδυθούν εξυπηρετητές από άλλα hubs. H σειρά των hubs είναι συμαντική; Αν δύο hubs διαφημίζουν τον ίδιο εξυπηρετητή τότε το Hub με την ποιο υψηλή φέση στην λίστα θα πάρει προτεραιότητα.
 # Strings for the "hub settings" dialog window.
 hub-settings-warning-duplicate = Διπλότυπα hubs
+# Error messages for login
+login-error-invalid-credentials = Τα στοιχεία σύνδεσης δεν είναι έγκυρα
