@@ -124,7 +124,7 @@ login-expired-button-log-in = Anmelden
 # Strings for the "login expired" view on login
 login-expired-button-log-out = Abmelden
 # Strings for the "login expired" view on login
-login-expired-button-forgot-password = Password vergessen?
+login-expired-button-forgot-password = Passwort vergessen?
 # Strings for the "forgot password" view on login
 login-forgot-title = Password vergessen?
 # Strings for the "forgot password" view on login
@@ -462,4 +462,6 @@ tab-news-title = Neuigkeiten
 # Strings for the "news" tab
 tab-news-recent-news = Neueste Nachrichten:
 # Strings for the "news" tab
-tab-news-pulling-news = Nachrichten werden geladen...
+tab-news-pulling-news = Nachrichten werden geladen…
+# Strings for the drop-down window to manage your active account
+account-drop-down-log-out-of = Aus { $name } abmelden
