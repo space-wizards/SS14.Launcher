@@ -139,3 +139,5 @@ login-error-invalid-credentials = Τα στοιχεία σύνδεσης δεν 
 login-error-account-unconfirmed = Το email για αυτό τον λογαριασμό πρέπει να επιβεβαιωθεί. Παρακαλώ κάντε επιβεβαίωση του email σας πριν προσπαθήσετε να συνδεθείτε
 # Error messages for login
 login-error-account-account-locked = Ο λογαριασμός σας έχει κλειδωθεί. Παρακαλώ επικοινωνήστε μαζί μας αν πιστεύετε ότι αυτό είναι λάθος.
+# Strings for 2FA login
+login-2fa-message = Παρακαλώ εισάγετε τον κωδικό αυθεντικοποίησης από την εφαρμογή σας
