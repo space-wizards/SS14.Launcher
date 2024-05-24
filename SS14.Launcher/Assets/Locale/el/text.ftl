@@ -102,4 +102,4 @@ connecting-update-status-loading-content-bundle = Γίνεται φόρτοση 
 # Strings for the "direct connect" dialog window.
 direct-connect-title = Απευθείας σύνδεση…
 # Strings for the "direct connect" dialog window.
-direct-connect-text = Εισάγετε διεύθηνση IP για να συνδεθείτε:
+direct-connect-text = Εισάγετε διεύθυνσή IP για να συνδεθείτε:
