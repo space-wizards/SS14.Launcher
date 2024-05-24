@@ -34,7 +34,7 @@ connecting-update-status-ready = Update komplett!
 # Error messages for login
 login-error-unknown = Unbekannter Fehler
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-status-not-a-content-bundle = Datei ist kein gültiges Content-Packet!
+connecting-status-not-a-content-bundle = Datei ist kein gültiges Content-Paket!
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-client-crashed = Das Spiel scheint beim starten abgestürzt zu sein. Bitte frage nach Hilfe auf Discord oder GitHub falls dieses Problem besteht.
 # Strings for the "connecting" menu that appears when connecting to a server.
@@ -302,7 +302,7 @@ region-short-middle-east = Mittlerer Osten
 # Short region names for server tag filters (shown in filter check box)
 region-short-the-moon = Der Mond
 # Short region names for server tag filters (shown in filter check box)
-region-short-north-america-central = NA Mitte
+region-short-north-america-central = NA Central
 # Short region names for server tag filters (shown in filter check box)
 region-short-north-america-east = NA Ost
 # Short region names for server tag filters (shown in filter check box)
@@ -465,3 +465,45 @@ tab-news-recent-news = Neueste Nachrichten:
 tab-news-pulling-news = Nachrichten werden geladen…
 # Strings for the drop-down window to manage your active account
 account-drop-down-log-out-of = Aus { $name } abmelden
+# Strings for the "options" tab
+tab-options-title = Einstellungen
+# Strings for the "options" tab
+tab-options-flip = { "*" }flip
+# Strings for the "options" tab
+tab-options-clear-engines = Installierte Engine-Versionen löschen
+# Strings for the "options" tab
+tab-options-clear-content = Installierten Serverinhalt löschen
+# Strings for the "options" tab
+tab-options-open-log-directory = Log Ordner öffnen
+# Strings for the "options" tab
+tab-options-compatibility-mode = Kompatibilitätsmodus
+# Strings for the "options" tab
+tab-options-compatibility-mode-desc = Hier wird OpenGL ES 2 (ggf. über ANGLE) verwendet, das weniger wahrscheinlich von Treiberfehlern betroffen ist. Probiere diese Einstellung aus, wenn du grafische Probleme oder Abstürze hast.
+# Strings for the "options" tab
+tab-options-log-client = Client loggen
+# Strings for the "options" tab
+tab-options-log-client-desc = Ermöglicht die Protokollierung aller Spiel-Client-Ausgaben. Nützlich für Entwickler.
+# Strings for the "options" tab
+tab-options-log-launcher = Launcher loggen
+# Strings for the "options" tab
+tab-options-verbose-launcher-logging = Ausführliches Launcher Logging
+# Strings for the "options" tab
+tab-options-verbose-launcher-logging-desc = Für den Fall, dass die Entwickler mit Ihrem Problem *sehr* ratlos sind. (erfordert einen Neustart des Launchers)
+# Strings for the "options" tab
+tab-options-seasonal-branding = Saisonales Branding
+# Strings for the "options" tab
+tab-options-seasonal-branding-desc = Alle gerade relevanten Icons und Logos, die wir uns ausdenken können.
+# Strings for the "options" tab
+tab-options-disable-signing = Engine-Signaturprüfungen deaktivieren
+# Strings for the "options" tab
+tab-options-hub-settings = Hub Einstellungen
+# Strings for the "options" tab
+tab-options-hub-settings-desc = Ändere den oder die Hub-Server, die du zum Abrufen der Serverliste verwenden möchtest.
+# Strings for the "options" tab
+tab-options-account-settings = Kontoeinstellungen
+# Strings for the "options" tab
+tab-options-log-launcher-desc = Aktiviert die Protokollierung des Launchers. Nützlich für Entwickler. (erfordert einen Neustart des Launchers)
+# Strings for the "options" tab
+tab-options-account-settings-desc = Du kannst deine Kontoeinstellungen, wie z. B. das Ändern deiner E-Mail-Adresse oder deines Passworts, über unsere Website verwalten.
+# Strings for the "options" tab
+tab-options-disable-signing-desc = { "[" }DEV ONLY] Deaktiviert die Engine-Signaturprüfung. NICHT AKTIVIEREN, WENN DU NICHT GENAU WEISST, WAS DU TUST.
