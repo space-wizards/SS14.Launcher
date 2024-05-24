@@ -197,3 +197,83 @@ login-resend-confirmation-message = Bitte prüfe deine E-Mail, um dein Konto zu 
 login-resend-button-confirm = Ich habe mein Konto bestätigt
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-update-error = Ein Fehler ist aufgetreten beim runterladen der Spieldateien. Bitte frage nach Hilfe auf dem Discord wenn das Problem weiterhin besteht.
+# Strings for the general main window layout of the launcher
+main-window-busy-checking-update = Suche nach Updates…
+# Long region names for server tag filters (shown in tooltip)
+region-africa-south = Südafrika
+# Strings for the "servers" tab
+filters = Filter ({ $filteredServers } / { $totalServers })
+# Long region names for server tag filters (shown in tooltip)
+region-the-moon = Der Mond
+# Strings for the general main window layout of the launcher
+main-window-out-of-date-desc-steam =
+    Der Launcher ist veraltet.
+    Bitte erlaube Steam das Spiel zu aktualisieren.
+# Strings for the general main window layout of the launcher
+main-window-out-of-date-exit = Verlassen
+# Strings for the general main window layout of the launcher
+main-window-out-of-date-download-manual = Runterladen (manuell)
+# Strings for the general main window layout of the launcher
+main-window-early-access-title = Achtung!
+# Strings for the general main window layout of the launcher
+main-window-early-access-desc = Space Station 14 ist in der Alpha. Wir hoffen, dass dir gefällt was du siehst, vielleicht bleibst du sogar hier, aber bitte halte deine Erwartungen bescheiden.
+# Strings for the general main window layout of the launcher
+main-window-early-access-accept = Verstanden!
+# Strings for the general main window layout of the launcher
+main-window-drag-drop-prompt = Loslassen um Spiel zu starten
+# Strings for the general main window layout of the launcher
+main-window-header-link-website = Webseite
+# Strings for the general main window layout of the launcher
+main-window-out-of-date = Launcher ist veraltet
+# Strings for the general main window layout of the launcher
+main-window-out-of-date-desc =
+    Der Launcher ist veraltet.
+    Bitte lade die neuste Version von unserer Webseite runter.
+# Strings for the general main window layout of the launcher
+main-window-busy-checking-login-status = Aktualisiere Login-Status…
+# Strings for the general main window layout of the launcher
+main-window-busy-checking-account-status = Kontostatus prüfen
+# Strings for the general main window layout of the launcher
+main-window-error-connecting-auth-server = Fehler beim Verbinden mit dem Authentifikationsserver
+# Strings for the general main window layout of the launcher
+main-window-error-unknown = Unbekannter Fehler aufgetreten
+# Long region names for server tag filters (shown in tooltip)
+region-africa-central = Afrika Zentral
+# Long region names for server tag filters (shown in tooltip)
+region-africa-north = Nordafrika
+# Long region names for server tag filters (shown in tooltip)
+region-antarctica = Antarktis
+# Long region names for server tag filters (shown in tooltip)
+region-asia-east = Ostasien
+# Long region names for server tag filters (shown in tooltip)
+region-asia-north = Nordasien
+# Long region names for server tag filters (shown in tooltip)
+region-asia-south-east = Südostasien
+# Long region names for server tag filters (shown in tooltip)
+region-central-america = Zentralamerika
+# Long region names for server tag filters (shown in tooltip)
+region-europe-east = Osteuropa
+# Long region names for server tag filters (shown in tooltip)
+region-europe-west = Westeuropa
+# Long region names for server tag filters (shown in tooltip)
+region-greenland = Grönland
+# Long region names for server tag filters (shown in tooltip)
+region-india = Indien
+# Long region names for server tag filters (shown in tooltip)
+region-north-america-central = Nordzentralamerika
+# Long region names for server tag filters (shown in tooltip)
+region-north-america-east = Nordostamerika
+# Long region names for server tag filters (shown in tooltip)
+region-north-america-west = Nordwestamerika
+# Long region names for server tag filters (shown in tooltip)
+region-oceania = Ozeanien
+# Long region names for server tag filters (shown in tooltip)
+region-south-america-east = Südostamerika
+# Short region names for server tag filters (shown in filter check box)
+region-short-antarctica = Antarktis
+# Strings for the "servers" tab
+tab-servers-search-watermark = Suche nach Servern…
+# Strings for the "servers" tab
+tab-servers-table-players = Spieler
+# Strings for the "servers" tab
+tab-servers-table-name = Servername
