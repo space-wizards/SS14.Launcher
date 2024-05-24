@@ -155,10 +155,6 @@ login-login-button-register = Noch kein Konto? Registriere jetzt!
 login-login-busy-logging-in = Anmelden…
 # Strings for the "login" view on login
 login-login-error-title = Anmeldung fehlgeschlagen
-# Strings for the "resend confirmation" view on login
-login-resend-button-cancel = Abbrechen
-# Strings for the "resend confirmation" view on login
-login-resend-busy = Einloggen…
 # Strings for the general main window layout of the launcher
 main-window-title = Space Station 14 Launcher
 # Strings for the general main window layout of the launcher
@@ -191,10 +187,6 @@ login-forgot-message = Falls du dein Password vergessen hast, kannst du hier die
 login-forgot-button-submit = Absenden
 # Strings for the "forgot password" view on login
 login-forgot-success-message = Ein Wiederherstellungslink wurde zu deiner E-Mail-Adresse gesendet.
-# Strings for the "resend confirmation" view on login
-login-resend-confirmation-message = Bitte prüfe deine E-Mail, um dein Konto zu bestätigen. Sobald du dein Konto bestätigt hast, klicke den Knopf unten, um dich anzumelden.
-# Strings for the "resend confirmation" view on login
-login-resend-button-confirm = Ich habe mein Konto bestätigt
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-update-error = Ein Fehler ist aufgetreten beim runterladen der Spieldateien. Bitte frage nach Hilfe auf dem Discord wenn das Problem weiterhin besteht.
 # Strings for the general main window layout of the launcher

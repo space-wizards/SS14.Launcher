@@ -26,8 +26,6 @@ hub-settings-button-reset-tooltip = Resetar para configurações padrões
 login-expired-title = Login expirado
 # Strings for the "forgot password" view on login
 login-forgot-message = Se você esqueceu sua senha, você pode informar o endereço de e-mail associado a sua conta aqui para receber o link de reset.
-# Strings for the "resend confirmation" view on login
-login-resend-confirmation-message = Por favor, verifique seu e-mail para confirmar sua conta. Assim que tiver confirmado sua conta, pressione o botão abaixo para conectar.
 # Strings for the general main window layout of the launcher
 main-window-early-access-title = Preste atenção!
 # Strings for the general main window layout of the launcher
@@ -198,14 +196,6 @@ login-login-button-register = Não tem uma conta? Registre-se!
 login-login-busy-logging-in = Conectando...
 # Strings for the "login" view on login
 login-login-error-title = Falha ao conectar
-# Strings for the "resend confirmation" view on login
-login-resend-confirmation-title = Confirmação de registro
-# Strings for the "resend confirmation" view on login
-login-resend-button-confirm = Eu confirmei minha conta
-# Strings for the "resend confirmation" view on login
-login-resend-button-cancel = Cancelar
-# Strings for the "resend confirmation" view on login
-login-resend-busy = Conectando...
 # Strings for the general main window layout of the launcher
 main-window-title = Space Station 14 Launcher
 # Strings for the general main window layout of the launcher
