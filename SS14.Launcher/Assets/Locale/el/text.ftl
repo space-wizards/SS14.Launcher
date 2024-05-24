@@ -125,3 +125,9 @@ hub-settings-heading-default = Προκαθορισμένο
 login-error-unknown = Άγνωστο σφάλμα
 # Strings for the "login expired" view on login
 login-expired-button-log-in = Σύνδεση
+# Strings for the "hub settings" dialog window.
+hub-settings-heading-custom = Προσαρμοσμένο
+# Strings for the "hub settings" dialog window.
+hub-settings-warning-invalid = Το hub δεν είναι έγκυρο (Μην ξεχάσετε να βάλετε http(s)://)
+# Strings for the "hub settings" dialog window.
+hub-settings-explanation = Εδώ μπορείτε να προσθέσετε επιπλέον hubs για την λύψη εξυπηρετητών. Συνιστάται να προσθέσετε μόνο hubs που εμπιστεύεσται, αφού μπορούν να υποδυθούν εξυπηρετητές από άλλα hubs. H σειρά των hubs είναι συμαντική; Αν δύο hubs διαφημίζουν τον ίδιο εξυπηρετητή τότε το Hub με την ποιο υψηλή φέση στην λίστα θα πάρει προτεραιότητα.
