@@ -76,4 +76,4 @@ connecting-status-not-a-content-bundle = Το αρχείο δεν είναι έ�
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-client-crashed = Το client κράσαρε κατά την εκκίνησή του. Εάν το πρόβλημα επιμένει ζητείστε βοήθεια στο Discord ή στο Github.
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-update-status-checking-client-update = Γίνεται έλεγχος για ενημερωμένο content Εξυπηρετητή...
+connecting-update-status-checking-client-update = Γίνεται έλεγχος για ενημερωμένο content Εξυπηρετητή…
