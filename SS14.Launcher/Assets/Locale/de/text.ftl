@@ -130,7 +130,7 @@ login-forgot-title = Password vergessen?
 # Strings for the "forgot password" view on login
 login-forgot-email-watermark = Deine E-Mail-Adresse
 # Strings for the "forgot password" view on login
-login-forgot-button-back = Zurück zum Anmeldung
+login-forgot-button-back = Zurück zur Anmeldung
 # Strings for the "forgot password" view on login
 login-forgot-busy-sending = E-Mail wird gesendet…
 # Strings for the "forgot password" view on login
@@ -168,13 +168,7 @@ connecting-update-status-checking-engine-modules = Prüfen für zusätzliche Abh
 # Strings for the "hub settings" dialog window.
 hub-settings-button-reset-tooltip = Einstellungen auf Standard zurücksetzten
 # Strings for the "hub settings" dialog window.
-hub-settings-explanation =
-    Hier kannst du extra Hubs hinzufügen.
-    Du solltest nur hubs hinzufügen, den du vertraust,
-    da sie echte Server von anderen Hubs imitieren könnten,
-    d.h. die Reihenfolge von hubs ist wichtig;
-    Falls zwei Hubs den gleichen Server werben,
-    wird der Hub mit der höheren Priorität angezeigt.
+hub-settings-explanation = Hier kannst du extra Hubs hinzufügen. Du solltest nur Hubs hinzufügen, denen du vertraust, da sie echte Server von anderen Hubs imitieren könnten. D.h. die Reihenfolge von Hubs ist wichtig; Falls zwei Hubs den gleichen Server werben, wird der Hub mit der höheren Priorität angezeigt.
 # Strings for 2FA login
 login-2fa-title = 2-Faktor-Authentifikation erforderlich
 # Strings for the "login expired" view on login
@@ -277,3 +271,183 @@ connecting-status-updating = Aktualisieren: { $status }
 connecting-update-status-verifying = Downloadintegrität Prüfen…
 # Strings for the "servers" tab
 tab-servers-list-status-error = Ein Fehler ist aufgetreten beim laden von der Master-Server-Liste.
+# Long region names for server tag filters (shown in tooltip)
+region-middle-east = Mittlerer Osten
+# Long region names for server tag filters (shown in tooltip)
+region-south-america-south = Südamerika Süd
+# Long region names for server tag filters (shown in tooltip)
+region-south-america-west = Südamerika West
+# Short region names for server tag filters (shown in filter check box)
+region-short-africa-central = Zentralafrika
+# Short region names for server tag filters (shown in filter check box)
+region-short-africa-north = Nordafrika
+# Short region names for server tag filters (shown in filter check box)
+region-short-africa-south = Südafrika
+# Short region names for server tag filters (shown in filter check box)
+region-short-asia-east = Ostasien
+# Short region names for server tag filters (shown in filter check box)
+region-short-asia-north = Nordasien
+# Short region names for server tag filters (shown in filter check box)
+region-short-asia-south-east = Südostasien
+# Short region names for server tag filters (shown in filter check box)
+region-short-europe-east = Osteuropa
+# Short region names for server tag filters (shown in filter check box)
+region-short-europe-west = Westeuropa
+# Short region names for server tag filters (shown in filter check box)
+region-short-greenland = Grönland
+# Short region names for server tag filters (shown in filter check box)
+region-short-india = Indien
+# Short region names for server tag filters (shown in filter check box)
+region-short-middle-east = Mittlerer Osten
+# Short region names for server tag filters (shown in filter check box)
+region-short-the-moon = Der Mond
+# Short region names for server tag filters (shown in filter check box)
+region-short-north-america-central = NA Mitte
+# Short region names for server tag filters (shown in filter check box)
+region-short-north-america-east = NA Ost
+# Short region names for server tag filters (shown in filter check box)
+region-short-north-america-west = NA West
+# Short region names for server tag filters (shown in filter check box)
+region-short-oceania = Ozeanien
+# Short region names for server tag filters (shown in filter check box)
+region-short-south-america-east = SA Ost
+# Short region names for server tag filters (shown in filter check box)
+region-short-south-america-south = SA Süd
+# Short region names for server tag filters (shown in filter check box)
+region-short-south-america-west = SA West
+# Strings for the "servers" tab
+tab-servers-title = Server
+# Strings for the "servers" tab
+tab-servers-refresh = Aktualisieren
+# Strings for the "servers" tab
+tab-servers-list-status-partial-error = Einige oder alle Serverlisten konnten nicht geladen werden. Stelle sicher, dass deine Hub-Konfiguration korrekt ist.
+# Strings for the "servers" tab
+tab-servers-list-status-updating-master = Hauptserverliste wird geladen...
+# Strings for the "servers" tab
+tab-servers-list-status-none-filtered = Keine Server entsprechen deiner Such- oder Filtereinstellungen.
+# Strings for the "servers" tab
+tab-servers-list-status-none = Es gibt keine öffentlichen Server. Stelle sicher, dass deine Hub-Konfiguration korrekt ist.
+# Strings for the server filters menu
+filters-title = Filter
+# Strings for the server filters menu
+filters-title-language = Sprache
+# Strings for the server filters menu
+filters-title-region = Region
+# Strings for the server filters menu
+filters-title-rp = Rollenspiel-Level
+# Strings for the server filters menu
+filters-title-player-count = Spielerzahl
+# Strings for the server filters menu
+filters-title-18 = 18+
+# Strings for the server filters menu
+filters-title-hub = Hub
+# Strings for the server filters menu
+filters-18-yes = Ja
+# Strings for the server filters menu
+filters-18-yes-desc = Ja
+# Strings for the server filters menu
+filters-18-no-desc = Nein
+# Strings for the server filters menu
+filters-player-count-hide-empty-desc = Leere Server werden nicht angezeigt
+# Strings for the server filters menu
+filters-player-count-hide-full = Voll verstecken
+# Strings for the server filters menu
+filters-player-count-hide-full-desc = Volle Server werden nicht angezeigt
+# Strings for the server filters menu
+filters-player-count-minimum = Minimum:
+# Strings for the server filters menu
+filters-player-count-minimum-desc = Server mit weniger Spielern werden nicht angezeigt
+# Strings for the server filters menu
+filters-player-count-maximum = Maximum:
+# Strings for the server filters menu
+filters-unspecified-desc = Nicht angegeben
+# Strings for the server filters menu
+filters-unspecified = Nicht angegeben
+# Server roleplay levels for the filters menu
+filters-rp-none = Kein
+# Server roleplay levels for the filters menu
+filters-rp-none-desc = Kein Rollenspiel
+# Server roleplay levels for the filters menu
+filters-rp-low = Niedrig
+# Server roleplay levels for the filters menu
+filters-rp-low-desc = Niedrig
+# Server roleplay levels for the filters menu
+filters-rp-medium = Mäßig
+# Server roleplay levels for the filters menu
+filters-rp-medium-desc = Mäßig
+# Server roleplay levels for the filters menu
+filters-rp-high-desc = Hoch
+# Strings for entries in the server list (including home page)
+server-entry-add-favorite = Favorit hinzufügen
+# Strings for entries in the server list (including home page)
+server-entry-remove-favorite = Favorit entfernen
+# Strings for entries in the server list (including home page)
+server-entry-offline = OFFLINE
+# Strings for entries in the server list (including home page)
+server-entry-player-count =
+    { $players } / { $max ->
+        [0] ∞
+       *[1] { $max }
+    }
+# Strings for entries in the server list (including home page)
+server-entry-fetching = Lädt...
+# Strings for entries in the server list (including home page)
+server-entry-description-offline = Server nicht erreichbar
+# Strings for entries in the server list (including home page)
+server-entry-description-error = Fehler beim laden der Serverbeschreibung
+# Strings for entries in the server list (including home page)
+server-entry-description-none = Keine Beschreibung angegeben
+# Strings for entries in the server list (including home page)
+server-fetched-from-hub = Geladen von { $hub }
+# Strings for the "Development" tab
+# These aren't shown to users so they're not very important
+tab-development-title = { "[" }DEV]
+# Strings for the "Development" tab
+# These aren't shown to users so they're not very important
+tab-development-title-override = { "[" }DEV (override active!!!)]
+# Strings for the "Development" tab
+# These aren't shown to users so they're not very important
+tab-development-disable-signing = Engine-Signaturprüfungen deaktivieren
+# Strings for the "Development" tab
+# These aren't shown to users so they're not very important
+tab-development-enable-engine-override = Engine-Override aktivieren
+# Strings for the "home" tab
+tab-home-title = Home
+# Strings for the "home" tab
+tab-home-favorite-servers = Favoriten:
+# Strings for the "home" tab
+tab-home-add-favorite = Favorit hinzufügen...
+# Strings for the "home" tab
+tab-home-refresh = Aktualisieren
+# Strings for the "home" tab
+tab-home-direct-connect = Direkt mit Server verbinden...
+# Short region names for server tag filters (shown in filter check box)
+region-short-central-america = Zentralamerika
+# Strings for the "Development" tab
+# These aren't shown to users so they're not very important
+tab-development-disable-signing-desc = { "[" }DEV ONLY] Deaktiviert die Engine-Signaturprüfung. NICHT AKTIVIEREN, WENN DU NICHT GENAU WEISST, WAS DU TUST.
+# Strings for the "Development" tab
+# These aren't shown to users so they're not very important
+tab-development-enable-engine-override-desc = Pfad zum Laden von Engine-Zips überschreiben (release/ in RobustToolbox)
+# Strings for the server filters menu
+filters-18-no = Nein
+# Strings for the server filters menu
+filters-player-count-hide-empty = Leer ausblenden
+# Strings for the server filters menu
+filters-player-count-maximum-desc = Server mit mehr Spielern werden nicht angezeigt
+# Server roleplay levels for the filters menu
+filters-rp-high = Hoch
+# Strings for entries in the server list (including home page)
+server-entry-connect = Verbinden
+# Strings for entries in the server list (including home page)
+server-entry-description-fetching = Serverstatus wird geladen...
+# Strings for the "register confirmation" view on login
+login-confirmation-confirmation-title = Registrierung bestätigen
+# Strings for the "register confirmation" view on login
+login-confirmation-confirmation-message = Bitte prüfe deine E-Mail, um dein Konto zu bestätigen. Sobald du dein Konto bestätigt hast, klicke auf die Schaltfläche unten, um dich einzuloggen.
+# Strings for the "register confirmation" view on login
+login-confirmation-button-confirm = Ich habe mein Konto bestätigt
+# Strings for the "register confirmation" view on login
+login-confirmation-button-cancel = Abbrechen
+# Strings for the "register confirmation" view on login
+login-confirmation-busy = Einloggen...
