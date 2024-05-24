@@ -149,3 +149,5 @@ login-2fa-button-confirm = Επιβεβαίωση
 login-2fa-button-recovery-code = Κωδικός επαναφοράς
 # Strings for the "login expired" view on login
 login-expired-title = Η σύνδεση σας έχει λέξει
+# Strings for the "login expired" view on login
+login-expired-message = Η σύνοδος για αυτόν τον λογαριασμό έχει λύξει. Παρακαλώ είσαγετε το συνθηματικό σας ξανά.
