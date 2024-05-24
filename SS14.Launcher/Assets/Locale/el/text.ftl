@@ -117,3 +117,5 @@ hub-settings-button-add-tooltip = Πρόσθεσε hub
 hub-settings-button-remove-tooltip = Αφαίρεσε hub
 # Strings for the "hub settings" dialog window.
 hub-settings-button-increase-priority-tooltip = Αύξησε προτεραιότητα
+# Strings for the "hub settings" dialog window.
+hub-settings-button-decrease-priority-tooltip = Μείωσε προτεραιότητα
