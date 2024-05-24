@@ -87,3 +87,5 @@ connecting-update-status-fetching-manifest = Λήψη manifest εξυπηρετ�
 connecting-update-status-verifying = Γίνεται επαλήθευση αρχείων λήψης…
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-update-status-culling-engine = Γίνεται καθαρισμός παλιών αρχείων…
+# Strings for the "connecting" menu that appears when connecting to a server.
+connecting-update-status-culling-content = Γίνεται καθαρισμός παλιών αρχείων διακομιστή…
