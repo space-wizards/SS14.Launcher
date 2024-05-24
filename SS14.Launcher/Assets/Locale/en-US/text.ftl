@@ -171,7 +171,7 @@ main-window-busy-checking-login-status = Refreshing login status...
 main-window-busy-checking-account-status = Checking account status
 
 main-window-error-connecting-auth-server = Error connecting to authentication server
-main-window-error-unknown = Unknown error occured
+main-window-error-unknown = Unknown error occurred
 
 ## Long region names for server tag filters (shown in tooltip)
 
