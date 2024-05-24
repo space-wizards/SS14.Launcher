@@ -275,3 +275,5 @@ add-favorite-window-title = Favorisierten Server hinzufügen
 connecting-status-updating = Aktualisieren: { $status }
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-update-status-verifying = Downloadintegrität Prüfen...
+# Strings for the "servers" tab
+tab-servers-list-status-error = Ein Fehler ist aufgetreten beim laden von der Master-Server-Liste.
