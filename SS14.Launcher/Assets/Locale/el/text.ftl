@@ -111,3 +111,7 @@ connecting-update-status-checking-engine-modules = Γίνεται έλεγχος
 connecting-update-status-downloading-engine-modules = Γίνεται λήψη επιπλέον εξαρτήσεων…
 # Strings for the "hub settings" dialog window.
 hub-settings-button-done = Τέλος
+# Strings for the "hub settings" dialog window.
+hub-settings-button-add-tooltip = Πρόσθεσε hub
+# Strings for the "hub settings" dialog window.
+hub-settings-button-remove-tooltip = Αφαίρεσε hub
