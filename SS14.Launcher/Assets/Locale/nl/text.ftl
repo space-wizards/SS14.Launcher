@@ -187,3 +187,227 @@ login-login-busy-logging-in = Inloggen...
 login-login-error-title = Kan niet inloggen
 # Strings for the "login" view on login
 login-login-button-register = Heb je nog geen account? Registreer!
+# Strings for entries in the server list (including home page)
+server-entry-player-count =
+    { $players } / { $max ->
+        [0] ∞
+       *[1] { $max }
+    }
+# Strings for the server filters menu
+filters-18-no = Nee
+# Strings for the server filters menu
+filters-18-no-desc = Nee
+# Strings for the general main window layout of the launcher
+main-window-title = Space Station 14 Launcher
+# Strings for the general main window layout of the launcher
+main-window-header-link-discord = Discord
+# Strings for the general main window layout of the launcher
+main-window-header-link-website = Website
+# Strings for the general main window layout of the launcher
+main-window-out-of-date = Launcher is te oud
+# Strings for the general main window layout of the launcher
+main-window-out-of-date-desc =
+    Deze launcher is te oud.
+    Download een nieuwe versie van onze website.
+# Strings for the general main window layout of the launcher
+main-window-out-of-date-desc-steam =
+    Deze launcher is te oud.
+    Laat Steam een update downloaden voor het spel.
+# Strings for the general main window layout of the launcher
+main-window-out-of-date-exit = Sluit launcher
+# Strings for the general main window layout of the launcher
+main-window-out-of-date-download-manual = Download (manueel)
+# Strings for the general main window layout of the launcher
+main-window-early-access-title = Opmerking!
+# Strings for the general main window layout of the launcher
+main-window-early-access-desc = Space Station 14 is nog steeds een alpha. We hopen dat het spel nu al leuk is en dat je hier blijft, maar zorg dat je verwachtingen niet te hoog liggen.
+# Strings for the general main window layout of the launcher
+main-window-busy-checking-update = Controleren op launcher-update…
+# Strings for the general main window layout of the launcher
+main-window-busy-checking-login-status = Login status controleren...
+# Strings for the general main window layout of the launcher
+main-window-busy-checking-account-status = Account status controleren
+# Strings for the general main window layout of the launcher
+main-window-error-connecting-auth-server = Verbindingsfout met authenticatieserver
+# Strings for the general main window layout of the launcher
+main-window-error-unknown = Onbekende fout opgetreden
+# Long region names for server tag filters (shown in tooltip)
+region-africa-central = Afrika Centraal
+# Long region names for server tag filters (shown in tooltip)
+region-africa-north = Afrika Noord
+# Long region names for server tag filters (shown in tooltip)
+region-africa-south = Afrika Zuid
+# Long region names for server tag filters (shown in tooltip)
+region-antarctica = Antarctica
+# Long region names for server tag filters (shown in tooltip)
+region-asia-east = Azië Oost
+# Long region names for server tag filters (shown in tooltip)
+region-asia-south-east = Azië Zuidoost
+# Long region names for server tag filters (shown in tooltip)
+region-central-america = Centraal Amerika
+# Long region names for server tag filters (shown in tooltip)
+region-europe-east = Europa Oost
+# Long region names for server tag filters (shown in tooltip)
+region-europe-west = Europa West
+# Long region names for server tag filters (shown in tooltip)
+region-greenland = Groenland
+# Long region names for server tag filters (shown in tooltip)
+region-india = Indië
+# Long region names for server tag filters (shown in tooltip)
+region-middle-east = Midden-Oosten
+# Long region names for server tag filters (shown in tooltip)
+region-the-moon = De Maan
+# Long region names for server tag filters (shown in tooltip)
+region-north-america-central = Noord-Amerika Centraal
+# Long region names for server tag filters (shown in tooltip)
+region-north-america-east = Noord-Amerika Oost
+# Long region names for server tag filters (shown in tooltip)
+region-north-america-west = Noord-Amerika West
+# Long region names for server tag filters (shown in tooltip)
+region-oceania = Oceanië
+# Long region names for server tag filters (shown in tooltip)
+region-south-america-south = Zuid-Amerika Zuid
+# Long region names for server tag filters (shown in tooltip)
+region-south-america-west = Zuid-Amerika West
+# Short region names for server tag filters (shown in filter check box)
+region-short-africa-central = Afrika Centraal
+# Short region names for server tag filters (shown in filter check box)
+region-short-africa-north = Afrika Noord
+# Short region names for server tag filters (shown in filter check box)
+region-short-africa-south = Afrika Zuid
+# Short region names for server tag filters (shown in filter check box)
+region-short-antarctica = Antarctica
+# Short region names for server tag filters (shown in filter check box)
+region-short-asia-east = Azië Oost
+# Strings for the server filters menu
+filters-18-yes-desc = Ja
+# Short region names for server tag filters (shown in filter check box)
+region-short-asia-south-east = Azië Zuidoost
+# Short region names for server tag filters (shown in filter check box)
+region-short-europe-east = Europa Oost
+# Short region names for server tag filters (shown in filter check box)
+region-short-europe-west = Europa West
+# Short region names for server tag filters (shown in filter check box)
+region-short-greenland = Groenland
+# Short region names for server tag filters (shown in filter check box)
+region-short-india = India
+# Short region names for server tag filters (shown in filter check box)
+region-short-middle-east = Midden-Oosten
+# Short region names for server tag filters (shown in filter check box)
+region-short-the-moon = De Maan
+# Short region names for server tag filters (shown in filter check box)
+region-short-north-america-central = N.A. Centraal
+# Short region names for server tag filters (shown in filter check box)
+region-short-north-america-east = N.A. Oost
+# Short region names for server tag filters (shown in filter check box)
+region-short-north-america-west = N.A. West
+# Short region names for server tag filters (shown in filter check box)
+region-short-oceania = Oceanië
+# Short region names for server tag filters (shown in filter check box)
+region-short-south-america-east = Z.A. Oost
+# Short region names for server tag filters (shown in filter check box)
+region-short-south-america-south = Z.A. Zuid
+# Short region names for server tag filters (shown in filter check box)
+region-short-south-america-west = Z.A. West
+# Strings for the "servers" tab
+tab-servers-title = Servers
+# Strings for the "servers" tab
+tab-servers-refresh = Herladen
+# Strings for the "servers" tab
+filters = Filters ({ $filteredServers } / { $totalServers })
+# Strings for the "servers" tab
+tab-servers-search-watermark = Zoek naar servers…
+# Strings for the "servers" tab
+tab-servers-table-players = Spelers
+# Strings for the "servers" tab
+tab-servers-table-name = Servernaam
+# Strings for the "servers" tab
+tab-servers-list-status-partial-error = Kan sommige of alle serverlijsten niet ophalen. Zorg dat je hubconfiguratie klopt.
+# Strings for the "servers" tab
+tab-servers-list-status-updating-master = Ophalen van hoofdserverlijst...
+# Strings for the "servers" tab
+tab-servers-list-status-none-filtered = Er zijn geen servers die overeenkomen met je zoek- of filterinstellingen.
+# Strings for the server filters menu
+filters-title = Filters
+# Strings for the server filters menu
+filters-title-language = Taal
+# Strings for the server filters menu
+filters-title-region = Regio
+# Strings for the server filters menu
+filters-title-player-count = Aantal spelers
+# Strings for the server filters menu
+filters-title-18 = 18+
+# Strings for the server filters menu
+filters-title-hub = Hub
+# Strings for the server filters menu
+filters-18-yes = Ja
+# Strings for entries in the server list (including home page)
+server-entry-remove-favorite = Verwijder favoriet
+# Strings for entries in the server list (including home page)
+server-entry-offline = OFFLINE
+# Strings for the server filters menu
+filters-player-count-hide-empty-desc = Servers met geen spelers zullen niet zichtbaar zijn
+# Strings for the server filters menu
+filters-player-count-hide-full = Verberg volle
+# Strings for the server filters menu
+filters-player-count-hide-full-desc = Servers die vol zijn zullen niet zichtbaar zijn
+# Strings for the server filters menu
+filters-player-count-minimum = Minimum:
+# Strings for the server filters menu
+filters-player-count-maximum = Maximum:
+# Strings for the server filters menu
+filters-player-count-maximum-desc = Servers met meer spelers zullen niet zichtbaar zijn
+# Strings for the server filters menu
+filters-unspecified-desc = Niet gespecificeerd
+# Strings for the server filters menu
+filters-unspecified = Niet gespec.
+# Server roleplay levels for the filters menu
+filters-rp-none = Geen
+# Server roleplay levels for the filters menu
+filters-rp-none-desc = Geen
+# Server roleplay levels for the filters menu
+filters-rp-low = Laag
+# Server roleplay levels for the filters menu
+filters-rp-low-desc = Laag
+# Server roleplay levels for the filters menu
+filters-rp-medium = Middelmatig
+# Server roleplay levels for the filters menu
+filters-rp-medium-desc = Middelmatig
+# Server roleplay levels for the filters menu
+filters-rp-high = Hoog
+# Server roleplay levels for the filters menu
+filters-rp-high-desc = Hoog
+# Strings for entries in the server list (including home page)
+server-entry-connect = Verbind
+# Strings for entries in the server list (including home page)
+server-entry-add-favorite = Voeg favoriet toe
+# Strings for the general main window layout of the launcher
+main-window-early-access-accept = Ik snap het!
+# Strings for the general main window layout of the launcher
+main-window-drag-drop-prompt = Laat vallen om spel te starten
+# Long region names for server tag filters (shown in tooltip)
+region-south-america-east = Zuid-Amerika Oost
+# Short region names for server tag filters (shown in filter check box)
+region-short-central-america = Centraal Amerika
+# Strings for the "servers" tab
+tab-servers-list-status-error = Er was een fout bij het ophalen van de hoofdserverlijsten.
+# Strings for the "servers" tab
+tab-servers-list-status-none = Er zijn geen publieke servers. Zorg dat je hubconfiguratie klopt.
+# Strings for the "register confirmation" view on login
+login-confirmation-button-confirm = Ik heb mijn account bevestigd
+# Strings for the "register confirmation" view on login
+login-confirmation-button-cancel = Annuleer
+# Strings for the "register confirmation" view on login
+login-confirmation-busy = Inloggen...
+# Strings for the "register confirmation" view on login
+login-confirmation-confirmation-title = Bevestig registratie
+# Strings for the server filters menu
+filters-player-count-minimum-desc = Servers met minder spelers zullen niet zichtbaar zijn
+# Strings for the "register confirmation" view on login
+login-confirmation-confirmation-message = Controleer je e-mail om je account te bevestigen. Nadat je jouw account bevestigd hebt kan je op de onderstaande knop duwen om in te loggen.
+# Long region names for server tag filters (shown in tooltip)
+region-asia-north = Azië Noord
+# Short region names for server tag filters (shown in filter check box)
+region-short-asia-north = Azië Noord
+# Strings for the server filters menu
+filters-player-count-hide-empty = Verberg lege
