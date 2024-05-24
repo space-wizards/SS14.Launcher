@@ -124,3 +124,15 @@ login-forgot-title = ¿Olvido contraseña?
 login-forgot-email-watermark = Su direccion de email
 # Strings for the "forgot password" view on login
 login-forgot-button-submit = Enviar
+# Strings for the "forgot password" view on login
+login-forgot-button-back = Regresar al login
+# Strings for the "forgot password" view on login
+login-forgot-busy-sending = Enviando email...
+# Strings for the "forgot password" view on login
+login-forgot-success-title = Email de reinicio enviado
+# Strings for the "forgot password" view on login
+login-forgot-success-message = Un link de reinicio ha sido enviado a su direccion de email.
+# Strings for the "login" view on login
+login-login-title = Acceder
+# Strings for the "forgot password" view on login
+login-forgot-error = Error
