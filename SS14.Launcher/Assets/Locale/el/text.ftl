@@ -135,3 +135,5 @@ hub-settings-explanation = Εδώ μπορείτε να προσθέσετε ε�
 hub-settings-warning-duplicate = Διπλότυπα hubs
 # Error messages for login
 login-error-invalid-credentials = Τα στοιχεία σύνδεσης δεν είναι έγκυρα
+# Error messages for login
+login-error-account-unconfirmed = Το email για αυτό το λογαριασμό πρέπει να επιβεβαιωθεί. Παρακαλώ κάντε επιβεβαίωση του email σας πριν πριν προσπαθήσετε να συνδεθείτε
