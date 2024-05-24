@@ -107,3 +107,5 @@ direct-connect-text = Εισάγετε διεύθυνσή IP για να συν�
 direct-connect-address-invalid = Η διεύθυνση IP δεν είναι έγκυρη
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-update-status-checking-engine-modules = Γίνεται έλεγχος για εξαρτήσεις…
+# Strings for the "connecting" menu that appears when connecting to a server.
+connecting-update-status-downloading-engine-modules = Γίνεται λήψη επιπλέον εξαρτήσεων…
