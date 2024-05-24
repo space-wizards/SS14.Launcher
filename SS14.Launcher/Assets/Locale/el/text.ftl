@@ -147,3 +147,5 @@ login-2fa-input-watermark = Κωδικός αυθεντικοποίησης
 login-2fa-button-confirm = Επιβεβαίωση
 # Strings for 2FA login
 login-2fa-button-recovery-code = Κωδικός επαναφοράς
+# Strings for the "login expired" view on login
+login-expired-title = Η συνδεσή σας έχει λύξει
