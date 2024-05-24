@@ -119,3 +119,9 @@ hub-settings-button-remove-tooltip = Αφαίρεσε hub
 hub-settings-button-increase-priority-tooltip = Αύξησε προτεραιότητα
 # Strings for the "hub settings" dialog window.
 hub-settings-button-decrease-priority-tooltip = Μείωσε προτεραιότητα
+# Strings for the "hub settings" dialog window.
+hub-settings-heading-default = Προκαθορισμένο
+# Error messages for login
+login-error-unknown = Άγνωστο σφάλμα
+# Strings for the "login expired" view on login
+login-expired-button-log-in = Σύνδεση
