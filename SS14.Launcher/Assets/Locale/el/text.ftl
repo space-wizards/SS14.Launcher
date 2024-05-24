@@ -103,3 +103,5 @@ connecting-update-status-loading-content-bundle = Γίνεται φόρτοση 
 direct-connect-title = Απευθείας σύνδεση…
 # Strings for the "direct connect" dialog window.
 direct-connect-text = Εισάγετε διεύθυνσή IP για να συνδεθείτε:
+# Strings for the "direct connect" dialog window.
+direct-connect-address-invalid = Η διεύθυνση IP δεν είναι έγκυρη
