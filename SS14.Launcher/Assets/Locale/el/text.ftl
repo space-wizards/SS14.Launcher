@@ -1,5 +1,5 @@
 # Strings for the drop-down window to manage your active account
-account-drop-down-none-selected = Κανένας λογαριασμός έχει επιλεχθεί
+account-drop-down-none-selected = Κανένας λογαριασμός δεν έχει επιλεχθεί
 # Strings for the drop-down window to manage your active account
 account-drop-down-log-out = Αποσύνδεση
 # Strings for the drop-down window to manage your active account
@@ -49,3 +49,19 @@ tab-home-favorite-servers = Αγαπημένοι διακομιστές:
 # Localization for the "add favorite server" dialog window
 # 'Example' name shown as a watermark in the name input box
 add-favorite-window-example-name = Διαστημικός Σταθμός Χονκ
+# Strings for the "connecting" menu that appears when connecting to a server.
+connecting-status-update-error = Υπήρχε σφάλμα στην λήψη αρχείων από τον εξυπηρετητής. Εάν το πρόβλημα επιμένει ζητείστε βοήθεια στο Discord.
+# Localization for the "add favorite server" dialog window
+add-favorite-window-label-address = Διεύθυνση IP:
+# Strings for the "connecting" menu that appears when connecting to a server.
+connecting-title-content-bundle = Φόρτωση...
+# Localization for the "add favorite server" dialog window
+add-favorite-window-title = Πρόσθεση αγαπημένου Εξυπηρετητή
+# Localization for the "add favorite server" dialog window
+add-favorite-window-address-invalid = Η διεύθυνση IP δεν είναι έγκυρη
+# Strings for the drop-down window to manage your active account
+account-drop-down-not-logged-in = Είστε Αποσυνδεμένοι
+# Strings for the "connecting" menu that appears when connecting to a server.
+connecting-status-none = Αρχίζει η σύνδεση...
+# Strings for the "connecting" menu that appears when connecting to a server.
+connecting-status-updating = Ενημέρωση:{ $status }
