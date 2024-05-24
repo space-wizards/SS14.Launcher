@@ -102,7 +102,7 @@ connecting-status-update-error = Er was een fout tijdens het downloaden van serv
 # Strings for the "forgot password" view on login
 login-forgot-title = Wachtwoord vergeten?
 # Strings for the "forgot password" view on login
-login-forgot-message = Als je jouw wachtwoord vergeten bent, kan je hier het e-mailadres van je account ingeven om een herstel-link te ontvangen.
+login-forgot-message = Als je jouw wachtwoord vergeten bent, kan je hier het e-mailadres van je account ingeven om een herstellink te ontvangen.
 # Strings for the "hub settings" dialog window.
 hub-settings-explanation = Hier kan je extra hubs toevoegen om spelservers van te halen. Voeg alleen hubs toe die je vertrouwt, want ze kunnen spelservers van andere hubs vals nabootsen. De volgorde van de hubs is belangrijk; als twee hubs dezelfde spelserver adverteren zal de hub met hogere prioriteit (hoger in de lijst) voorrang krijgen.
 # Strings for the "hub settings" dialog window.
@@ -157,3 +157,33 @@ login-expired-button-log-out = Uitloggen
 login-expired-button-forgot-password = Wachtwoord vergeten?
 # Strings for the "forgot password" view on login
 login-forgot-email-watermark = Jouw e-mailadres
+# Strings for the "forgot password" view on login
+login-forgot-button-submit = Indienen
+# Strings for the "forgot password" view on login
+login-forgot-button-back = Terug naar inloggen
+# Strings for the "forgot password" view on login
+login-forgot-busy-sending = E-mail verzenden…
+# Strings for the "forgot password" view on login
+login-forgot-success-title = Herstele-mail verzonden
+# Strings for the "forgot password" view on login
+login-forgot-success-message = Er is een herstellink naar uw e-mailadres verzonden.
+# Strings for the "forgot password" view on login
+login-forgot-error = Fout
+# Strings for the "login" view on login
+login-login-title = Inloggen
+# Strings for the "login" view on login
+login-login-username-watermark = Gebruikersnaam of e-mail
+# Strings for the "login" view on login
+login-login-password-watermark = Wachtwoord
+# Strings for the "login" view on login
+login-login-button-log-in = Inloggen
+# Strings for the "login" view on login
+login-login-button-forgot = Wachtwoord vergeten?
+# Strings for the "login" view on login
+login-login-button-resend = Stuur e-mailbevestiging opnieuw
+# Strings for the "login" view on login
+login-login-busy-logging-in = Inloggen...
+# Strings for the "login" view on login
+login-login-error-title = Kan niet inloggen
+# Strings for the "login" view on login
+login-login-button-register = Heb je nog geen account? Registreer!
