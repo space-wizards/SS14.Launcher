@@ -157,3 +157,5 @@ login-expired-message =
 login-expired-password-watermark = Συνθηματικό
 # Strings for the "forgot password" view on login
 login-forgot-message = Αν έχετε ξεχάσει το συνθηματικό σας. μπορείτε να εισάγετε το email που συνδεδεμένο με τον λογαριασμό σας για να λάβετε link επαναφοράς.
+# Strings for the "forgot password" view on login
+login-forgot-email-watermark = Το email σας
