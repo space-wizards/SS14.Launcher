@@ -451,3 +451,15 @@ login-confirmation-button-confirm = Ich habe mein Konto bestätigt
 login-confirmation-button-cancel = Abbrechen
 # Strings for the "register confirmation" view on login
 login-confirmation-busy = Einloggen...
+# Strings for the "home" tab
+tab-home-run-content-bundle = Content-Packet/Replay ausführen
+# Strings for the "home" tab
+tab-home-go-to-servers-tab = Zum Server Tab
+# Strings for the "home" tab
+tab-home-favorites-guide = Markiere Server als Favoriten, um hier einfacher auf sie zuzugreifen
+# Strings for the "news" tab
+tab-news-title = Neuigkeiten
+# Strings for the "news" tab
+tab-news-recent-news = Neueste Nachrichten:
+# Strings for the "news" tab
+tab-news-pulling-news = Nachrichten werden geladen...
