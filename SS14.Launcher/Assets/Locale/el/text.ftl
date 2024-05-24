@@ -74,4 +74,4 @@ connecting-status-starting-client = Αρχίζει το client…
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-not-a-content-bundle = Το αρχείο δεν είναι έγκυρο content bundle!
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-status-client-crashed = Ο πελάτης παιχνιδιού κράσαρε κατά την εκκίνησή του. Εάν το πρόβλημα επιμένει ζητείστε βοήθεια στο Discord ή στο Github.
+connecting-status-client-crashed = Το client κράσαρε κατά την εκκίνησή του. Εάν το πρόβλημα επιμένει ζητείστε βοήθεια στο Discord ή στο Github.
