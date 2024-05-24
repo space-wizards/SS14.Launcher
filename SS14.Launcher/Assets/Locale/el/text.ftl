@@ -71,3 +71,5 @@ connecting-status-connecting = Γίνεται λήψη πληροφοριών σ
 connecting-status-connection-failed = Απέτυχε η σύνδεση στον εξυπηρετητή!
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-starting-client = Αρχίζει ο πελάτης παιχνιδιού...
+# Strings for the "connecting" menu that appears when connecting to a server.
+connecting-status-not-a-content-bundle = Το αρχείο δεν είναι έγκυρο content bundle!
