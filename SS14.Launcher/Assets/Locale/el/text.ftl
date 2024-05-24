@@ -160,4 +160,4 @@ login-forgot-message = Αν έχετε ξεχάσει το συνθηματικ�
 # Strings for the "forgot password" view on login
 login-forgot-email-watermark = Το email σας
 # Strings for the "forgot password" view on login
-login-forgot-button-submit = υποβολή
+login-forgot-button-submit = Υποβολή
