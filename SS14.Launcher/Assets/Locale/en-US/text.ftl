@@ -118,7 +118,7 @@ login-forgot-title = Forgot password?
 login-forgot-message = If you've forgotten your password, you can enter the email address associated with your account here to receive a reset link.
 login-forgot-email-watermark = Your email address
 login-forgot-button-submit = Submit
-login-forgot-button-back = bakc to login
+login-forgot-button-back = Back to login
 
 login-forgot-busy-sending = Sending email...
 login-forgot-success-title = Reset email sent
