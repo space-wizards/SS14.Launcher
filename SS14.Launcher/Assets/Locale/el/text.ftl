@@ -44,3 +44,8 @@ hub-settings-button-reset = Επαναφορά
 login-errors-button-ok = Οκ
 # Strings for the "login expired" view on login
 login-expired-button-forgot-password = Ξέχασες τον κωδικό σου;
+# Strings for the "home" tab
+tab-home-favorite-servers = Αγαπημένοι διακομιστές:
+# Localization for the "add favorite server" dialog window
+# 'Example' name shown as a watermark in the name input box
+add-favorite-window-example-name = Διαστημικός Σταθμός Χονκ
