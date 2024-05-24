@@ -136,3 +136,13 @@ login-forgot-success-message = Un link de reinicio ha sido enviado a su direccio
 login-login-title = Acceder
 # Strings for the "forgot password" view on login
 login-forgot-error = Error
+# Strings for the "login" view on login
+login-login-button-resend = Reenviar email de confirmacion
+# Strings for the "login" view on login
+login-login-username-watermark = Nombre de usuario o email
+# Strings for the "login" view on login
+login-login-password-watermark = Contraseña
+# Strings for the "login" view on login
+login-login-button-log-in = Acceder
+# Strings for the "login" view on login
+login-login-button-forgot = ¿Olvido su contraseña?
