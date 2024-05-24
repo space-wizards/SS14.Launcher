@@ -143,3 +143,5 @@ login-error-account-account-locked = Ο λογαριασμός σας έχει �
 login-2fa-message = Παρακαλώ εισάγετε τον κωδικό αυθεντικοποίησης από την εφαρμογή σας
 # Strings for 2FA login
 login-2fa-input-watermark = Κωδικός αυθεντικοποίησης
+# Strings for 2FA login
+login-2fa-button-confirm = Επιβεβαίωση
