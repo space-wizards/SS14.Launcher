@@ -269,3 +269,9 @@ tab-servers-search-watermark = Suche nach Servern…
 tab-servers-table-players = Spieler
 # Strings for the "servers" tab
 tab-servers-table-name = Servername
+# Localization for the "add favorite server" dialog window
+add-favorite-window-title = Favorisierten Server hinzufügen
+# Strings for the "connecting" menu that appears when connecting to a server.
+connecting-status-updating = Aktualisieren: { $status }
+# Strings for the "connecting" menu that appears when connecting to a server.
+connecting-update-status-verifying = Downloadintegrität Prüfen...
