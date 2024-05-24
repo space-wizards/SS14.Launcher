@@ -65,3 +65,7 @@ account-drop-down-not-logged-in = Είστε Αποσυνδεμένοι
 connecting-status-none = Αρχίζει η σύνδεση...
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-updating = Ενημέρωση: { $status }
+# Strings for the "connecting" menu that appears when connecting to a server.
+connecting-status-connecting = Γίνεται λήψη πληροφοριών σύνδεσης από τον διακομιστή...
+# Strings for the "connecting" menu that appears when connecting to a server.
+connecting-status-connection-failed = Απέτυχε η σύνδεση στον εξυπηρετητή!
