@@ -419,3 +419,91 @@ server-entry-fetching = Ophalen…
 server-entry-description-offline = Kan de server niet bereiken
 # Strings for entries in the server list (including home page)
 server-entry-description-fetching = Serverstatus ophalen…
+# Strings for the "home" tab
+tab-home-direct-connect = Verbind direct met server…
+# Strings for the "options" tab
+tab-options-clear-content = Wis geïnstalleerde serverinhoud
+# Strings for the "options" tab
+tab-options-compatibility-mode-desc = Dit gebruikt OpenGL ES 3 (via ANGLE indien nodig), wat minder kans heeft op driverbugs. Probeer dit als je grafische problemen of crashes hebt.
+# Strings for the "options" tab
+tab-options-verbose-launcher-logging-desc = Voor wanneer de ontwikkelaars *erg* verbaasd zijn met je probleem. (herstarten van launcher vereist)
+# Strings for the "Development" tab
+# These aren't shown to users so they're not very important
+tab-development-enable-engine-override = Zet engine overschrijding aan
+# Strings for the "Development" tab
+# These aren't shown to users so they're not very important
+tab-development-disable-signing = Bevestig engine handtekeningen niet
+# Strings for the "Development" tab
+# These aren't shown to users so they're not very important
+tab-development-disable-signing-desc = { "[" }DEV ONLY] Schakel bevestiging van engine handtekeningen uit. ZET DIT NIET AAN TENZIJ DAT JE WEET WAT JE AAN HET DOEN BENT.
+# Strings for entries in the server list (including home page)
+server-entry-description-error = Fout bij ophalen serverbeschrijving
+# Strings for entries in the server list (including home page)
+server-entry-description-none = Geen serverbeschrijving gegeven
+# Strings for entries in the server list (including home page)
+server-fetched-from-hub = Gehaald van { $hub }
+# Strings for the "Development" tab
+# These aren't shown to users so they're not very important
+tab-development-title = { "[" }DEV]
+# Strings for the "Development" tab
+# These aren't shown to users so they're not very important
+tab-development-title-override = { "[" }DEV (overschrijding actief!!!)]
+# Strings for the "home" tab
+tab-home-run-content-bundle = Loop contentbundel/replay
+# Strings for the "home" tab
+tab-home-go-to-servers-tab = Ga naar de serverstab
+# Strings for the "home" tab
+tab-home-favorites-guide = Markeer servers als favoriet om ze hier snel te bereiken
+# Strings for the "news" tab
+tab-news-title = Nieuws
+# Strings for the "home" tab
+tab-home-favorite-servers = Favoriete servers:
+# Strings for the "home" tab
+tab-home-add-favorite = Voeg favoriet toe…
+# Strings for the "home" tab
+tab-home-refresh = Herladen
+# Strings for the "news" tab
+tab-news-recent-news = Recent nieuws:
+# Strings for the "news" tab
+tab-news-pulling-news = Nieuws ophalen...
+# Strings for the "options" tab
+tab-options-title = Opties
+# Strings for the "options" tab
+tab-options-flip = { "*" }flip
+# Strings for the "options" tab
+tab-options-clear-engines = Wis geïnstalleerde engines
+# Strings for the "options" tab
+tab-options-open-log-directory = Open logdirectory
+# Strings for the "options" tab
+tab-options-account-settings = Accountinstellingen
+# Strings for the "options" tab
+tab-options-account-settings-desc = Via onze website kan je accountinstellingen, zoals e-mail en wachtwoord, beheren.
+# Strings for the "options" tab
+tab-options-compatibility-mode = Compatibiliteitsmodus
+# Strings for the "options" tab
+tab-options-log-launcher = Log Launcher
+# Strings for the "options" tab
+tab-options-log-client = Log Client
+# Strings for the "options" tab
+tab-options-log-client-desc = Zet logs aan voor de uitvoer van de spelclient. Nuttig voor de ontwikkelaars.
+# Strings for the "options" tab
+tab-options-log-launcher-desc = Zet logs aan voor de uitvoer van de launcher. Nuttig voor de ontwikkelaars. (herstarten van launcher vereist)
+# Strings for the "options" tab
+tab-options-verbose-launcher-logging = Gedetailleerde launcher logs
+# Strings for the "options" tab
+tab-options-seasonal-branding = Seizoensgebonden logo's
+# Strings for the "options" tab
+tab-options-seasonal-branding-desc = Laat tijdelijk relevante logo's en icoontjes die we verzinnen zien.
+# Strings for the "options" tab
+tab-options-disable-signing = Bevestig engine handtekeningen niet
+# Strings for the "options" tab
+tab-options-disable-signing-desc = { "[" }DEV ONLY] Schakel bevestiging van engine handtekeningen uit. ZET DIT NIET AAN TENZIJ DAT JE WEET WAT JE AAN HET DOEN BENT.
+# Strings for the "options" tab
+tab-options-hub-settings = Hubinstellingen
+# Strings for the "options" tab
+tab-options-hub-settings-desc = Pas aan welke hubservers je wilt gebruiken om de lijst van spelservers op te halen.
+# Strings for the "Development" tab
+# These aren't shown to users so they're not very important
+tab-development-enable-engine-override-desc = Overschrijdingspad om engine zip van te laden (release/ in RobustToolbox)
+# Strings for the "home" tab
+tab-home-title = Thuis
