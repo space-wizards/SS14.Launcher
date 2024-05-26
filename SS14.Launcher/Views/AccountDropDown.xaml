@@ -14,7 +14,7 @@
 
   <v:DropDown HeaderContent="{Binding LoginText}" IsDropDownOpen="{Binding IsDropDownOpen, Mode=TwoWay}" Classes="OpenRight">
     <Panel>
-      <v:AngleBox Fill="{DynamicResource ThemeBackgroundBrush}" SideStyle="OpenRight" />
+      <v:AngleBox Fill="{DynamicResource ThemePopupBackgroundBrush}" SideStyle="OpenRight" />
       <StackPanel Orientation="Vertical">
         <StackPanel Orientation="Vertical" IsVisible="{Binding AccountControlsVisible}">
           <Button Content="{Binding LogoutText}" Command="{Binding LogoutPressed}" Margin="4" />
