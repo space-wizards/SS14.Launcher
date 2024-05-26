@@ -35,6 +35,8 @@ public static class ConfigConstants
     public const string AccountResendConfirmationUrl = $"{AccountBaseUrl}ResendEmailConfirmation";
     public const string WebsiteUrl = "https://spacestation14.com";
     public const string DownloadUrl = "https://spacestation14.com/about/nightlies/";
+    // TODO: This should be a link to the docs instead.
+    public const string TranslateUrl = "https://weblate.spacestation14.com/projects/space-station-14-launcher/main/";
 
     private static readonly UrlFallbackSet RobustBuildsBaseUrl = new([
         "https://robust-builds.cdn.spacestation14.com/",

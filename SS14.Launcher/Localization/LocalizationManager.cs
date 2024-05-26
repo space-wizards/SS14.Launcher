@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Globalization;
 using System.IO;
 using System.Text;
@@ -19,9 +20,25 @@ public sealed class LocalizationManager
 {
     private readonly DataManager _dataManager;
 
-    private const string FallbackCulture = "en-US";
+    public static readonly ImmutableArray<LanguageInfo> AvailableLanguages =
+    [
+        new LanguageInfo(FallbackCulture),
+        new LanguageInfo("nl"),
+        new LanguageInfo("el"),
+        new LanguageInfo("de"),
+        new LanguageInfo("ru"),
+        new LanguageInfo("pt"),
+        new LanguageInfo("es"),
+    ];
+
+    private const string FallbackCulture = "en";
+    private const string FallbackCultureSub = "en-US";
 
     private FluentBundle _bundle = default!;
+
+    public CultureInfo SystemCulture { get; private set; } = CultureInfo.InvariantCulture;
+
+    public event Action? LanguageSwitched;
 
     public LocalizationManager(DataManager dataManager)
     {
@@ -31,6 +48,7 @@ public sealed class LocalizationManager
     public void Initialize()
     {
         // TODO: Base this on system language.
+        SystemCulture = new CultureInfo(FallbackCulture);
         var language = _dataManager.GetCVar(CVars.Language) ?? FallbackCulture;
         LoadCulture(new CultureInfo(language));
     }
@@ -77,8 +95,7 @@ public sealed class LocalizationManager
             .UseConcurrent()
             .UncheckedBuild();
 
-        if (culture.Name != FallbackCulture)
-            AddLanguageFiles(bundle, new CultureInfo(FallbackCulture));
+        AddLanguageFiles(bundle, new CultureInfo(FallbackCultureSub));
 
         AddLanguageFiles(bundle, culture);
 
@@ -109,5 +126,17 @@ public sealed class LocalizationManager
         Log.Verbose("Loaded {Count} files for locale: {CultureName} ({CultureDisplayName})", count, culture.Name, culture.DisplayName);
     }
 
+    public void SwitchToLanguage(CultureInfo? culture)
+    {
+        LoadCulture(culture ?? SystemCulture);
+        // Trigger re-creation of main window view which will refresh localization strings everywhere.
+        LanguageSwitched?.Invoke();
+    }
+
     public static LocalizationManager Instance => Locator.Current.GetRequiredService<LocalizationManager>();
+
+    public sealed record LanguageInfo(string Name)
+    {
+        public CultureInfo Culture { get; } = new(Name);
+    }
 }

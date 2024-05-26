@@ -282,6 +282,14 @@ internal static class Program
         };
         viewModel.OnWindowInitialized();
 
+        loc.LanguageSwitched += () =>
+        {
+            window.ReloadContent();
+
+            // Reloading content isn't a smooth process anyway, so let's do some housekeeping while we're at it.
+            GC.Collect();
+        };
+
         var lc = new LauncherCommands(viewModel);
         lc.RunCommandTask();
         Locator.CurrentMutable.RegisterConstant(lc);

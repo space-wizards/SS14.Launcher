@@ -346,3 +346,16 @@ tab-options-disable-signing = Disable Engine Signature Checks
 tab-options-disable-signing-desc = [DEV ONLY] Disables verification of engine signatures. DO NOT ENABLE UNLESS YOU KNOW EXACTLY WHAT YOU'RE DOING.
 tab-options-hub-settings = Hub Settings
 tab-options-hub-settings-desc = Change what hub server or servers you would like to use to fetch the server list.
+
+## For the language selection menu.
+
+# Text on the button that opens the menu.
+language-selector-label = Language
+# "Save" button.
+language-selector-save = Save
+# "Cancel" button.
+language-selector-cancel = Cancel
+language-selector-help-translate = Want to help translate? You can!
+language-selector-system-language = System language ({$languageName})
+# Used for contents of each language button.
+language-selector-language = {$languageName} ({$englishName})
