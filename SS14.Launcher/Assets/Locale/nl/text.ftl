@@ -507,3 +507,19 @@ tab-options-hub-settings-desc = Pas aan welke hubservers je wilt gebruiken om de
 tab-development-enable-engine-override-desc = Overschrijdingspad om engine zip van te laden (release/ in RobustToolbox)
 # Strings for the "home" tab
 tab-home-title = Thuis
+# For the language selection menu.
+# Used for contents of each language button.
+language-selector-language = { $languageName } ({ $englishName })
+# For the language selection menu.
+# Text on the button that opens the menu.
+language-selector-label = Taal
+# For the language selection menu.
+# "Save" button.
+language-selector-save = Opslaan
+# For the language selection menu.
+# "Cancel" button.
+language-selector-cancel = Annuleer
+# For the language selection menu.
+language-selector-help-translate = Wil je helpen met vertalen? Dat kan!
+# For the language selection menu.
+language-selector-system-language = Systeemtaal ({ $languageName })
