@@ -405,3 +405,5 @@ tab-home-run-content-bundle = Запустить набор контента / �
 tab-home-go-to-servers-tab = Перейти к вкладке серверов
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-none = Начинается подключение…
+# Strings for the drop-down window to manage your active account
+account-drop-down-not-logged-in = Нет аккаунта
