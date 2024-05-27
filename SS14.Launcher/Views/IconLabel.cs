@@ -9,23 +9,23 @@ namespace SS14.Launcher.Views;
 
 public class IconLabel : TemplatedControl
 {
-    public static readonly StyledProperty<object> ContentProperty =
+    public static readonly StyledProperty<object?> ContentProperty =
         ContentControl.ContentProperty.AddOwner<IconLabel>();
 
-    public static readonly StyledProperty<IDataTemplate> ContentTemplateProperty =
+    public static readonly StyledProperty<IDataTemplate?> ContentTemplateProperty =
         ContentControl.ContentTemplateProperty.AddOwner<IconLabel>();
 
     public static readonly StyledProperty<IImage> IconProperty =
         AvaloniaProperty.Register<IconLabel, IImage>(nameof(Icon));
 
     [Content]
-    public object Content
+    public object? Content
     {
         get => GetValue(ContentProperty);
         set => SetValue(ContentProperty, value);
     }
 
-    public IDataTemplate ContentTemplate
+    public IDataTemplate? ContentTemplate
     {
         get => GetValue(ContentTemplateProperty);
         set => SetValue(ContentTemplateProperty, value);

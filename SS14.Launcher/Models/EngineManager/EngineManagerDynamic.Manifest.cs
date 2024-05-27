@@ -70,8 +70,8 @@ public sealed partial class EngineManagerDynamic
 
         Log.Debug("Loading manifest from {manifestUrl}...", ConfigConstants.RobustBuildsManifest);
         _cachedRobustVersionInfo =
-            await _http.GetFromJsonAsync<Dictionary<string, VersionInfo>>(
-                ConfigConstants.RobustBuildsManifest, cancellationToken: cancel);
+            await ConfigConstants.RobustBuildsManifest.GetFromJsonAsync<Dictionary<string, VersionInfo>>(
+                _http, cancel);
 
         _robustCacheValidUntil = _manifestStopwatch.Elapsed + ConfigConstants.RobustManifestCacheTime;
     }

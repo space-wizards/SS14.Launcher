@@ -330,7 +330,7 @@ public sealed partial class EngineManagerDynamic : IEngineManager
 
     public async Task<EngineModuleManifest> GetEngineModuleManifest(CancellationToken cancel = default)
     {
-        return await _http.GetFromJsonAsync<EngineModuleManifest>(ConfigConstants.RobustModulesManifest, cancel) ??
+        return await ConfigConstants.RobustModulesManifest.GetFromJsonAsync<EngineModuleManifest>(_http, cancel) ??
                throw new InvalidDataException();
     }
 

@@ -8,6 +8,6 @@
         3. Local dev SS14.Loader launching code.
         -->
         <TargetFramework>net8.0</TargetFramework>
-        <Version>0.26.1</Version>
+        <Version>0.27.2</Version>
     </PropertyGroup>
 </Project>

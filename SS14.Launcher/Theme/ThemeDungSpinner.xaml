@@ -19,4 +19,9 @@
       </Animation>
     </Style.Animations>
   </Style>
+  <Style Selector="Viewbox.DungSpinnerBox">
+    <Setter Property="Width" Value="72" />
+    <Setter Property="Height" Value="72" />
+    <Setter Property="HorizontalAlignment" Value="Center" />
+  </Style>
 </Styles>
