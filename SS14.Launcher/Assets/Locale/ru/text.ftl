@@ -404,6 +404,15 @@ tab-home-run-content-bundle = Запустить набор контента / �
 # Strings for the "home" tab
 tab-home-go-to-servers-tab = Перейти к вкладке серверов
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-status-none = Начинается подключение…
+connecting-status-none = Начало подключения…
 # Strings for the drop-down window to manage your active account
 account-drop-down-not-logged-in = Нет аккаунта
+# For the language selection menu.
+# Used for contents of each language button.
+language-selector-language = { $languageName } ({ $englishName })
+# Strings for the "Development" tab
+# These aren't shown to users so they're not very important
+tab-development-title-override = { "[" }DEV (перезапись активна!!!)]
+# Strings for the "Development" tab
+# These aren't shown to users so they're not very important
+tab-development-enable-engine-override = Включить перезапись движка
