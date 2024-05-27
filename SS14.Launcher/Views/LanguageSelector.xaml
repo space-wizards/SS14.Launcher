@@ -33,7 +33,7 @@
                   Command="{Binding OnHelpTranslateButtonPressed}" />
         </Grid>
         <!-- Main contents -->
-        <ScrollViewer>
+        <ScrollViewer Margin="2">
           <StackPanel>
             <ItemsControl ItemsSource="{Binding Languages}">
               <ItemsControl.ItemTemplate>
