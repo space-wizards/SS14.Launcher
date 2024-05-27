@@ -53,6 +53,11 @@ public sealed partial class ServerListFiltersViewModel : ObservableObject
         set => SetProperty(ref _filteredServers, value);
     }
 
+    public string FiltersText => _loc.GetString(
+        "filters",
+        ("filteredServers", FilteredServers),
+        ("totalServers", TotalServers));
+
     public ServerListFiltersViewModel(DataManager dataManager, LocalizationManager loc)
     {
         _dataManager = dataManager;
@@ -282,6 +287,7 @@ public sealed partial class ServerListFiltersViewModel : ObservableObject
         }
 
         FilteredServers = list.Count;
+        OnPropertyChanged(nameof(FiltersText));
 
         bool DoesServerMatch(ServerStatusData server)
         {
