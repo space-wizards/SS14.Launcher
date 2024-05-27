@@ -507,3 +507,19 @@ tab-options-disable-signing = Desativa Verificações de Assinatura de Engine
 tab-options-hub-settings = Configurações de Hub
 # Strings for the "options" tab
 tab-options-hub-settings-desc = Muda qual servidor de hub você gostaria de usar para adquirir sua lista de servidores.
+# For the language selection menu.
+# Text on the button that opens the menu.
+language-selector-label = Línguagem
+# For the language selection menu.
+language-selector-system-language = Idioma do Sistema { $languageName }
+# For the language selection menu.
+language-selector-help-translate = Quer ajudar a traduzir? Você pode!
+# For the language selection menu.
+# "Save" button.
+language-selector-save = Salvar
+# For the language selection menu.
+# "Cancel" button.
+language-selector-cancel = Cancelar
+# For the language selection menu.
+# Used for contents of each language button.
+language-selector-language = { $languageName } { $englishName }
