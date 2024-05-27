@@ -187,8 +187,8 @@ public sealed partial class ServerListFiltersViewModel : ObservableObject
         filtersRolePlay.Sort(ServerFilterDataOrderComparer.InstanceRolePlay);
         filtersHub.Sort(ServerFilterShortNameComparer.Instance);
 
-        var unspecified = _loc.GetString("tab-servers-filters-unspecified");
-        var unspecifiedDesc = _loc.GetString("tab-servers-filters-unspecified-desc");
+        var unspecified = _loc.GetString("filters-unspecified");
+        var unspecifiedDesc = _loc.GetString("filters-unspecified-desc");
 
         // Unspecified always comes last.
         filtersLanguage.Add(new ServerFilterViewModel(unspecifiedDesc, unspecified,
