@@ -416,3 +416,7 @@ tab-development-title-override = { "[" }DEV (перезапись активна
 # Strings for the "Development" tab
 # These aren't shown to users so they're not very important
 tab-development-enable-engine-override = Включить перезапись движка
+# Strings for the "news" tab
+tab-news-title = Новости
+# Strings for the "news" tab
+tab-news-recent-news = Последние новости:
