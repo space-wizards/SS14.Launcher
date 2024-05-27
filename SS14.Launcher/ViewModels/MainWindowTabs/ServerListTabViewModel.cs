@@ -5,6 +5,7 @@ using System.Collections.Specialized;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Splat;
+using SS14.Launcher.Localization;
 using SS14.Launcher.Models.ServerStatus;
 using SS14.Launcher.Utility;
 
@@ -12,6 +13,7 @@ namespace SS14.Launcher.ViewModels.MainWindowTabs;
 
 public class ServerListTabViewModel : MainWindowTabViewModel
 {
+    private readonly LocalizationManager _loc = LocalizationManager.Instance;
     private readonly MainWindowViewModel _windowVm;
     private readonly ServerListCache _serverListCache;
 
@@ -19,7 +21,7 @@ public class ServerListTabViewModel : MainWindowTabViewModel
 
     private string? _searchString;
 
-    public override string Name => "Servers";
+    public override string Name => _loc.GetString("tab-servers-title");
 
     public string? SearchString
     {
@@ -42,23 +44,21 @@ public class ServerListTabViewModel : MainWindowTabViewModel
             switch (status)
             {
                 case RefreshListStatus.Error:
-                    return "There was an error fetching the master server lists.";
+                    return _loc.GetString("tab-servers-list-status-error");
                 case RefreshListStatus.PartialError:
-                    return "Failed to fetch some or all server lists. Ensure your hub configuration is correct.";
+                    return _loc.GetString("tab-servers-list-status-partial-error");
                 case RefreshListStatus.UpdatingMaster:
-                    return "Fetching master server list...";
-                case RefreshListStatus.Updating:
-                    return "Discovering servers...";
+                    return _loc.GetString("tab-servers-list-status-updating-master");
                 case RefreshListStatus.NotUpdated:
                     return "";
                 case RefreshListStatus.Updated:
                 default:
                     if (SearchedServers.Count == 0 && _serverListCache.AllServers.Count != 0)
                         // TODO: Actually make this show up or just remove it entirely
-                        return "No servers match your search or filter settings.";
+                        return _loc.GetString("tab-servers-list-status-none-filtered");
 
                     if (_serverListCache.AllServers.Count == 0)
-                        return "There are no public servers. Ensure your hub configuration is correct.";
+                        return _loc.GetString("tab-servers-list-status-none");
 
                     return "";
             }
@@ -71,7 +71,7 @@ public class ServerListTabViewModel : MainWindowTabViewModel
 
     public ServerListTabViewModel(MainWindowViewModel windowVm)
     {
-        Filters = new ServerListFiltersViewModel(windowVm.Cfg);
+        Filters = new ServerListFiltersViewModel(windowVm.Cfg, _loc);
         Filters.FiltersUpdated += FiltersOnFiltersUpdated;
 
         _windowVm = windowVm;

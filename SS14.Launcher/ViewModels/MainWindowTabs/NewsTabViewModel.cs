@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using CodeHollow.FeedReader;
 using ReactiveUI;
+using SS14.Launcher.Localization;
 
 namespace SS14.Launcher.ViewModels.MainWindowTabs;
 
@@ -54,5 +55,5 @@ public class NewsTabViewModel : MainWindowTabViewModel
 
     public ObservableCollection<NewsEntryViewModel> NewsEntries { get; }
 
-    public override string Name => "News";
+    public override string Name => LocalizationManager.Instance.GetString("tab-news-title");
 }

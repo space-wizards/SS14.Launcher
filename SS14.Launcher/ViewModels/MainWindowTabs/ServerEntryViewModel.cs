@@ -2,6 +2,7 @@ using System;
 using System.ComponentModel;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Messaging;
+using SS14.Launcher.Localization;
 using SS14.Launcher.Models.Data;
 using SS14.Launcher.Models.ServerStatus;
 using static SS14.Launcher.Utility.HubUtility;
@@ -10,6 +11,7 @@ namespace SS14.Launcher.ViewModels.MainWindowTabs;
 
 public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<FavoritesChanged>, IViewModelBase
 {
+    private readonly LocalizationManager _loc = LocalizationManager.Instance;
     private readonly ServerStatusData _cacheData;
     private readonly IServerSource _serverSource;
     private readonly DataManager _cfg;
@@ -65,7 +67,9 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
     }
 
     public string Name => Favorite?.Name ?? _cacheData.Name ?? _fallbackName;
-    public string FavoriteButtonText => IsFavorite ? "Remove Favorite" : "Add Favorite";
+    public string FavoriteButtonText => IsFavorite
+        ? _loc.GetString("server-entry-remove-favorite")
+        : _loc.GetString("server-entry-add-favorite");
     private bool IsFavorite => _cfg.FavoriteServers.Lookup(Address).HasValue;
 
     public bool ViewedInFavoritesPane { get; set; }
@@ -77,19 +81,13 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
             switch (_cacheData.Status)
             {
                 case ServerStatusCode.Offline:
-                    return "OFFLINE";
+                    return _loc.GetString("server-entry-offline");
                 case ServerStatusCode.Online:
                     // Give a ratio for servers with a defined player count, or just a current number for those without.
-                    if (_cacheData.SoftMaxPlayerCount > 0)
-                    {
-                        return $"{_cacheData.PlayerCount} / {_cacheData.SoftMaxPlayerCount}";
-                    }
-                    else
-                    {
-                        return $"{_cacheData.PlayerCount} / ∞";
-                    }
+                    return _loc.GetString("server-entry-player-count",
+                        ("players", _cacheData.PlayerCount), ("max", _cacheData.SoftMaxPlayerCount));
                 case ServerStatusCode.FetchingStatus:
-                    return "Fetching...";
+                    return _loc.GetString("server-entry-fetching");
                 default:
                     throw new NotSupportedException();
             }
@@ -103,17 +101,17 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
             switch (_cacheData.Status)
             {
                 case ServerStatusCode.Offline:
-                    return "Unable to contact server";
+                    return _loc.GetString("server-entry-description-offline");
                 case ServerStatusCode.FetchingStatus:
-                    return "Fetching server status...";
+                    return _loc.GetString("server-entry-description-fetching");
             }
 
             return _cacheData.StatusInfo switch
             {
-                ServerStatusInfoCode.NotFetched => "Fetching server description...",
-                ServerStatusInfoCode.Fetching => "Fetching server description...",
-                ServerStatusInfoCode.Error => "Error while fetching server description",
-                ServerStatusInfoCode.Fetched => _cacheData.Description ?? "No server description provided",
+                ServerStatusInfoCode.NotFetched => _loc.GetString("server-entry-description-fetching"),
+                ServerStatusInfoCode.Fetching => _loc.GetString("server-entry-description-fetching"),
+                ServerStatusInfoCode.Error => _loc.GetString("server-entry-description-error"),
+                ServerStatusInfoCode.Fetched => _cacheData.Description ?? _loc.GetString("server-entry-description-none"),
                 _ => throw new ArgumentOutOfRangeException()
             };
         }
@@ -139,7 +137,9 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
         {
             if (_cfg.HasCustomHubs)
             {
-                return _cacheData.HubAddress == null ? null : $"Fetched from {GetHubShortName(_cacheData.HubAddress)}";
+                return _cacheData.HubAddress == null
+                    ? null
+                    : _loc.GetString("server-fetched-from-hub", ("hub", GetHubShortName(_cacheData.HubAddress)));
             }
 
             return null;

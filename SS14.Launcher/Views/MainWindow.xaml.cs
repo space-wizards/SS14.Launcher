@@ -1,10 +1,10 @@
 using System;
 using System.Linq;
-using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
+using SS14.Launcher.Localization;
 using SS14.Launcher.ViewModels;
 using TerraFX.Interop.Windows;
 using IDataObject = Avalonia.Input.IDataObject;
@@ -14,6 +14,8 @@ namespace SS14.Launcher.Views;
 public partial class MainWindow : Window
 {
     private MainWindowViewModel? _viewModel;
+
+    private MainWindowContent _content;
 
     public MainWindow()
     {
@@ -25,6 +27,22 @@ public partial class MainWindow : Window
         AddHandler(DragDrop.DragLeaveEvent, DragLeave);
         AddHandler(DragDrop.DragOverEvent, DragOver);
         AddHandler(DragDrop.DropEvent, Drop);
+
+        _content = (MainWindowContent) Content!;
+
+        ReloadTitle();
+    }
+
+    public void ReloadContent()
+    {
+        ReloadTitle();
+
+        Content = _content = new MainWindowContent();
+    }
+
+    private void ReloadTitle()
+    {
+        Title = LocalizationManager.Instance.GetString("main-window-title");
     }
 
     protected override void OnDataContextChanged(EventArgs e)
@@ -60,14 +78,13 @@ public partial class MainWindow : Window
         COLORREF r = 0x00262121;
         Windows.DwmSetWindowAttribute(hWnd, 35, &r, (uint) sizeof(COLORREF));
 
-        // Remove top margin of the window on Windows 11, since there's ample space after we recolor the title bar.
-        var margin = HeaderPanel.Margin;
-        HeaderPanel.Margin = new Thickness(margin.Left, 0, margin.Right, margin.Bottom);
+        // Removes the top margin of the window on Windows 11, since there's ample space after we recolor the title bar.
+        Classes.Add("WindowsTitlebarColorActive");
     }
 
     private void Drop(object? sender, DragEventArgs args)
     {
-        DragDropOverlay.IsVisible = false;
+        _content.DragDropOverlay.IsVisible = false;
 
         if (!IsDragDropValid(args.Data))
             return;
@@ -89,7 +106,7 @@ public partial class MainWindow : Window
 
     private void DragLeave(object? sender, RoutedEventArgs args)
     {
-        DragDropOverlay.IsVisible = false;
+        _content.DragDropOverlay.IsVisible = false;
     }
 
     private void DragEnter(object? sender, DragEventArgs args)
@@ -97,7 +114,7 @@ public partial class MainWindow : Window
         if (!IsDragDropValid(args.Data))
             return;
 
-        DragDropOverlay.IsVisible = true;
+        _content.DragDropOverlay.IsVisible = true;
     }
 
     private bool IsDragDropValid(IDataObject dataObject)

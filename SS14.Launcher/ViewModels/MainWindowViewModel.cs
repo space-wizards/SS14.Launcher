@@ -12,6 +12,7 @@ using ReactiveUI.Fody.Helpers;
 using Serilog;
 using Splat;
 using SS14.Launcher.Api;
+using SS14.Launcher.Localization;
 using SS14.Launcher.Models;
 using SS14.Launcher.Models.Data;
 using SS14.Launcher.Models.Logins;
@@ -28,6 +29,7 @@ public sealed class MainWindowViewModel : ViewModelBase, IErrorOverlayOwner
     private readonly LoginManager _loginMgr;
     private readonly HttpClient _http;
     private readonly LauncherInfoManager _infoManager;
+    private readonly LocalizationManager _loc;
 
     private int _selectedIndex;
 
@@ -45,6 +47,7 @@ public sealed class MainWindowViewModel : ViewModelBase, IErrorOverlayOwner
         _loginMgr = Locator.Current.GetRequiredService<LoginManager>();
         _http = Locator.Current.GetRequiredService<HttpClient>();
         _infoManager = Locator.Current.GetRequiredService<LauncherInfoManager>();
+        _loc = LocalizationManager.Instance;
 
         ServersTab = new ServerListTabViewModel(this);
         NewsTab = new NewsTabViewModel();
@@ -69,8 +72,6 @@ public sealed class MainWindowViewModel : ViewModelBase, IErrorOverlayOwner
             {
                 this.RaisePropertyChanged(nameof(Username));
                 this.RaisePropertyChanged(nameof(LoggedIn));
-                this.RaisePropertyChanged(nameof(LoginText));
-                this.RaisePropertyChanged(nameof(ManageAccountText));
             });
 
         _cfg.Logins.Connect()
@@ -99,8 +100,6 @@ public sealed class MainWindowViewModel : ViewModelBase, IErrorOverlayOwner
     public IReadOnlyList<MainWindowTabViewModel> Tabs { get; }
 
     public bool LoggedIn => _loginMgr.ActiveAccount != null;
-    public string LoginText => LoggedIn ? $"'Logged in' as {Username}." : "Not logged in.";
-    public string ManageAccountText => LoggedIn ? "Change Account..." : "Log in...";
     private string? Username => _loginMgr.ActiveAccount?.Username;
     public bool AccountDropDownVisible => _loginMgr.Logins.Count != 0;
 
@@ -138,9 +137,9 @@ public sealed class MainWindowViewModel : ViewModelBase, IErrorOverlayOwner
 
     public async void OnWindowInitialized()
     {
-        BusyTask = "Checking for launcher update...";
+        BusyTask = _loc.GetString("main-window-busy-checking-update");
         await CheckLauncherUpdate();
-        BusyTask = "Refreshing login status...";
+        BusyTask = _loc.GetString("main-window-busy-checking-login-status");
         await CheckAccounts();
         BusyTask = null;
 
@@ -231,7 +230,7 @@ public sealed class MainWindowViewModel : ViewModelBase, IErrorOverlayOwner
 
     private async void TrySelectUnsureAccount(LoggedInAccount account)
     {
-        BusyTask = "Checking account status";
+        BusyTask = _loc.GetString("main-window-busy-checking-account-status");
         try
         {
             await _loginMgr.UpdateSingleAccountStatus(account);
@@ -243,10 +242,10 @@ public sealed class MainWindowViewModel : ViewModelBase, IErrorOverlayOwner
         catch (AuthApiException e)
         {
             Log.Warning(e, "AuthApiException while trying to refresh account {login}", account.LoginInfo);
-            OverlayViewModel = new AuthErrorsOverlayViewModel(this, "Error connecting to authentication server",
+            OverlayViewModel = new AuthErrorsOverlayViewModel(this, _loc.GetString("main-window-error-connecting-auth-server"),
                 new[]
                 {
-                    e.InnerException?.Message ?? "Unknown error occured"
+                    e.InnerException?.Message ?? _loc.GetString("main-window-error-unknown")
                 });
         }
         finally

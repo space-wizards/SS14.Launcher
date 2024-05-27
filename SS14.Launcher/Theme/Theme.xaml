@@ -76,4 +76,11 @@
   <Style Selector="ScrollBar">
     <Setter Property="Margin" Value="4 0 0 0" />
   </Style>
+
+  <Style Selector=":is(Control).MainWindowHeader">
+    <Setter Property="Margin" Value="4, 8, 0, 0" />
+  </Style>
+  <Style Selector=".WindowsTitlebarColorActive :is(Control).MainWindowHeader">
+    <Setter Property="Margin" Value="4, 0, 0, 0" />
+  </Style>
 </Styles>
