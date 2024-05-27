@@ -403,3 +403,5 @@ tab-home-refresh = Обновить
 tab-home-run-content-bundle = Запустить набор контента / потвор
 # Strings for the "home" tab
 tab-home-go-to-servers-tab = Перейти к вкладке серверов
+# Strings for the "connecting" menu that appears when connecting to a server.
+connecting-status-none = Начинается подключение…
