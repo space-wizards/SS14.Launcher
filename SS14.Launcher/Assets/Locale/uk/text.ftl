@@ -74,3 +74,133 @@ connecting-update-status-downloading-engine-modules = Завантаження �
 connecting-update-status-committing-download = Синхронізація з диском…
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-update-status-loading-content-bundle = Завантаження набору контенту…
+# Error messages for login
+login-error-invalid-credentials = Невірні облікові дані для входу
+# Strings for 2FA login
+login-2fa-input-watermark = Код автентифікації
+# Strings for the "forgot password" view on login
+login-forgot-message = Якщо ви забули свій пароль, ви можете ввести адресу електронної пошти, прив'язану до вашого акаунта, тут, щоб отримати посилання для його відновлення.
+# Error messages for login
+login-error-account-unconfirmed = Адреса електронної пошти для цього акаунта все ще потребує підтвердження. Будь ласка, підтвердіть свою адресу електронної пошти перед спробою входу
+# Strings for the "register confirmation" view on login
+login-confirmation-busy = Вхід…
+# Strings for the "login expired" view on login
+login-expired-message =
+    Сесія для цього акаунта закінчилася.
+    Будь ласка, введіть пароль ще раз.
+# Strings for the "forgot password" view on login
+login-forgot-button-back = Повернутися до входу
+# Strings for the "register confirmation" view on login
+login-confirmation-confirmation-title = Підтвердження реєстрації
+# Strings for the "register confirmation" view on login
+login-confirmation-confirmation-message = Будь ласка, перевірте свою електронну пошту, щоб підтвердити обліковий запис. Після підтвердження облікового запису натисніть кнопку нижче, щоб увійти.
+# Strings for the "register confirmation" view on login
+login-confirmation-button-confirm = Я підтвердив свій акаунт
+# Strings for the "register confirmation" view on login
+login-confirmation-button-cancel = Відмінити
+# Strings for the "connecting" menu that appears when connecting to a server.
+connecting-update-status-unknown = Ви не повинні цього бачити
+# Strings for the "direct connect" dialog window.
+direct-connect-title = Пряме підключення…
+# Strings for the "direct connect" dialog window.
+direct-connect-text = Введіть адрес сервера для підключення:
+# Strings for the "direct connect" dialog window.
+direct-connect-connect = Підключитися
+# Strings for the "direct connect" dialog window.
+direct-connect-address-invalid = Адрес недійсний
+# Strings for the "hub settings" dialog window.
+hub-settings-title = Налаштування Хабу
+# Strings for the "hub settings" dialog window.
+hub-settings-button-done = Готово
+# Strings for the "hub settings" dialog window.
+hub-settings-button-cancel = Відмінити
+# Strings for the "hub settings" dialog window.
+hub-settings-button-reset = Скинути
+# Strings for the "hub settings" dialog window.
+hub-settings-button-reset-tooltip = Скинути до стандартних налаштувань
+# Strings for the "hub settings" dialog window.
+hub-settings-button-add-tooltip = Додати хаб
+# Strings for the "hub settings" dialog window.
+hub-settings-button-remove-tooltip = Видалити хаб
+# Strings for the "hub settings" dialog window.
+hub-settings-button-increase-priority-tooltip = Збільшити пріоритет
+# Strings for the "hub settings" dialog window.
+hub-settings-button-decrease-priority-tooltip = Зменшити пріоритет
+# Strings for the "hub settings" dialog window.
+hub-settings-heading-default = За замовчуванням
+# Strings for the "hub settings" dialog window.
+hub-settings-heading-custom = Користувацькі
+# Strings for the "hub settings" dialog window.
+hub-settings-warning-invalid = Невірний хаб (не забудьте про http(s)://)
+# Strings for the "hub settings" dialog window.
+hub-settings-warning-duplicate = Дубльовані хаби
+# Strings for the login screen
+login-log-launcher = Логувати Лаунчер
+# Error messages for login
+login-error-account-2fa-required = Потрібна 2-факторна автентифікація
+# Error messages for login
+login-error-account-2fa-invalid = Код 2-факторної автентифікації невірний
+# Error messages for login
+login-error-account-account-locked = Акаунт заблоковано. Будь ласка, зв'яжіться з нами, якщо ви вважаєте, що це помилка.
+# Error messages for login
+login-error-unknown = Невідома помилка
+# Error messages for login
+login-errors-button-ok = Ок
+# Strings for 2FA login
+login-2fa-title = Потрібна 2-факторна автентифікація
+# Strings for 2FA login
+login-2fa-message = Будь ласка, введіть код автентифікації з вашого додатку.
+# Strings for 2FA login
+login-2fa-button-confirm = Підтвердити
+# Strings for 2FA login
+login-2fa-button-recovery-code = Код відновлення
+# Strings for 2FA login
+login-2fa-button-cancel = Відмінити
+# Strings for the "login expired" view on login
+login-expired-title = Закінчився термін дії входу
+# Strings for the "login expired" view on login
+login-expired-password-watermark = Пароль
+# Strings for the "login expired" view on login
+login-expired-button-log-in = Увійти
+# Strings for the "login expired" view on login
+login-expired-button-log-out = Вийти
+# Strings for the "login expired" view on login
+login-expired-button-forgot-password = Забули ваш пароль?
+# Strings for the "forgot password" view on login
+login-forgot-title = Забули пароль?
+# Strings for the "forgot password" view on login
+login-forgot-email-watermark = Ваша електронна адреса
+# Strings for the "forgot password" view on login
+login-forgot-button-submit = Відправити
+# Strings for the "forgot password" view on login
+login-forgot-busy-sending = Надсилання електронного листа…
+# Strings for the "forgot password" view on login
+login-forgot-success-title = Електронний лист скидання відправлено
+# Strings for the "forgot password" view on login
+login-forgot-success-message = Посилання для скидання було надіслано на вашу електронну адресу.
+# Strings for the "forgot password" view on login
+login-forgot-error = Помилка
+# Strings for the "login" view on login
+login-login-title = Увійти
+# Strings for the "login" view on login
+login-login-username-watermark = Ім'я користувача або email
+# Strings for the "login" view on login
+login-login-password-watermark = Пароль
+# Strings for the "login" view on login
+login-login-button-log-in = Увійти
+# Strings for the "login" view on login
+login-login-button-forgot = Забули ваш пароль?
+# Strings for the "login" view on login
+login-login-button-resend = Повторно надіслати підтвердження на email
+# Strings for the "login" view on login
+login-login-button-register = Не маєте акаунта? Зареєструйтесь!
+# Strings for the "login" view on login
+login-login-busy-logging-in = Вхід…
+# Strings for the "login" view on login
+login-login-error-title = Не вдалося увійти
+# Strings for the general main window layout of the launcher
+main-window-title = Space Station 14 Launcher
+# Strings for the general main window layout of the launcher
+main-window-header-link-discord = Discord
+# Strings for the "hub settings" dialog window.
+hub-settings-explanation = Тут ви можете додати нові хаби, з яких ви будете отримувати ігрові сервери. Ви повинні додавати лише ті хаби, яким ви довіряєте, оскільки вони можуть «підміняти» ігрові сервери з інших хабів. Порядок хабів має значення; якщо два хаби мають один і той самий ігровий сервер, пріоритет матиме хаб з вищим пріоритетом (вищий у списку).
