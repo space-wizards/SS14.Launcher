@@ -64,7 +64,7 @@
             <!-- Raise to top button. -->
             <Button IsVisible="{Binding ViewedInFavoritesPane}"
                     Classes="OpenLeft"
-                    Content="Raise to top"
+                    Content="{loc:Loc server-entry-raise}"
                     Command="{Binding FavoriteRaiseButtonPressed}" />
           </DockPanel>
         </views:RowSideAlignedPanel>

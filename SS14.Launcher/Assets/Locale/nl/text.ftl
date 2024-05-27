@@ -449,7 +449,7 @@ tab-development-title = { "[" }DEV]
 # These aren't shown to users so they're not very important
 tab-development-title-override = { "[" }DEV (overschrijding actief!!!)]
 # Strings for the "home" tab
-tab-home-run-content-bundle = Loop contentbundel/replay
+tab-home-run-content-bundle = Voer contentbundel/replay uit
 # Strings for the "home" tab
 tab-home-go-to-servers-tab = Ga naar de serverstab
 # Strings for the "home" tab
@@ -523,3 +523,5 @@ language-selector-cancel = Annuleer
 language-selector-help-translate = Wil je helpen met vertalen? Dat kan!
 # For the language selection menu.
 language-selector-system-language = Systeemtaal ({ $languageName })
+# Strings for entries in the server list (including home page)
+server-entry-raise = Bovenop zetten
