@@ -523,3 +523,5 @@ language-selector-cancel = Annuleer
 language-selector-help-translate = Wil je helpen met vertalen? Dat kan!
 # For the language selection menu.
 language-selector-system-language = Systeemtaal ({ $languageName })
+# Strings for entries in the server list (including home page)
+server-entry-raise = Bovenop zetten
