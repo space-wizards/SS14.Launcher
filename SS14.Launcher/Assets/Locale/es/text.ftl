@@ -146,3 +146,36 @@ login-login-password-watermark = Contraseña
 login-login-button-log-in = Acceder
 # Strings for the "login" view on login
 login-login-button-forgot = ¿Olvido su contraseña?
+# Strings for the "connecting" menu that appears when connecting to a server.
+connecting-status-none = Iniciando conexion…
+# Strings for the drop-down window to manage your active account
+account-drop-down-none-selected = No hay cuenta selecionada
+# Strings for the drop-down window to manage your active account
+account-drop-down-not-logged-in = No esta logueado
+# Strings for the drop-down window to manage your active account
+account-drop-down-log-out = Salir
+# Strings for the drop-down window to manage your active account
+account-drop-down-log-out-of = Salir de { $name }
+# Strings for the drop-down window to manage your active account
+account-drop-down-switch-account = Cambiar cuenta:
+# Strings for the drop-down window to manage your active account
+account-drop-down-select-account = Seleccionar cuenta:
+# Strings for the drop-down window to manage your active account
+account-drop-down-add-account = Añadir cuenta
+# Localization for the "add favorite server" dialog window
+add-favorite-window-title = Añadir Servidor Favorito
+# Localization for the "add favorite server" dialog window
+add-favorite-window-address-invalid = Direccion invalida
+# Localization for the "add favorite server" dialog window
+add-favorite-window-label-name = Nombre:
+# Localization for the "add favorite server" dialog window
+add-favorite-window-label-address = Direccion:
+# Localization for the "add favorite server" dialog window
+# 'Example' name shown as a watermark in the name input box
+add-favorite-window-example-name = Honk Station
+# Strings for the "connecting" menu that appears when connecting to a server.
+connecting-title-connecting = Conectando…
+# Strings for the "connecting" menu that appears when connecting to a server.
+connecting-title-content-bundle = Cargando…
+# Strings for the "connecting" menu that appears when connecting to a server.
+connecting-cancel = Cancelar
