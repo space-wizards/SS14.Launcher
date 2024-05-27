@@ -46,7 +46,7 @@ add-favorite-window-label-name = Nome:
 # Strings for the drop-down window to manage your active account
 account-drop-down-log-out-of = Desconectar de { $name }
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-title-connecting = Conectando...
+connecting-title-connecting = Conectando. . .
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-title-content-bundle = Carregando...
 # Strings for the "connecting" menu that appears when connecting to a server.
