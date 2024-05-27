@@ -204,3 +204,306 @@ main-window-title = Space Station 14 Launcher
 main-window-header-link-discord = Discord
 # Strings for the "hub settings" dialog window.
 hub-settings-explanation = Тут ви можете додати нові хаби, з яких ви будете отримувати ігрові сервери. Ви повинні додавати лише ті хаби, яким ви довіряєте, оскільки вони можуть «підміняти» ігрові сервери з інших хабів. Порядок хабів має значення; якщо два хаби мають один і той самий ігровий сервер, пріоритет матиме хаб з вищим пріоритетом (вищий у списку).
+# Strings for the "servers" tab
+tab-servers-search-watermark = Пошук серверів…
+# Strings for entries in the server list (including home page)
+server-entry-description-fetching = Отримання статусу сервера…
+# Long region names for server tag filters (shown in tooltip)
+region-asia-north = Північна Азія
+# Short region names for server tag filters (shown in filter check box)
+region-short-south-america-south = Пд. Америка - Південь
+# Strings for the "servers" tab
+tab-servers-list-status-error = Виникла помилка при завантаженні головного списку серверів.
+# Long region names for server tag filters (shown in tooltip)
+region-the-moon = Місяць
+# Long region names for server tag filters (shown in tooltip)
+region-south-america-south = Південна Америка - Південь
+# Short region names for server tag filters (shown in filter check box)
+region-short-asia-south-east = Південно-Східна Азія
+# Strings for the "servers" tab
+tab-servers-list-status-none-filtered = Жоден сервер не відповідає вашим параметрам пошуку або фільтрації.
+# Strings for entries in the server list (including home page)
+server-entry-player-count =
+    { $players } / { $max ->
+        [0] ∞
+       *[1] { $max }
+    }
+# Strings for entries in the server list (including home page)
+server-entry-fetching = Отримання…
+# Strings for the "Development" tab
+# These aren't shown to users so they're not very important
+tab-development-title-override = { "[" }DEV (override active!!!)]
+# Short region names for server tag filters (shown in filter check box)
+region-short-north-america-west = Пн. Америка - Захід
+# Strings for the server filters menu
+filters-player-count-hide-empty-desc = Сервери без гравців не будуть показані
+# Strings for the server filters menu
+filters-player-count-maximum-desc = Сервери з більшою кількістю гравців не будуть показані
+# Strings for the "home" tab
+tab-home-favorites-guide = Позначте сервери як обрані для швидкого доступу тут
+# Strings for the "options" tab
+tab-options-compatibility-mode-desc = Використовується OpenGL ES 2 (за необхідності, через ANGLE), який менш схильний до помилок драйверів. Спробуйте цей варіант, якщо у вас виникають графічні проблеми або збої.
+# Strings for the "options" tab
+tab-options-seasonal-branding-desc = Будь-які актуальні в часі іконки та логотипи, які ми можемо придумати.
+# For the language selection menu.
+# "Cancel" button.
+language-selector-cancel = Відмінити
+# Strings for the general main window layout of the launcher
+main-window-header-link-website = Вебсайт
+# Strings for the general main window layout of the launcher
+main-window-out-of-date = Лаунчер застарів
+# Strings for the general main window layout of the launcher
+main-window-out-of-date-desc =
+    Цей лаунчер застарів.
+    Будь ласка, завантажте нову версію з нашого сайту.
+# Strings for the general main window layout of the launcher
+main-window-out-of-date-desc-steam =
+    Цей лаунчер застарів.
+    Будь ласка, дозвольте Steam оновити гру.
+# Strings for the general main window layout of the launcher
+main-window-out-of-date-exit = Вийти
+# Strings for the general main window layout of the launcher
+main-window-out-of-date-download-manual = Завантажити (вручну)
+# Strings for the general main window layout of the launcher
+main-window-early-access-title = Стережися!
+# Strings for the general main window layout of the launcher
+main-window-early-access-desc = Space Station 14 все ще перебуває на стадії альфа-версії. Ми сподіваємося, що вам сподобається те, що ви побачите, і, можливо, ви навіть залишитеся тут, але не забувайте поки що зберігати свої очікування скромними.
+# Strings for the general main window layout of the launcher
+main-window-early-access-accept = Зрозуміло!
+# Strings for the general main window layout of the launcher
+main-window-drag-drop-prompt = Відпустіть для запуску гри
+# Strings for the general main window layout of the launcher
+main-window-busy-checking-update = Перевірка оновлення лаунчера…
+# Strings for the general main window layout of the launcher
+main-window-busy-checking-login-status = Оновлення статусу входу…
+# Strings for the general main window layout of the launcher
+main-window-busy-checking-account-status = Перевірка стану акаунта
+# Strings for the general main window layout of the launcher
+main-window-error-connecting-auth-server = Помилка підключення до сервера автентифікації
+# Long region names for server tag filters (shown in tooltip)
+region-africa-central = Центральна Африка
+# Long region names for server tag filters (shown in tooltip)
+region-africa-north = Північна Африка
+# Long region names for server tag filters (shown in tooltip)
+region-africa-south = Південна Африка
+# Long region names for server tag filters (shown in tooltip)
+region-antarctica = Антарктида
+# Long region names for server tag filters (shown in tooltip)
+region-asia-east = Східна Азія
+# Long region names for server tag filters (shown in tooltip)
+region-asia-south-east = Південно-Східна Азія
+# Long region names for server tag filters (shown in tooltip)
+region-central-america = Центральна Америка
+# Long region names for server tag filters (shown in tooltip)
+region-europe-east = Східна Європа
+# Long region names for server tag filters (shown in tooltip)
+region-europe-west = Західна Європа
+# Long region names for server tag filters (shown in tooltip)
+region-greenland = Гренландія
+# Long region names for server tag filters (shown in tooltip)
+region-india = Індія
+# Long region names for server tag filters (shown in tooltip)
+region-middle-east = Близький Схід
+# Long region names for server tag filters (shown in tooltip)
+region-north-america-central = Північна Америка - Центр
+# Long region names for server tag filters (shown in tooltip)
+region-north-america-east = Північна Америка - Схід
+# Long region names for server tag filters (shown in tooltip)
+region-north-america-west = Північна Америка - Захід
+# Long region names for server tag filters (shown in tooltip)
+region-oceania = Океанія
+# Long region names for server tag filters (shown in tooltip)
+region-south-america-east = Південна Америка - Схід
+# Long region names for server tag filters (shown in tooltip)
+region-south-america-west = Південна Америка - Захід
+# Short region names for server tag filters (shown in filter check box)
+region-short-africa-central = Центральна Африка
+# Short region names for server tag filters (shown in filter check box)
+region-short-africa-north = Північна Африка
+# Short region names for server tag filters (shown in filter check box)
+region-short-africa-south = Південна Африка
+# Short region names for server tag filters (shown in filter check box)
+region-short-antarctica = Антарктида
+# Short region names for server tag filters (shown in filter check box)
+region-short-asia-east = Східна Азія
+# Short region names for server tag filters (shown in filter check box)
+region-short-asia-north = Північна Азія
+# Short region names for server tag filters (shown in filter check box)
+region-short-central-america = Центральна Америка
+# Short region names for server tag filters (shown in filter check box)
+region-short-europe-east = Східна Європа
+# Short region names for server tag filters (shown in filter check box)
+region-short-europe-west = Західна Європа
+# Short region names for server tag filters (shown in filter check box)
+region-short-greenland = Гренландія
+# Short region names for server tag filters (shown in filter check box)
+region-short-india = Індія
+# Short region names for server tag filters (shown in filter check box)
+region-short-middle-east = Близький Схід
+# Short region names for server tag filters (shown in filter check box)
+region-short-the-moon = Місяць
+# Short region names for server tag filters (shown in filter check box)
+region-short-north-america-central = Пн. Америка - Центр
+# Short region names for server tag filters (shown in filter check box)
+region-short-north-america-east = Пн. Америка - Схід
+# Short region names for server tag filters (shown in filter check box)
+region-short-oceania = Океанія
+# Short region names for server tag filters (shown in filter check box)
+region-short-south-america-east = Пд. Америка - Схід
+# Short region names for server tag filters (shown in filter check box)
+region-short-south-america-west = Пд. Америка - Захід
+# Strings for the "servers" tab
+tab-servers-title = Сервери
+# Strings for the "servers" tab
+tab-servers-refresh = Обновити
+# Strings for the "servers" tab
+filters = Фільтри ({ $filteredServers } / { $totalServers })
+# Strings for the "servers" tab
+tab-servers-table-players = Гравці
+# Strings for the "servers" tab
+tab-servers-table-name = Назва Серверу
+# Strings for the "servers" tab
+tab-servers-list-status-partial-error = Не вдалося отримати деякі або всі списки серверів. Перевірте правильність конфігурації хаба.
+# Strings for the "servers" tab
+tab-servers-list-status-updating-master = Отримання списку головних серверів…
+# Strings for the "servers" tab
+tab-servers-list-status-none = Публічних серверів немає. Переконайтеся, що конфігурація вашого хаба правильна.
+# Strings for the server filters menu
+filters-title = Фільтри
+# Strings for the server filters menu
+filters-title-language = Мова
+# Strings for the server filters menu
+filters-title-region = Регіон
+# Strings for the server filters menu
+filters-title-rp = Рівень рольової гри
+# Strings for the server filters menu
+filters-title-player-count = Кількість гравців
+# Strings for the server filters menu
+filters-title-18 = 18+
+# Strings for the server filters menu
+filters-title-hub = Хаб
+# Strings for the server filters menu
+filters-18-yes = Так
+# Strings for the server filters menu
+filters-18-yes-desc = Так
+# Strings for the server filters menu
+filters-18-no = Ні
+# Strings for the server filters menu
+filters-18-no-desc = Ні
+# Strings for the server filters menu
+filters-player-count-hide-empty = Приховати порожні
+# Strings for the server filters menu
+filters-player-count-hide-full = Приховати заповнені
+# Strings for the server filters menu
+filters-player-count-hide-full-desc = Заповнені сервери не будуть показані
+# Strings for the server filters menu
+filters-player-count-minimum = Мінімум:
+# Strings for the server filters menu
+filters-player-count-minimum-desc = Сервери з меншою кількістю гравців не будуть показані
+# Strings for the server filters menu
+filters-player-count-maximum = Максимум:
+# Strings for the server filters menu
+filters-unspecified-desc = Не вказано
+# Strings for the server filters menu
+filters-unspecified = Не вказано
+# Server roleplay levels for the filters menu
+filters-rp-none = Немає
+# Server roleplay levels for the filters menu
+filters-rp-none-desc = Немає
+# Server roleplay levels for the filters menu
+filters-rp-low = Низький
+# Server roleplay levels for the filters menu
+filters-rp-low-desc = Низький
+# Server roleplay levels for the filters menu
+filters-rp-medium = Середній
+# Server roleplay levels for the filters menu
+filters-rp-medium-desc = Середній
+# Server roleplay levels for the filters menu
+filters-rp-high = Високий
+# Server roleplay levels for the filters menu
+filters-rp-high-desc = Високий
+# Strings for entries in the server list (including home page)
+server-entry-connect = Підключитися
+# Strings for entries in the server list (including home page)
+server-entry-add-favorite = Додати в Обрані
+# Strings for entries in the server list (including home page)
+server-entry-remove-favorite = Видалити з Обраного
+# Strings for entries in the server list (including home page)
+server-entry-offline = OFFLINE
+# Strings for entries in the server list (including home page)
+server-entry-description-offline = Не вдається зв'язатися з сервером
+# Strings for entries in the server list (including home page)
+server-entry-description-error = Помилка при отриманні опису сервера
+# Strings for entries in the server list (including home page)
+server-entry-description-none = Опис сервера не вказано
+# Strings for entries in the server list (including home page)
+server-fetched-from-hub = Отримано з { $hub }
+# Strings for the "Development" tab
+# These aren't shown to users so they're not very important
+tab-development-title = { "[" }DEV]
+# Strings for the "home" tab
+tab-home-title = Головна
+# Strings for the "home" tab
+tab-home-favorite-servers = Обрані сервери:
+# Strings for the "home" tab
+tab-home-add-favorite = Додати в Обрані…
+# Strings for the "home" tab
+tab-home-refresh = Оновити
+# Strings for the "home" tab
+tab-home-direct-connect = Пряме підключення до сервера…
+# Strings for the "home" tab
+tab-home-run-content-bundle = Запустити контент набору/повтору
+# Strings for the "home" tab
+tab-home-go-to-servers-tab = Перейти на вкладку "Сервери"
+# Strings for the "news" tab
+tab-news-title = Новини
+# Strings for the "news" tab
+tab-news-recent-news = Останні новини:
+# Strings for the "news" tab
+tab-news-pulling-news = Отримання новин…
+# Strings for the "options" tab
+tab-options-title = Налаштування
+# Strings for the "options" tab
+tab-options-flip = { "*" }переворот
+# Strings for the "options" tab
+tab-options-clear-engines = Очистити встановлені движки
+# Strings for the "options" tab
+tab-options-clear-content = Очистити встановлений контент серверів
+# Strings for the "options" tab
+tab-options-open-log-directory = Відкрити директорію логів
+# Strings for the "options" tab
+tab-options-account-settings = Налаштування Акаунта
+# Strings for the "options" tab
+tab-options-account-settings-desc = Ви можете керувати налаштуваннями свого акаунта, наприклад, змінити електронну пошту або пароль, через наш веб-сайт.
+# Strings for the "options" tab
+tab-options-compatibility-mode = Режим Сумісності
+# Strings for the "options" tab
+tab-options-log-client = Логувати Клієнт
+# Strings for the "options" tab
+tab-options-log-client-desc = Вмикає логування будь-якого виводу ігрового клієнта. Корисно для розробників.
+# Strings for the "options" tab
+tab-options-log-launcher = Логувати Лаунчер
+# Strings for the "options" tab
+tab-options-log-launcher-desc = Вмикає логування лаунчера. Корисно для розробників. (потребує перезапуску лаунчера)
+# Strings for the "options" tab
+tab-options-verbose-launcher-logging = Детальне Логування Лаунчера
+# Strings for the "options" tab
+tab-options-verbose-launcher-logging-desc = Для тих випадків, коли розробники *дуже* заплуталися у вашій проблемі. (потребує перезапуску лаунчера)
+# Strings for the "options" tab
+tab-options-seasonal-branding = Сезонний Брендинг
+# Strings for the "options" tab
+tab-options-hub-settings = Налаштування Хаба
+# Strings for the "options" tab
+tab-options-hub-settings-desc = Змініть сервер або сервери хаба, які ви хочете використовувати для отримання списку серверів.
+# Strings for the general main window layout of the launcher
+main-window-error-unknown = Виникла невідома помилка
+# For the language selection menu.
+# Text on the button that opens the menu.
+language-selector-label = Мова
+# For the language selection menu.
+# "Save" button.
+language-selector-save = Зберегти
+# For the language selection menu.
+language-selector-help-translate = Хочете допомогти з перекладом? Ви можете!
+# For the language selection menu.
+language-selector-system-language = Мова системи ({ $languageName })
