@@ -273,6 +273,7 @@ server-entry-description-fetching = Fetching server status…
 server-entry-description-error = Error while fetching server description
 server-entry-description-none = No server description provided
 server-fetched-from-hub = Fetched from { $hub }
+server-entry-raise = Raise to top
 
 ## Strings for the "Development" tab
 ## These aren't shown to users so they're not very important
