@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Text;
 using Avalonia.Platform;
 using Linguini.Bundle;
@@ -47,10 +48,21 @@ public sealed class LocalizationManager
 
     public void Initialize()
     {
-        // TODO: Base this on system language.
-        SystemCulture = new CultureInfo(FallbackCulture);
-        var language = _dataManager.GetCVar(CVars.Language) ?? FallbackCulture;
-        LoadCulture(new CultureInfo(language));
+        var currentUiCulture = CultureInfo.CurrentUICulture;
+        Log.Debug("CurrentUICulture: {Culture}", currentUiCulture);
+        SystemCulture = MatchCultureAgainstAvailable(currentUiCulture) ?? new CultureInfo(FallbackCulture);
+        Log.Debug("Matched available system culture: {Culture}", SystemCulture);
+        var setLanguage = _dataManager.GetCVar(CVars.Language);
+        if (string.IsNullOrEmpty(setLanguage))
+        {
+            Log.Verbose("No language saved in options, using system culture");
+            LoadCulture(SystemCulture);
+        }
+        else
+        {
+            Log.Verbose("Using culture from options: {Culture}", setLanguage);
+            LoadCulture(new CultureInfo(setLanguage));
+        }
     }
 
     public string GetString(string key)
@@ -133,8 +145,31 @@ public sealed class LocalizationManager
         LanguageSwitched?.Invoke();
     }
 
+    private static CultureInfo? MatchCultureAgainstAvailable(CultureInfo culture)
+    {
+        foreach (var parent in EnumerateParents(culture))
+        {
+            if (AvailableLanguages.Any(lang => lang.Name == parent.Name))
+            {
+                return parent;
+            }
+        }
+
+        return null;
+    }
+
+    private static IEnumerable<CultureInfo> EnumerateParents(CultureInfo culture)
+    {
+        while (!culture.Equals(CultureInfo.InvariantCulture))
+        {
+            yield return culture;
+            culture = culture.Parent;
+        }
+    }
+
     public static LocalizationManager Instance => Locator.Current.GetRequiredService<LocalizationManager>();
 
+    // ReSharper disable once NotAccessedPositionalProperty.Global
     public sealed record LanguageInfo(string Name)
     {
         public CultureInfo Culture { get; } = new(Name);
