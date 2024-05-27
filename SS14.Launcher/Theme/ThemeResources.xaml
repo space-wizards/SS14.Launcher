@@ -3,6 +3,7 @@
        xmlns:sys="clr-namespace:System;assembly=mscorlib">
   <Style.Resources>
     <Color x:Key="ThemeBackgroundColor">#25252A</Color>
+    <Color x:Key="ThemePopupBackgroundColor">#202025</Color>
     <Color x:Key="ThemeForegroundColor">#EEEEEE</Color>
 
     <Color x:Key="ThemeForegroundMutedColor">#666</Color>
@@ -22,6 +23,7 @@
     <Color x:Key="ThemeListSeparatorColorTransparent">#00575B7F</Color>
 
     <SolidColorBrush x:Key="ThemeBackgroundBrush" Color="{StaticResource ThemeBackgroundColor}" />
+    <SolidColorBrush x:Key="ThemePopupBackgroundBrush" Color="{StaticResource ThemePopupBackgroundColor}" />
     <SolidColorBrush x:Key="ThemeForegroundBrush" Color="{StaticResource ThemeForegroundColor}" />
     <SolidColorBrush x:Key="ThemeForegroundMutedBrush" Color="{StaticResource ThemeForegroundMutedColor}" />
 

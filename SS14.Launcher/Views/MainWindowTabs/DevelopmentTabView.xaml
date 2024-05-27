@@ -3,6 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:mainWindowTabs="clr-namespace:SS14.Launcher.ViewModels.MainWindowTabs"
+             xmlns:loc="clr-namespace:SS14.Launcher.Localization"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SS14.Launcher.Views.MainWindowTabs.DevelopmentTabView"
              x:DataType="mainWindowTabs:DevelopmentTabViewModel">
@@ -11,18 +12,18 @@
   </Design.DataContext>
 
   <StackPanel Orientation="Vertical">
-    <CheckBox VerticalAlignment="Center" Margin="4" IsChecked="{Binding DisableSigning}">Disable Engine Signature Checks</CheckBox>
+    <CheckBox VerticalAlignment="Center" Margin="4" IsChecked="{Binding DisableSigning}" Content="{loc:Loc tab-development-disable-signing}" />
     <TextBlock VerticalAlignment="Center" TextWrapping="Wrap"
-               Text="[DEV ONLY] Disables verification of engine signatures. DO NOT ENABLE UNLESS YOU KNOW EXACTLY WHAT YOU'RE DOING."
+               Text="{loc:Loc tab-development-disable-signing-desc}"
                Margin="8" />
 
     <Grid ColumnDefinitions="Auto,*">
-      <CheckBox VerticalAlignment="Center" Margin="4" IsChecked="{Binding EngineOverrideEnabled}">Enable engine override</CheckBox>
+      <CheckBox VerticalAlignment="Center" Margin="4" IsChecked="{Binding EngineOverrideEnabled}" Content="{loc:Loc tab-development-enable-engine-override}" />
       <TextBox Grid.Column="1" Text="{Binding EngineOverridePath}" />
 
     </Grid>
     <TextBlock VerticalAlignment="Center" TextWrapping="Wrap"
-               Text="Override path to load engine zips from (release/ in RobustToolbox)"
+               Text="{loc:Loc tab-development-enable-engine-override-desc}"
                Margin="8" />
   </StackPanel>
 </UserControl>
