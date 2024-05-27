@@ -507,3 +507,5 @@ language-selector-save = Зберегти
 language-selector-help-translate = Хочете допомогти з перекладом? Ви можете!
 # For the language selection menu.
 language-selector-system-language = Мова системи ({ $languageName })
+# Strings for entries in the server list (including home page)
+server-entry-raise = Підняти до верху
