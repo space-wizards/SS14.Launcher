@@ -179,3 +179,258 @@ connecting-title-connecting = Conectando…
 connecting-title-content-bundle = Cargando…
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-cancel = Cancelar
+# Long region names for server tag filters (shown in tooltip)
+region-africa-central = Africa Central
+# Long region names for server tag filters (shown in tooltip)
+region-asia-north = Asia Norte
+# Long region names for server tag filters (shown in tooltip)
+region-south-america-south = Sur America Sur
+# Strings for the "servers" tab
+tab-servers-list-status-error = Hubo un error buscando la lista de servidores maestro.
+# Strings for the server filters menu
+filters-title-player-count = Cantidad de jugadores
+# Strings for the server filters menu
+filters-player-count-minimum-desc = Servidores con menos jugadores no se mostraran
+# Strings for entries in the server list (including home page)
+server-entry-raise = Subir
+# Strings for the "Development" tab
+# These aren't shown to users so they're not very important
+tab-development-disable-signing = Disable Engine Signature Checks
+# Strings for entries in the server list (including home page)
+server-entry-fetching = Buscando…
+# Strings for the "servers" tab
+tab-servers-search-watermark = Buscar Servers…
+# Strings for the "servers" tab
+tab-servers-list-status-updating-master = Buscando la lista de servidor maestro…
+# Strings for the "login" view on login
+login-login-button-register = ¿No tiene una cuenta? ¡Registrese!
+# Strings for the "login" view on login
+login-login-busy-logging-in = Accediendo…
+# Strings for the "login" view on login
+login-login-error-title = No se ha podido acceder
+# Strings for the general main window layout of the launcher
+main-window-title = Space Station 14 Launcher
+# Strings for the general main window layout of the launcher
+main-window-header-link-discord = Discord
+# Strings for the general main window layout of the launcher
+main-window-header-link-website = Sitio web
+# Strings for the general main window layout of the launcher
+main-window-out-of-date = Launcher desactualizado
+# Strings for the general main window layout of the launcher
+main-window-out-of-date-desc =
+    Este launcher esta desactualizado
+    Por favor descargue la nueva version desde nuestro sitio web.
+# Strings for the general main window layout of the launcher
+main-window-out-of-date-desc-steam =
+    Este launcher esta desactualizado
+    Por favor permita que Steam actualize el juego.
+# Strings for the general main window layout of the launcher
+main-window-out-of-date-exit = Salir
+# Strings for the general main window layout of the launcher
+main-window-out-of-date-download-manual = Descargar (manual)
+# Strings for the general main window layout of the launcher
+main-window-early-access-title = Aviso!
+# Strings for the general main window layout of the launcher
+main-window-early-access-desc = Space Station 14 todavia esta en alfa. Espero que te guste lo que ves, incluso puede quedarse, pero asegurese de mantener sus expectaciones modestas por el momento.
+# Strings for the general main window layout of the launcher
+main-window-early-access-accept = Entiendo!
+# Strings for the general main window layout of the launcher
+main-window-drag-drop-prompt = Suelte para lanzar el juego
+# Strings for the general main window layout of the launcher
+main-window-busy-checking-update = Checkeando por actualizaciones del launcher…
+# Strings for the general main window layout of the launcher
+main-window-busy-checking-login-status = Refrescando estatus de login…
+# Strings for the general main window layout of the launcher
+main-window-busy-checking-account-status = Checkeando estatus de cuenta
+# Strings for the general main window layout of the launcher
+main-window-error-connecting-auth-server = Error conectando al server de autenticacion
+# Long region names for server tag filters (shown in tooltip)
+region-africa-north = Africa Norte
+# Long region names for server tag filters (shown in tooltip)
+region-africa-south = Africa Sur
+# Long region names for server tag filters (shown in tooltip)
+region-antarctica = Antartida
+# Long region names for server tag filters (shown in tooltip)
+region-asia-east = Asia Este
+# Long region names for server tag filters (shown in tooltip)
+region-asia-south-east = Asia Sureste
+# Long region names for server tag filters (shown in tooltip)
+region-central-america = Centro America
+# Long region names for server tag filters (shown in tooltip)
+region-europe-east = Europa Este
+# Long region names for server tag filters (shown in tooltip)
+region-europe-west = Europa Oeste
+# Long region names for server tag filters (shown in tooltip)
+region-greenland = Groenlandia
+# Long region names for server tag filters (shown in tooltip)
+region-india = India
+# Long region names for server tag filters (shown in tooltip)
+region-middle-east = Oriente Medio
+# Long region names for server tag filters (shown in tooltip)
+region-the-moon = La Luna
+# Long region names for server tag filters (shown in tooltip)
+region-north-america-central = Norte America Central
+# Long region names for server tag filters (shown in tooltip)
+region-north-america-east = Norte America Este
+# Long region names for server tag filters (shown in tooltip)
+region-north-america-west = Norte America Oeste
+# Long region names for server tag filters (shown in tooltip)
+region-oceania = Oceania
+# Long region names for server tag filters (shown in tooltip)
+region-south-america-east = Sur America Este
+# Long region names for server tag filters (shown in tooltip)
+region-south-america-west = Sur America Oeste
+# Short region names for server tag filters (shown in filter check box)
+region-short-africa-central = Africa Central
+# Short region names for server tag filters (shown in filter check box)
+region-short-africa-north = Africa Norte
+# Short region names for server tag filters (shown in filter check box)
+region-short-africa-south = Africa Sur
+# Short region names for server tag filters (shown in filter check box)
+region-short-antarctica = Antartida
+# Short region names for server tag filters (shown in filter check box)
+region-short-asia-east = Asia Este
+# Short region names for server tag filters (shown in filter check box)
+region-short-asia-north = Asia Norte
+# Short region names for server tag filters (shown in filter check box)
+region-short-asia-south-east = Asia Sur Este
+# Short region names for server tag filters (shown in filter check box)
+region-short-central-america = Centro America
+# Short region names for server tag filters (shown in filter check box)
+region-short-europe-east = Europa Este
+# Short region names for server tag filters (shown in filter check box)
+region-short-europe-west = Europa Oeste
+# Short region names for server tag filters (shown in filter check box)
+region-short-greenland = Groenlandia
+# Short region names for server tag filters (shown in filter check box)
+region-short-india = India
+# Short region names for server tag filters (shown in filter check box)
+region-short-middle-east = Oriente Medio
+# Short region names for server tag filters (shown in filter check box)
+region-short-the-moon = La Luna
+# Short region names for server tag filters (shown in filter check box)
+region-short-north-america-central = NA Central
+# Short region names for server tag filters (shown in filter check box)
+region-short-north-america-east = NA Este
+# Short region names for server tag filters (shown in filter check box)
+region-short-north-america-west = NA Oeste
+# Short region names for server tag filters (shown in filter check box)
+region-short-oceania = Oceania
+# Short region names for server tag filters (shown in filter check box)
+region-short-south-america-east = SA Este
+# Short region names for server tag filters (shown in filter check box)
+region-short-south-america-south = SA Sur
+# Short region names for server tag filters (shown in filter check box)
+region-short-south-america-west = SA Oeste
+# Strings for the "servers" tab
+tab-servers-title = Servers
+# Strings for the "servers" tab
+tab-servers-refresh = Refrescar
+# Strings for the "servers" tab
+filters = Filtros ({ $filteredServers }/{ $totalServers })
+# Strings for the "servers" tab
+tab-servers-table-players = Jugadores
+# Strings for the "servers" tab
+tab-servers-table-name = Nombre
+# Strings for the "servers" tab
+tab-servers-list-status-partial-error = Fallo en obtener algunos o todas las listas de servers. Asegurese que el hub configurado es correcto.
+# Strings for the "servers" tab
+tab-servers-list-status-none-filtered = Ningun server coincide con su busqueda o filtros.
+# Strings for the "servers" tab
+tab-servers-list-status-none = No hay servidores publicos. Asegurese que el hub configurado es correcto.
+# Strings for the server filters menu
+filters-title = Filtros
+# Strings for the server filters menu
+filters-title-language = Lenguaje
+# Strings for the server filters menu
+filters-title-region = Region
+# Strings for the server filters menu
+filters-title-rp = Nivel de Roleplay
+# Strings for the server filters menu
+filters-title-18 = 18+
+# Strings for the server filters menu
+filters-title-hub = Hub
+# Strings for the server filters menu
+filters-18-yes = Si
+# Strings for the server filters menu
+filters-18-yes-desc = Si
+# Strings for the server filters menu
+filters-18-no = No
+# Strings for the server filters menu
+filters-18-no-desc = No
+# Strings for the server filters menu
+filters-player-count-hide-empty = Esconder vacio
+# Strings for the server filters menu
+filters-player-count-hide-empty-desc = Servidores sin jugadores no se mostraran
+# Strings for the server filters menu
+filters-player-count-hide-full = Enconder lleno
+# Strings for the server filters menu
+filters-player-count-hide-full-desc = Servidores que estan lleno no se mostraran
+# Strings for the server filters menu
+filters-player-count-minimum = Minimo:
+# Strings for the server filters menu
+filters-player-count-maximum = Maximo:
+# Strings for the server filters menu
+filters-player-count-maximum-desc = Servidores con mas jugadores no se mostraran
+# Strings for the server filters menu
+filters-unspecified-desc = No especificado
+# Strings for the server filters menu
+filters-unspecified = No especificado
+# Server roleplay levels for the filters menu
+filters-rp-none = Ninguno
+# Server roleplay levels for the filters menu
+filters-rp-none-desc = Ninguno
+# Server roleplay levels for the filters menu
+filters-rp-low = Bajo
+# Server roleplay levels for the filters menu
+filters-rp-low-desc = Bajo
+# Server roleplay levels for the filters menu
+filters-rp-medium = Medio
+# Server roleplay levels for the filters menu
+filters-rp-medium-desc = Medio
+# Server roleplay levels for the filters menu
+filters-rp-high = Alto
+# Server roleplay levels for the filters menu
+filters-rp-high-desc = Alto
+# Strings for entries in the server list (including home page)
+server-entry-connect = Conectar
+# Strings for entries in the server list (including home page)
+server-entry-add-favorite = Añadir favorito
+# Strings for entries in the server list (including home page)
+server-entry-remove-favorite = Remover Favorito
+# Strings for entries in the server list (including home page)
+server-entry-offline = OFFLINE
+# Strings for entries in the server list (including home page)
+server-entry-player-count =
+    { $players } / { $max ->
+        [0] ∞
+       *[1] { $max }
+    }
+# Strings for entries in the server list (including home page)
+server-entry-description-offline = No se puede contactar con el servidor
+# Strings for entries in the server list (including home page)
+server-entry-description-fetching = Buscando estatus del server…
+# Strings for entries in the server list (including home page)
+server-entry-description-error = Error buscando la descripcion del server
+# Strings for entries in the server list (including home page)
+server-entry-description-none = No se ha provisto una descripcion
+# Strings for entries in the server list (including home page)
+server-fetched-from-hub = Recibido de { $hub }
+# Strings for the "register confirmation" view on login
+login-confirmation-confirmation-title = Registrar confirmacion
+# Strings for the "register confirmation" view on login
+login-confirmation-confirmation-message = Por favor revise su email para confirmar su cuenta. Una vez confirmada su cuenta, presione el boton debajo para acceder.
+# Strings for the "register confirmation" view on login
+login-confirmation-button-confirm = Confirme mi cuenta
+# Strings for the "register confirmation" view on login
+login-confirmation-button-cancel = Cancelar
+# Strings for the "register confirmation" view on login
+login-confirmation-busy = Accediendo…
+# Strings for the "Development" tab
+# These aren't shown to users so they're not very important
+tab-development-title = { "[" }DEV]
+# Strings for the "Development" tab
+# These aren't shown to users so they're not very important
+tab-development-title-override = { "[" }DEV (override active!!!)]
+# Strings for the general main window layout of the launcher
+main-window-error-unknown = Error desconocido
