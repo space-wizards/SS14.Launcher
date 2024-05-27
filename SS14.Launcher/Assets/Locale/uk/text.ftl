@@ -13,7 +13,7 @@ account-drop-down-switch-account = Змінити акаунт:
 # Strings for the drop-down window to manage your active account
 account-drop-down-select-account = Вибрати акаунт:
 # Strings for the drop-down window to manage your active account
-account-drop-down-add-account = Додати акаунт:
+account-drop-down-add-account = Додати акаунт
 # Localization for the "add favorite server" dialog window
 add-favorite-window-address-invalid = Адрес недійсний
 # Localization for the "add favorite server" dialog window
