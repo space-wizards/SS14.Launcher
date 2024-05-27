@@ -17,7 +17,7 @@ connecting-update-status-checking-engine-modules = Zoeken voor extra onderdelen�
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-update-status-downloading-engine-modules = Downloaden van extra onderdelen…
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-update-status-committing-download = Synchroniseren met opslag...
+connecting-update-status-committing-download = Synchroniseren met opslag…
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-update-status-loading-into-db = Opslaan van bestanden in databank…
 # Strings for the "connecting" menu that appears when connecting to a server.
@@ -66,7 +66,7 @@ add-favorite-window-label-address = Adres:
 # 'Example' name shown as a watermark in the name input box
 add-favorite-window-example-name = Honk Station
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-title-content-bundle = Bezig met laden...
+connecting-title-content-bundle = Bezig met laden…
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-cancel = Annuleer
 # Strings for the "connecting" menu that appears when connecting to a server.
@@ -182,7 +182,7 @@ login-login-button-forgot = Wachtwoord vergeten?
 # Strings for the "login" view on login
 login-login-button-resend = Stuur e-mailbevestiging opnieuw
 # Strings for the "login" view on login
-login-login-busy-logging-in = Inloggen...
+login-login-busy-logging-in = Inloggen…
 # Strings for the "login" view on login
 login-login-error-title = Kan niet inloggen
 # Strings for the "login" view on login
@@ -224,7 +224,7 @@ main-window-early-access-desc = Space Station 14 is nog steeds een alpha. We hop
 # Strings for the general main window layout of the launcher
 main-window-busy-checking-update = Controleren op launcher-update…
 # Strings for the general main window layout of the launcher
-main-window-busy-checking-login-status = Login status controleren...
+main-window-busy-checking-login-status = Login status controleren…
 # Strings for the general main window layout of the launcher
 main-window-busy-checking-account-status = Account status controleren
 # Strings for the general main window layout of the launcher
@@ -324,7 +324,7 @@ tab-servers-table-name = Servernaam
 # Strings for the "servers" tab
 tab-servers-list-status-partial-error = Kan sommige of alle serverlijsten niet ophalen. Zorg dat je hubconfiguratie klopt.
 # Strings for the "servers" tab
-tab-servers-list-status-updating-master = Ophalen van hoofdserverlijst...
+tab-servers-list-status-updating-master = Ophalen van hoofdserverlijst…
 # Strings for the "servers" tab
 tab-servers-list-status-none-filtered = Er zijn geen servers die overeenkomen met je zoek- of filterinstellingen.
 # Strings for the server filters menu
@@ -398,7 +398,7 @@ login-confirmation-button-confirm = Ik heb mijn account bevestigd
 # Strings for the "register confirmation" view on login
 login-confirmation-button-cancel = Annuleer
 # Strings for the "register confirmation" view on login
-login-confirmation-busy = Inloggen...
+login-confirmation-busy = Inloggen…
 # Strings for the "register confirmation" view on login
 login-confirmation-confirmation-title = Bevestig registratie
 # Strings for the server filters menu
@@ -465,7 +465,7 @@ tab-home-refresh = Herladen
 # Strings for the "news" tab
 tab-news-recent-news = Recent nieuws:
 # Strings for the "news" tab
-tab-news-pulling-news = Nieuws ophalen...
+tab-news-pulling-news = Nieuws ophalen…
 # Strings for the "options" tab
 tab-options-title = Opties
 # Strings for the "options" tab
