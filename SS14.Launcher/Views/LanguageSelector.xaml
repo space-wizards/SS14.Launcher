@@ -11,7 +11,7 @@
     <vm:LanguageSelectorViewModel />
   </Design.DataContext>
 
-  <v:DropDown IsDropDownOpen="{Binding IsDropDownOpen, Mode=TwoWay}" Placement="TopEdgeAlignedLeft">
+  <v:DropDown IsDropDownOpen="{Binding IsDropDownOpen, Mode=TwoWay}" Name="DropDown" Placement="TopEdgeAlignedLeft">
     <v:DropDown.HeaderContent>
       <v:IconLabel Icon="{DynamicResource 'InfoIcon-web'}" Content="{loc:Loc language-selector-label}" />
     </v:DropDown.HeaderContent>

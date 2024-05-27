@@ -14,6 +14,8 @@ public class OptionsTabViewModel : MainWindowTabViewModel
     private readonly IEngineManager _engineManager;
     private readonly ContentManager _contentManager;
 
+    public LanguageSelectorViewModel Language { get; } = new();
+
     public OptionsTabViewModel()
     {
         Cfg = Locator.Current.GetRequiredService<DataManager>();

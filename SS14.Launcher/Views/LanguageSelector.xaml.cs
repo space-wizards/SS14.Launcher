@@ -8,4 +8,10 @@ public sealed partial class LanguageSelector : UserControl
     {
         InitializeComponent();
     }
+
+    public PlacementMode Placement
+    {
+        get => DropDown.Placement;
+        set => DropDown.Placement = value;
+    }
 }

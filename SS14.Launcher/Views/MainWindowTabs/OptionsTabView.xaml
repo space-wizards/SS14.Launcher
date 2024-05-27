@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:mainWindowTabs="clr-namespace:SS14.Launcher.ViewModels.MainWindowTabs"
              xmlns:loc="clr-namespace:SS14.Launcher.Localization"
+             xmlns:views="clr-namespace:SS14.Launcher.Views"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SS14.Launcher.Views.MainWindowTabs.OptionsTabView"
              Name="NewsTab">
@@ -22,6 +23,8 @@
               Command="{Binding OpenLogDirectory}"/>
 
       <StackPanel Orientation="Vertical">
+        <views:LanguageSelector HorizontalAlignment="Left" Margin="4" DataContext="{Binding Language}"
+                                Placement="BottomEdgeAlignedLeft" />
         <Button Content="{loc:Loc tab-options-account-settings}" Margin="4" Command="{Binding OpenAccountSettings}" HorizontalAlignment="Left" />
         <TextBlock VerticalAlignment="Center" TextWrapping="Wrap"
                    Text="{loc:Loc tab-options-account-settings-desc}"
