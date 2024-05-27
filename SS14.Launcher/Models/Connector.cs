@@ -11,6 +11,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
+using Avalonia.Platform.Storage;
 using DynamicData;
 using ReactiveUI;
 using Serilog;
@@ -76,13 +77,13 @@ public class Connector : ReactiveObject
         }
     }
 
-    public async void LaunchContentBundle(string fileName, CancellationToken cancel = default)
+    public async void LaunchContentBundle(IStorageFile file, CancellationToken cancel = default)
     {
-        Log.Information("Launching content bundle: {FileName}", fileName);
+        Log.Information("Launching content bundle: {FileName}", file.Path);
 
         try
         {
-            await LaunchContentBundleInternal(fileName, cancel);
+            await LaunchContentBundleInternal(file, cancel);
         }
         catch (ConnectException e)
         {
@@ -112,12 +113,12 @@ public class Connector : ReactiveObject
         await LaunchClientWrap(installation, info, info.BuildInformation, connectAddress, parsedAddr, false, cancel);
     }
 
-    private async Task LaunchContentBundleInternal(string fileName, CancellationToken cancel)
+    private async Task LaunchContentBundleInternal(IStorageFile file, CancellationToken cancel)
     {
         Status = ConnectionStatus.Updating;
 
         ContentLaunchInfo installation;
-        using (var zipStream = File.OpenRead(fileName))
+        await using (var zipStream = await file.OpenReadAsync())
         {
             var zipHash = await Task.Run(() => Updater.HashFileSha256(zipStream), cancel);
 
@@ -462,13 +463,9 @@ public class Connector : ReactiveObject
             startInfo.RedirectStandardError = true;
         }
 
-        if (_cfg.GetCVar(CVars.DynamicPgo))
-        {
-            Log.Debug("Dynamic PGO is enabled.");
-            EnvVar("DOTNET_TieredPGO", "1");
-            EnvVar("DOTNET_TC_QuickJitForLoops", "1");
-            EnvVar("DOTNET_ReadyToRun", "0");
-        }
+        // Performance tweaks
+        EnvVar("DOTNET_TieredPGO", "1");
+        EnvVar("DOTNET_ReadyToRun", "0");
 
         if (OperatingSystem.IsLinux())
         {

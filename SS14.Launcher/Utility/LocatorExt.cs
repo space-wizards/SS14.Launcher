@@ -1,5 +1,6 @@
 ﻿using System;
 using Splat;
+using SS14.Launcher.Localization;
 
 namespace SS14.Launcher.Utility;
 

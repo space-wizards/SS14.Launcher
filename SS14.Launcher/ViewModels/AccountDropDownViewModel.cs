@@ -8,6 +8,7 @@ using ReactiveUI.Fody.Helpers;
 using Serilog;
 using Splat;
 using SS14.Launcher.Api;
+using SS14.Launcher.Localization;
 using SS14.Launcher.Models.Data;
 using SS14.Launcher.Models.Logins;
 using SS14.Launcher.Utility;
@@ -21,6 +22,7 @@ public class AccountDropDownViewModel : ViewModelBase
     private readonly AuthApi _authApi;
     private readonly LoginManager _loginMgr;
     private readonly ReadOnlyObservableCollection<AvailableAccountViewModel> _accounts;
+    private readonly LocalizationManager _loc;
 
     public ReadOnlyObservableCollection<AvailableAccountViewModel> Accounts => _accounts;
 
@@ -32,6 +34,7 @@ public class AccountDropDownViewModel : ViewModelBase
         _cfg = Locator.Current.GetRequiredService<DataManager>();
         _authApi = Locator.Current.GetRequiredService<AuthApi>();
         _loginMgr = Locator.Current.GetRequiredService<LoginManager>();
+        _loc = LocalizationManager.Instance;
 
         this.WhenAnyValue(x => x._loginMgr.ActiveAccount)
             .Subscribe(_ =>
@@ -66,12 +69,17 @@ public class AccountDropDownViewModel : ViewModelBase
     }
 
     public string LoginText => _loginMgr.ActiveAccount?.Username ??
-                               (EnableMultiAccounts ? "No account selected" : "Not logged in");
+                               (EnableMultiAccounts ? _loc.GetString("account-drop-down-none-selected") : _loc.GetString("account-drop-down-not-logged-in"));
 
-    public string LogoutText => _cfg.Logins.Count == 1 ? "Log out" : $"Log out of {_loginMgr.ActiveAccount?.Username}";
+    public string LogoutText => _cfg.Logins.Count == 1
+        ? _loc.GetString("account-drop-down-log-out")
+        : _loc.GetString("account-drop-down-log-out-of", ("name", _loginMgr.ActiveAccount?.Username));
 
     public bool AccountSwitchVisible => _cfg.Logins.Count > 1 || _loginMgr.ActiveAccount == null;
-    public string AccountSwitchText => _loginMgr.ActiveAccount != null ? "Switch account:" : "Select account:";
+    public string AccountSwitchText => _loginMgr.ActiveAccount != null
+        ? _loc.GetString("account-drop-down-switch-account")
+        : _loc.GetString("account-drop-down-select-account");
+
     public bool AccountControlsVisible => _loginMgr.ActiveAccount != null;
 
     [Reactive] public bool IsDropDownOpen { get; set; }

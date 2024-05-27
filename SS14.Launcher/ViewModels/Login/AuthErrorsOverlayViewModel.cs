@@ -1,4 +1,5 @@
 using SS14.Launcher.Api;
+using SS14.Launcher.Localization;
 
 namespace SS14.Launcher.ViewModels.Login;
 
@@ -20,23 +21,20 @@ public class AuthErrorsOverlayViewModel : ViewModelBase
         if (code == AuthApi.AuthenticateDenyResponseCode.UnknownError)
             return errors;
 
+        var loc = LocalizationManager.Instance;
         var err = code switch
         {
-            AuthApi.AuthenticateDenyResponseCode.InvalidCredentials => "Invalid login credentials",
-            AuthApi.AuthenticateDenyResponseCode.AccountUnconfirmed =>
-                "The email address for this account still needs to be confirmed. " +
-                "Please confirm your email address before trying to log in",
+            AuthApi.AuthenticateDenyResponseCode.InvalidCredentials => "login-error-invalid-credentials",
+            AuthApi.AuthenticateDenyResponseCode.AccountUnconfirmed => "login-error-account-unconfirmed",
 
             // Never shown I hope.
-            AuthApi.AuthenticateDenyResponseCode.TfaRequired => "2-factor authentication required",
-            AuthApi.AuthenticateDenyResponseCode.TfaInvalid => "2-factor authentication code invalid",
-
-            AuthApi.AuthenticateDenyResponseCode.AccountLocked =>
-                "Account has been locked. Please contact us if you believe this to be in error.",
-            _ => "Unknown error"
+            AuthApi.AuthenticateDenyResponseCode.TfaRequired => "login-error-account-2fa-required",
+            AuthApi.AuthenticateDenyResponseCode.TfaInvalid => "login-error-account-2fa-invalid",
+            AuthApi.AuthenticateDenyResponseCode.AccountLocked => "login-error-account-account-locked",
+            _ => "login-error-unknown"
         };
 
-        return new[] { err };
+        return new[] { loc.GetString(err) };
     }
 
     public void Ok()
