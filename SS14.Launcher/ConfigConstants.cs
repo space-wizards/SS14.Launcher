@@ -36,7 +36,7 @@ public static class ConfigConstants
     public const string WebsiteUrl = "https://spacestation14.com";
     public const string DownloadUrl = "https://spacestation14.com/about/nightlies/";
     public const string NewsFeedUrl = "https://spacestation14.com/post/index.xml";
-    public const string TranslateUrl = "https://do cs.spacestation14.com/en/general-development/contributing-translations.html";
+    public const string TranslateUrl = "https://docs.spacestation14.com/en/general-development/contributing-translations.html";
 
     private static readonly UrlFallbackSet RobustBuildsBaseUrl = new([
         "https://robust-builds.cdn.spacestation14.com/",
