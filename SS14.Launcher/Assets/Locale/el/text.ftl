@@ -305,3 +305,6 @@ tab-options-hub-settings = Ρυθμίσεις Hub
 login-confirmation-button-cancel = Ακύρωση
 # Strings for the "register confirmation" view on login
 login-confirmation-busy = Γίνετε σύνδεση…
+# Strings for the "Development" tab
+# These aren't shown to users so they're not very important
+tab-development-title = { "[" }DEV]
