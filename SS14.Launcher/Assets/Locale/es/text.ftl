@@ -3,35 +3,35 @@ connecting-status-update-error = Hubo un error descargando el contenido del serv
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-updating = Actualizando:{ $status }
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-status-connecting = Obteniendo info de conexion del server...
+connecting-status-connecting = Obteniendo info de conexion del server. . .
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-status-starting-client = Iniciando cliente...
+connecting-status-starting-client = Iniciando cliente. . .
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-client-crashed = El cliente ha crasheado mientras se iniciaba. Si el problema persiste, porfavor pregunte en Discord o Github por soporte.
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-update-status-checking-client-update = Verificando por actualizaciones de contenido...
+connecting-update-status-checking-client-update = Verificando por actualizaciones de contenido. . .
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-update-status-downloading-engine = Descargando contenido del server...
+connecting-update-status-downloading-engine = Descargando contenido del server. . .
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-update-status-fetching-manifest = Buscando manifiesto del server...
+connecting-update-status-fetching-manifest = Buscando manifiesto del server. . .
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-update-status-culling-engine = Limpiando contenido viejo...
+connecting-update-status-culling-engine = Limpiando contenido viejo. . .
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-update-status-culling-content = Limpiando contenido viejo del server...
+connecting-update-status-culling-content = Limpiando contenido viejo del server. . .
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-update-status-ready = Actualizacion lista!
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-update-status-checking-engine-modules = Verificando por dependencia adicionales...
+connecting-update-status-checking-engine-modules = Verificando por dependencia adicionales. . .
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-update-status-downloading-engine-modules = Descargando dependencias adicionales...
+connecting-update-status-downloading-engine-modules = Descargando dependencias adicionales. . .
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-update-status-committing-download = Sincronizando al disco...
+connecting-update-status-committing-download = Sincronizando al disco. . .
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-update-status-loading-into-db = Guardando archivos a la base de datos...
+connecting-update-status-loading-into-db = Guardando archivos a la base de datos. . .
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-update-status-loading-content-bundle = Cargando paquete de contenido...
+connecting-update-status-loading-content-bundle = Cargando paquete de contenido. . .
 # Strings for the "direct connect" dialog window.
-direct-connect-title = Conexion directa...
+direct-connect-title = Conexion directa. . .
 # Strings for the "direct connect" dialog window.
 direct-connect-text = Ingresa la direccion de server:
 # Strings for the "direct connect" dialog window.
@@ -55,7 +55,7 @@ hub-settings-button-remove-tooltip = Remover hub
 # Strings for the "hub settings" dialog window.
 hub-settings-button-increase-priority-tooltip = Incrementar prioridad
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-update-status-verifying = Verificando la integridad de descarga...
+connecting-update-status-verifying = Verificando la integridad de descarga. . .
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-connection-failed = Error de conexion al server!
 # Strings for the "connecting" menu that appears when connecting to a server.
@@ -127,7 +127,7 @@ login-forgot-button-submit = Enviar
 # Strings for the "forgot password" view on login
 login-forgot-button-back = Regresar al login
 # Strings for the "forgot password" view on login
-login-forgot-busy-sending = Enviando email...
+login-forgot-busy-sending = Enviando email. . .
 # Strings for the "forgot password" view on login
 login-forgot-success-title = Email de reinicio enviado
 # Strings for the "forgot password" view on login
@@ -434,3 +434,94 @@ tab-development-title = { "[" }DEV]
 tab-development-title-override = { "[" }DEV (override active!!!)]
 # Strings for the general main window layout of the launcher
 main-window-error-unknown = Error desconocido
+# Strings for the "home" tab
+tab-home-favorites-guide = Marca servers como favorito para acesso rapido aqui
+# Strings for the "options" tab
+tab-options-disable-signing-desc = { "[" }DEV ONLY] Desactiva la verificacion de firmas del motor. NO LO DESACTIVE A MENOS QUE SEPAS LO QUE ESTES HACIENDO.
+# Strings for the "options" tab
+tab-options-compatibility-mode-desc = Esto utiliza OpenGL ES 2 (via ANGLE si es necesario), que es menos probable que sufra errores en los controladores. Prueba esto si experimenta errores graficos o crasheos.
+# Strings for the "connecting" menu that appears when connecting to a server.
+connecting-update-status-downloading-content = Descargando contenido del server. . .
+# Strings for the "Development" tab
+# These aren't shown to users so they're not very important
+tab-development-disable-signing-desc = { "[" }DEV ONLY] Disables verification of engine signatures. DO NOT ENABLE UNLESS YOU KNOW EXACTLY WHAT YOU'RE DOING.
+# Strings for the "Development" tab
+# These aren't shown to users so they're not very important
+tab-development-enable-engine-override = Enable engine override
+# Strings for the "Development" tab
+# These aren't shown to users so they're not very important
+tab-development-enable-engine-override-desc = Override path to load engine zips from (release/ in RobustToolbox)
+# Strings for the "home" tab
+tab-home-title = Inicio
+# Strings for the "home" tab
+tab-home-favorite-servers = Servidores Favoritos:
+# Strings for the "home" tab
+tab-home-add-favorite = Añadir favorito…
+# Strings for the "home" tab
+tab-home-refresh = Refrescar
+# Strings for the "home" tab
+tab-home-direct-connect = Conexion Directa Al Server…
+# Strings for the "home" tab
+tab-home-run-content-bundle = Lanzar paquete de contenido/replay
+# Strings for the "home" tab
+tab-home-go-to-servers-tab = Ir a la pestaña de servers
+# Strings for the "news" tab
+tab-news-title = Noticias
+# Strings for the "news" tab
+tab-news-recent-news = Noticias Recientes:
+# Strings for the "news" tab
+tab-news-pulling-news = Buscando noticias…
+# Strings for the "options" tab
+tab-options-title = Opciones
+# Strings for the "options" tab
+tab-options-flip = { "*" }flip
+# Strings for the "options" tab
+tab-options-clear-engines = Limpiar motores instalados
+# Strings for the "options" tab
+tab-options-clear-content = Limpiar contenido del servidor instalado
+# Strings for the "options" tab
+tab-options-open-log-directory = Abrir directorio de logs
+# Strings for the "options" tab
+tab-options-account-settings = Configuracion de cuenta
+# Strings for the "options" tab
+tab-options-account-settings-desc = Aqui puede gestionar su cuenta, como cambiar el email o contraseña, a travez de la pagina web.
+# Strings for the "options" tab
+tab-options-compatibility-mode = Modo De Compatibilidad
+# Strings for the "options" tab
+tab-options-log-client = Loggear Cliente
+# Strings for the "options" tab
+tab-options-log-client-desc = Activa el loggeo del cliente del juego. Util para desarolladores.
+# Strings for the "options" tab
+tab-options-log-launcher = Loggear Launcher
+# Strings for the "options" tab
+tab-options-log-launcher-desc = Activate el loggeo del launcher. Util para desarolladores. (require reinicio del launcher)
+# Strings for the "options" tab
+tab-options-verbose-launcher-logging = Loggeo del Launcher Verboso
+# Strings for the "options" tab
+tab-options-verbose-launcher-logging-desc = Cuando los desarolladores estan muy perplejos con tu problema. (require reinicio del launcher)
+# Strings for the "options" tab
+tab-options-seasonal-branding = Diseño Estacional
+# Strings for the "options" tab
+tab-options-seasonal-branding-desc = Habilitar cualquier logo o icono relevante que se nos venga a la mente.
+# Strings for the "options" tab
+tab-options-disable-signing = Desabilitar Checkeo De Firmas Del Motor
+# Strings for the "options" tab
+tab-options-hub-settings = Configuracion Del Hub
+# Strings for the "options" tab
+tab-options-hub-settings-desc = Cambiar de que server o servers de hub le gustaria traer a la lista de servers.
+# For the language selection menu.
+language-selector-help-translate = ¿Quiere ayudar a traducir? ¡Usted puede!
+# For the language selection menu.
+language-selector-system-language = Lenguage del sistema ({ $languageName })
+# For the language selection menu.
+# Used for contents of each language button.
+language-selector-language = { $languageName } ({ $englishName })
+# For the language selection menu.
+# "Save" button.
+language-selector-save = Guardar
+# For the language selection menu.
+# "Cancel" button.
+language-selector-cancel = Cancelar
+# For the language selection menu.
+# Text on the button that opens the menu.
+language-selector-label = Lenguaje
