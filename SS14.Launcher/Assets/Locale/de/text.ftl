@@ -38,7 +38,7 @@ connecting-status-not-a-content-bundle = Datei ist kein gültiges Content-Paket!
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-client-crashed = Das Spiel scheint beim starten abgestürzt zu sein. Bitte frage nach Hilfe auf Discord oder GitHub falls dieses Problem besteht.
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-update-status-checking-client-update = Auf Updates überprüfen...
+connecting-update-status-checking-client-update = Auf Updates überprüfen…
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-connecting = Verbindungsinformationen werden vom Server abgerufen…
 # Strings for the "connecting" menu that appears when connecting to a server.
@@ -322,7 +322,7 @@ tab-servers-refresh = Aktualisieren
 # Strings for the "servers" tab
 tab-servers-list-status-partial-error = Einige oder alle Serverlisten konnten nicht geladen werden. Stelle sicher, dass deine Hub-Konfiguration korrekt ist.
 # Strings for the "servers" tab
-tab-servers-list-status-updating-master = Hauptserverliste wird geladen...
+tab-servers-list-status-updating-master = Hauptserverliste wird geladen…
 # Strings for the "servers" tab
 tab-servers-list-status-none-filtered = Keine Server entsprechen deiner Such- oder Filtereinstellungen.
 # Strings for the "servers" tab
@@ -390,7 +390,7 @@ server-entry-player-count =
        *[1] { $max }
     }
 # Strings for entries in the server list (including home page)
-server-entry-fetching = Lädt...
+server-entry-fetching = Lädt…
 # Strings for entries in the server list (including home page)
 server-entry-description-offline = Server nicht erreichbar
 # Strings for entries in the server list (including home page)
@@ -416,7 +416,7 @@ tab-home-title = Home
 # Strings for the "home" tab
 tab-home-favorite-servers = Favoriten:
 # Strings for the "home" tab
-tab-home-add-favorite = Favorit hinzufügen...
+tab-home-add-favorite = Favorit hinzufügen…
 # Strings for the "home" tab
 tab-home-refresh = Aktualisieren
 # Strings for the "home" tab
@@ -440,7 +440,7 @@ filters-rp-high = Hoch
 # Strings for entries in the server list (including home page)
 server-entry-connect = Verbinden
 # Strings for entries in the server list (including home page)
-server-entry-description-fetching = Serverstatus wird geladen...
+server-entry-description-fetching = Serverstatus wird geladen…
 # Strings for the "register confirmation" view on login
 login-confirmation-confirmation-title = Registrierung bestätigen
 # Strings for the "register confirmation" view on login
@@ -450,7 +450,7 @@ login-confirmation-button-confirm = Ich habe mein Konto bestätigt
 # Strings for the "register confirmation" view on login
 login-confirmation-button-cancel = Abbrechen
 # Strings for the "register confirmation" view on login
-login-confirmation-busy = Einloggen...
+login-confirmation-busy = Einloggen…
 # Strings for the "home" tab
 tab-home-run-content-bundle = Content-Packet/Replay ausführen
 # Strings for the "home" tab
@@ -507,3 +507,21 @@ tab-options-log-launcher-desc = Aktiviert die Protokollierung des Launchers. Nü
 tab-options-account-settings-desc = Du kannst deine Kontoeinstellungen, wie z. B. das Ändern deiner E-Mail-Adresse oder deines Passworts, über unsere Website verwalten.
 # Strings for the "options" tab
 tab-options-disable-signing-desc = { "[" }DEV ONLY] Deaktiviert die Engine-Signaturprüfung. NICHT AKTIVIEREN, WENN DU NICHT GENAU WEISST, WAS DU TUST.
+# For the language selection menu.
+# "Save" button.
+language-selector-save = Speichern
+# For the language selection menu.
+# "Cancel" button.
+language-selector-cancel = Abbrechen
+# Strings for entries in the server list (including home page)
+server-entry-raise = Nach oben heben
+# For the language selection menu.
+# Text on the button that opens the menu.
+language-selector-label = Sprache
+# For the language selection menu.
+language-selector-help-translate = Willst du helfen zu übersetzten? Das kannst du!
+# For the language selection menu.
+language-selector-system-language = System-Sprache ({ $languageName })
+# For the language selection menu.
+# Used for contents of each language button.
+language-selector-language = { $languageName } ({ $englishName })
