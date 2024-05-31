@@ -420,3 +420,76 @@ tab-development-enable-engine-override = Включить перезапись �
 tab-news-title = Новости
 # Strings for the "news" tab
 tab-news-recent-news = Последние новости:
+# Strings for the "connecting" menu that appears when connecting to a server.
+connecting-update-status-downloading-engine = Скачивание контента сервера…
+# Long region names for server tag filters (shown in tooltip)
+region-south-america-west = Запад Южной Америки
+# Strings for the "options" tab
+tab-options-hub-settings-desc = Изменяет сервер или сервера хаба , с которых вы хотите получать список серверов.
+# Long region names for server tag filters (shown in tooltip)
+region-south-america-south = Юг Южной Америки
+# Strings for the "options" tab
+tab-options-compatibility-mode-desc = Это использует OpenGL ES 2 (при помощи ANGLE, если необходимо), который менее подвержен ошибкам из-за драйверов. Попробуйте это, если вы сталкиваетесь с графическими проблемами или вылетами.
+# Strings for the "forgot password" view on login
+login-forgot-button-back = Назад ко входу
+# Strings for the "connecting" menu that appears when connecting to a server.
+connecting-status-client-crashed = Вероятно, клиент непредвиденно завершил работу при запуске. Если это продолжится, пожалуйста, попросите помощи в GitHub или Discord.
+# Strings for the "connecting" menu that appears when connecting to a server.
+connecting-update-status-downloading-content = Скачивание контента сервера…
+# Strings for the "connecting" menu that appears when connecting to a server.
+connecting-update-status-verifying = Проверка целостности загрузки…
+# Strings for the "connecting" menu that appears when connecting to a server.
+connecting-update-status-culling-engine = Очистка старого контента…
+# Strings for the "connecting" menu that appears when connecting to a server.
+connecting-update-status-culling-content = Очистка старого контента сервера…
+# Strings for the "connecting" menu that appears when connecting to a server.
+connecting-update-status-committing-download = Синхронизация с диском…
+# Strings for the "connecting" menu that appears when connecting to a server.
+connecting-update-status-loading-into-db = Сохранение объектов в базе данных…
+# Strings for the "connecting" menu that appears when connecting to a server.
+connecting-update-status-loading-content-bundle = Загрузка набора контента…
+# Short region names for server tag filters (shown in filter check box)
+region-short-north-america-central = Центральная Северная Америка
+# Short region names for server tag filters (shown in filter check box)
+region-short-north-america-east = Восток Северной Америки
+# Short region names for server tag filters (shown in filter check box)
+region-short-north-america-west = Запад Северной Америки
+# Short region names for server tag filters (shown in filter check box)
+region-short-south-america-east = Восток Южной Америки
+# Short region names for server tag filters (shown in filter check box)
+region-short-south-america-south = Юг Южной Америки
+# Short region names for server tag filters (shown in filter check box)
+region-short-south-america-west = Запад Южной Америки
+# Strings for the "Development" tab
+# These aren't shown to users so they're not very important
+tab-development-disable-signing-desc = { "[" }DEV ONLY] Отключает проверку подписей движка. НЕ ВКЛЮЧАЙТЕ, ЕСЛИ ВЫ НЕ ЗНАЕТЕ, ЧТО ДЕЛАЕТЕ.
+# Strings for the "Development" tab
+# These aren't shown to users so they're not very important
+tab-development-enable-engine-override-desc = Перезаписать путь до архивов загрузки движка из (release/ in RobustToolbox)
+# Strings for the "home" tab
+tab-home-direct-connect = Прямое Подключение К Серверу…
+# Strings for the "home" tab
+tab-home-favorites-guide = Пометьте сервера как избранные для быстрого доступа к ним отсюда
+# Strings for the "options" tab
+tab-options-flip = { "*" }кувырок
+# Strings for the "options" tab
+tab-options-compatibility-mode = Режим Совместимости
+# Strings for the "options" tab
+tab-options-disable-signing = Отключить Проверку Подписей Движка
+# Strings for the "options" tab
+tab-options-disable-signing-desc = { "[" }DEV ONLY] Отключает проверку подписей движка. НЕ ВКЛЮЧАЙТЕ, ЕСЛИ ВЫ НЕ ЗНАЕТЕ, ЧТО КОНКРЕТНО ВЫ ДЕЛАЕТЕ.
+# Strings for the "options" tab
+tab-options-hub-settings = Настройки Списка Серверов
+# For the language selection menu.
+# Text on the button that opens the menu.
+language-selector-label = Язык
+# For the language selection menu.
+# "Save" button.
+language-selector-save = Сохранить
+# For the language selection menu.
+# "Cancel" button.
+language-selector-cancel = Отмена
+# For the language selection menu.
+language-selector-help-translate = Хотите помочь с переводом? Вы можете!
+# For the language selection menu.
+language-selector-system-language = Системный язык ({ $languageName })
