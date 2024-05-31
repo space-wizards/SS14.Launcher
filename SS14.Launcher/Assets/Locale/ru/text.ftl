@@ -493,3 +493,33 @@ language-selector-cancel = Отмена
 language-selector-help-translate = Хотите помочь с переводом? Вы можете!
 # For the language selection menu.
 language-selector-system-language = Системный язык ({ $languageName })
+# Strings for the "options" tab
+tab-options-clear-content = Очистить установленный серверный контент
+# Strings for the "options" tab
+tab-options-account-settings-desc = Вы можете изменить насйтроки вашего аккаунта, такие как e-mail адрес или пароль, на сайте.
+# Strings for the "options" tab
+tab-options-seasonal-branding-desc = Любые временные тематические иконки и логотипы, которые мы придумаем.
+# Strings for the "news" tab
+tab-news-pulling-news = Получение новостей…
+# Strings for the "options" tab
+tab-options-title = Настройки
+# Strings for the "options" tab
+tab-options-clear-engines = Очистить установленные движки
+# Strings for the "options" tab
+tab-options-open-log-directory = Открыть папку логов
+# Strings for the "options" tab
+tab-options-account-settings = Настройки аккаунта
+# Strings for the "options" tab
+tab-options-log-client = Логировать клиент
+# Strings for the "options" tab
+tab-options-log-client-desc = Влючает логирование любого вывода клиента игры. Полезно для разработчиков.
+# Strings for the "options" tab
+tab-options-log-launcher = Логировать ланучер
+# Strings for the "options" tab
+tab-options-log-launcher-desc = Влючает логирование лаунчера. Полезно для разработчиков. (требуется перезапустить лаунчер)
+# Strings for the "options" tab
+tab-options-verbose-launcher-logging = Подробное логирование лаунчера
+# Strings for the "options" tab
+tab-options-verbose-launcher-logging-desc = Для тех случаев, когда разработчики *очень* озадачены вашей проблемой. (требуется перезапустить лаунчер)
+# Strings for the "options" tab
+tab-options-seasonal-branding = Сезонное оформление
