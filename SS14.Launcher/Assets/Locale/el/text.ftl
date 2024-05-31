@@ -11,7 +11,7 @@ account-drop-down-add-account = Πρόσθεση λογαριασμού
 # Localization for the "add favorite server" dialog window
 add-favorite-window-label-name = Όνομα:
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-title-connecting = Σύνδεση...
+connecting-title-connecting = Σύνδεση…
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-cancel = Ακύρωση
 # Strings for the "direct connect" dialog window.
@@ -54,7 +54,7 @@ connecting-status-update-error = Υπήρχε σφάλμα στη λήψη αρ�
 # Localization for the "add favorite server" dialog window
 add-favorite-window-label-address = Διεύθυνση IP:
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-title-content-bundle = Φόρτωση...
+connecting-title-content-bundle = Φόρτωση…
 # Localization for the "add favorite server" dialog window
 add-favorite-window-title = Πρόσθεση αγαπημένου Εξυπηρετητή
 # Localization for the "add favorite server" dialog window
@@ -62,7 +62,7 @@ add-favorite-window-address-invalid = Η διεύθυνση IP δεν είναι
 # Strings for the drop-down window to manage your active account
 account-drop-down-not-logged-in = Είστε Αποσυνδεμένοι
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-status-none = Αρχίζει η σύνδεση...
+connecting-status-none = Αρχίζει η σύνδεση…
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-updating = Ενημέρωση: { $status }
 # Strings for the "connecting" menu that appears when connecting to a server.
