@@ -509,3 +509,6 @@ language-selector-help-translate = Хочете допомогти з перек
 language-selector-system-language = Мова системи ({ $languageName })
 # Strings for entries in the server list (including home page)
 server-entry-raise = Підняти до верху
+# Strings for the "Development" tab
+# These aren't shown to users so they're not very important
+tab-development-enable-engine-override-desc = Замінити шлях для завантаження архівів рушія з (release/ в RobustToolbox)
