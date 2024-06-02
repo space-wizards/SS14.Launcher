@@ -232,7 +232,7 @@ server-entry-player-count =
 server-entry-fetching = Отримання…
 # Strings for the "Development" tab
 # These aren't shown to users so they're not very important
-tab-development-title-override = { "[" }DEV (override active!!!)]
+tab-development-title-override = { "[" }DEV (перезапис активний!!!)]
 # Short region names for server tag filters (shown in filter check box)
 region-short-north-america-west = Пн. Америка - Захід
 # Strings for the server filters menu
@@ -512,3 +512,16 @@ server-entry-raise = Підняти до верху
 # Strings for the "Development" tab
 # These aren't shown to users so they're not very important
 tab-development-enable-engine-override-desc = Замінити шлях для завантаження архівів рушія з (release/ в RobustToolbox)
+# Strings for the "Development" tab
+# These aren't shown to users so they're not very important
+tab-development-disable-signing = Відключити перевірки сігнатури движка
+# Strings for the "Development" tab
+# These aren't shown to users so they're not very important
+tab-development-disable-signing-desc = { "[" }DEV ONLY] Відключає перевірку сигнатур движка. НЕ ВМИКАЙТЕ, ЯКЩО ВИ ТОЧНО НЕ ЗНАЄТЕ, ЩО РОБИТЕ.
+# Strings for the "Development" tab
+# These aren't shown to users so they're not very important
+tab-development-enable-engine-override = Увімкнути перезапис движка
+# Strings for the "options" tab
+tab-options-disable-signing = Віключити перевірки сигнатур движка
+# Strings for the "options" tab
+tab-options-disable-signing-desc = { "[" }DEV ONLY] Відключає перевірку сигнатур движка. НЕ ВМИКАЙТЕ, ЯКЩО ВИ ТОЧНО НЕ ЗНАЄТЕ, ЩО РОБИТЕ.
