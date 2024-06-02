@@ -421,7 +421,7 @@ tab-news-title = Новости
 # Strings for the "news" tab
 tab-news-recent-news = Последние новости:
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-update-status-downloading-engine = Скачивание контента сервера…
+connecting-update-status-downloading-engine = Загрузка контента сервера…
 # Long region names for server tag filters (shown in tooltip)
 region-south-america-west = Запад Южной Америки
 # Strings for the "options" tab
@@ -435,7 +435,7 @@ login-forgot-button-back = Назад ко входу
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-client-crashed = Вероятно, клиент непредвиденно завершил работу при запуске. Если это продолжится, пожалуйста, попросите помощи в GitHub или Discord.
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-update-status-downloading-content = Скачивание контента сервера…
+connecting-update-status-downloading-content = Загрузка контента сервера…
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-update-status-verifying = Проверка целостности загрузки…
 # Strings for the "connecting" menu that appears when connecting to a server.
