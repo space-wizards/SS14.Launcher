@@ -267,7 +267,7 @@ region-greenland = Гренландия
 # Long region names for server tag filters (shown in tooltip)
 region-india = Индия
 # Long region names for server tag filters (shown in tooltip)
-region-middle-east = Средний Восток
+region-middle-east = Ближний Восток
 # Long region names for server tag filters (shown in tooltip)
 region-the-moon = Луна
 # Long region names for server tag filters (shown in tooltip)
