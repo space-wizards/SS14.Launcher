@@ -471,7 +471,7 @@ tab-home-direct-connect = Прямое подключение к серверу�
 # Strings for the "home" tab
 tab-home-favorites-guide = Помечайте серверы избранными для быстрого доступа к ним отсюда
 # Strings for the "options" tab
-tab-options-flip = { "*" }кувырок
+tab-options-flip = { "*" }переворот
 # Strings for the "options" tab
 tab-options-compatibility-mode = Режим совместимости
 # Strings for the "options" tab
