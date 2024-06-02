@@ -99,7 +99,7 @@ connecting-status-connecting = Получение информации о под
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-connection-failed = Не удалось подключиться к серверу!
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-status-starting-client = Запуск клиента...
+connecting-status-starting-client = Запуск клиента…
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-not-a-content-bundle = Файл не является допустимым набором контента!
 # Strings for the "connecting" menu that appears when connecting to a server.
