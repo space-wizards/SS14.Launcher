@@ -523,3 +523,5 @@ tab-options-verbose-launcher-logging = Подробное логирование
 tab-options-verbose-launcher-logging-desc = Для тех случаев, когда разработчики *очень* озадачены вашей проблемой. (требуется перезапустить лаунчер)
 # Strings for the "options" tab
 tab-options-seasonal-branding = Сезонное оформление
+# Strings for entries in the server list (including home page)
+server-entry-raise = Поднять на самый верх
