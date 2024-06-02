@@ -22,9 +22,9 @@ connecting-title-connecting = Подключение…
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-update-error = Произошла ошибка во время загрузки сереврного контента. Пожалуйста, обратитесь в Discord за помощью, если проблема не исчезнет.
 # Strings for the "hub settings" dialog window.
-hub-settings-explanation = Здесь вы можете добавлять дополнительные хабы для получения игровых серверов. Вы должны добавлять только хабы, которым вы доверятете, так как они могут подделывать игровые сервера других хабов. Порядок хабов важен. Если два хаба рекламируют сервер дважды, то приоритет будет иметь хаб с большим приоритетом (расположен выше в списке).
+hub-settings-explanation = Здесь вы можете добавлять дополнительные хабы для получения игровых серверов. Вы должны добавлять только хабы, которым вы доверяете, так как они могут подделывать игровые сервера других хабов. Порядок хабов важен. Если два хаба рекламируют сервер дважды, то приоритет будет иметь хаб с большим приоритетом (расположен выше в списке).
 # Long region names for server tag filters (shown in tooltip)
-region-north-america-west = Западная Северная Америка
+region-north-america-west = Северная Америка - Запад
 # Strings for the "hub settings" dialog window.
 hub-settings-warning-duplicate = Дублированные хабы
 # Error messages for login
@@ -48,7 +48,7 @@ main-window-out-of-date-desc =
 # Strings for the general main window layout of the launcher
 main-window-early-access-desc = Space Station 14 всё еще в стадии альфа-версии. Мы надеемся, вам нравится, что вы видите, и, возможно, вы даже останетесь здесь, однако постарайтесь пока что придержать свои скромные ожидания.
 # Long region names for server tag filters (shown in tooltip)
-region-north-america-east = Восточная Северная Америка
+region-north-america-east = Северная Америка - Восток
 # Strings for the "servers" tab
 filters = Фильтры ({ $filteredServers } / { $totalServers })
 # Strings for the "servers" tab
@@ -135,9 +135,9 @@ hub-settings-button-reset-tooltip = Сбросить к настройкам п�
 # Strings for the "hub settings" dialog window.
 hub-settings-button-add-tooltip = Добавить хаб
 # Strings for the "hub settings" dialog window.
-hub-settings-button-increase-priority-tooltip = Увеличить приоритет
+hub-settings-button-increase-priority-tooltip = Повысить приоритет
 # Strings for the "hub settings" dialog window.
-hub-settings-button-decrease-priority-tooltip = Уменьшить приоритет
+hub-settings-button-decrease-priority-tooltip = Понизить приоритет
 # Strings for the "hub settings" dialog window.
 hub-settings-heading-default = По умолчанию
 # Strings for the "hub settings" dialog window.
@@ -145,7 +145,7 @@ hub-settings-heading-custom = Пользовательские
 # Strings for the "hub settings" dialog window.
 hub-settings-warning-invalid = Неправильный хаб (не забудьте http(s)://)
 # Strings for the login screen
-login-log-launcher = Логировать ланучер
+login-log-launcher = Логировать лаунчер
 # Error messages for login
 login-error-invalid-credentials = Неправильные данные для входа
 # Error messages for login
@@ -229,7 +229,7 @@ main-window-out-of-date-exit = Выйти
 # Strings for the general main window layout of the launcher
 main-window-out-of-date-download-manual = Скачать (вручную)
 # Strings for the general main window layout of the launcher
-main-window-early-access-title = Берегись!
+main-window-early-access-title = Внимание!
 # Strings for the general main window layout of the launcher
 main-window-early-access-accept = Понятно!
 # Strings for the general main window layout of the launcher
@@ -271,11 +271,11 @@ region-middle-east = Средний Восток
 # Long region names for server tag filters (shown in tooltip)
 region-the-moon = Луна
 # Long region names for server tag filters (shown in tooltip)
-region-north-america-central = Центральная Северная Америка
+region-north-america-central = Северная Америка - Центр
 # Long region names for server tag filters (shown in tooltip)
 region-oceania = Океания
 # Long region names for server tag filters (shown in tooltip)
-region-south-america-east = Восточная Южная Америка
+region-south-america-east = Южная Америка - Восток
 # Short region names for server tag filters (shown in filter check box)
 region-short-africa-central = Центральная Африка
 # Short region names for server tag filters (shown in filter check box)
@@ -315,7 +315,7 @@ tab-servers-table-players = Игроки
 # Strings for the "servers" tab
 tab-servers-table-name = Название сервера
 # Strings for the "servers" tab
-tab-servers-list-status-none-filtered = Ни один сервер не удовлетворяет вашему поиску или фильтру.
+tab-servers-list-status-none-filtered = Нет серверов, удовлетворяющих вашему поиску или фильтру.
 # Strings for the "servers" tab
 tab-servers-list-status-none = Публичных серверов нет. Убедитесь в правильности вашей настройки хабов.
 # Strings for the server filters menu
@@ -400,9 +400,9 @@ tab-home-add-favorite = Добавить в избранное...
 # Strings for the "home" tab
 tab-home-refresh = Обновить
 # Strings for the "home" tab
-tab-home-run-content-bundle = Запустить набор контента / потвор
+tab-home-run-content-bundle = Запустить набор контента / повтор
 # Strings for the "home" tab
-tab-home-go-to-servers-tab = Перейти к вкладке серверов
+tab-home-go-to-servers-tab = Перейти на вкладку серверов
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-none = Начало подключения…
 # Strings for the drop-down window to manage your active account
@@ -423,17 +423,17 @@ tab-news-recent-news = Последние новости:
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-update-status-downloading-engine = Загрузка контента сервера…
 # Long region names for server tag filters (shown in tooltip)
-region-south-america-west = Запад Южной Америки
+region-south-america-west = Южная Америка - Запад
 # Strings for the "options" tab
 tab-options-hub-settings-desc = Изменяет сервер или сервера хаба , с которых вы хотите получать список серверов.
 # Long region names for server tag filters (shown in tooltip)
-region-south-america-south = Юг Южной Америки
+region-south-america-south = Южная Америка - Юг
 # Strings for the "options" tab
 tab-options-compatibility-mode-desc = Это использует OpenGL ES 2 (при помощи ANGLE, если необходимо), который менее подвержен ошибкам из-за драйверов. Попробуйте это, если вы сталкиваетесь с графическими проблемами или вылетами.
 # Strings for the "forgot password" view on login
 login-forgot-button-back = Назад ко входу
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-status-client-crashed = Вероятно, клиент непредвиденно завершил работу при запуске. Если это продолжится, пожалуйста, попросите помощи в GitHub или Discord.
+connecting-status-client-crashed = Вероятно, клиент непредвиденно завершил работу при запуске. Если это продолжится, пожалуйста, обратитесь за помощью в GitHub или Discord.
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-update-status-downloading-content = Загрузка контента сервера…
 # Strings for the "connecting" menu that appears when connecting to a server.
@@ -449,17 +449,17 @@ connecting-update-status-loading-into-db = Сохранение объектов
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-update-status-loading-content-bundle = Загрузка набора контента…
 # Short region names for server tag filters (shown in filter check box)
-region-short-north-america-central = Центральная Северная Америка
+region-short-north-america-central = Сев. Америка - Центр
 # Short region names for server tag filters (shown in filter check box)
-region-short-north-america-east = Восток Северной Америки
+region-short-north-america-east = Сев. Америка - Восток
 # Short region names for server tag filters (shown in filter check box)
-region-short-north-america-west = Запад Северной Америки
+region-short-north-america-west = Сев. Америка - Запад
 # Short region names for server tag filters (shown in filter check box)
-region-short-south-america-east = Восток Южной Америки
+region-short-south-america-east = Южн. Америка - Восток
 # Short region names for server tag filters (shown in filter check box)
-region-short-south-america-south = Юг Южной Америки
+region-short-south-america-south = Южн. Америка - Юг
 # Short region names for server tag filters (shown in filter check box)
-region-short-south-america-west = Запад Южной Америки
+region-short-south-america-west = Южн. Америка - Запад
 # Strings for the "Development" tab
 # These aren't shown to users so they're not very important
 tab-development-disable-signing-desc = { "[" }DEV ONLY] Отключает проверку подписей движка. НЕ ВКЛЮЧАЙТЕ, ЕСЛИ ВЫ НЕ ЗНАЕТЕ, ЧТО ДЕЛАЕТЕ.
@@ -467,7 +467,7 @@ tab-development-disable-signing-desc = { "[" }DEV ONLY] Отключает пр�
 # These aren't shown to users so they're not very important
 tab-development-enable-engine-override-desc = Перезаписать путь до архивов загрузки движка из (release/ in RobustToolbox)
 # Strings for the "home" tab
-tab-home-direct-connect = Прямое Подключение К Серверу…
+tab-home-direct-connect = Прямое подключение к серверу…
 # Strings for the "home" tab
 tab-home-favorites-guide = Пометьте сервера как избранные для быстрого доступа к ним отсюда
 # Strings for the "options" tab
@@ -492,11 +492,11 @@ language-selector-cancel = Отмена
 # For the language selection menu.
 language-selector-help-translate = Хотите помочь с переводом? Вы можете!
 # For the language selection menu.
-language-selector-system-language = Системный язык ({ $languageName })
+language-selector-system-language = Язык системы ({ $languageName })
 # Strings for the "options" tab
 tab-options-clear-content = Очистить установленный серверный контент
 # Strings for the "options" tab
-tab-options-account-settings-desc = Вы можете изменить насйтроки вашего аккаунта, такие как e-mail адрес или пароль, на сайте.
+tab-options-account-settings-desc = Вы можете изменить настройки вашего аккаунта, такие как e-mail адрес или пароль, на сайте.
 # Strings for the "options" tab
 tab-options-seasonal-branding-desc = Любые временные тематические иконки и логотипы, которые мы придумаем.
 # Strings for the "news" tab
@@ -514,9 +514,9 @@ tab-options-log-client = Логировать клиент
 # Strings for the "options" tab
 tab-options-log-client-desc = Влючает логирование любого вывода клиента игры. Полезно для разработчиков.
 # Strings for the "options" tab
-tab-options-log-launcher = Логировать ланучер
+tab-options-log-launcher = Логировать лаунчер
 # Strings for the "options" tab
-tab-options-log-launcher-desc = Влючает логирование лаунчера. Полезно для разработчиков. (требуется перезапустить лаунчер)
+tab-options-log-launcher-desc = Включает логирование лаунчера. Полезно для разработчиков. (требуется перезапустить лаунчер)
 # Strings for the "options" tab
 tab-options-verbose-launcher-logging = Подробное логирование лаунчера
 # Strings for the "options" tab
