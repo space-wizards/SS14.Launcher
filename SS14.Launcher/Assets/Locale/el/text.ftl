@@ -427,7 +427,7 @@ login-confirmation-button-confirm = Έχω επιβεβαιώσει τον λο�
 server-entry-raise = Ανέβασε στην κορυφή
 # Strings for the "Development" tab
 # These aren't shown to users so they're not very important
-tab-development-title-override = { "[" }DEV (override active!!!)]
+tab-development-title-override = { "[" }DEV (παράκαμψη ενεργή!!!)]
 # Strings for the "Development" tab
 # These aren't shown to users so they're not very important
 tab-development-disable-signing = Απενεργοποίησε ελέγχου υπογραφής της μηχανή του παιχνιδιού
@@ -505,3 +505,23 @@ language-selector-language = { $languageName } ({ $englishName })
 # For the language selection menu.
 # Text on the button that opens the menu.
 language-selector-label = Γλώσσα
+# Error messages for login
+login-error-account-2fa-required = Επαλήθευση σε 2 βήματα είναι απαραίτητη
+# Strings for 2FA login
+login-2fa-title = Επαλήθευση σε 2 βήματα είναι απαραίτητη
+# Error messages for login
+login-error-account-2fa-invalid = Κώδικας επαλήθευσης σε 2 βήματα δεν είναι έγκυρος
+# Strings for the "options" tab
+tab-options-flip = { "*" }flip
+# Strings for the "options" tab
+tab-options-clear-engines = Κάνε εκκαθάριση εγκατασταμένων μηχανών παιχνιδιού
+# Strings for the "options" tab
+tab-options-clear-content = Κάνε εκκαθάριση εγκατασταμένου server content
+# Strings for the "options" tab
+tab-options-open-log-directory = Άνοιξε φάκελο logs
+# Strings for the "options" tab
+tab-options-account-settings = Pυθμίσεις Λογαριασμού
+# Strings for the "options" tab
+tab-options-account-settings-desc = Μπορείτε να διαχειρίστείτε τις ρυθμίσεις του λογαριασμού σας, όπως αλλαγή email ή κωδικού σας, από την ιστοσελίδα μας.
+# Strings for the "options" tab
+tab-options-compatibility-mode = Κατάσταση συμβατότητας
