@@ -425,11 +425,11 @@ connecting-update-status-downloading-engine = Загрузка контента 
 # Long region names for server tag filters (shown in tooltip)
 region-south-america-west = Южная Америка - Запад
 # Strings for the "options" tab
-tab-options-hub-settings-desc = Изменяет сервер или сервера хаба , с которых вы хотите получать список серверов.
+tab-options-hub-settings-desc = Изменить, какой хаб или хабы, вы хотите использовать для получения списка серверов.
 # Long region names for server tag filters (shown in tooltip)
 region-south-america-south = Южная Америка - Юг
 # Strings for the "options" tab
-tab-options-compatibility-mode-desc = Это использует OpenGL ES 2 (при помощи ANGLE, если необходимо), который менее подвержен ошибкам из-за драйверов. Попробуйте это, если вы сталкиваетесь с графическими проблемами или вылетами.
+tab-options-compatibility-mode-desc = Это использует OpenGL ES 2 (через ANGLE при необходимости), который менее вероятнее будет подвержен драйверным багам. Попробуйте это, если испытываете графические проблемы или вылеты.
 # Strings for the "forgot password" view on login
 login-forgot-button-back = Назад ко входу
 # Strings for the "connecting" menu that appears when connecting to a server.
@@ -469,17 +469,17 @@ tab-development-enable-engine-override-desc = Перезаписать путь 
 # Strings for the "home" tab
 tab-home-direct-connect = Прямое подключение к серверу…
 # Strings for the "home" tab
-tab-home-favorites-guide = Пометьте сервера как избранные для быстрого доступа к ним отсюда
+tab-home-favorites-guide = Помечайте серверы избранными для быстрого доступа к ним отсюда
 # Strings for the "options" tab
 tab-options-flip = { "*" }кувырок
 # Strings for the "options" tab
-tab-options-compatibility-mode = Режим Совместимости
+tab-options-compatibility-mode = Режим совместимости
 # Strings for the "options" tab
-tab-options-disable-signing = Отключить Проверку Подписей Движка
+tab-options-disable-signing = Отключить проверки сигнатур движка
 # Strings for the "options" tab
 tab-options-disable-signing-desc = { "[" }DEV ONLY] Отключает проверку подписей движка. НЕ ВКЛЮЧАЙТЕ, ЕСЛИ ВЫ НЕ ЗНАЕТЕ, ЧТО КОНКРЕТНО ВЫ ДЕЛАЕТЕ.
 # Strings for the "options" tab
-tab-options-hub-settings = Настройки Списка Серверов
+tab-options-hub-settings = Настройки хаба
 # For the language selection menu.
 # Text on the button that opens the menu.
 language-selector-label = Язык
