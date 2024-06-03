@@ -70,13 +70,13 @@ connecting-status-connecting = Γίνεται aνάκτηση πληροφορι
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-connection-failed = Απέτυχε η σύνδεση στον εξυπηρετητή!
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-status-starting-client = Αρχίζει το client…
+connecting-status-starting-client = Αρχίζει το παιχνίδι…
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-not-a-content-bundle = Το αρχείο δεν είναι έγκυρο content bundle!
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-status-client-crashed = Το client κράσαρε κατά την εκκίνησή του. Εάν το πρόβλημα επιμένει ζητείστε βοήθεια στο Discord ή στο Github.
+connecting-status-client-crashed = Το παιχνίδι κράσαρε κατά την εκκίνησή του. Εάν το πρόβλημα επιμένει ζητείστε βοήθεια στο Discord ή στο Github.
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-update-status-checking-client-update = Γίνεται έλεγχος για ενημερωμένο content Εξυπηρετητή…
+connecting-update-status-checking-client-update = Γίνεται έλεγχος για ενημερωμένο content εξυπηρετητή…
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-update-status-downloading-engine = Γίνεται λήψη content εξυπηρετητή…
 # Strings for the "connecting" menu that appears when connecting to a server.
@@ -458,7 +458,7 @@ tab-news-pulling-news = Γίνετε ανάκτηση των ειδήσεων…
 # Strings for the "news" tab
 tab-news-title = Ειδήσεις
 # Strings for the "options" tab
-tab-options-log-client = Log Client
+tab-options-log-client = Log Παιχνίδι
 # Strings for the general main window layout of the launcher
 main-window-early-access-desc = Το Space Station 14 βρίσκεται ακόμα σε στάδιο άλφα. Ελπίζουμε να σας αρέσει αυτό που βλέπετε, και ίσως να μείνετε μαζί μας, αλλά φροντίστε να διατηρήσετε τις προσδοκίες σας μέτριες προς το παρόν.
 # Strings for the general main window layout of the launcher
@@ -466,9 +466,9 @@ main-window-drag-drop-prompt = Αφήστε το αρχείο για να τρέ
 # Short region names for server tag filters (shown in filter check box)
 region-short-south-america-south = Νότια Αμερική
 # Strings for the "options" tab
-tab-options-disable-signing-desc = { "[" }DEV ONLY] Απενεργοποιεί την επαλήθευση των engine. ΜΗΝ ΤΗΝ ΕΝΕΡΓΟΠΟΙΕΊΤΕ ΑΝ ΔΕΝ ΞΈΡΕΤΕ ΑΚΡΙΒΏΣ ΤΙ ΚΆΝΕΤΕ.
+tab-options-disable-signing-desc = { "[" }DEV ONLY] Απενεργοποιεί την επαλήθευση τής μηχανής παιχνιδιού. ΜΗΝ ΤΗΝ ΕΝΕΡΓΟΠΟΙΕΊΤΕ ΑΝ ΔΕΝ ΞΈΡΕΤΕ ΑΚΡΙΒΏΣ ΤΙ ΚΆΝΕΤΕ.
 # Strings for the "options" tab
-tab-options-log-client-desc = Ενεργοποιεί το logging του client. Χρήσιμο για τους προγραμματιστές.
+tab-options-log-client-desc = Ενεργοποιεί το logging του παιχνιδιού. Χρήσιμο για τους προγραμματιστές.
 # Strings for the "options" tab
 tab-options-verbose-launcher-logging-desc = Για όταν οι προγραμματιστές είναι *πολύ* προβληματισμένοι με το πρόβλημά σας. (Απαιτεί επανεκκίνηση launcher)
 # Strings for the "options" tab
@@ -484,7 +484,7 @@ tab-options-verbose-launcher-logging = Verbose Launcher Logging
 # Strings for the "options" tab
 tab-options-seasonal-branding = Εποχιακό Branding
 # Strings for the "options" tab
-tab-options-disable-signing = Απενεργοποίηση ελέγχων υπογραφής engine
+tab-options-disable-signing = Απενεργοποίηση ελέγχων υπογραφής μηχανής παιχνιδιού
 # Strings for the "options" tab
 tab-options-hub-settings-desc = Αλλάξτε το διακομιστή ή τους διακομιστές που θα θέλατε να χρησιμοποιήσετε για την αναζήτηση της λίστας διακομιστών.
 # Strings for the "options" tab
