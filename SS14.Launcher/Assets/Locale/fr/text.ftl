@@ -436,3 +436,17 @@ tab-options-seasonal-branding-desc = Toutes sortes d'icônes et de logos tempore
 # For the language selection menu.
 # Used for contents of each language button.
 language-selector-language = { $languageName } ({ $englishName })
+# Long region names for server tag filters (shown in tooltip)
+region-antarctica = Antarctique
+# Long region names for server tag filters (shown in tooltip)
+region-asia-east = Asie de l'Est
+# Long region names for server tag filters (shown in tooltip)
+region-asia-north = Asie du Nord
+# Long region names for server tag filters (shown in tooltip)
+region-asia-south-east = Asie du Sud-Est
+# Long region names for server tag filters (shown in tooltip)
+region-central-america = Amérique Centrale
+# Long region names for server tag filters (shown in tooltip)
+region-europe-east = Europe de l'Est
+# Long region names for server tag filters (shown in tooltip)
+region-europe-west = Europe de l'Ouest
