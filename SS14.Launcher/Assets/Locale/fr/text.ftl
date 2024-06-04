@@ -36,7 +36,7 @@ connecting-status-connection-failed = Connexion au serveur échouée !
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-starting-client = Démarrage du client…
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-status-not-a-content-bundle = Type de fichier invalide !
+connecting-status-not-a-content-bundle = Le fichier n'est pas un bundle de contenu valide !
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-client-crashed = On dirait que le client a planté lors du démarrage. Contactez le support sur Discord ou GitHub.
 # Strings for the "connecting" menu that appears when connecting to a server.
@@ -60,7 +60,7 @@ connecting-update-status-downloading-engine-modules = Téléchargement des dépe
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-update-status-loading-into-db = Stockage des ressources dans la base de données…
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-update-status-loading-content-bundle = Chargement du paquet de contenu…
+connecting-update-status-loading-content-bundle = Chargement du bundle de contenu…
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-update-status-unknown = Vous n'êtes pas supposé voir ça
 # Strings for the "direct connect" dialog window.
@@ -70,7 +70,7 @@ direct-connect-text = Entrez l'adresse du serveur :
 # Strings for the "direct connect" dialog window.
 direct-connect-connect = Connexion
 # Strings for the "hub settings" dialog window.
-hub-settings-title = Options d'Hub
+hub-settings-title = Options Hub
 # Strings for the "hub settings" dialog window.
 hub-settings-button-done = Terminé
 # Strings for the "hub settings" dialog window.
@@ -367,7 +367,7 @@ tab-options-log-launcher = Lanceur de journaux
 # Strings for the "options" tab
 tab-options-verbose-launcher-logging = Journalisation détaillée du launcher
 # Strings for the "options" tab
-tab-options-verbose-launcher-logging-desc = Pour quand les développeurs sont *très* perplexes face à votre problème. (nécessite le redémarrage du launcher)
+tab-options-verbose-launcher-logging-desc = Pour quand les développeurs sont *très* confus face à votre problème. (nécessite le redémarrage du lanceur)
 # Strings for the "home" tab
 tab-home-run-content-bundle = Exécuter un bundle de contenu/une rediffusion
 # Strings for the "options" tab
@@ -429,3 +429,10 @@ language-selector-system-language = Langue du système ({ $languageName })
 # For the language selection menu.
 # "Cancel" button.
 language-selector-cancel = Annuler
+# Strings for the "options" tab
+tab-options-seasonal-branding = Thème Saisonnier
+# Strings for the "options" tab
+tab-options-seasonal-branding-desc = Toutes sortes d'icônes et de logos temporellement pertinents qu'on a pensé à ajouter.
+# For the language selection menu.
+# Used for contents of each language button.
+language-selector-language = { $languageName } ({ $englishName })
