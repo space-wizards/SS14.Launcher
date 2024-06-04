@@ -477,4 +477,4 @@ region-short-africa-central = Afrique Centrale
 # Short region names for server tag filters (shown in filter check box)
 region-short-africa-north = Afrique Nord
 # Short region names for server tag filters (shown in filter check box)
-region-short-africa-south = Afrique du Sud
+region-short-africa-south = Afrique Sud
