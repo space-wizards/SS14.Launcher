@@ -521,3 +521,7 @@ region-short-oceania = Océanie
 region-short-south-america-west = SA Ouest
 # Short region names for server tag filters (shown in filter check box)
 region-short-south-america-east = SA Est
+# Strings for the "home" tab
+tab-home-add-favorite = Ajouter un favoris…
+# Strings for the "options" tab
+tab-options-flip = { "*" }retourner
