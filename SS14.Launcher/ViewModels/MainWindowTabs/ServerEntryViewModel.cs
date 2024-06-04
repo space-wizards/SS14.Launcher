@@ -101,7 +101,7 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
             switch (_cacheData.PanicBunker)
             {
                 case true:
-                    return "🚪"; //TODO: replace this with a proper icon. This might be doable in 126? We'd rather not step on Visne's toes for now, so a system-dependant emoji will do.
+                    return "⏲️"; //TODO: replace this with a proper icon. This might be doable in 126? We'd rather not step on Visne's toes for now, so a system-dependant emoji will do.
                 case null:
                     return "?";
                 default:
