@@ -484,3 +484,5 @@ region-short-antarctica = Antarctique
 region-short-asia-east = Asie Est
 # Short region names for server tag filters (shown in filter check box)
 region-short-asia-north = Asie Nord
+# Short region names for server tag filters (shown in filter check box)
+region-short-asia-south-east = Asie du Sud Est
