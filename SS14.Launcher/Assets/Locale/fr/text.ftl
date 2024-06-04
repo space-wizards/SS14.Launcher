@@ -491,4 +491,7 @@ region-short-central-america = Amérique Centrale
 # Short region names for server tag filters (shown in filter check box)
 region-short-europe-east = Europe Est
 # Short region names for server tag filters (shown in filter check box)
-region-short-europe-west = Europe de l'Ouest
+region-short-europe-west = Europe Ouest
+# Strings for the "Development" tab
+# These aren't shown to users so they're not very important
+tab-development-enable-engine-override = Activer surpassage du moteur
