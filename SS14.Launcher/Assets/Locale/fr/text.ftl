@@ -490,3 +490,5 @@ region-short-asia-south-east = Asie Sud Est
 region-short-central-america = Amérique Centrale
 # Short region names for server tag filters (shown in filter check box)
 region-short-europe-east = Europe Est
+# Short region names for server tag filters (shown in filter check box)
+region-short-europe-west = Europe de l'Ouest
