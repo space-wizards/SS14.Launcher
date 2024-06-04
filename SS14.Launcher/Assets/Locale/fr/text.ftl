@@ -476,3 +476,5 @@ region-south-america-west = Amérique du Sud Ouest
 region-short-africa-central = Afrique Centrale
 # Short region names for server tag filters (shown in filter check box)
 region-short-africa-north = Afrique du Nord
+# Short region names for server tag filters (shown in filter check box)
+region-short-africa-south = Afrique du Sud
