@@ -439,14 +439,18 @@ language-selector-language = { $languageName } ({ $englishName })
 # Long region names for server tag filters (shown in tooltip)
 region-antarctica = Antarctique
 # Long region names for server tag filters (shown in tooltip)
-region-asia-east = Asie de l'Est
+region-asia-east = Asie Est
 # Long region names for server tag filters (shown in tooltip)
-region-asia-north = Asie du Nord
+region-asia-north = Asie Nord
 # Long region names for server tag filters (shown in tooltip)
-region-asia-south-east = Asie du Sud-Est
+region-asia-south-east = Asie Sud-Est
 # Long region names for server tag filters (shown in tooltip)
 region-central-america = Amérique Centrale
 # Long region names for server tag filters (shown in tooltip)
-region-europe-east = Europe de l'Est
+region-europe-east = Europe Est
 # Long region names for server tag filters (shown in tooltip)
-region-europe-west = Europe de l'Ouest
+region-europe-west = Europe Ouest
+# Long region names for server tag filters (shown in tooltip)
+region-greenland = Groenland
+# Long region names for server tag filters (shown in tooltip)
+region-india = Inde
