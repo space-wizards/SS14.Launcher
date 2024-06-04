@@ -327,4 +327,7 @@ server-entry-player-count =
 tab-development-title = { "[" }DEV]
 # Strings for the "Development" tab
 # These aren't shown to users so they're not very important
-tab-development-title-override = { "[" }DEV (override active!!!)]
+tab-development-title-override = { "[" }DEV (dérogation active!!!)]
+# Strings for the "Development" tab
+# These aren't shown to users so they're not very important
+tab-development-disable-signing-desc = { "[" }DEV UNIQUEMENT] Désactive la vérification des signatures du moteur de jeu. NE PAS ACTIVER SAUF SI VOUS SAVEZ CE QUE VOUS FAITES.
