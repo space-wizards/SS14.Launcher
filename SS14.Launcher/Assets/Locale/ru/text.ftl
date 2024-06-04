@@ -3,7 +3,7 @@ login-confirmation-confirmation-title = Подтверждение регист�
 # Strings for the "register confirmation" view on login
 login-confirmation-button-confirm = Я подтвердил свой аккаунт
 # Strings for the "register confirmation" view on login
-login-confirmation-busy = Вход...
+login-confirmation-busy = Вход…
 # Localization for the "add favorite server" dialog window
 # 'Example' name shown as a watermark in the name input box
 add-favorite-window-example-name = Honk Station
@@ -36,7 +36,7 @@ region-central-america = Центральная Америка
 # Strings for the "servers" tab
 tab-servers-list-status-partial-error = Не удалось получить некоторые или все списки серверов. Убедитесь в правильности вашей настройки хабов.
 # Strings for the "servers" tab
-tab-servers-list-status-updating-master = Получение главного списка серверов...
+tab-servers-list-status-updating-master = Получение главного списка серверов…
 # Strings for the server filters menu
 filters-player-count-maximum-desc = Серверы с большим количеством игроков не будут показаны
 # Strings for the "login" view on login
@@ -237,7 +237,7 @@ main-window-drag-drop-prompt = Отпустите для запуска игры
 # Strings for the general main window layout of the launcher
 main-window-busy-checking-update = Проверка обновления лаунчера…
 # Strings for the general main window layout of the launcher
-main-window-busy-checking-login-status = Обновление статуса входа...
+main-window-busy-checking-login-status = Обновление статуса входа…
 # Strings for the general main window layout of the launcher
 main-window-busy-checking-account-status = Проверка статуса аккаунта
 # Strings for the general main window layout of the launcher
@@ -309,7 +309,7 @@ tab-servers-title = Серверы
 # Strings for the "servers" tab
 tab-servers-refresh = Обновить
 # Strings for the "servers" tab
-tab-servers-search-watermark = Поиск серверов...
+tab-servers-search-watermark = Поиск серверов…
 # Strings for the "servers" tab
 tab-servers-table-players = Игроки
 # Strings for the "servers" tab
@@ -379,9 +379,9 @@ server-entry-remove-favorite = Убрать из избранного
 # Strings for entries in the server list (including home page)
 server-entry-offline = OFFLINE
 # Strings for entries in the server list (including home page)
-server-entry-fetching = Получение...
+server-entry-fetching = Получение…
 # Strings for entries in the server list (including home page)
-server-entry-description-fetching = Получение статуса сервера...
+server-entry-description-fetching = Получение статуса сервера…
 # Strings for entries in the server list (including home page)
 server-entry-description-error = Произошла ошибка во время получения описания сервера
 # Strings for entries in the server list (including home page)
@@ -396,7 +396,7 @@ tab-home-title = Главная
 # Strings for the "home" tab
 tab-home-favorite-servers = Избранные серверы:
 # Strings for the "home" tab
-tab-home-add-favorite = Добавить в избранное...
+tab-home-add-favorite = Добавить в избранное…
 # Strings for the "home" tab
 tab-home-refresh = Обновить
 # Strings for the "home" tab
