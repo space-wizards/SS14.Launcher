@@ -231,3 +231,88 @@ tab-servers-list-status-partial-error = Incapable de récupérer certaines ou to
 filters = Filtres ({ $filteredServers } / { $totalServers })
 # Strings for the "servers" tab
 tab-servers-list-status-none-filtered = Aucun serveur ne correspond à vos paramètres de recherche ou de filtrage.
+# Strings for the "servers" tab
+tab-servers-list-status-none = Il n'y a aucun serveurs public. Vérifiez que la configuration de votre hub est correcte.
+# Strings for the server filters menu
+filters-title-language = Langue
+# Strings for the server filters menu
+filters-title-region = Région
+# Strings for the server filters menu
+filters-title-rp = Niveau de jeu de rôle
+# Strings for the server filters menu
+filters-title-18 = 18+
+# Strings for the server filters menu
+filters-title-hub = Hub
+# Strings for the server filters menu
+filters-18-yes = Oui
+# Strings for the server filters menu
+filters-18-yes-desc = Oui
+# Strings for the server filters menu
+filters-18-no = Non
+# Strings for the server filters menu
+filters-18-no-desc = Non
+# Strings for the server filters menu
+filters-player-count-minimum = Minimum:
+# Strings for the server filters menu
+filters-player-count-minimum-desc = Les serveurs avec moins de joueurs ne seront pas affichés
+# Strings for the server filters menu
+filters-player-count-maximum = Maximum:
+# Strings for the server filters menu
+filters-player-count-maximum-desc = Les serveurs avec plus de joueurs ne seront pas affichés
+# Strings for the server filters menu
+filters-unspecified-desc = Non spécifié
+# Strings for the server filters menu
+filters-unspecified = Non spécifié
+# Server roleplay levels for the filters menu
+filters-rp-none = Aucun
+# Server roleplay levels for the filters menu
+filters-rp-none-desc = Aucun
+# Server roleplay levels for the filters menu
+filters-rp-low = Bas
+# Server roleplay levels for the filters menu
+filters-rp-low-desc = Bas
+# Server roleplay levels for the filters menu
+filters-rp-medium = Moyen
+# Server roleplay levels for the filters menu
+filters-rp-medium-desc = Moyen
+# Server roleplay levels for the filters menu
+filters-rp-high = Élevé
+# Server roleplay levels for the filters menu
+filters-rp-high-desc = Élevé
+# Strings for entries in the server list (including home page)
+server-entry-connect = Se connecter
+# Strings for entries in the server list (including home page)
+server-entry-add-favorite = Ajouter aux favoris
+# Strings for entries in the server list (including home page)
+server-entry-offline = HORS LIGNE
+# Strings for entries in the server list (including home page)
+server-entry-fetching = Recherche…
+# Strings for entries in the server list (including home page)
+server-entry-description-fetching = Recherche du statut du serveur…
+# Strings for entries in the server list (including home page)
+server-entry-description-error = Erreur lors de la récupération de la description du serveur
+# Strings for entries in the server list (including home page)
+server-entry-description-none = Aucune description du serveur n'a été fournie
+# Strings for entries in the server list (including home page)
+server-fetched-from-hub = Extrait de { $hub }
+# Strings for entries in the server list (including home page)
+server-entry-raise = Relever en haut de la page
+# Strings for the "Development" tab
+# These aren't shown to users so they're not very important
+tab-development-disable-signing = Désactiver les contrôles de la signature du moteur de jeu
+# Strings for the server filters menu
+filters-title = Filtres
+# Strings for the server filters menu
+filters-player-count-hide-empty = Masquer les serveurs vides
+# Strings for the server filters menu
+filters-title-player-count = Nombre de joueurs
+# Strings for the server filters menu
+filters-player-count-hide-empty-desc = Les serveurs sans joueurs ne seront pas affichés
+# Strings for the server filters menu
+filters-player-count-hide-full = Masquer les serveurs pleins
+# Strings for the server filters menu
+filters-player-count-hide-full-desc = Les serveurs pleins ne seront pas affichés
+# Strings for entries in the server list (including home page)
+server-entry-remove-favorite = Supprimer des favoris
+# Strings for entries in the server list (including home page)
+server-entry-description-offline = Impossible de contacter le serveur
