@@ -475,6 +475,6 @@ region-south-america-west = Amérique du Sud Ouest
 # Short region names for server tag filters (shown in filter check box)
 region-short-africa-central = Afrique Centrale
 # Short region names for server tag filters (shown in filter check box)
-region-short-africa-north = Afrique du Nord
+region-short-africa-north = Afrique Nord
 # Short region names for server tag filters (shown in filter check box)
 region-short-africa-south = Afrique du Sud
