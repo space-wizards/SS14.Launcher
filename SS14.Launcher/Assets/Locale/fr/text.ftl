@@ -229,3 +229,5 @@ tab-servers-table-name = Nom du Serveur
 tab-servers-list-status-partial-error = Incapable de récupérer certaines ou toutes les listes de serveurs. Vérifiez que vos paramètres de hub sont corrects.
 # Strings for the "servers" tab
 filters = Filtres ({ $filteredServers } / { $totalServers })
+# Strings for the "servers" tab
+tab-servers-list-status-none-filtered = Aucun serveur ne correspond à vos paramètres de recherche ou de filtrage.
