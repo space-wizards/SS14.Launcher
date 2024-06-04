@@ -481,4 +481,4 @@ region-short-africa-south = Afrique Sud
 # Short region names for server tag filters (shown in filter check box)
 region-short-antarctica = Antarctique
 # Short region names for server tag filters (shown in filter check box)
-region-short-asia-east = Asie de l'Est
+region-short-asia-east = Asie Est
