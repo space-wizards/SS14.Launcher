@@ -78,7 +78,7 @@ hub-settings-button-cancel = Annuler
 # Strings for the "hub settings" dialog window.
 hub-settings-button-reset = Réinitialiser
 # Strings for the "hub settings" dialog window.
-hub-settings-button-add-tooltip = Ajout de hub
+hub-settings-button-add-tooltip = Ajouter un hub
 # Strings for the "hub settings" dialog window.
 hub-settings-button-remove-tooltip = Supprimer un hub
 # Strings for the "hub settings" dialog window.
@@ -122,7 +122,7 @@ login-forgot-email-watermark = Votre adresse courriel
 # Strings for the "forgot password" view on login
 login-forgot-button-submit = Envoyer
 # Strings for the "forgot password" view on login
-login-forgot-button-back = Retour
+login-forgot-button-back = Retour à la connexion
 # Strings for the "forgot password" view on login
 login-forgot-success-title = Courriel de réinitialisation envoyé
 # Strings for the "forgot password" view on login
@@ -144,7 +144,7 @@ login-login-button-register = Pas de compte ? Inscrivez-vous !
 # Strings for the "login" view on login
 login-login-busy-logging-in = Connexion…
 # Strings for the "register confirmation" view on login
-login-confirmation-confirmation-title = confirmation d’enregistrement
+login-confirmation-confirmation-title = Confirmation de l'inscription
 # Strings for the "register confirmation" view on login
 login-confirmation-button-confirm = J'ai vérifié mon compte
 # Strings for the "register confirmation" view on login
@@ -202,7 +202,9 @@ main-window-early-access-desc = Space Station 14 est toujours en alpha. On espè
 # Error messages for login
 login-error-account-account-locked = Compte verrouillé. Contactez-nous si vous croyez que c'est une erreur.
 # Strings for the "login expired" view on login
-login-expired-message = Connexion expirée pour ce compte. Veuillez rentrer votre mot de passe à nouveau.
+login-expired-message =
+    Connexion expirée pour ce compte.
+    Veuillez rentrer votre mot de passe à nouveau.
 # Strings for the "forgot password" view on login
 login-forgot-message = Si vous avez oublié votre mot de passe, vous pouvez saisir votre adresse courriel pour le réinitialiser.
 # Strings for the "forgot password" view on login
@@ -213,7 +215,7 @@ login-forgot-success-message = Un lien de réinitialisation à été envoyé à 
 login-login-error-title = Incapable de se connecter
 # Strings for the general main window layout of the launcher
 main-window-out-of-date-desc-steam =
-    Le lanceur est expiré.
+    Le lanceur n'est plus à jour.
     Veuillez le mettre à jour avec Steam.
 # Strings for the "servers" tab
 tab-servers-search-watermark = Recherche De Serveurs…
@@ -382,3 +384,25 @@ tab-options-log-launcher-desc = Active la journalisation du launcher. Utile pour
 tab-news-recent-news = Actualités récentes:
 # Strings for the "news" tab
 tab-news-pulling-news = Recherche d'actualités…
+# Strings for the "hub settings" dialog window.
+hub-settings-warning-duplicate = Dupliquer les hubs
+# Strings for the login screen
+login-log-launcher = Journal du launcher
+# Strings for the general main window layout of the launcher
+main-window-busy-checking-login-status = Actualisation du statut de la connexion…
+# Strings for the general main window layout of the launcher
+main-window-error-connecting-auth-server = Erreur de connexion au serveur d'authentification
+# Long region names for server tag filters (shown in tooltip)
+region-africa-central = Afrique centrale
+# Long region names for server tag filters (shown in tooltip)
+region-africa-north = Afrique du Nord
+# Long region names for server tag filters (shown in tooltip)
+region-africa-south = Afrique du Sud
+# Strings for the "hub settings" dialog window.
+hub-settings-explanation = Ici, vous pouvez ajouter des hubs supplémentaires pour récupérer des serveurs de jeu. Vous ne devez ajouter que des hubs en lesquels vous avez confiance car ils peuvent "usurper" les serveurs de jeu d'autres hubs. L'ordre des hubs est important; si deux hubs annoncent le même serveur de jeu, le hub ayant la priorité la plus élevée (plus haut dans la liste) sera prioritaire.
+# Strings for the "hub settings" dialog window.
+hub-settings-warning-invalid = Hub invalide (n'oubliez pas http(s)://)
+# Strings for the general main window layout of the launcher
+main-window-busy-checking-account-status = Vérification du statut du compte
+# Strings for the general main window layout of the launcher
+main-window-busy-checking-update = Vérification d'une potentielle mise-à-jour du lanceur…
