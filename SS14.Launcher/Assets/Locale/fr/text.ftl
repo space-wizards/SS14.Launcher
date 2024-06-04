@@ -331,3 +331,50 @@ tab-development-title-override = { "[" }DEV (dérogation active!!!)]
 # Strings for the "Development" tab
 # These aren't shown to users so they're not very important
 tab-development-disable-signing-desc = { "[" }DEV UNIQUEMENT] Désactive la vérification des signatures du moteur de jeu. NE PAS ACTIVER SAUF SI VOUS SAVEZ CE QUE VOUS FAITES.
+# Strings for the "Development" tab
+# These aren't shown to users so they're not very important
+tab-development-enable-engine-override-desc = Remplacer le chemin à partir duquel charger les zips du moteur (version/dans RobustToolbox)
+# Strings for the "home" tab
+tab-home-title = Accueil
+# Strings for the "home" tab
+tab-home-refresh = Rafraîchir
+# Strings for the "home" tab
+tab-home-direct-connect = Connexion directe au serveur…
+# Strings for the "home" tab
+tab-home-go-to-servers-tab = Aller dans l'onglet des serveurs
+# Strings for the "home" tab
+tab-home-favorites-guide = Marquez les serveurs comme favoris pour un accès facile ici
+# Strings for the "news" tab
+tab-news-title = Actualités
+# Strings for the "options" tab
+tab-options-title = Options
+# Strings for the "options" tab
+tab-options-clear-content = Effacer le contenu du serveur installé
+# Strings for the "options" tab
+tab-options-open-log-directory = Ouvrir le répertoire des journaux
+# Strings for the "options" tab
+tab-options-compatibility-mode = Mode de compatibilité
+# Strings for the "options" tab
+tab-options-compatibility-mode-desc = Cela utilise OpenGL ES 2 (via ANGLE si nécessaire), qui est moins susceptible de souffrir de bugs de pilotes. Essayez ceci si vous rencontrez des problèmes graphiques ou des plantages.
+# Strings for the "options" tab
+tab-options-log-client = Journaux du client
+# Strings for the "options" tab
+tab-options-log-client-desc = Permet la journalisation de toute sortie du client de jeu. Utile pour les développeurs.
+# Strings for the "options" tab
+tab-options-log-launcher = Lanceur de journaux
+# Strings for the "options" tab
+tab-options-verbose-launcher-logging = Journalisation détaillée du launcher
+# Strings for the "options" tab
+tab-options-verbose-launcher-logging-desc = Pour quand les développeurs sont *très* perplexes face à votre problème. (nécessite le redémarrage du launcher)
+# Strings for the "home" tab
+tab-home-run-content-bundle = Exécuter un bundle de contenu/une rediffusion
+# Strings for the "options" tab
+tab-options-clear-engines = Effacer les moteurs installés
+# Strings for the "options" tab
+tab-options-account-settings = Paramètres du compte
+# Strings for the "options" tab
+tab-options-account-settings-desc = Vous pouvez gérer les paramètres de votre compte, tels que la modification de votre adresse e-mail ou de votre mot de passe, via notre site internet.
+# Strings for the "home" tab
+tab-home-favorite-servers = Serveurs favoris:
+# Strings for the "options" tab
+tab-options-log-launcher-desc = Active la journalisation du launcher. Utile pour les développeurs. (nécessite le redémarrage du lanceur)
