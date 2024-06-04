@@ -406,3 +406,26 @@ hub-settings-warning-invalid = Hub invalide (n'oubliez pas http(s)://)
 main-window-busy-checking-account-status = Vérification du statut du compte
 # Strings for the general main window layout of the launcher
 main-window-busy-checking-update = Vérification d'une potentielle mise-à-jour du lanceur…
+# Strings for the general main window layout of the launcher
+main-window-error-unknown = Une erreur inconnue s'est produite
+# Strings for the "options" tab
+tab-options-disable-signing = Désactiver les vérifications de signature du moteur
+# Strings for the "options" tab
+tab-options-disable-signing-desc = { "[" }DEV UNIQUEMENT] Désactive la vérification des signatures du moteur. N'ACTIVEZ PAS SAUF SI VOUS SAVEZ EXACTEMENT CE QUE VOUS FAITES.
+# Strings for the "options" tab
+tab-options-hub-settings = Paramètres du hub
+# Strings for the "options" tab
+tab-options-hub-settings-desc = Modifiez le ou les serveurs hub que vous souhaitez utiliser pour récupérer la liste des serveurs.
+# For the language selection menu.
+# Text on the button that opens the menu.
+language-selector-label = Langue
+# For the language selection menu.
+# "Save" button.
+language-selector-save = Sauvegarder
+# For the language selection menu.
+language-selector-help-translate = Voulez-vous aider à traduire ? Vous pouvez!
+# For the language selection menu.
+language-selector-system-language = Langue du système ({ $languageName })
+# For the language selection menu.
+# "Cancel" button.
+language-selector-cancel = Annuler
