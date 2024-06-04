@@ -454,3 +454,9 @@ region-europe-west = Europe Ouest
 region-greenland = Groenland
 # Long region names for server tag filters (shown in tooltip)
 region-india = Inde
+# Long region names for server tag filters (shown in tooltip)
+region-middle-east = Moyen-Orient
+# Long region names for server tag filters (shown in tooltip)
+region-the-moon = La lune
+# Long region names for server tag filters (shown in tooltip)
+region-north-america-central = Amérique du Nord Centrale
