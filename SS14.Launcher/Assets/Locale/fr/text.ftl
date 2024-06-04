@@ -459,7 +459,7 @@ region-middle-east = Moyen-Orient
 # Long region names for server tag filters (shown in tooltip)
 region-the-moon = La lune
 # Long region names for server tag filters (shown in tooltip)
-region-north-america-central = Amérique du Nord Centrale
+region-north-america-central = Amérique du Nord Centre
 # Long region names for server tag filters (shown in tooltip)
 region-north-america-east = Amérique du Nord Est
 # Long region names for server tag filters (shown in tooltip)
