@@ -378,3 +378,7 @@ tab-options-account-settings-desc = Vous pouvez gérer les paramètres de votre 
 tab-home-favorite-servers = Serveurs favoris:
 # Strings for the "options" tab
 tab-options-log-launcher-desc = Active la journalisation du launcher. Utile pour les développeurs. (nécessite le redémarrage du lanceur)
+# Strings for the "news" tab
+tab-news-recent-news = Actualités récentes:
+# Strings for the "news" tab
+tab-news-pulling-news = Recherche d'actualités…
