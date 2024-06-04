@@ -215,3 +215,17 @@ login-login-error-title = Incapable de se connecter
 main-window-out-of-date-desc-steam =
     Le lanceur est expiré.
     Veuillez le mettre à jour avec Steam.
+# Strings for the "servers" tab
+tab-servers-search-watermark = Recherche De Serveurs…
+# Strings for the "servers" tab
+tab-servers-table-players = Joueurs
+# Strings for the "servers" tab
+tab-servers-list-status-error = Erreur lors de la récupération de la liste maîtresse des serveurs
+# Strings for the "servers" tab
+tab-servers-list-status-updating-master = Récupération de la liste maîtresse des serveurs…
+# Strings for the "servers" tab
+tab-servers-table-name = Nom du Serveur
+# Strings for the "servers" tab
+tab-servers-list-status-partial-error = Incapable de récupérer certaines ou toutes les listes de serveurs. Vérifiez que vos paramètres de hub sont corrects.
+# Strings for the "servers" tab
+filters = Filtres ({ $filteredServers } / { $totalServers })
