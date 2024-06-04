@@ -1,4 +1,3 @@
-using Microsoft.Data.Sqlite;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -11,9 +10,12 @@ using Avalonia.Controls;
 using Avalonia.Logging;
 using Avalonia.Media;
 using Avalonia.ReactiveUI;
+using Microsoft.Win32;
 using Serilog;
+using Serilog.Sinks.SystemConsole.Themes;
 using Splat;
 using SS14.Launcher.Api;
+using SS14.Launcher.Localization;
 using SS14.Launcher.Models;
 using SS14.Launcher.Models.ContentManagement;
 using SS14.Launcher.Models.Data;
@@ -86,7 +88,7 @@ internal static class Program
 
         var logCfg = new LoggerConfiguration()
             .MinimumLevel.Debug()
-            .WriteTo.Console();
+            .WriteTo.Console(theme: AnsiConsoleTheme.Sixteen);
 
         Log.Logger = logCfg.CreateLogger();
 
@@ -97,14 +99,16 @@ internal static class Program
         cfg.Load();
         Locator.CurrentMutable.RegisterConstant(cfg);
 
-        CheckWindows7();
-        CheckBadAntivirus();
+        CheckWindowsVersion();
+        // Bad antivirus check disabled: I assume Avast/AVG fixed their shit.
+        // CheckBadAntivirus();
+        CheckWine(cfg);
 
         if (cfg.GetCVar(CVars.LogLauncher))
         {
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Is(cfg.GetCVar(CVars.LogLauncherVerbose) ? LogEventLevel.Verbose : LogEventLevel.Debug)
-                .WriteTo.Console()
+                .WriteTo.Console(theme: AnsiConsoleTheme.Sixteen)
                 .WriteTo.File(LauncherPaths.PathLauncherLog)
                 .CreateLogger();
         }
@@ -137,10 +141,10 @@ internal static class Program
         _serverTask?.Wait();
     }
 
-    private static unsafe void CheckWindows7()
+    private static unsafe void CheckWindowsVersion()
     {
-        // 9600 is Windows 8.1, minimum we currently support.
-        if (!OperatingSystem.IsWindows() || Environment.OSVersion.Version.Build >= 9600)
+        // 14393 is Windows 10 version 1607, minimum we currently support.
+        if (!OperatingSystem.IsWindows() || Environment.OSVersion.Version.Build >= 14393)
             return;
 
         var text =
@@ -148,6 +152,8 @@ internal static class Program
             "If anything breaks, DO NOT ASK FOR HELP OR SUPPORT.";
 
         var caption = "Unsupported Windows version";
+
+        uint type = MB.MB_OK | MB.MB_ICONWARNING;
 
         if (Language.UserHasLanguage("ru"))
         {
@@ -157,11 +163,7 @@ internal static class Program
             caption = "Неподдерживаемая версия Windows";
         }
 
-        fixed (char* pText = text)
-        fixed (char* pCaption = caption)
-        {
-            _ = Windows.MessageBoxW(HWND.NULL, (ushort*)pText, (ushort*)pCaption, MB.MB_OK | MB.MB_ICONWARNING);
-        }
+        Helpers.MessageBoxHelper(text, caption, type);
     }
 
     private static unsafe void CheckBadAntivirus()
@@ -191,11 +193,31 @@ internal static class Program
 
         var text = $"{longName} is detected on your system.\n\n{shortName} is known to cause the game to crash while loading. If the game fails to start, uninstall {shortName}.\n\nThis is {shortName}'s fault, do not ask us for help or support.";
         var caption = $"{longName} detected!";
+        uint type = MB.MB_OK | MB.MB_ICONWARNING;
 
-        fixed (char* pText = text)
-        fixed (char* pCaption = caption)
+        Helpers.MessageBoxHelper(text, caption, type);
+    }
+
+    private static void CheckWine(DataManager dataManager)
+    {
+        if (!OperatingSystem.IsWindows())
+            return;
+
+        if (dataManager.GetCVar(CVars.WineWarningShown))
+            return;
+
+        using var key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Wine", false);
+
+        if (key != null)
         {
-            _ = Windows.MessageBoxW(HWND.NULL, (ushort*)pText, (ushort*)pCaption, MB.MB_OK | MB.MB_ICONWARNING);
+            Log.Debug("Wine detected");
+            var text =
+                $"You seem to be running the launcher under Wine.\n\nWe recommend you run the native Linux version instead.\n\nThis is the only time you will see this message.";
+            var caption = $"Wine detected!";
+            uint type = MB.MB_OK | MB.MB_ICONWARNING;
+
+            Helpers.MessageBoxHelper(text, caption, type);
+            dataManager.SetCVar(CVars.WineWarningShown, true);
         }
     }
 
@@ -210,11 +232,14 @@ internal static class Program
         http.DefaultRequestHeaders.Add("SS14-Launcher-Fingerprint", cfg.Fingerprint.ToString());
         Locator.CurrentMutable.RegisterConstant(http);
 
+        var loc = new LocalizationManager(cfg);
         var authApi = new AuthApi(http);
         var hubApi = new HubApi(http);
-        var overrideAssets = new OverrideAssetsManager(cfg, http);
+        var launcherInfo = new LauncherInfoManager(http);
+        var overrideAssets = new OverrideAssetsManager(cfg, http, launcherInfo);
         var loginManager = new LoginManager(cfg, authApi);
 
+        locator.RegisterConstant(loc);
         locator.RegisterConstant(new ContentManager());
         locator.RegisterConstant<IEngineManager>(new EngineManagerDynamic());
         locator.RegisterConstant(new Updater());
@@ -223,6 +248,7 @@ internal static class Program
         locator.RegisterConstant(new ServerListCache());
         locator.RegisterConstant(loginManager);
         locator.RegisterConstant(overrideAssets);
+        locator.RegisterConstant(launcherInfo);
 
         return AppBuilder.Configure(() => new App(overrideAssets))
             .UsePlatformDetect()
@@ -238,10 +264,14 @@ internal static class Program
     // container, etc.
     private static void AppMain(Application app, string[] args)
     {
+        var loc = Locator.Current.GetRequiredService<LocalizationManager>();
         var msgr = Locator.Current.GetRequiredService<LauncherMessaging>();
         var contentManager = Locator.Current.GetRequiredService<ContentManager>();
         var overrideAssets = Locator.Current.GetRequiredService<OverrideAssetsManager>();
+        var launcherInfo = Locator.Current.GetRequiredService<LauncherInfoManager>();
 
+        loc.Initialize();
+        launcherInfo.Initialize();
         contentManager.Initialize();
         overrideAssets.Initialize();
 
@@ -251,6 +281,14 @@ internal static class Program
             DataContext = viewModel
         };
         viewModel.OnWindowInitialized();
+
+        loc.LanguageSwitched += () =>
+        {
+            window.ReloadContent();
+
+            // Reloading content isn't a smooth process anyway, so let's do some housekeeping while we're at it.
+            GC.Collect();
+        };
 
         var lc = new LauncherCommands(viewModel);
         lc.RunCommandTask();

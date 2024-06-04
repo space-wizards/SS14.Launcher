@@ -48,7 +48,7 @@ public sealed partial class DungSpinner : UserControl
         // Offset so that 0,0 is the center of the control.
         var offset = Matrix.CreateTranslation(centerX, centerY);
 
-        using var translateState = context.PushPreTransform(offset);
+        using var translateState = context.PushTransform(offset);
 
         var brush = Fill;
         var progress = AnimationProgress * Math.PI * 2;
@@ -57,7 +57,7 @@ public sealed partial class DungSpinner : UserControl
             double mul = 1)
         {
             var rotation = Matrix.CreateRotation(angle);
-            using var _ = context.PushPreTransform(rotation);
+            using var _ = context.PushTransform(rotation);
 
             var p = (progress + animationOffset) * mul;
             var x = Math.Sin(p) * xScale;

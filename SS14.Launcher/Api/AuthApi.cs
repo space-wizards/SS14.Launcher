@@ -66,6 +66,7 @@ public sealed class AuthApi
         catch (HttpRequestException httpE)
         {
             Log.Error(httpE, "HttpRequestException in AuthenticateAsync");
+            HttpSelfTest.StartSelfTest();
             return new AuthenticateResult(
                 new[] { $"Connection error to authentication server: {httpE.Message}" },
                 AuthenticateDenyResponseCode.UnknownError);
@@ -108,6 +109,7 @@ public sealed class AuthApi
         catch (HttpRequestException httpE)
         {
             Log.Error(httpE, "HttpRequestException in RegisterAsync");
+            HttpSelfTest.StartSelfTest();
             return new RegisterResult(new[] { $"Connection error to authentication server: {httpE.Message}" });
         }
     }
@@ -163,6 +165,7 @@ public sealed class AuthApi
         catch (HttpRequestException httpE)
         {
             Log.Error(httpE, "HttpRequestException in ResendConfirmationAsync");
+            HttpSelfTest.StartSelfTest();
             return new[] { $"Connection error to authentication server: {httpE.Message}" };
         }
     }
@@ -204,6 +207,7 @@ public sealed class AuthApi
         catch (HttpRequestException httpE)
         {
             Log.Error(httpE, "HttpRequestException in ResendConfirmationAsync");
+            HttpSelfTest.StartSelfTest();
             throw new AuthApiException("HttpRequestException thrown", httpE);
         }
         catch (JsonException jsonE)
@@ -236,6 +240,7 @@ public sealed class AuthApi
         {
             // Does it make sense to just... swallow this exception? The token will stay "active" until it expires.
             Log.Error(httpE, "HttpRequestException in LogoutTokenAsync");
+            HttpSelfTest.StartSelfTest();
         }
     }
 
@@ -275,6 +280,7 @@ public sealed class AuthApi
         {
             // Does it make sense to just... swallow this exception? The token will stay "active" until it expires.
             Log.Error(httpE, "HttpRequestException in CheckTokenAsync");
+            HttpSelfTest.StartSelfTest();
             throw new AuthApiException("HttpRequestException thrown", httpE);
         }
     }

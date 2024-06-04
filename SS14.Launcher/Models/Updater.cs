@@ -136,43 +136,7 @@ public sealed class Updater : ReactiveObject
 
         await Task.Run(() => { CullOldContentVersions(con); }, CancellationToken.None);
 
-        (string, string)[] modules;
-
-        {
-            Status = UpdateStatus.CheckingClientUpdate;
-            modules = con.Query<(string, string)>(
-                "SELECT ModuleName, moduleVersion FROM ContentEngineDependency WHERE VersionId = @Version",
-                new { Version = versionRowId }).ToArray();
-
-            foreach (var (name, version) in modules)
-            {
-                if (name == "Robust")
-                {
-                    await InstallEngineVersionIfMissing(version, cancel);
-                }
-                else
-                {
-                    Status = UpdateStatus.DownloadingEngineModules;
-
-                    var manifest = await moduleManifest.Value;
-                    await _engineManager.DownloadModuleIfNecessary(
-                        name,
-                        version,
-                        manifest,
-                        DownloadProgressCallback,
-                        cancel);
-                }
-            }
-        }
-
-        Status = UpdateStatus.CullingEngine;
-        await CullEngineVersionsMaybe(con);
-
-        Status = UpdateStatus.CommittingDownload;
-        _cfg.CommitConfig();
-
-        Log.Information("Update done!");
-        return new ContentLaunchInfo(versionRowId, modules);
+        return await InstallEnginesForVersion(con, moduleManifest, versionRowId, cancel);
     }
 
     private async Task<ContentLaunchInfo> InstallContentBundle(
@@ -304,19 +268,31 @@ public sealed class Updater : ReactiveObject
             return versionId;
         }, CancellationToken.None);
 
+        return await InstallEnginesForVersion(con, moduleManifest, versionId, cancel);
+    }
+
+    private async Task<ContentLaunchInfo> InstallEnginesForVersion(
+        SqliteConnection con,
+        Lazy<Task<EngineModuleManifest>> moduleManifest,
+        long versionRowId,
+        CancellationToken cancel)
+    {
         (string, string)[] modules;
 
         {
             Status = UpdateStatus.CheckingClientUpdate;
             modules = con.Query<(string, string)>(
                 "SELECT ModuleName, moduleVersion FROM ContentEngineDependency WHERE VersionId = @Version",
-                new { Version = versionId }).ToArray();
+                new { Version = versionRowId }).ToArray();
 
-            foreach (var (name, version) in modules)
+            for (var index = 0; index < modules.Length; index++)
             {
+                var (name, version) = modules[index];
                 if (name == "Robust")
                 {
-                    await InstallEngineVersionIfMissing(version, cancel);
+                    // Engine version may change here due to manifest version redirects.
+                    var newEngineVersion = await InstallEngineVersionIfMissing(version, cancel);
+                    modules[index] = (name, newEngineVersion);
                 }
                 else
                 {
@@ -340,7 +316,7 @@ public sealed class Updater : ReactiveObject
         _cfg.CommitConfig();
 
         Log.Information("Update done!");
-        return new ContentLaunchInfo(versionId, modules);
+        return new ContentLaunchInfo(versionRowId, modules);
     }
 
 
@@ -1421,13 +1397,13 @@ public sealed class Updater : ReactiveObject
         await _engineManager.DoEngineCullMaybeAsync(contentConnection);
     }
 
-    private async Task<bool> InstallEngineVersionIfMissing(string engineVer, CancellationToken cancel)
+    private async Task<string> InstallEngineVersionIfMissing(string engineVer, CancellationToken cancel)
     {
         Status = UpdateStatus.DownloadingEngineVersion;
-        var change = await _engineManager.DownloadEngineIfNecessary(engineVer, DownloadProgressCallback, cancel);
+        var (changedVersion, _) = await _engineManager.DownloadEngineIfNecessary(engineVer, DownloadProgressCallback, cancel);
 
         Progress = null;
-        return change;
+        return changedVersion;
     }
 
     private void DownloadProgressCallback(long downloaded, long total)

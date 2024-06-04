@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
+using System.Net.Sockets;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
@@ -103,7 +104,7 @@ public sealed class ServerStatusCache : IServerSource
 
                 cancel.ThrowIfCancellationRequested();
             }
-            catch (Exception e) when (e is JsonException or HttpRequestException or InvalidDataException)
+            catch (Exception e) when (e is JsonException or HttpRequestException or InvalidDataException or IOException or SocketException)
             {
                 data.Status = ServerStatusCode.Offline;
                 return;

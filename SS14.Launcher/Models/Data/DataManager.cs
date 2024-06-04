@@ -281,7 +281,7 @@ public sealed class DataManager : ReactiveObject
                 continue;
 
             if (entry.Type == typeof(string))
-                Set((string) v);
+                Set((string?) v);
             else if (entry.Type == typeof(bool))
                 Set((long) v != 0);
             else if (entry.Type == typeof(int))

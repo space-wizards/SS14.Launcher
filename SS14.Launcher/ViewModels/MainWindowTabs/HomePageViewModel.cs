@@ -9,6 +9,7 @@ using DynamicData;
 using DynamicData.Alias;
 using ReactiveUI.Fody.Helpers;
 using Splat;
+using SS14.Launcher.Localization;
 using SS14.Launcher.Models.Data;
 using SS14.Launcher.Models.ServerStatus;
 using SS14.Launcher.Utility;
@@ -61,7 +62,7 @@ public class HomePageViewModel : MainWindowTabViewModel
 
     [Reactive] public bool FavoritesEmpty { get; private set; } = true;
 
-    public override string Name => "Home";
+    public override string Name => LocalizationManager.Instance.GetString("tab-home-title");
     public Control? Control { get; set; }
 
     public async void DirectConnectPressed()
@@ -71,7 +72,7 @@ public class HomePageViewModel : MainWindowTabViewModel
             return;
         }
 
-        var res = await new DirectConnectDialog().ShowDialog<string>(window);
+        var res = await new DirectConnectDialog().ShowDialog<string?>(window);
         if (res == null)
         {
             return;
@@ -101,7 +102,7 @@ public class HomePageViewModel : MainWindowTabViewModel
         }
     }
 
-    private bool TryGetWindow([MaybeNullWhen(false)] out Window? window)
+    private bool TryGetWindow([NotNullWhen(true)] out Window? window)
     {
         window = Control?.GetVisualRoot() as Window;
         return window != null;

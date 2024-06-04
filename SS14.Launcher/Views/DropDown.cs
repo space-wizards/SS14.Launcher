@@ -4,7 +4,6 @@ using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Templates;
 using Avalonia.Input;
 using Avalonia.Metadata;
-using Avalonia.VisualTree;
 
 namespace SS14.Launcher.Views;
 
@@ -19,6 +18,9 @@ public sealed class DropDown : TemplatedControl
 
     public static readonly StyledProperty<IDataTemplate?> ContentTemplateProperty =
         ContentControl.ContentTemplateProperty.AddOwner<DropDown>();
+
+    public static readonly StyledProperty<PlacementMode> PlacementProperty =
+        AvaloniaProperty.Register<DropDown, PlacementMode>("Placement", PlacementMode.Bottom);
 
     public static readonly StyledProperty<object> HeaderContentProperty =
         AvaloniaProperty.Register<DropDown, object>(nameof(HeaderContent));
@@ -52,6 +54,12 @@ public sealed class DropDown : TemplatedControl
     {
         get => GetValue(HeaderContentTemplateProperty);
         set => SetValue(HeaderContentTemplateProperty, value);
+    }
+
+    public PlacementMode Placement
+    {
+        get => GetValue(PlacementProperty);
+        set => SetValue(PlacementProperty, value);
     }
 
     public bool IsDropDownOpen

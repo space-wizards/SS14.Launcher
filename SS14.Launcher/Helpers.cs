@@ -171,4 +171,12 @@ public static class Helpers
             FileAccessPermissions.UserExecute | FileAccessPermissions.GroupExecute |
             FileAccessPermissions.OtherExecute;
     }
+    public static unsafe int MessageBoxHelper(string text, string caption, uint type)
+    {
+        fixed (char* pText = text)
+        fixed (char* pCaption = caption)
+        {
+            return Windows.MessageBoxW(HWND.NULL, (ushort*)pText, (ushort*)pCaption, type);
+        }
+    }
 }
