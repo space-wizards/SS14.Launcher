@@ -222,7 +222,7 @@ tab-servers-search-watermark = Recherche De Serveurs…
 # Strings for the "servers" tab
 tab-servers-table-players = Joueurs
 # Strings for the "servers" tab
-tab-servers-list-status-error = Erreur lors de la récupération de la liste maîtresse des serveurs
+tab-servers-list-status-error = Une erreur s'est produite lors de la récupération des listes du serveur principal.
 # Strings for the "servers" tab
 tab-servers-list-status-updating-master = Récupération de la liste maîtresse des serveurs…
 # Strings for the "servers" tab
@@ -495,3 +495,29 @@ region-short-europe-west = Europe Ouest
 # Strings for the "Development" tab
 # These aren't shown to users so they're not very important
 tab-development-enable-engine-override = Activer surpassage du moteur
+# Short region names for server tag filters (shown in filter check box)
+region-short-greenland = Groenland
+# Short region names for server tag filters (shown in filter check box)
+region-short-india = Inde
+# Short region names for server tag filters (shown in filter check box)
+region-short-middle-east = Moyen-Orient
+# Short region names for server tag filters (shown in filter check box)
+region-short-the-moon = La Lune
+# Short region names for server tag filters (shown in filter check box)
+region-short-north-america-central = NA Central
+# Short region names for server tag filters (shown in filter check box)
+region-short-north-america-west = NA Ouest
+# Short region names for server tag filters (shown in filter check box)
+region-short-south-america-south = SA Sud
+# Strings for the "servers" tab
+tab-servers-title = Serveurs
+# Strings for the "servers" tab
+tab-servers-refresh = Rafraîchir
+# Short region names for server tag filters (shown in filter check box)
+region-short-north-america-east = NA Est
+# Short region names for server tag filters (shown in filter check box)
+region-short-oceania = Océanie
+# Short region names for server tag filters (shown in filter check box)
+region-short-south-america-west = SA Ouest
+# Short region names for server tag filters (shown in filter check box)
+region-short-south-america-east = SA Est
