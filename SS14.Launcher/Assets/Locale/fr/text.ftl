@@ -478,3 +478,7 @@ region-short-africa-central = Afrique Centrale
 region-short-africa-north = Afrique Nord
 # Short region names for server tag filters (shown in filter check box)
 region-short-africa-south = Afrique Sud
+# Short region names for server tag filters (shown in filter check box)
+region-short-antarctica = Antarctique
+# Short region names for server tag filters (shown in filter check box)
+region-short-asia-east = Asie de l'Est
