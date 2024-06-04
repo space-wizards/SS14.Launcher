@@ -395,9 +395,9 @@ main-window-error-connecting-auth-server = Erreur de connexion au serveur d'auth
 # Long region names for server tag filters (shown in tooltip)
 region-africa-central = Afrique centrale
 # Long region names for server tag filters (shown in tooltip)
-region-africa-north = Afrique du Nord
+region-africa-north = Afrique Nord
 # Long region names for server tag filters (shown in tooltip)
-region-africa-south = Afrique du Sud
+region-africa-south = Afrique Sud
 # Strings for the "hub settings" dialog window.
 hub-settings-explanation = Ici, vous pouvez ajouter des hubs supplémentaires pour récupérer des serveurs de jeu. Vous ne devez ajouter que des hubs en lesquels vous avez confiance car ils peuvent "usurper" les serveurs de jeu d'autres hubs. L'ordre des hubs est important; si deux hubs annoncent le même serveur de jeu, le hub ayant la priorité la plus élevée (plus haut dans la liste) sera prioritaire.
 # Strings for the "hub settings" dialog window.
