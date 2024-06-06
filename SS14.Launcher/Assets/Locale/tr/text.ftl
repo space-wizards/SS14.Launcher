@@ -391,7 +391,7 @@ main-window-error-connecting-auth-server = Kimlik doğrulama sunucusuna bağlan�
 # Strings for the general main window layout of the launcher
 main-window-early-access-title = Dikkat et!
 # Strings for the general main window layout of the launcher
-main-window-drag-drop-prompt = ???
+main-window-drag-drop-prompt = Oyunu başlatmak için dropla
 # Long region names for server tag filters (shown in tooltip)
 region-africa-central = Merkezi Afrika
 # Long region names for server tag filters (shown in tooltip)
@@ -485,7 +485,7 @@ tab-options-seasonal-branding-desc = Yapabildiğimiz herhangi bir geçici ikon v
 # Strings for the "options" tab
 tab-options-disable-signing = Motor Signature Checkleri kapat
 # Strings for the "options" tab
-tab-options-disable-signing-desc = { "[" }DEV ONLY] Motor engine signatureların doğrulanmasınu kapatır. NE BOK YEDİĞİNİ BİLMİYORSAN AÇMA.
+tab-options-disable-signing-desc = { "[" }DEV ONLY] Motor engine signatureların doğrulanmasınu kapatır. NE YAPTIĞINI BİLMİYORSAN AÇMA.
 # Strings for the "Development" tab
 # These aren't shown to users so they're not very important
 tab-development-title-override = { "[" }DEV (override aktif!!!)]
@@ -500,7 +500,7 @@ tab-options-log-client-desc = Oyun istemcisinin herhangi bir hareketi için log 
 tab-development-disable-signing = Motor 'Signature Checks'leri kapat
 # Strings for the "Development" tab
 # These aren't shown to users so they're not very important
-tab-development-disable-signing-desc = { "[" }DEV ONLY] Motor signatureların doğrulanmasını kapatır. NE BOK YEDİĞİNİ BİLMİYORSAN AÇMA.
+tab-development-disable-signing-desc = { "[" }DEV ONLY] Motor signatureların doğrulanmasını kapatır. NE YAPTIĞINI BİLMİYORSAN AÇMA.
 # Strings for the "Development" tab
 # These aren't shown to users so they're not very important
 tab-development-enable-engine-override = Engine override'ı aç
@@ -512,7 +512,7 @@ tab-options-clear-engines = İndirilmiş motorları temizle
 tab-options-open-log-directory = Log dizinlerini aç
 # Strings for the "Development" tab
 # These aren't shown to users so they're not very important
-tab-development-enable-engine-override-desc = Motor ziplerini indirmek için yolu geçersiz kılar/Override path to load engine zips from (release/ in RobustToolbox)
+tab-development-enable-engine-override-desc = Motor ziplerini indirmek için path ovrerride (release/ in RobustToolbox)
 # Strings for the "options" tab
 tab-options-verbose-launcher-logging = Verbose Başlatıcı Logları
 # For the language selection menu.
