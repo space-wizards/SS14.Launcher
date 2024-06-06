@@ -149,7 +149,7 @@ login-login-button-forgot = ¿Olvido su contraseña?
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-none = Iniciando conexion…
 # Strings for the drop-down window to manage your active account
-account-drop-down-none-selected = No hay cuenta selecionada
+account-drop-down-none-selected = No hay cuenta seleccionada
 # Strings for the drop-down window to manage your active account
 account-drop-down-not-logged-in = No esta logueado
 # Strings for the drop-down window to manage your active account
