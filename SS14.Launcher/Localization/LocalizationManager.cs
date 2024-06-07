@@ -28,9 +28,11 @@ public sealed class LocalizationManager
         new LanguageInfo("el"),
         new LanguageInfo("de"),
         new LanguageInfo("ru"),
-        new LanguageInfo("pt"),
+        new LanguageInfo("pt-BR"),
         new LanguageInfo("es"),
         new LanguageInfo("uk"),
+        new LanguageInfo("fr"),
+        new LanguageInfo("tr"),
     ];
 
     private const string FallbackCulture = "en";
