@@ -126,7 +126,7 @@ hub-settings-button-increase-priority-tooltip = Önemi arttır
 # Strings for the "hub settings" dialog window.
 hub-settings-button-decrease-priority-tooltip = Önemi azalt
 # Strings for the login screen
-login-log-launcher = Log Başlatıcı
+login-log-launcher = Log Launcher
 # Error messages for login
 login-error-account-unconfirmed = Bu hesaba bağlı olan email adresinin onaylanması gerekiyor. Lütfen giriş yapmadan önce email adresinizi onaylayın.
 # Error messages for login
@@ -188,7 +188,7 @@ login-login-busy-logging-in = Giriş yapılıyor…
 # Strings for the "login" view on login
 login-login-error-title = Giriş yapılamıyor
 # Strings for the general main window layout of the launcher
-main-window-title = Space Station 14 Başlatıcı
+main-window-title = Space Station 14 Launcher
 # Strings for the general main window layout of the launcher
 main-window-header-link-discord = Discord
 # Strings for the general main window layout of the launcher
@@ -333,7 +333,7 @@ tab-options-account-settings-desc = Email ve şifre değiştirme gibi hesap ayar
 # Strings for the general main window layout of the launcher
 main-window-busy-checking-login-status = Login statüsü yenileniyor…
 # Strings for the "options" tab
-tab-options-log-launcher = Log Başlatıcı
+tab-options-log-launcher = Log Launcher
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-update-status-checking-engine-modules = Ekstra bağlılıklar kontrol ediliyor…
 # Strings for entries in the server list (including home page)
@@ -341,9 +341,9 @@ server-entry-fetching = Getiriliyor…
 # Strings for the "servers" tab
 tab-servers-list-status-updating-master = Master sunucu listesi getiriliyor…
 # Strings for the "options" tab
-tab-options-log-launcher-desc = Başlatıcının her hareketi için logları açar. Geliştiriciler için işlevlidir. (Başlatının yeniden başlatılması gerekir)
+tab-options-log-launcher-desc = Launcherın her hareketi için logları açar. Geliştiriciler için işlevlidir. (Launcher yeniden başlatılması gerekir)
 # Strings for the "options" tab
-tab-options-verbose-launcher-logging-desc = Geliştiricilerin sorununu *bi türlü* çözemediği zaman için. (Başlatıcının yeniden başlatılması gerekir)
+tab-options-verbose-launcher-logging-desc = Geliştiricilerin sorununu *bi türlü* çözemediği zaman için. (Launcherın yeniden başlatılması gerekir)
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-not-a-content-bundle = Dosya geçerli bir içerik paketi değil!
 # Strings for the "options" tab
@@ -371,21 +371,21 @@ login-forgot-button-submit = Gönder
 # Strings for the "login" view on login
 login-login-button-resend = Email doğrulamasını yeniden gönder
 # Strings for the general main window layout of the launcher
-main-window-out-of-date = Başlatıcı güncellenmemiş
+main-window-out-of-date = Launcher güncellenmemiş
 # Strings for the general main window layout of the launcher
 main-window-out-of-date-desc =
-    Bu başlatıcı güncellenmemiş.
+    Bu launcher güncellenmemiş.
     Lütfen yeni versiyonu websitemizden indirin.
 # Strings for the general main window layout of the launcher
 main-window-out-of-date-desc-steam =
-    Bu başlatıcı güncellenmemiş.
+    Bu launcher güncellenmemiş.
     Lütfen Steam'in güncellemesine izin verin.
 # Strings for the general main window layout of the launcher
 main-window-out-of-date-exit = Çıkış
 # Strings for the general main window layout of the launcher
 main-window-early-access-accept = Tamamdır!
 # Strings for the general main window layout of the launcher
-main-window-busy-checking-update = Başlatıcı için güncellemeler kontrol ediliyor…
+main-window-busy-checking-update = Launcher için güncellemeler kontrol ediliyor…
 # Strings for the general main window layout of the launcher
 main-window-error-connecting-auth-server = Kimlik doğrulama sunucusuna bağlanırken hata oluştu
 # Strings for the general main window layout of the launcher
@@ -514,7 +514,7 @@ tab-options-open-log-directory = Log dizinlerini aç
 # These aren't shown to users so they're not very important
 tab-development-enable-engine-override-desc = Motor ziplerini indirmek için path ovrerride (release/ in RobustToolbox)
 # Strings for the "options" tab
-tab-options-verbose-launcher-logging = Verbose Başlatıcı Logları
+tab-options-verbose-launcher-logging = Verbose Launcher Logları
 # For the language selection menu.
 # Used for contents of each language button.
 language-selector-language = { $languageName } ({ $englishName })
