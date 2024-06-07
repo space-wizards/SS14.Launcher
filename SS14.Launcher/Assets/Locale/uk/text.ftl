@@ -361,7 +361,7 @@ filters = Фільтри ({ $filteredServers } / { $totalServers })
 # Strings for the "servers" tab
 tab-servers-table-players = Гравці
 # Strings for the "servers" tab
-tab-servers-table-name = Назва Серверу
+tab-servers-table-name = Назва серверу
 # Strings for the "servers" tab
 tab-servers-list-status-partial-error = Не вдалося отримати деякі або всі списки серверів. Перевірте правильність конфігурації хаба.
 # Strings for the "servers" tab
@@ -425,9 +425,9 @@ filters-rp-high-desc = Високий
 # Strings for entries in the server list (including home page)
 server-entry-connect = Підключитися
 # Strings for entries in the server list (including home page)
-server-entry-add-favorite = Додати в Обрані
+server-entry-add-favorite = Додати в обрані
 # Strings for entries in the server list (including home page)
-server-entry-remove-favorite = Видалити з Обраного
+server-entry-remove-favorite = Видалити з обраного
 # Strings for entries in the server list (including home page)
 server-entry-offline = OFFLINE
 # Strings for entries in the server list (including home page)
@@ -446,7 +446,7 @@ tab-home-title = Головна
 # Strings for the "home" tab
 tab-home-favorite-servers = Обрані сервери:
 # Strings for the "home" tab
-tab-home-add-favorite = Додати в Обрані…
+tab-home-add-favorite = Додати в обрані…
 # Strings for the "home" tab
 tab-home-refresh = Оновити
 # Strings for the "home" tab
@@ -472,25 +472,25 @@ tab-options-clear-content = Очистити встановлений конте
 # Strings for the "options" tab
 tab-options-open-log-directory = Відкрити директорію логів
 # Strings for the "options" tab
-tab-options-account-settings = Налаштування Акаунта
+tab-options-account-settings = Налаштування акаунта
 # Strings for the "options" tab
 tab-options-account-settings-desc = Ви можете керувати налаштуваннями свого акаунта, наприклад, змінити електронну пошту або пароль, через наш веб-сайт.
 # Strings for the "options" tab
-tab-options-compatibility-mode = Режим Сумісності
+tab-options-compatibility-mode = Режим сумісності
 # Strings for the "options" tab
 tab-options-log-client = Логувати Клієнт
 # Strings for the "options" tab
 tab-options-log-client-desc = Вмикає логування будь-якого виводу ігрового клієнта. Корисно для розробників.
 # Strings for the "options" tab
-tab-options-log-launcher = Логувати Лаунчер
+tab-options-log-launcher = Логувати лаунчер
 # Strings for the "options" tab
 tab-options-log-launcher-desc = Вмикає логування лаунчера. Корисно для розробників. (потребує перезапуску лаунчера)
 # Strings for the "options" tab
-tab-options-verbose-launcher-logging = Детальне Логування Лаунчера
+tab-options-verbose-launcher-logging = Детальне логування лаунчера
 # Strings for the "options" tab
 tab-options-verbose-launcher-logging-desc = Для тих випадків, коли розробники *дуже* заплуталися у вашій проблемі. (потребує перезапуску лаунчера)
 # Strings for the "options" tab
-tab-options-seasonal-branding = Сезонний Брендинг
+tab-options-seasonal-branding = Сезонний брендинг
 # Strings for the "options" tab
 tab-options-hub-settings = Налаштування Хаба
 # Strings for the "options" tab
