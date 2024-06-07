@@ -31,7 +31,7 @@ server-entry-fetching = Hämtar…
 # Strings for the "home" tab
 tab-home-direct-connect = Direktanslut till server…
 # Error messages for login
-login-error-account-unconfirmed = Mailadressen till detta kontot behöver fortfarande bekräftas. Vänligen bekräfta mailadressen innan du loggar in
+login-error-account-unconfirmed = E-postadressen till detta kontot behöver fortfarande bekräftas. Vänligen bekräfta e-postadressen innan du loggar in
 # Strings for the "servers" tab
 tab-servers-list-status-updating-master = Hämtar huvudserverlistan…
 # Strings for the "forgot password" view on login
@@ -52,7 +52,7 @@ region-africa-central = Centralafrika
 tab-servers-search-watermark = Sök efter servrar…
 # Strings for the "Development" tab
 # These aren't shown to users so they're not very important
-tab-development-disable-signing = Avaktivera kontroll av motorsignatur
+tab-development-disable-signing = Avaktivera kontroll av spelmotorsignatur
 # Strings for the general main window layout of the launcher
 main-window-error-unknown = Ett okänt fel uppstod
 # Short region names for server tag filters (shown in filter check box)
@@ -62,18 +62,18 @@ region-south-america-east = Östra Sydamerika
 # Strings for entries in the server list (including home page)
 server-entry-raise = Flytta överst
 # Strings for the "options" tab
-tab-options-clear-engines = Rensa bort installerade motorer
+tab-options-clear-engines = Rensa bort installerade spelmotorer
 # Strings for the "servers" tab
 tab-servers-list-status-partial-error = Några eller alla serverlistor kunde inte laddas. Kontrollera att hubbinställningarna stämmer.
 # Strings for the "Development" tab
 # These aren't shown to users so they're not very important
-tab-development-disable-signing-desc = { "[" }DEV ONLY] Avaktiverar kontroll av motorsignaturer. AKTIVERA INTE OM DU INTE VET PRECIS VAD DU HÅLLER PÅ MED.
+tab-development-disable-signing-desc = { "[" }DEV ONLY] Avaktiverar kontroll av spelmotorsignaturer. AKTIVERA INTE OM DU INTE VET PRECIS VAD DU HÅLLER PÅ MED.
 # Strings for the "options" tab
 tab-options-account-settings-desc = Du kan hantera dina kontoinställningar, t.ex. ändra e-postadress eller lösenord, via vår webbsida.
 # Strings for the "options" tab
 tab-options-log-launcher-desc = Sparar alla launcherns loggmeddelanden. Värdefullt för utvecklare. (kräver omstart av launchern)
 # Strings for the "options" tab
-tab-options-disable-signing-desc = { "[" }DEV ONLY] Avaktiverar kontroll av motorsignaturer. AKTIVERA INTE OM DU INTE VET PRECIS VAD DU HÅLLER PÅ MED.
+tab-options-disable-signing-desc = { "[" }DEV ONLY] Avaktiverar kontroll av spelmotorsignaturer. AKTIVERA INTE OM DU INTE VET PRECIS VAD DU HÅLLER PÅ MED.
 # For the language selection menu.
 # Used for contents of each language button.
 language-selector-language = { $languageName } ({ $englishName })
@@ -432,7 +432,7 @@ tab-development-title = { "[" }DEV]
 tab-development-title-override = { "[" }DEV (override active!!!)]
 # Strings for the "Development" tab
 # These aren't shown to users so they're not very important
-tab-development-enable-engine-override = Aktivera motor-override
+tab-development-enable-engine-override = Aktivera spelmotor-override
 # Strings for the "home" tab
 tab-home-favorite-servers = Favoritservrar:
 # Strings for the "home" tab
@@ -478,7 +478,7 @@ tab-options-seasonal-branding = Säsongsbaserad branding
 # Strings for the "options" tab
 tab-options-seasonal-branding-desc = Alla sorters aktuellt relevanta ikoner och loggor som vi hittar på.
 # Strings for the "options" tab
-tab-options-disable-signing = Avaktivera kontroll av motorsignatur
+tab-options-disable-signing = Avaktivera kontroll av spelmotorsignatur
 # Strings for the "options" tab
 tab-options-hub-settings = Hubbinställningar
 # Strings for the "options" tab
@@ -498,3 +498,30 @@ language-selector-cancel = Avbryt
 language-selector-help-translate = Vill du hjälpa till att översätta? Det kan du!
 # For the language selection menu.
 language-selector-system-language = Systemspråk ({ $languageName })
+# Strings for the "register confirmation" view on login
+login-confirmation-confirmation-message = Vänligen kontrollera din e-post för att bekräfta ditt konto. Så fort du har bekräftat ditt konto använder du knappen för att logga in.
+# Strings for the "connecting" menu that appears when connecting to a server.
+connecting-status-not-a-content-bundle = Filen är inte ett giltigt content-paket!
+# Strings for the "connecting" menu that appears when connecting to a server.
+connecting-update-status-checking-engine-modules = Söker efter ytterligare beroenden…
+# Strings for the "connecting" menu that appears when connecting to a server.
+connecting-update-status-downloading-engine-modules = Laddar ner extraberoenden…
+# Strings for the "connecting" menu that appears when connecting to a server.
+connecting-update-status-committing-download = Synkroniserar med disk…
+# Strings for the "connecting" menu that appears when connecting to a server.
+connecting-update-status-loading-content-bundle = Laddar content-paket…
+# Error messages for login
+login-error-account-account-locked = Kontot har låsts. Om du tror detta skett av misstag bör du kontakta oss.
+# Strings for the "login expired" view on login
+login-expired-title = Inloggning utgången
+# Strings for the "login expired" view on login
+login-expired-message =
+    Sessionen för ditt konto har gått ut.
+    Vänligen ange ditt lösenord på nytt.
+# Strings for the "login expired" view on login
+login-expired-password-watermark = Lösenord
+# Strings for the "Development" tab
+# These aren't shown to users so they're not very important
+tab-development-enable-engine-override-desc = Sökväg till spelmotor-zipfiler att skriva över med (release/ i RobustToolbox)
+# Strings for the "home" tab
+tab-home-run-content-bundle = Kör kontent-paket/replay
