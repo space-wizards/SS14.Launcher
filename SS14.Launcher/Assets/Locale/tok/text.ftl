@@ -31,3 +31,7 @@ connecting-update-status-ready = sin ijo pana!
 hub-settings-button-remove-tooltip = weka kulupu
 # Strings for the "hub settings" dialog window.
 hub-settings-warning-invalid = ike kulupu (soma li http(s)://)
+# Strings for the "servers" tab
+tab-servers-refresh = sin pali
+# Strings for the "home" tab
+tab-home-refresh = sin pali
