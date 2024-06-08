@@ -67,6 +67,11 @@ public static class CVars
     public static readonly CVarDef<bool> LogLauncherVerbose = CVarDef.Create("LogLauncherVerbose", false);
 
     /// <summary>
+    /// Enable COMPlus_DbgEnableMiniDump and COMPlus_DbgMiniDumpType for the client.
+    /// </summary>
+    public static readonly CVarDef<bool> DbgMiniDump = CVarDef.Create("DbgMiniDump", false);
+
+    /// <summary>
     /// Enable multi-account support on release builds.
     /// </summary>
     public static readonly CVarDef<bool> MultiAccounts = CVarDef.Create("MultiAccounts", false);

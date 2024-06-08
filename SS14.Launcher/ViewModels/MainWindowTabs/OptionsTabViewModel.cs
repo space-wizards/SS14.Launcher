@@ -71,6 +71,16 @@ public class OptionsTabViewModel : MainWindowTabViewModel
         }
     }
 
+    public bool DbgMiniDump
+    {
+        get => Cfg.GetCVar(CVars.DbgMiniDump);
+        set
+        {
+            Cfg.SetCVar(CVars.DbgMiniDump, value);
+            Cfg.CommitConfig();
+        }
+    }
+
     public bool DisableSigning
     {
         get => Cfg.GetCVar(CVars.DisableSigning);

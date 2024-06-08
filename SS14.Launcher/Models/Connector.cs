@@ -463,6 +463,12 @@ public class Connector : ReactiveObject
             startInfo.RedirectStandardError = true;
         }
 
+        if (_cfg.GetCVar(CVars.DbgMiniDump))
+        {
+            EnvVar("COMPlus_DbgEnableMiniDump", "1");
+            EnvVar("COMPlus_DbgMiniDumpType", "3");
+        }
+
         // Performance tweaks
         EnvVar("DOTNET_TieredPGO", "1");
         EnvVar("DOTNET_ReadyToRun", "0");
