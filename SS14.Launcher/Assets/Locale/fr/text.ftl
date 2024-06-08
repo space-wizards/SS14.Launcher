@@ -1,44 +1,44 @@
 # Strings for the drop-down window to manage your active account
 account-drop-down-none-selected = Aucun compte sélectionné
 # Strings for the drop-down window to manage your active account
-account-drop-down-not-logged-in = Pas connecté
+account-drop-down-not-logged-in = Non connecté
 # Strings for the drop-down window to manage your active account
-account-drop-down-log-out = Déconnecter
+account-drop-down-log-out = Se déconnecter
 # Strings for the drop-down window to manage your active account
 account-drop-down-log-out-of = Se déconnecter de { $name }
 # Strings for the drop-down window to manage your active account
 account-drop-down-switch-account = Changer de compte :
 # Strings for the drop-down window to manage your active account
-account-drop-down-select-account = Sélectionner un compte :
+account-drop-down-select-account = Sélectionner un compte:
 # Strings for the drop-down window to manage your active account
 account-drop-down-add-account = Ajouter un compte
 # Localization for the "add favorite server" dialog window
-add-favorite-window-title = Ajouter Serveur Favori
+add-favorite-window-title = Ajouter un Serveur Favori
 # Localization for the "add favorite server" dialog window
-add-favorite-window-label-name = Nom :
+add-favorite-window-label-name = Nom:
 # Localization for the "add favorite server" dialog window
-add-favorite-window-label-address = Adresse :
+add-favorite-window-label-address = Adresse:
 # Localization for the "add favorite server" dialog window
 # 'Example' name shown as a watermark in the name input box
 add-favorite-window-example-name = Station Clown
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-title-connecting = Connection…
+connecting-title-connecting = Connection en cours…
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-title-content-bundle = Chargement…
+connecting-title-content-bundle = Chargement en cours…
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-cancel = Annuler
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-none = Ouverture de la connexion…
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-status-updating = Mise à jour : { $status }
+connecting-status-updating = Mise à jour: { $status }
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-status-connection-failed = Connexion au serveur échouée !
+connecting-status-connection-failed = Connexion au serveur échouée!
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-starting-client = Démarrage du client…
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-not-a-content-bundle = Le fichier n'est pas un bundle de contenu valide !
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-status-client-crashed = On dirait que le client a planté lors du démarrage. Contactez le support sur Discord ou GitHub.
+connecting-status-client-crashed = Le client semble s'être arrêté au démarrage. Contactez le support sur Discord ou GitHub.
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-update-status-checking-client-update = Recherche de mise à jour du contenu du serveur…
 # Strings for the "connecting" menu that appears when connecting to a server.
@@ -50,7 +50,7 @@ connecting-update-status-verifying = Vérification de l'intégrité du télécha
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-update-status-culling-engine = Suppression du contenu obsolète…
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-update-status-culling-content = Suppression du contenu du serveur obsolète…
+connecting-update-status-culling-content = Suppression du contenu obsolète du serveur…
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-update-status-ready = Mise à jour terminée !
 # Strings for the "connecting" menu that appears when connecting to a server.
@@ -62,7 +62,7 @@ connecting-update-status-loading-into-db = Stockage des ressources dans la base 
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-update-status-loading-content-bundle = Chargement du bundle de contenu…
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-update-status-unknown = Vous n'êtes pas supposé voir ça
+connecting-update-status-unknown = Vous ne devriez pas voir ça
 # Strings for the "direct connect" dialog window.
 direct-connect-title = Connexion Directe…
 # Strings for the "direct connect" dialog window.
@@ -112,7 +112,7 @@ login-expired-password-watermark = Mot de passe
 # Strings for the "login expired" view on login
 login-expired-button-log-in = Se connecter
 # Strings for the "login expired" view on login
-login-expired-button-log-out = Déconnexion
+login-expired-button-log-out = Se déconnecter
 # Strings for the "login expired" view on login
 login-expired-button-forgot-password = Mot de passe oublié ?
 # Strings for the "forgot password" view on login
@@ -130,7 +130,7 @@ login-forgot-error = Erreur
 # Strings for the "login" view on login
 login-login-title = Connexion
 # Strings for the "login" view on login
-login-login-username-watermark = Courriel ou Nom du compte
+login-login-username-watermark = Nom du compte ou courriel.
 # Strings for the "login" view on login
 login-login-password-watermark = Mot de passe
 # Strings for the "login" view on login
@@ -138,7 +138,7 @@ login-login-button-log-in = Connexion
 # Strings for the "login" view on login
 login-login-button-forgot = Mot de passe oublié ?
 # Strings for the "login" view on login
-login-login-button-resend = Renvoyer courriel de vérification
+login-login-button-resend = Renvoyer le courriel de vérification
 # Strings for the "login" view on login
 login-login-button-register = Pas de compte ? Inscrivez-vous !
 # Strings for the "login" view on login
@@ -182,37 +182,37 @@ connecting-status-update-error = Il y a eu une erreur lors du téléchargement d
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-update-status-fetching-manifest = Récupération du manifeste du serveur…
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-update-status-committing-download = Synchronisation au disque…
+connecting-update-status-committing-download = Synchronisation sur le disque…
 # Strings for the "direct connect" dialog window.
-direct-connect-address-invalid = Adresse invalide
+direct-connect-address-invalid = L'adresse est invalide
 # Strings for the "hub settings" dialog window.
 hub-settings-button-reset-tooltip = Réinitialiser aux options par défaut
 # Strings for the "hub settings" dialog window.
 hub-settings-button-increase-priority-tooltip = Augmenter la priorité
 # Strings for the "hub settings" dialog window.
-hub-settings-heading-default = Par Défaut
+hub-settings-heading-default = Par défaut
 # Error messages for login
 login-error-invalid-credentials = Informations de connexion invalides
 # Error messages for login
 login-error-account-2fa-invalid = Code d'authentification à deux facteurs invalide
 # Strings for the "register confirmation" view on login
-login-confirmation-confirmation-message = Veuillez ouvrir notre courriel pour vérifier votre compte. Quand votre compte sera vérifié, cliquez sur le bouton ci-dessous pour vous connecter.
+login-confirmation-confirmation-message = Veuillez ouvrir votre courrier électronique pour vérifier votre compte. Quand votre compte sera vérifié, cliquez sur le bouton ci-dessous pour vous connecter.
 # Strings for the general main window layout of the launcher
 main-window-early-access-desc = Space Station 14 est toujours en alpha. On espère que vous allez aimer, et même rester, mais gardez ça en tête.
 # Error messages for login
-login-error-account-account-locked = Compte verrouillé. Contactez-nous si vous croyez que c'est une erreur.
+login-error-account-account-locked = Ce compte a été verrouillé. Contactez-nous si vous croyez que c'est une erreur.
 # Strings for the "login expired" view on login
 login-expired-message =
     Connexion expirée pour ce compte.
     Veuillez rentrer votre mot de passe à nouveau.
 # Strings for the "forgot password" view on login
-login-forgot-message = Si vous avez oublié votre mot de passe, vous pouvez saisir votre adresse courriel pour le réinitialiser.
+login-forgot-message = Si vous avez oublié votre mot de passe, vous pouvez saisir l'adresse courriel associée à votre compte pour recevoir un lien de réinitialisation.
 # Strings for the "forgot password" view on login
 login-forgot-busy-sending = Envoi du courriel…
 # Strings for the "forgot password" view on login
 login-forgot-success-message = Un lien de réinitialisation à été envoyé à votre adresse courriel.
 # Strings for the "login" view on login
-login-login-error-title = Incapable de se connecter
+login-login-error-title = Impossible de se connecter
 # Strings for the general main window layout of the launcher
 main-window-out-of-date-desc-steam =
     Le lanceur n'est plus à jour.
