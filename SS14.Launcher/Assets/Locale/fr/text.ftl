@@ -158,15 +158,15 @@ main-window-header-link-discord = Discord
 # Strings for the general main window layout of the launcher
 main-window-header-link-website = Site Web
 # Strings for the general main window layout of the launcher
-main-window-out-of-date = Lanceur expiré
+main-window-out-of-date = Le lanceur n'est plus à jour
 # Strings for the general main window layout of the launcher
 main-window-out-of-date-desc =
-    Le lanceur est expiré.
+    Le lanceur n'est plus à jour.
     Vous pouvez télécharger une nouvelle version sur notre site web.
 # Strings for the general main window layout of the launcher
 main-window-out-of-date-exit = Quitter
 # Strings for the general main window layout of the launcher
-main-window-out-of-date-download-manual = Installation (manuelle)
+main-window-out-of-date-download-manual = Télécharger (manuelle)
 # Strings for the general main window layout of the launcher
 main-window-early-access-title = Attention !
 # Strings for the general main window layout of the launcher
@@ -218,17 +218,17 @@ main-window-out-of-date-desc-steam =
     Le lanceur n'est plus à jour.
     Veuillez le mettre à jour avec Steam.
 # Strings for the "servers" tab
-tab-servers-search-watermark = Recherche De Serveurs…
+tab-servers-search-watermark = Recherche de serveurs…
 # Strings for the "servers" tab
 tab-servers-table-players = Joueurs
 # Strings for the "servers" tab
 tab-servers-list-status-error = Une erreur s'est produite lors de la récupération des listes du serveur principal.
 # Strings for the "servers" tab
-tab-servers-list-status-updating-master = Récupération de la liste maîtresse des serveurs…
+tab-servers-list-status-updating-master = Récupération de la liste du serveur maître…
 # Strings for the "servers" tab
 tab-servers-table-name = Nom du Serveur
 # Strings for the "servers" tab
-tab-servers-list-status-partial-error = Incapable de récupérer certaines ou toutes les listes de serveurs. Vérifiez que vos paramètres de hub sont corrects.
+tab-servers-list-status-partial-error = Échec de la récupération de certaines ou de toutes les listes de serveurs. Assurez-vous que la configuration de votre hub est correcte.
 # Strings for the "servers" tab
 filters = Filtres ({ $filteredServers } / { $totalServers })
 # Strings for the "servers" tab
