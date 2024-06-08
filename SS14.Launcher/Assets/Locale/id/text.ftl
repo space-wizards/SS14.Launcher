@@ -85,3 +85,69 @@ add-favorite-window-example-name = Stasiun Badut
 connecting-status-update-error = Terjadi kesalahan saat mengunduh konten server. Silakan meminta bantuan melalui Discord bila masalah terus berlangsung.
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-update-status-fetching-manifest = Mengambil daftar server…
+# Strings for the "hub settings" dialog window.
+hub-settings-button-reset-tooltip = Atur kembali ke pengaturan standar
+# Strings for the "hub settings" dialog window.
+hub-settings-button-increase-priority-tooltip = Tingkatkan prioritas
+# Strings for the "hub settings" dialog window.
+hub-settings-button-decrease-priority-tooltip = Rendahkan prioritas
+# Strings for the "hub settings" dialog window.
+hub-settings-button-add-tooltip = Tambah pusat server
+# Strings for the "hub settings" dialog window.
+hub-settings-button-remove-tooltip = Hapus pusat server
+# Strings for the "hub settings" dialog window.
+hub-settings-heading-default = Standar
+# Strings for the "hub settings" dialog window.
+hub-settings-heading-custom = Buatan sendiri
+# Strings for the "hub settings" dialog window.
+hub-settings-warning-invalid = Alamat pusat server tidak sesuai (jangan lupa menambahkan http(s)://)
+# Strings for the "hub settings" dialog window.
+hub-settings-warning-duplicate = Gandakan pusat server
+# Strings for the login screen
+login-log-launcher = Launcher Log
+# Error messages for login
+login-error-invalid-credentials = Kredensial login tidak sesuai
+# Error messages for login
+login-error-account-2fa-required = Diperlukan autentikasi dua faktor
+# Error messages for login
+login-error-account-2fa-invalid = Kode autentikasi dua faktor tidak sesuai
+# Error messages for login
+login-error-unknown = Kesalahan yang tidak diketahui
+# Error messages for login
+login-errors-button-ok = Oke
+# Strings for 2FA login
+login-2fa-title = Diperlukan autentikasi dua faktor
+# Strings for 2FA login
+login-2fa-message = Mohon diisi kode autentikasi dari aplikasi Anda.
+# Strings for 2FA login
+login-2fa-input-watermark = Kode autentikasi
+# Strings for 2FA login
+login-2fa-button-recovery-code = Kode pemulihan
+# Strings for 2FA login
+login-2fa-button-cancel = Batalkan
+# Strings for the "login expired" view on login
+login-expired-message =
+    Sesi untuk akun ini telah berakhir.
+    Silakan masukkan kembali kata sandi Anda.
+# Strings for the "login expired" view on login
+login-expired-password-watermark = Kata sandi
+# Strings for the "login expired" view on login
+login-expired-button-log-in = Masuk
+# Strings for the "login expired" view on login
+login-expired-button-log-out = Keluar
+# Strings for the "login expired" view on login
+login-expired-button-forgot-password = Lupa kata sandi Anda?
+# Strings for the "forgot password" view on login
+login-forgot-title = Lupa kata sandi?
+# Strings for the "hub settings" dialog window.
+hub-settings-button-reset = Atur ulang
+# Error messages for login
+login-error-account-account-locked = Akun telah dikunci. Silakan hubungi kami bila Anda yakin ini adalah sebuah kesalahan.
+# Strings for 2FA login
+login-2fa-button-confirm = Konfirmasikan
+# Strings for the "login expired" view on login
+login-expired-title = Masa masuk sudah kadaluarsa
+# Error messages for login
+login-error-account-unconfirmed = Alamat email untuk akun ini masih perlu dikonfirmasi. Harap mengkonfirmasikan alamat email Anda sebelum mencoba masuk
+# Strings for the "hub settings" dialog window.
+hub-settings-explanation = Di sini, Anda dapat menambahkan pusat server tambahan untuk mengambil server game. Anda sebaiknya hanya menambahkan hub yang Anda percayai, karena mereka dapat 'menipu' Anda menggunakan server game dari hub lain. Urutan hub penting; bila dua hub terdapat server yang sama, hub dengan prioritas lebih tinggi (lebih tinggi dalam daftar) akan diutamakan.
