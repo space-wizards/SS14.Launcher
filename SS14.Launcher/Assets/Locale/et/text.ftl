@@ -19,7 +19,7 @@ tab-servers-title = Serverid
 # Strings for 2FA login
 login-2fa-button-recovery-code = Taastamiskood
 # Strings for the "options" tab
-tab-options-log-launcher-desc = Võimaldab käivitusprogrammi logimise. Kasulik mängu arendajatele. (eeldab käivitaja taaskäivitamist)
+tab-options-log-launcher-desc = Võimaldab käivitusprogrammi protokollimise. Kasulik mängu arendajatele. (eeldab käivitusprogrammi taaskäivitamist)
 # For the language selection menu.
 # Used for contents of each language button.
 language-selector-language = { $languageName } ({ $englishName })
@@ -89,7 +89,7 @@ account-drop-down-not-logged-in = Pole sisse logitud
 # 'Example' name shown as a watermark in the name input box
 add-favorite-window-example-name = Honk Station
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-status-starting-client = Kliendi käivitamine
+connecting-status-starting-client = Kliendi käivitamine…
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-update-status-culling-content = Vana serverisisu tühjendamine…
 # Strings for the "connecting" menu that appears when connecting to a server.
@@ -129,7 +129,7 @@ hub-settings-heading-custom = Kohandatud
 # Strings for the "hub settings" dialog window.
 hub-settings-warning-invalid = Ebasobilik hub (ära unusta http(s)://)
 # Strings for the "hub settings" dialog window.
-hub-settings-warning-duplicate = Dubleerunud hubid
+hub-settings-warning-duplicate = Dubleerunud serverikeskused
 # Strings for the login screen
 login-log-launcher = Logi Käivitaja
 # Error messages for login
@@ -297,11 +297,11 @@ filters = Filtrid ({ $filteredServers } / { $totalServers })
 # Strings for the "servers" tab
 tab-servers-search-watermark = Otsi servereid…
 # Strings for the "servers" tab
-tab-servers-table-players = Mängijaid
+tab-servers-table-players = Mängijad
 # Strings for the "servers" tab
 tab-servers-table-name = Serveri nimi
 # Strings for the "servers" tab
-tab-servers-list-status-partial-error = Mõne või kõigi serveri nimekirjade kättesaamine ebaõnnestus. Veenduge, et teie hubi konfiguratsioon on õige.
+tab-servers-list-status-partial-error = Mõne või kõigi serveri nimekirjade kättesaamine ebaõnnestus. Veenduge, et teie serverikeskuse konfiguratsioon on õige.
 # Strings for the "servers" tab
 tab-servers-list-status-updating-master = Serveri nimekirja kättesaamine…
 # Strings for the "servers" tab
@@ -437,7 +437,7 @@ tab-options-log-launcher = Log Launcher
 # Strings for the "options" tab
 tab-options-verbose-launcher-logging = Põhjalik käivitaja logimine
 # Strings for the "options" tab
-tab-options-verbose-launcher-logging-desc = Selleks, kui mängu arendajad on *suures* ummikus teie probleemiga. (nõuab käivitaja taaskäivitamist)
+tab-options-verbose-launcher-logging-desc = Selleks, kui mängu arendajad on *suures* ummikus teie probleemiga. (nõuab käivitusprogrammi taaskäivitamist)
 # Strings for the "options" tab
 tab-options-seasonal-branding = Hooajaline Branding
 # Strings for the "options" tab
@@ -458,7 +458,7 @@ language-selector-system-language = Süsteemikeel ({ $languageName })
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-update-status-culling-engine = Vana sisu kustutamine…
 # Strings for the "hub settings" dialog window.
-hub-settings-explanation = Siia saab lisada täiendavaid hube, kust mänguservereid otsida. Lisada tuleks ainult ainult selliseid keskusi, mis on usaldatavad, sest et nad võivad „võltsida“ teiste hubide mänguservereid. Hubide järjekord on oluline; kui kaks hubi reklaamivad sama mänguserverit, siis on kõrgema prioriteediga (nimekirjas kõrgemal asuv) keskus eelisjärjekorras.
+hub-settings-explanation = Siia saab lisada täiendavaid serverikeskuseid, kust mänguservereid otsida. Lisada tuleks  ainult selliseid serverikeskusi, mis on usaldatavad, sest et need võivad „võltsida“ teiste serverikeskuste mänguservereid. Serverikeskuste järjekord on oluline; kui kaks serverikeskust reklaamivad sama mänguserverit, siis on kõrgema prioriteediga (nimekirjas kõrgemal asuv) keskus eelisjärjekorras.
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-connection-failed = Serveriga ühendumine ebaõnnestus!
 # Strings for the "connecting" menu that appears when connecting to a server.
@@ -488,3 +488,13 @@ main-window-early-access-desc = Space Station 14 on veel  alpha-staadiumis. Lood
 region-south-america-west = Lääne-Lõuna-Ameerika
 # Strings for the "forgot password" view on login
 login-forgot-message = Kui olete unustanud oma parooli, saate sisestada oma kontoga seotud e-posti aadressi, et saada link uue parooli loomiseks.
+# Strings for the "connecting" menu that appears when connecting to a server.
+connecting-status-client-crashed = Tundub, et klient on käivitamisel kokku jooksnud. Probleemi püsimisel paluge toetust Discordis või GitHubis.
+# Strings for the "servers" tab
+tab-servers-list-status-none = Avalikke servereid ei ole. Veenduge, et teie serverikeskuse konfiguratsioon on õige.
+# Strings for the server filters menu
+filters-title-hub = Serverikeskus
+# Strings for the "options" tab
+tab-options-hub-settings = Serverikeskuse Seaded
+# Strings for the "options" tab
+tab-options-hub-settings-desc = Muutke, millist serverikeskust või servereid soovite kasutada serverite loendi hankimiseks.
