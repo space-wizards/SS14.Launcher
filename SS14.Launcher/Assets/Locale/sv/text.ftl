@@ -193,7 +193,7 @@ login-expired-button-forgot-password = Glömt lösenordet?
 # Strings for the "forgot password" view on login
 login-forgot-title = Glömt lösenordet?
 # Strings for the "forgot password" view on login
-login-forgot-email-watermark = Din mailadress
+login-forgot-email-watermark = Din e-postadress
 # Strings for the "forgot password" view on login
 login-forgot-button-submit = Skicka
 # Strings for the "forgot password" view on login
@@ -351,7 +351,7 @@ filters-title-region = Region
 # Strings for the server filters menu
 filters-title-rp = Rollspelsnivå
 # Strings for the server filters menu
-filters-title-player-count = Spelarantal
+filters-title-player-count = Antal spelare
 # Strings for the server filters menu
 filters-title-18 = 18+
 # Strings for the server filters menu
@@ -413,7 +413,7 @@ server-entry-player-count =
        *[1] { $max }
     }
 # Strings for entries in the server list (including home page)
-server-entry-description-offline = Kunde inte kontakta server
+server-entry-description-offline = Kunde inte kontakta servern
 # Strings for entries in the server list (including home page)
 server-entry-description-fetching = Hämtar serverstatus…
 # Strings for entries in the server list (including home page)
@@ -513,7 +513,7 @@ connecting-update-status-loading-content-bundle = Laddar content-paket…
 # Error messages for login
 login-error-account-account-locked = Kontot har låsts. Om du tror detta skett av misstag bör du kontakta oss.
 # Strings for the "login expired" view on login
-login-expired-title = Inloggning utgången
+login-expired-title = Sessionen har gått ut
 # Strings for the "login expired" view on login
 login-expired-message =
     Sessionen för ditt konto har gått ut.
