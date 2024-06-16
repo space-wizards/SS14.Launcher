@@ -211,3 +211,11 @@ language-selector-save = Zapisz
 # For the language selection menu.
 # Text on the button that opens the menu.
 language-selector-label = Język
+# Strings for the "options" tab
+tab-options-disable-signing = Wyłącz sprawdzanie sygnatur silnika
+# Strings for the "options" tab
+tab-options-seasonal-branding-desc = Jakiekolwiek okresowo odpowiednie ikony i logotypy, które możemy wymyślić.
+# Strings for the "options" tab
+tab-options-compatibility-mode = Tryb kompatybilności
+# Strings for the "options" tab
+tab-options-account-settings-desc = Możesz zarządzać ustawieniami swojego konta, takimi jak zmiana adresu e-mail lub hasła, za pośrednictwem naszej strony internetowej.
