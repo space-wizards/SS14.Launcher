@@ -219,3 +219,17 @@ tab-options-seasonal-branding-desc = Jakiekolwiek okresowo odpowiednie ikony i l
 tab-options-compatibility-mode = Tryb kompatybilności
 # Strings for the "options" tab
 tab-options-account-settings-desc = Możesz zarządzać ustawieniami swojego konta, takimi jak zmiana adresu e-mail lub hasła, za pośrednictwem naszej strony internetowej.
+# Strings for the "home" tab
+tab-home-direct-connect = Bezpośrednie połączenie z serwerem
+# Strings for the "options" tab
+tab-options-clear-content = Wyczyść zainstalowaną zawartość serwerów
+# Strings for the "options" tab
+tab-options-clear-engines = Wyczyść zainstalowane silniki
+# Strings for the "news" tab
+tab-news-pulling-news = Pobieranie aktualności…
+# Strings for the "news" tab
+tab-news-recent-news = Ostatnie aktualności:
+# Strings for the "home" tab
+tab-home-go-to-servers-tab = Przejdź do zakładki serwerów
+# Strings for the "home" tab
+tab-home-run-content-bundle = Uruchom pakiet zawartości/powtórkę
