@@ -218,7 +218,7 @@ tab-options-seasonal-branding-desc = Jakiekolwiek okresowo odpowiednie ikony i l
 # Strings for the "options" tab
 tab-options-compatibility-mode = Tryb kompatybilności
 # Strings for the "options" tab
-tab-options-account-settings-desc = Możesz zarządzać ustawieniami swojego konta, takimi jak zmiana adresu e-mail lub hasła, za pośrednictwem naszej strony internetowej.
+tab-options-account-settings-desc = Możesz zarządzać ustawieniami swojego konta, takimi jak zmiana adresu e–mail lub hasła, za pośrednictwem naszej strony internetowej.
 # Strings for the "home" tab
 tab-home-direct-connect = Bezpośrednie połączenie z serwerem
 # Strings for the "options" tab
