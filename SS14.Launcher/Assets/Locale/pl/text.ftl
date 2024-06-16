@@ -220,7 +220,7 @@ tab-options-compatibility-mode = Tryb kompatybilności
 # Strings for the "options" tab
 tab-options-account-settings-desc = Możesz zarządzać ustawieniami swojego konta, takimi jak zmiana adresu e–mail lub hasła, za pośrednictwem naszej strony internetowej.
 # Strings for the "home" tab
-tab-home-direct-connect = Bezpośrednie połączenie z serwerem
+tab-home-direct-connect = Bezpośrednie połączenie z serwerem…
 # Strings for the "options" tab
 tab-options-clear-content = Wyczyść zainstalowaną zawartość serwerów
 # Strings for the "options" tab
@@ -390,3 +390,5 @@ account-drop-down-log-out-of = Wyloguj się z { $name }
 connecting-status-not-a-content-bundle = Plik nie jest poprawnym pakietem treści!
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-connection-failed = Połączenie z serwerem nie powiodło się!
+# Strings for entries in the server list (including home page)
+server-entry-fetching = Pobieranie…
