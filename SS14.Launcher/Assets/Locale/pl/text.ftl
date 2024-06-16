@@ -93,13 +93,13 @@ login-2fa-message = Proszę wpisać kod autoryzacyjny z aplikacji w telefonie.
 # Strings for the "forgot password" view on login
 login-forgot-busy-sending = Wysyłanie e–mail…
 # Strings for the "login" view on login
-login-login-button-forgot = Zapomniałaś swoje hasło?
+login-login-button-forgot = Nie pamiętasz swojego hasła?
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-cancel = Anuluj
 # Error messages for login
 login-error-unknown = Nieznany błąd
 # Strings for the "login expired" view on login
-login-expired-button-forgot-password = Zapomniałaś swoje hasło?
+login-expired-button-forgot-password = Nie pamiętasz swojego hasła?
 # Strings for the general main window layout of the launcher
 main-window-early-access-accept = Dobra!
 # For the language selection menu.
@@ -233,3 +233,160 @@ tab-news-recent-news = Ostatnie aktualności:
 tab-home-go-to-servers-tab = Przejdź do zakładki serwerów
 # Strings for the "home" tab
 tab-home-run-content-bundle = Uruchom pakiet zawartości/powtórkę
+# Strings for the server filters menu
+filters-player-count-maximum-desc = Serwery z większą ilością graczy nie będą wyświetlane
+# Strings for the drop-down window to manage your active account
+account-drop-down-none-selected = Nie wybrano konta
+# Strings for entries in the server list (including home page)
+server-entry-connect = Połącz
+# Strings for the "connecting" menu that appears when connecting to a server.
+connecting-update-status-downloading-engine = Pobieranie zawartości serwera…
+# Strings for the "connecting" menu that appears when connecting to a server.
+connecting-update-status-checking-client-update = Sprawdzanie aktualizacji zawartości serwera…
+# Strings for the "hub settings" dialog window.
+hub-settings-button-increase-priority-tooltip = Zwiększ priorytet
+# Strings for the "hub settings" dialog window.
+hub-settings-button-reset-tooltip = Przywróć ustawienia domyślne
+# Strings for the "connecting" menu that appears when connecting to a server.
+connecting-update-status-committing-download = Synchronizacja z dyskiem…
+# Strings for the "hub settings" dialog window.
+hub-settings-heading-custom = Niestandardowe
+# Error messages for login
+login-error-account-2fa-required = Wymagane uwierzytelnianie 2-składnikowe
+# Error messages for login
+login-error-invalid-credentials = Nieprawidłowe dane logowania
+# Strings for entries in the server list (including home page)
+server-fetched-from-hub = Pobrano z { $hub }
+# Strings for the "servers" tab
+tab-servers-title = Serwery
+# Strings for 2FA login
+login-2fa-button-recovery-code = Kod odzyskiwania
+# Strings for the "login expired" view on login
+login-expired-title = Login wygasł
+# Strings for the general main window layout of the launcher
+main-window-out-of-date-exit = Wyjście
+# Strings for the general main window layout of the launcher
+main-window-header-link-website = Strona internetowa
+# Strings for the general main window layout of the launcher
+main-window-title = Program uruchamiający Space Station 14
+# Strings for the "register confirmation" view on login
+login-confirmation-busy = Logowanie…
+# Strings for the "login" view on login
+login-login-busy-logging-in = Logowanie…
+# Strings for the "login" view on login
+login-login-button-register = Nie masz konta? Zarejestruj się!
+# Strings for the "forgot password" view on login
+login-forgot-button-back = Powrót do logowania
+# Long region names for server tag filters (shown in tooltip)
+region-asia-north = Azja Północna
+# Long region names for server tag filters (shown in tooltip)
+region-asia-east = Azja Wschodnia
+# Strings for the general main window layout of the launcher
+main-window-error-unknown = Wystąpił nieznany błąd
+# Strings for the general main window layout of the launcher
+main-window-busy-checking-account-status = Sprawdzanie statusu konta
+# Strings for the general main window layout of the launcher
+main-window-error-connecting-auth-server = Błąd połączenia z serwerem uwierzytelniającym
+# Strings for the general main window layout of the launcher
+main-window-busy-checking-login-status = Odświeżanie statusu logowania…
+# Long region names for server tag filters (shown in tooltip)
+region-europe-west = Europa Zachodnia
+# Long region names for server tag filters (shown in tooltip)
+region-europe-east = Europa Wschodnia
+# Long region names for server tag filters (shown in tooltip)
+region-asia-south-east = Azja Południowo-Wschodnia
+# Strings for the server filters menu
+filters-player-count-hide-empty-desc = Serwery bez graczy nie będą wyświetlane
+# Short region names for server tag filters (shown in filter check box)
+region-short-india = Indie
+# Short region names for server tag filters (shown in filter check box)
+region-short-europe-east = Europa Wschodnia
+# Short region names for server tag filters (shown in filter check box)
+region-short-asia-south-east = Azja Południowo-Wschodnia
+# Short region names for server tag filters (shown in filter check box)
+region-short-asia-north = Azja Północna
+# Short region names for server tag filters (shown in filter check box)
+region-short-asia-east = Azja Wschodnia
+# Short region names for server tag filters (shown in filter check box)
+region-short-africa-north = Afryka Północna
+# Short region names for server tag filters (shown in filter check box)
+region-short-africa-central = Afryka Środkowa
+# Long region names for server tag filters (shown in tooltip)
+region-south-america-west = Zachodnia Ameryka Południowa
+# Long region names for server tag filters (shown in tooltip)
+region-south-america-south = Południowa Ameryka Południowa
+# Long region names for server tag filters (shown in tooltip)
+region-north-america-west = Zachodnia Ameryka Północna
+# Long region names for server tag filters (shown in tooltip)
+region-north-america-east = Wschodnia Ameryka Północna
+# Long region names for server tag filters (shown in tooltip)
+region-north-america-central = Centralna Ameryka Północna
+# Error messages for login
+login-error-account-2fa-invalid = Niepoprawny kod uwierzytelniania 2-składnikowego
+# Strings for the "servers" tab
+tab-servers-list-status-none-filtered = Żaden serwer nie pasuje do Twoich ustawień wyszukiwania lub filtrowania.
+# Strings for the "servers" tab
+tab-servers-search-watermark = Szukaj Serwerów…
+# Strings for the general main window layout of the launcher
+main-window-busy-checking-update = Sprawdzanie aktualizacji programu uruchamiającego…
+# Strings for the "connecting" menu that appears when connecting to a server.
+connecting-update-status-loading-into-db = Zapisywanie zasobów w bazie danych…
+# Strings for the "servers" tab
+tab-servers-table-name = Nazwa Serwera
+# Strings for the server filters menu
+filters-title = Filtry
+# Strings for the "servers" tab
+tab-servers-list-status-updating-master = Pobieranie listy serwerów głównych…
+# Strings for the server filters menu
+filters-player-count-hide-empty = Ukryj puste
+# Strings for the server filters menu
+filters-title-player-count = Liczba graczy
+# Strings for the server filters menu
+filters-player-count-minimum-desc = Serwery z mniejszą ilością graczy nie będą wyświetlane
+# Strings for the server filters menu
+filters-player-count-minimum = Minimum:
+# Strings for the server filters menu
+filters-player-count-hide-full-desc = Pełne serwery nie będą wyświetlane
+# Strings for the server filters menu
+filters-player-count-hide-full = Ukryj pełne
+# Strings for the "servers" tab
+tab-servers-list-status-error = Wystąpił błąd podczas pobierania list serwera głównego.
+# Strings for the server filters menu
+filters-player-count-maximum = Maksimum:
+# Strings for entries in the server list (including home page)
+server-entry-description-none = Nie podano opisu serwera
+# Strings for entries in the server list (including home page)
+server-entry-description-error = Błąd podczas pobierania opisu serwera
+# Strings for entries in the server list (including home page)
+server-entry-description-fetching = Pobieranie statusu serwera…
+# Short region names for server tag filters (shown in filter check box)
+region-short-europe-west = Europa Zachodnia
+# Strings for the "home" tab
+tab-home-favorite-servers = Ulubione serwery:
+# Strings for the "home" tab
+tab-home-title = Strona główna
+# Strings for the "Development" tab
+# These aren't shown to users so they're not very important
+tab-development-disable-signing = Wyłącz sprawdzanie sygnatur silnika
+# Long region names for server tag filters (shown in tooltip)
+region-south-america-east = Wschodnia Ameryka Południowa
+# Strings for the "login expired" view on login
+login-expired-message =
+    Sesja dla tego konta wygasła.
+    Prosimy wprowadzić hasło ponownie.
+# Strings for 2FA login
+login-2fa-title = Wymagane uwierzytelnianie 2-składnikowe
+# Strings for the "hub settings" dialog window.
+hub-settings-button-decrease-priority-tooltip = Zmniejsz priorytet
+# Long region names for server tag filters (shown in tooltip)
+region-india = Indie
+# Strings for the "forgot password" view on login
+login-forgot-title = Nie pamiętasz hasła?
+# Strings for the "connecting" menu that appears when connecting to a server.
+connecting-update-status-downloading-content = Pobieranie zawartości serwera…
+# Strings for the drop-down window to manage your active account
+account-drop-down-log-out-of = Wyloguj się z { $name }
+# Strings for the "connecting" menu that appears when connecting to a server.
+connecting-status-not-a-content-bundle = Plik nie jest poprawnym pakietem treści!
+# Strings for the "connecting" menu that appears when connecting to a server.
+connecting-status-connection-failed = Połączenie z serwerem nie powiodło się!
