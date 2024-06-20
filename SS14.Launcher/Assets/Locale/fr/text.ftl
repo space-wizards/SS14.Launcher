@@ -22,7 +22,7 @@ add-favorite-window-label-address = Adresse:
 # 'Example' name shown as a watermark in the name input box
 add-favorite-window-example-name = Station Clown
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-title-connecting = Connection en cours…
+connecting-title-connecting = Connexion en cours…
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-title-content-bundle = Chargement en cours…
 # Strings for the "connecting" menu that appears when connecting to a server.
@@ -86,7 +86,7 @@ hub-settings-button-decrease-priority-tooltip = Baisser la priorité
 # Strings for the "hub settings" dialog window.
 hub-settings-heading-custom = Personnalisé
 # Error messages for login
-login-error-account-unconfirmed = L'adresse courriel associée à ce compte n'est pas encore vérifiée. Confirmez votre adresse courriel avant de vous connecter
+login-error-account-unconfirmed = L'adresse mail associée à ce compte n'est pas encore vérifiée. Veuillez confirmer votre adresse mail avant de vous connecter.
 # Error messages for login
 login-error-account-2fa-required = Authentification à deux facteurs requise
 # Error messages for login
@@ -118,7 +118,7 @@ login-expired-button-forgot-password = Mot de passe oublié ?
 # Strings for the "forgot password" view on login
 login-forgot-title = Mot de passe oublié ?
 # Strings for the "forgot password" view on login
-login-forgot-email-watermark = Votre adresse courriel
+login-forgot-email-watermark = Votre adresse mail
 # Strings for the "forgot password" view on login
 login-forgot-button-submit = Envoyer
 # Strings for the "forgot password" view on login
@@ -130,7 +130,7 @@ login-forgot-error = Erreur
 # Strings for the "login" view on login
 login-login-title = Connexion
 # Strings for the "login" view on login
-login-login-username-watermark = Nom du compte ou courriel.
+login-login-username-watermark = Nom de compte ou adresse mail
 # Strings for the "login" view on login
 login-login-password-watermark = Mot de passe
 # Strings for the "login" view on login
@@ -152,16 +152,16 @@ login-confirmation-button-cancel = Annuler
 # Strings for the "register confirmation" view on login
 login-confirmation-busy = Connexion…
 # Strings for the general main window layout of the launcher
-main-window-title = Lanceur de Space Station 14
+main-window-title = Launcher de Space Station 14
 # Strings for the general main window layout of the launcher
 main-window-header-link-discord = Discord
 # Strings for the general main window layout of the launcher
 main-window-header-link-website = Site Web
 # Strings for the general main window layout of the launcher
-main-window-out-of-date = Le lanceur n'est plus à jour
+main-window-out-of-date = Le launcher n'est plus à jour
 # Strings for the general main window layout of the launcher
 main-window-out-of-date-desc =
-    Le lanceur n'est plus à jour.
+    Le launcher n'est plus à jour.
     Vous pouvez télécharger une nouvelle version sur notre site web.
 # Strings for the general main window layout of the launcher
 main-window-out-of-date-exit = Quitter
@@ -198,7 +198,7 @@ login-error-account-2fa-invalid = Code d'authentification à deux facteurs inval
 # Strings for the "register confirmation" view on login
 login-confirmation-confirmation-message = Veuillez ouvrir votre courrier électronique pour vérifier votre compte. Quand votre compte sera vérifié, cliquez sur le bouton ci-dessous pour vous connecter.
 # Strings for the general main window layout of the launcher
-main-window-early-access-desc = Space Station 14 est toujours en alpha. On espère que vous allez aimer, et même rester, mais gardez ça en tête.
+main-window-early-access-desc = Space Station 14 est toujours en version alpha. On espère que vous apprécierez le jeu dans son état actuel, peut-être même que vous resterez, mais gardez des attentes modestes pour l'instant.
 # Error messages for login
 login-error-account-account-locked = Ce compte a été verrouillé. Contactez-nous si vous croyez que c'est une erreur.
 # Strings for the "login expired" view on login
@@ -206,16 +206,16 @@ login-expired-message =
     Connexion expirée pour ce compte.
     Veuillez rentrer votre mot de passe à nouveau.
 # Strings for the "forgot password" view on login
-login-forgot-message = Si vous avez oublié votre mot de passe, vous pouvez saisir l'adresse courriel associée à votre compte pour recevoir un lien de réinitialisation.
+login-forgot-message = Si vous avez oublié votre mot de passe, vous pouvez ici saisir l'adresse mail liée à votre compte pour recevoir un lien de réinitialisation.
 # Strings for the "forgot password" view on login
 login-forgot-busy-sending = Envoi du courriel…
 # Strings for the "forgot password" view on login
-login-forgot-success-message = Un lien de réinitialisation à été envoyé à votre adresse courriel.
+login-forgot-success-message = Un lien de réinitialisation à été envoyé à votre adresse mail.
 # Strings for the "login" view on login
-login-login-error-title = Impossible de se connecter
+login-login-error-title = Connexion impossible
 # Strings for the general main window layout of the launcher
 main-window-out-of-date-desc-steam =
-    Le lanceur n'est plus à jour.
+    Le launcher n'est plus à jour.
     Veuillez le mettre à jour avec Steam.
 # Strings for the "servers" tab
 tab-servers-search-watermark = Recherche de serveurs…
@@ -228,7 +228,7 @@ tab-servers-list-status-updating-master = Récupération de la liste du serveur 
 # Strings for the "servers" tab
 tab-servers-table-name = Nom du Serveur
 # Strings for the "servers" tab
-tab-servers-list-status-partial-error = Échec de la récupération de certaines ou de toutes les listes de serveurs. Assurez-vous que la configuration de votre hub est correcte.
+tab-servers-list-status-partial-error = Échec de la récupération de certaines ou de toutes les listes de serveurs. Assurez-vous que la configuration de vos hubs est correcte.
 # Strings for the "servers" tab
 filters = Filtres ({ $filteredServers } / { $totalServers })
 # Strings for the "servers" tab
@@ -286,7 +286,7 @@ server-entry-connect = Se connecter
 # Strings for entries in the server list (including home page)
 server-entry-add-favorite = Ajouter aux favoris
 # Strings for entries in the server list (including home page)
-server-entry-offline = HORS LIGNE
+server-entry-offline = HORS-LIGNE
 # Strings for entries in the server list (including home page)
 server-entry-fetching = Recherche…
 # Strings for entries in the server list (including home page)
@@ -335,39 +335,39 @@ tab-development-title-override = { "[" }DEV (dérogation active!!!)]
 tab-development-disable-signing-desc = { "[" }DEV UNIQUEMENT] Désactive la vérification des signatures du moteur de jeu. NE PAS ACTIVER SAUF SI VOUS SAVEZ CE QUE VOUS FAITES.
 # Strings for the "Development" tab
 # These aren't shown to users so they're not very important
-tab-development-enable-engine-override-desc = Remplacer le chemin à partir duquel charger les zips du moteur (version/dans RobustToolbox)
+tab-development-enable-engine-override-desc = Remplacer le chemin à partir duquel charger les zips du moteur du jeu (releases/ dans RobustToolbox)
 # Strings for the "home" tab
 tab-home-title = Accueil
 # Strings for the "home" tab
-tab-home-refresh = Rafraîchir
+tab-home-refresh = Actualiser
 # Strings for the "home" tab
-tab-home-direct-connect = Connexion directe au serveur…
+tab-home-direct-connect = Connexion Directe au serveur…
 # Strings for the "home" tab
-tab-home-go-to-servers-tab = Aller dans l'onglet des serveurs
+tab-home-go-to-servers-tab = Aller dans l'onglet Serveurs
 # Strings for the "home" tab
-tab-home-favorites-guide = Marquez les serveurs comme favoris pour un accès facile ici
+tab-home-favorites-guide = Ajoutez des serveurs en favoris pour y accéder ici.
 # Strings for the "news" tab
 tab-news-title = Actualités
 # Strings for the "options" tab
 tab-options-title = Options
 # Strings for the "options" tab
-tab-options-clear-content = Effacer le contenu du serveur installé
+tab-options-clear-content = Supprimer le contenu installé pour les serveurs
 # Strings for the "options" tab
-tab-options-open-log-directory = Ouvrir le répertoire des journaux
+tab-options-open-log-directory = Ouvrir l'historique d'activité (log directory)
 # Strings for the "options" tab
 tab-options-compatibility-mode = Mode de compatibilité
 # Strings for the "options" tab
-tab-options-compatibility-mode-desc = Cela utilise OpenGL ES 2 (via ANGLE si nécessaire), qui est moins susceptible de souffrir de bugs de pilotes. Essayez ceci si vous rencontrez des problèmes graphiques ou des plantages.
+tab-options-compatibility-mode-desc = Utilise OpenGL ES 2 (via ANGLE si nécessaire), qui est moins susceptible de souffrir de bugs de pilotes. À essayer si vous rencontrez des problèmes graphiques ou des plantages.
 # Strings for the "options" tab
-tab-options-log-client = Journaux du client
+tab-options-log-client = Historique d'activité
 # Strings for the "options" tab
 tab-options-log-client-desc = Permet la journalisation de toute sortie du client de jeu. Utile pour les développeurs.
 # Strings for the "options" tab
 tab-options-log-launcher = Lanceur de journaux
 # Strings for the "options" tab
-tab-options-verbose-launcher-logging = Journalisation détaillée du launcher
+tab-options-verbose-launcher-logging = Historique d'activité détaillé du launcher
 # Strings for the "options" tab
-tab-options-verbose-launcher-logging-desc = Pour quand les développeurs sont *très* confus face à votre problème. (nécessite le redémarrage du lanceur)
+tab-options-verbose-launcher-logging-desc = Pour quand les développeurs sont *très* confus face à votre problème. (nécessite de redémarrer le launcher)
 # Strings for the "home" tab
 tab-home-run-content-bundle = Exécuter un bundle de contenu/une rediffusion
 # Strings for the "options" tab
@@ -375,11 +375,11 @@ tab-options-clear-engines = Effacer les moteurs installés
 # Strings for the "options" tab
 tab-options-account-settings = Paramètres du compte
 # Strings for the "options" tab
-tab-options-account-settings-desc = Vous pouvez gérer les paramètres de votre compte, tels que la modification de votre adresse e-mail ou de votre mot de passe, via notre site internet.
+tab-options-account-settings-desc = Vous pouvez gérer les paramètres de votre compte, tels que la modification de votre adresse mail ou de votre mot de passe, via notre site internet.
 # Strings for the "home" tab
-tab-home-favorite-servers = Serveurs favoris:
+tab-home-favorite-servers = Serveurs Favoris:
 # Strings for the "options" tab
-tab-options-log-launcher-desc = Active la journalisation du launcher. Utile pour les développeurs. (nécessite le redémarrage du lanceur)
+tab-options-log-launcher-desc = Active l'historique d'activité du launcher. Utile pour les développeurs. (nécessite de redémarrer le launcher)
 # Strings for the "news" tab
 tab-news-recent-news = Actualités récentes:
 # Strings for the "news" tab
@@ -395,7 +395,7 @@ main-window-error-connecting-auth-server = Erreur de connexion au serveur d'auth
 # Long region names for server tag filters (shown in tooltip)
 region-africa-central = Afrique centrale
 # Long region names for server tag filters (shown in tooltip)
-region-africa-north = Afrique Nord
+region-africa-north = Afrique du Nord
 # Long region names for server tag filters (shown in tooltip)
 region-africa-south = Afrique Sud
 # Strings for the "hub settings" dialog window.
@@ -405,15 +405,15 @@ hub-settings-warning-invalid = Hub invalide (n'oubliez pas http(s)://)
 # Strings for the general main window layout of the launcher
 main-window-busy-checking-account-status = Vérification du statut du compte
 # Strings for the general main window layout of the launcher
-main-window-busy-checking-update = Vérification d'une potentielle mise-à-jour du lanceur…
+main-window-busy-checking-update = Recherche de mise à jour du launcher…
 # Strings for the general main window layout of the launcher
 main-window-error-unknown = Une erreur inconnue s'est produite
 # Strings for the "options" tab
-tab-options-disable-signing = Désactiver les vérifications de signature du moteur
+tab-options-disable-signing = Désactiver les vérifications de signature du moteur du jeu
 # Strings for the "options" tab
 tab-options-disable-signing-desc = { "[" }DEV UNIQUEMENT] Désactive la vérification des signatures du moteur. N'ACTIVEZ PAS SAUF SI VOUS SAVEZ EXACTEMENT CE QUE VOUS FAITES.
 # Strings for the "options" tab
-tab-options-hub-settings = Paramètres du hub
+tab-options-hub-settings = Paramètres des hubs
 # Strings for the "options" tab
 tab-options-hub-settings-desc = Modifiez le ou les serveurs hub que vous souhaitez utiliser pour récupérer la liste des serveurs.
 # For the language selection menu.
@@ -423,7 +423,7 @@ language-selector-label = Langue
 # "Save" button.
 language-selector-save = Sauvegarder
 # For the language selection menu.
-language-selector-help-translate = Voulez-vous aider à traduire ? Vous pouvez!
+language-selector-help-translate = Vous voulez nous aider pour la traduction ? Vous le pouvez !
 # For the language selection menu.
 language-selector-system-language = Langue du système ({ $languageName })
 # For the language selection menu.
@@ -457,7 +457,7 @@ region-india = Inde
 # Long region names for server tag filters (shown in tooltip)
 region-middle-east = Moyen-Orient
 # Long region names for server tag filters (shown in tooltip)
-region-the-moon = La lune
+region-the-moon = La Lune
 # Long region names for server tag filters (shown in tooltip)
 region-north-america-central = Amérique du Nord Centre
 # Long region names for server tag filters (shown in tooltip)
@@ -512,7 +512,7 @@ region-short-south-america-south = SA Sud
 # Strings for the "servers" tab
 tab-servers-title = Serveurs
 # Strings for the "servers" tab
-tab-servers-refresh = Rafraîchir
+tab-servers-refresh = Actualiser
 # Short region names for server tag filters (shown in filter check box)
 region-short-north-america-east = NA Est
 # Short region names for server tag filters (shown in filter check box)
