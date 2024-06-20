@@ -234,7 +234,7 @@ filters = Filtres ({ $filteredServers } / { $totalServers })
 # Strings for the "servers" tab
 tab-servers-list-status-none-filtered = Aucun serveur ne correspond à vos paramètres de recherche ou de filtrage.
 # Strings for the "servers" tab
-tab-servers-list-status-none = Il n'y a aucun serveurs public. Vérifiez que la configuration de votre hub est correcte.
+tab-servers-list-status-none = Il n'y a aucun serveur public. Vérifiez que la configuration de votre hub est correcte.
 # Strings for the server filters menu
 filters-title-language = Langue
 # Strings for the server filters menu
