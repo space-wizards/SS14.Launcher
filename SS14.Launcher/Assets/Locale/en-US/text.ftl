@@ -80,6 +80,8 @@ login-error-account-unconfirmed = The email address for this account still needs
 login-error-account-2fa-required = 2-factor authentication required
 login-error-account-2fa-invalid = 2-factor authentication code invalid
 login-error-account-account-locked = Account has been locked. Please contact us if you believe this to be in error.
+login-error-account-account-email-change-needed = This account needs a new email. Please change it by logging into account.spacestation14.com
+login-error-account-account-pass-change-needed = This account needs a new password. Please change it by logging into account.spacestation14.com
 login-error-unknown = Unknown error
 login-errors-button-ok = Ok
 
