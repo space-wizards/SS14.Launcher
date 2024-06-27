@@ -31,6 +31,8 @@ public class AuthErrorsOverlayViewModel : ViewModelBase
             AuthApi.AuthenticateDenyResponseCode.TfaRequired => "login-error-account-2fa-required",
             AuthApi.AuthenticateDenyResponseCode.TfaInvalid => "login-error-account-2fa-invalid",
             AuthApi.AuthenticateDenyResponseCode.AccountLocked => "login-error-account-account-locked",
+            AuthApi.AuthenticateDenyResponseCode.EmailChangeNeeded => "login-error-account-account-email-change-needed",
+            AuthApi.AuthenticateDenyResponseCode.PasswdChangeNeeded => "login-error-account-account-pass-change-needed",
             _ => "login-error-unknown"
         };
 
