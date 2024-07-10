@@ -47,7 +47,7 @@ public sealed class LauncherInfoManager(HttpClient httpClient)
                 return;
             }
         }
-        catch (HttpRequestException e)
+        catch (Exception e)
         {
             Log.Warning(e, "Loading launcher info failed");
             return;
