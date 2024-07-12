@@ -156,7 +156,7 @@ login-forgot-busy-sending = Mail gönderiliyor…
 # Strings for the "forgot password" view on login
 login-forgot-success-title = Sıfırlama maili gönderildi
 # Strings for the "forgot password" view on login
-login-forgot-success-message = Sıfırlanma linki email adresine gönderildi.
+login-forgot-success-message = Sıfırlama linki email adresine gönderildi.
 # Strings for the "forgot password" view on login
 login-forgot-error = Hata
 # Strings for the "login" view on login
