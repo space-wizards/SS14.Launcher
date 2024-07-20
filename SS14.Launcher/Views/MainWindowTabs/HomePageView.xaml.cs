@@ -56,7 +56,9 @@ public partial class HomePageView : UserControl
                 {
                     Patterns = ["*.zip", "*.rtbundle", "*.rtreplay"],
                     MimeTypes = ["application/zip", "x-scheme-handler/ss14", "x-scheme-handler/ss14s"],
-                    AppleUniformTypeIdentifiers = ["zip"]
+                    // Retrived using "mdls -name kMDItemContentType file.zip/rtreplay/rtbundle"
+                    // No I'm not tripping... THIS is apparently how macOS identifies our file extension.
+                    AppleUniformTypeIdentifiers = ["public.zip-archive", "dyn.ah62d4rv4ge81e7dwqz2g22p3", "dyn.ah62d4rv4ge81e7dcsz1gk5df"]
                 }
             ]
         });
