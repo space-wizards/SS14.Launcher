@@ -66,10 +66,10 @@ public static class ProtocolSetup
         if (OperatingSystem.IsMacOS())
         {
             // Yeah you cant get this to work on dev builds
-            // NOTICE: I have given up on macos. More info on the pr. I cant get params to pass in cause
-            // apple is special. You are free to do it
             //todo macos protocol pass params
-            #if FULL_RELEASE
+            #if !FULL_RELEASE
+            return;
+            #endif
             var path = $"{AppDomain.CurrentDomain.BaseDirectory}";
 
             // > be me
@@ -98,7 +98,6 @@ public static class ProtocolSetup
             proc.StartInfo.FileName = "/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister";
             proc.StartInfo.Arguments = $"-f {newPath}";
             proc.Start();
-            #endif
         }
         // Linux registration
         if (OperatingSystem.IsLinux())
@@ -137,8 +136,9 @@ public static class ProtocolSetup
         if (OperatingSystem.IsMacOS())
         {
             // This just... seems to do nothing. Its correct to my documentation...
-            // todo macos protocols remove logic
-            #if FULL_RELEASE
+            #if !FULL_RELEASE
+            return;
+            #endif
             Log.Information("Unregistering protocol for macos...");
             var path = $"{AppDomain.CurrentDomain.BaseDirectory}";
 
@@ -153,7 +153,6 @@ public static class ProtocolSetup
             proc.StartInfo.FileName = "/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister";
             proc.StartInfo.Arguments = $"-u {newPath}";
             proc.Start();
-            #endif
         }
         // Linux unregistration
         if (OperatingSystem.IsLinux())

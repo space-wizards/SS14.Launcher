@@ -40,7 +40,11 @@ public class App : Application
 
     private void OnOSXUrlsOpened(object? sender, UrlOpenedEventArgs e)
     {
-        Log.Debug("Url opened: {Url}", e.Urls);
+        // I think this only works on macOS anyway? Well i will leave this here just so I don't surprise myself later.
+        if (!OperatingSystem.IsMacOS())
+            return;
+
+        Log.Debug($"MacOS launch arg is {e.Urls}. Doing nothing since i did not implement this yet lol");
     }
 
     public override void Initialize()
