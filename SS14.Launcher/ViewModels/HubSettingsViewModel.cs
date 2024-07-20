@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using DynamicData;
 using Splat;
@@ -62,7 +63,7 @@ public class HubSettingsViewModel : ViewModelBase
             .ToList();
     }
 
-    public static bool IsValidHubUri(string url)
+    public static bool IsValidHubUri(string? url)
     {
         return Uri.TryCreate(url, UriKind.Absolute, out var uri)
                && (uri.Scheme == Uri.UriSchemeHttp || uri.Scheme == Uri.UriSchemeHttps)
@@ -70,7 +71,8 @@ public class HubSettingsViewModel : ViewModelBase
                && string.IsNullOrEmpty(uri.Query);
     }
 
-    public static string NormalizeHubUri(string address)
+    [return: NotNullIfNotNull(nameof(address))]
+    public static string? NormalizeHubUri(string? address)
     {
         if (!Uri.TryCreate(address, UriKind.Absolute, out var uri))
             return address;

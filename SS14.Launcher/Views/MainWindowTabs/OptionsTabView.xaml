@@ -3,6 +3,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:mainWindowTabs="clr-namespace:SS14.Launcher.ViewModels.MainWindowTabs"
+             xmlns:loc="clr-namespace:SS14.Launcher.Localization"
+             xmlns:views="clr-namespace:SS14.Launcher.Views"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SS14.Launcher.Views.MainWindowTabs.OptionsTabView"
              Name="NewsTab">
@@ -12,12 +14,12 @@
 
   <ScrollViewer HorizontalScrollBarVisibility="Disabled">
     <DockPanel>
-      <Button Content="*flip" DockPanel.Dock="Bottom" HorizontalAlignment="Right" Name="Flip" />
-      <Button Name="ClearEnginesButton" Content="Clear installed engines" DockPanel.Dock="Bottom"
+      <Button Content="{loc:Loc tab-options-flip}" DockPanel.Dock="Bottom" HorizontalAlignment="Right" Name="Flip" />
+      <Button Name="ClearEnginesButton" Content="{loc:Loc tab-options-clear-engines}" DockPanel.Dock="Bottom"
               HorizontalAlignment="Left" Click="ClearEnginesPressed" />
-      <Button Name="ClearServerContentButton" Content="Clear installed server content" DockPanel.Dock="Bottom"
+      <Button Name="ClearServerContentButton" Content="{loc:Loc tab-options-clear-content}" DockPanel.Dock="Bottom"
               HorizontalAlignment="Left" Click="ClearServerContentPressed" />
-      <Button Content="Open log directory" DockPanel.Dock="Bottom" HorizontalAlignment="Left"
+      <Button Content="{loc:Loc tab-options-open-log-directory}" DockPanel.Dock="Bottom" HorizontalAlignment="Left"
               Command="{Binding OpenLogDirectory}"/>
       <Button Name="RegProtocols" Content="Register Protocols" DockPanel.Dock="Bottom"
               HorizontalAlignment="Left" Click="RegisterProtocols" />
@@ -25,44 +27,46 @@
               HorizontalAlignment="Left" Click="UnregisterProtocols" />
 
       <StackPanel Orientation="Vertical">
-        <Button Content="Account Settings" Margin="4" Command="{Binding OpenAccountSettings}" HorizontalAlignment="Left" />
+        <views:LanguageSelector HorizontalAlignment="Left" Margin="4" DataContext="{Binding Language}"
+                                Placement="BottomEdgeAlignedLeft" />
+        <Button Content="{loc:Loc tab-options-account-settings}" Margin="4" Command="{Binding OpenAccountSettings}" HorizontalAlignment="Left" />
         <TextBlock VerticalAlignment="Center" TextWrapping="Wrap"
-                   Text="You can manage your account settings, such as changing email or password, through our website."
+                   Text="{loc:Loc tab-options-account-settings-desc}"
                    Margin="8" />
 
-        <CheckBox VerticalAlignment="Center" Margin="4" IsChecked="{Binding CompatMode}">Compatibility Mode</CheckBox>
+        <CheckBox VerticalAlignment="Center" Margin="4" IsChecked="{Binding CompatMode}" Content="{loc:Loc tab-options-compatibility-mode}" />
         <TextBlock VerticalAlignment="Center" TextWrapping="Wrap"
-                   Text="This uses OpenGL ES 2 (via ANGLE if necessary), which is less likely to suffer from driver bugs. Try this if you are experiencing graphical issues or crashes."
+                   Text="{loc:Loc tab-options-compatibility-mode-desc}"
                    Margin="8" />
 
-        <CheckBox VerticalAlignment="Center" Margin="4" IsChecked="{Binding LogClient}">Log Client</CheckBox>
+        <CheckBox VerticalAlignment="Center" Margin="4" IsChecked="{Binding LogClient}" Content="{loc:Loc tab-options-log-client}" />
         <TextBlock VerticalAlignment="Center" TextWrapping="Wrap"
-                   Text="Enables logging of any game client output. Useful for developers."
+                   Text="{loc:Loc tab-options-log-client-desc}"
                    Margin="8" />
 
-        <CheckBox VerticalAlignment="Center" Margin="4" IsChecked="{Binding LogLauncher}">Log Launcher</CheckBox>
+        <CheckBox VerticalAlignment="Center" Margin="4" IsChecked="{Binding LogLauncher}" Content="{loc:Loc tab-options-log-launcher}" />
         <TextBlock VerticalAlignment="Center" TextWrapping="Wrap"
-                   Text="Enables logging of the launcher. Useful for developers. (requires launcher restart)"
+                   Text="{loc:Loc tab-options-log-launcher-desc}"
                    Margin="8" />
 
-        <CheckBox VerticalAlignment="Center" Margin="4" IsChecked="{Binding LogLauncherVerbose}">Verbose Launcher Logging</CheckBox>
+        <CheckBox VerticalAlignment="Center" Margin="4" IsChecked="{Binding LogLauncherVerbose}" Content="{loc:Loc tab-options-verbose-launcher-logging}" />
         <TextBlock VerticalAlignment="Center" TextWrapping="Wrap"
-                   Text="For when the developers are *very* stumped with your problem. (requires launcher restart)"
+                   Text="{loc:Loc tab-options-verbose-launcher-logging-desc}"
                    Margin="8" />
 
-        <CheckBox VerticalAlignment="Center" Margin="4" IsChecked="{Binding OverrideAssets}">Seasonal Branding</CheckBox>
+        <CheckBox VerticalAlignment="Center" Margin="4" IsChecked="{Binding OverrideAssets}" Content="{loc:Loc tab-options-seasonal-branding}" />
         <TextBlock VerticalAlignment="Center" TextWrapping="Wrap"
-                   Text="Whatever temporally relevant icons and logos we can come up with."
+                   Text="{loc:Loc tab-options-seasonal-branding-desc}"
                    Margin="8" />
 
-        <CheckBox VerticalAlignment="Center" IsVisible="{Binding !HideDisableSigning}" Margin="4" IsChecked="{Binding DisableSigning}">Disable Engine Signature Checks</CheckBox>
+        <CheckBox VerticalAlignment="Center" IsVisible="{Binding !HideDisableSigning}" Margin="4" IsChecked="{Binding DisableSigning}" Content="{loc:Loc tab-options-disable-signing}" />
         <TextBlock VerticalAlignment="Center" IsVisible="{Binding !HideDisableSigning}" TextWrapping="Wrap"
-                   Text="[DEV ONLY] Disables verification of engine signatures. DO NOT ENABLE UNLESS YOU KNOW EXACTLY WHAT YOU'RE DOING."
+                   Text="{loc:Loc tab-options-disable-signing-desc}"
                    Margin="8" />
 
-        <Button Click="OpenHubSettings" Content="Hub Settings" Margin="4" HorizontalAlignment="Left" />
+        <Button Click="OpenHubSettings" Content="{loc:Loc tab-options-hub-settings}" Margin="4" HorizontalAlignment="Left" />
         <TextBlock VerticalAlignment="Center" TextWrapping="Wrap"
-                   Text="Change what hub server or servers you would like to use to fetch the server list."
+                   Text="{loc:Loc tab-options-hub-settings-desc}"
                    Margin="8" />
       </StackPanel>
     </DockPanel>

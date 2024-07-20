@@ -1,7 +1,7 @@
 using System;
-using System.Collections.Generic;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
+using Avalonia.Platform.Storage;
 using Avalonia.VisualTree;
 using Serilog;
 using SS14.Launcher.ViewModels;
@@ -46,20 +46,25 @@ public partial class HomePageView : UserControl
             return;
         }
 
-        var dialog = new OpenFileDialog
+        var result = await window.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
         {
-            Filters = new List<FileDialogFilter>
-            {
-                new() { Extensions = new List<string> { "zip", "rtbundle", "rtreplay" }, Name = "Content bundle files" }
-            },
-            Title = "Open replay or content bundle"
-        };
+            Title = "Select replay or content bundle file",
+            AllowMultiple = false,
+            FileTypeFilter =
+            [
+                new FilePickerFileType("Replay or content bundle files")
+                {
+                    Patterns = ["*.zip", "*.rtbundle", "*.rtreplay"],
+                    MimeTypes = ["application/zip", "x-scheme-handler/ss14", "x-scheme-handler/ss14s"],
+                    AppleUniformTypeIdentifiers = ["zip"]
+                }
+            ]
+        });
 
-        var result = await dialog.ShowAsync(window);
-        if (result == null || result.Length == 0) // Canceled
+        if (result.Count == 0) // Cancelled
             return;
 
-        var file = result[0];
+        using var file = result[0];
         if (!mainVm.IsContentBundleDropValid(file))
         {
             // TODO: Report this nicely.

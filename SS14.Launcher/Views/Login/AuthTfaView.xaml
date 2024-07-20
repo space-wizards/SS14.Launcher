@@ -3,6 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vml="clr-namespace:SS14.Launcher.ViewModels.Login;assembly=SS14.Launcher"
+             xmlns:loc="clr-namespace:SS14.Launcher.Localization"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SS14.Launcher.Views.Login.AuthTfaView">
   <Design.DataContext>
@@ -10,18 +11,18 @@
   </Design.DataContext>
 
   <DockPanel LastChildFill="False">
-    <TextBlock HorizontalAlignment="Center" DockPanel.Dock="Top" Classes="NanoHeadingMedium" Text="2-factor authentication required" />
+    <TextBlock HorizontalAlignment="Center" DockPanel.Dock="Top" Classes="NanoHeadingMedium" Text="{loc:Loc login-2fa-title}" />
 
     <TextBlock HorizontalAlignment="Center" DockPanel.Dock="Top" TextWrapping="Wrap" MaxWidth="400"
-               Text="Please enter the authentication code from your app." />
+               Text="{loc:Loc login-2fa-message}" />
 
     <TextBox DockPanel.Dock="Top" Name="CodeBox" MaxWidth="300" Margin="0, 20, 0, 0"
-             Watermark="Authentication code"
+             Watermark="{loc:Loc login-2fa-input-watermark}"
              Text="{Binding Code, Mode=TwoWay}" IsEnabled="{Binding !Busy}" />
 
     <DockPanel DockPanel.Dock="Top" LastChildFill="False" MaxWidth="300" Margin="0 20 0 0">
       <Button DockPanel.Dock="Right" HorizontalAlignment="Center"
-              Content="Confirm" Command="{Binding ConfirmTfa}">
+              Content="{loc:Loc login-2fa-button-confirm}" Command="{Binding ConfirmTfa}">
         <Button.IsEnabled>
           <MultiBinding Converter="{x:Static BoolConverters.And}">
             <Binding Path="IsInputValid" />
@@ -30,12 +31,12 @@
         </Button.IsEnabled>
       </Button>
 
-      <Button DockPanel.Dock="Left" HorizontalAlignment="Center" Content="Recovery code"
+      <Button DockPanel.Dock="Left" HorizontalAlignment="Center" Content="{loc:Loc login-2fa-button-recovery-code}"
               Command="{Binding RecoveryCode}" IsEnabled="{Binding !Busy}" />
     </DockPanel>
 
     <DockPanel DockPanel.Dock="Top" LastChildFill="False" MaxWidth="300">
-      <Button DockPanel.Dock="Left" HorizontalAlignment="Center" Content="Cancel" Command="{Binding Cancel}"/>
+      <Button DockPanel.Dock="Left" HorizontalAlignment="Center" Content="{loc:Loc login-2fa-button-cancel}" Command="{Binding Cancel}"/>
     </DockPanel>
 
   </DockPanel>

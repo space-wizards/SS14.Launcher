@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:SS14.Launcher.ViewModels;assembly=SS14.Launcher"
              xmlns:mainWindowTabs="clr-namespace:SS14.Launcher.ViewModels.MainWindowTabs"
+             xmlns:loc="clr-namespace:SS14.Launcher.Localization"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SS14.Launcher.Views.MainWindowTabs.NewsTabView"
              Name="NewsTab">
@@ -12,7 +13,7 @@
   </Design.DataContext>
 
   <DockPanel>
-    <TextBlock DockPanel.Dock="Top" Margin="4, 0" Text="Recent News:" Classes="NanoHeadingMedium" />
+    <TextBlock DockPanel.Dock="Top" Margin="4, 0" Text="{loc:Loc tab-news-recent-news}" Classes="NanoHeadingMedium" />
 
     <Panel Background="{DynamicResource StripeBackBrush}">
       <ScrollViewer IsVisible="{Binding NewsPulled}">
@@ -27,8 +28,7 @@
         </ItemsControl>
       </ScrollViewer>
 
-      <TextBlock IsVisible="{Binding NewsNotPulled}">
-        Pulling news...
+      <TextBlock IsVisible="{Binding NewsNotPulled}" Text="{loc:Loc tab-news-pulling-news}">
       </TextBlock>
     </Panel>
 

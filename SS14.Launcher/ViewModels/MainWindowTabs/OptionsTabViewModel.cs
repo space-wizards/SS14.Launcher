@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using Splat;
+using SS14.Launcher.Localization;
 using SS14.Launcher.Models.ContentManagement;
 using SS14.Launcher.Models.Data;
 using SS14.Launcher.Models.EngineManager;
@@ -12,6 +13,8 @@ public class OptionsTabViewModel : MainWindowTabViewModel
     public DataManager Cfg { get; }
     private readonly IEngineManager _engineManager;
     private readonly ContentManager _contentManager;
+
+    public LanguageSelectorViewModel Language { get; } = new();
 
     public OptionsTabViewModel()
     {
@@ -26,7 +29,7 @@ public class OptionsTabViewModel : MainWindowTabViewModel
     public bool HideDisableSigning => false;
 #endif
 
-    public override string Name => "Options";
+    public override string Name => LocalizationManager.Instance.GetString("tab-options-title");
 
     public bool CompatMode
     {

@@ -3,12 +3,13 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:SS14.Launcher.ViewModels"
+        xmlns:loc="clr-namespace:SS14.Launcher.Localization"
         mc:Ignorable="d" d:DesignWidth="300" d:DesignHeight="100"
         MinWidth="600" MinHeight="130"
         Width="600" Height="250"
         x:Class="SS14.Launcher.Views.HubSettingsDialog"
         Icon="{DynamicResource WindowIcon}"
-        Title="Hub Settings"
+        Title="{loc:Loc hub-settings-title}"
         Padding="4"
         WindowStartupLocation="CenterOwner">
   <Design.DataContext>
@@ -37,13 +38,11 @@
   </Window.Styles>
   <DockPanel>
     <DockPanel Height="30" Margin="0 4 0 0" DockPanel.Dock="Bottom" LastChildFill="False">
-      <Button DockPanel.Dock="Right" Name="DoneButton" Click="Done" Content="Done" Classes="OpenLeft" />
-      <Button DockPanel.Dock="Right" Click="Cancel" Content="Cancel" Classes="OpenBoth" />
-      <Button DockPanel.Dock="Right" Command="{Binding Reset}" Content="Reset" Classes="OpenRight">
-        <ToolTip.Tip>Reset to default settings</ToolTip.Tip>
-      </Button>
-      <Button DockPanel.Dock="Left" Command="{Binding Add}" Classes="OpenRight" Padding="0 9 10 9">
-        <ToolTip.Tip>Add hub</ToolTip.Tip>
+      <Button DockPanel.Dock="Right" Name="DoneButton" Click="Done" Content="{loc:Loc hub-settings-button-done}" Classes="OpenLeft" />
+      <Button DockPanel.Dock="Right" Click="Cancel" Content="{loc:Loc hub-settings-button-cancel}" Classes="OpenBoth" />
+      <Button DockPanel.Dock="Right" Command="{Binding Reset}" Content="{loc:Loc hub-settings-button-reset}" Classes="OpenRight"
+              ToolTip.Tip="{loc:Loc hub-settings-button-reset-tooltip}" />
+      <Button DockPanel.Dock="Left" Command="{Binding Add}" Classes="OpenRight" Padding="0 9 10 9" ToolTip.Tip="{loc:Loc hub-settings-button-add-tooltip}">
         <Path Fill="{DynamicResource ThemeForegroundBrush}"
               HorizontalAlignment="Center"
               VerticalAlignment="Center"
@@ -54,22 +53,17 @@
           </Path.RenderTransform>
         </Path>
       </Button>
-      <Button DockPanel.Dock="Left" Content="?" Classes="InfoButton OpenLeft">
+      <Button DockPanel.Dock="Left" Content="?" Classes="InfoButton OpenLeft" ToolTip.ShowDelay="0">
         <ToolTip.Tip>
-          <TextBlock xml:space="preserve">Here you can add extra hubs to fetch game servers from.
-You should only add hubs that you trust, as they can 'spoof' game
-servers from other hubs. The order of the hubs matters; if two hubs
-advertise the same game server the hub with the higher priority
-(higher in the list) will take precedence.</TextBlock>
+          <TextBlock MaxWidth="500" Text="{loc:Loc hub-settings-explanation}" TextWrapping="Wrap" />
         </ToolTip.Tip>
-        <ToolTip.ShowDelay>0</ToolTip.ShowDelay>
       </Button>
       <TextBlock DockPanel.Dock="Left" Text="" Name="Warning" Margin="4 0 0 0" Height="30" Foreground="Gray"
                  FontSize="15" Padding="4" />
     </DockPanel>
     <ScrollViewer DockPanel.Dock="Top">
       <StackPanel Spacing="2">
-        <TextBlock DockPanel.Dock="Left" Text="Default" Classes="NanoHeadingSmall" />
+        <TextBlock DockPanel.Dock="Left" Text="{loc:Loc hub-settings-heading-default}" Classes="NanoHeadingSmall" />
         <ItemsControl ItemsSource="{Binding DefaultHubs}" Classes="Spaced">
           <ItemsControl.ItemTemplate>
             <DataTemplate>
@@ -77,7 +71,7 @@ advertise the same game server the hub with the higher priority
             </DataTemplate>
           </ItemsControl.ItemTemplate>
         </ItemsControl>
-        <TextBlock DockPanel.Dock="Left" Text="Custom" Classes="NanoHeadingSmall" />
+        <TextBlock DockPanel.Dock="Left" Text="{loc:Loc hub-settings-heading-custom}" Classes="NanoHeadingSmall" />
         <ItemsControl ItemsSource="{Binding HubList}" Name="Hubs" Classes="Spaced">
           <ItemsControl.ItemTemplate>
             <DataTemplate>
@@ -88,8 +82,8 @@ advertise the same game server the hub with the higher priority
                         Width="30"
                         Padding="8 0 0 0"
                         Command="{Binding Remove}"
-                        IsEnabled="{Binding IsNotDefault}">
-                  <ToolTip.Tip>Remove hub</ToolTip.Tip>
+                        IsEnabled="{Binding IsNotDefault}"
+                        ToolTip.Tip="{loc:Loc hub-settings-button-remove-tooltip}">
                   <Path Fill="{DynamicResource ThemeForegroundBrush}"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
@@ -100,8 +94,8 @@ advertise the same game server the hub with the higher priority
                         Classes="OpenBoth"
                         Width="30"
                         Name="UpButton"
-                        Command="{Binding Up}">
-                  <ToolTip.Tip>Increase priority</ToolTip.Tip>
+                        Command="{Binding Up}"
+                        ToolTip.Tip="{loc:Loc hub-settings-button-increase-priority-tooltip}">
                   <Path Fill="{DynamicResource ThemeForegroundBrush}"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
@@ -116,8 +110,8 @@ advertise the same game server the hub with the higher priority
                         Classes="OpenRight"
                         Width="30"
                         Name="DownButton"
-                        Command="{Binding Down}">
-                  <ToolTip.Tip>Decrease priority</ToolTip.Tip>
+                        Command="{Binding Down}"
+                        ToolTip.Tip="{loc:Loc hub-settings-button-decrease-priority-tooltip}">
                   <Path Fill="{DynamicResource ThemeForegroundBrush}"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"

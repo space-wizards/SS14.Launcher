@@ -1,0 +1,51 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:SS14.Launcher.ViewModels"
+             xmlns:v="clr-namespace:SS14.Launcher.Views"
+             xmlns:loc="clr-namespace:SS14.Launcher.Localization"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="SS14.Launcher.Views.LanguageSelector">
+  <Design.DataContext>
+    <vm:LanguageSelectorViewModel />
+  </Design.DataContext>
+
+  <v:DropDown IsDropDownOpen="{Binding IsDropDownOpen, Mode=TwoWay}" Name="DropDown" Placement="TopEdgeAlignedLeft">
+    <v:DropDown.HeaderContent>
+      <v:IconLabel Icon="{DynamicResource 'InfoIcon-web'}" Content="{loc:Loc language-selector-label}" />
+    </v:DropDown.HeaderContent>
+    <Panel Width="400" Height="300">
+      <v:AngleBox Fill="{DynamicResource ThemePopupBackgroundBrush}" SideStyle="OpenLeft" />
+      <DockPanel>
+        <!-- Bottom row -->
+        <Grid DockPanel.Dock="Bottom" Margin="2" ColumnDefinitions="*,*" RowDefinitions="*,Auto">
+          <Button Grid.Column="0" Grid.Row="0" Classes="OpenBoth" IsEnabled="{Binding IsChangeSelected}"
+                  Command="{Binding OnSaveButtonPressed}">
+            <v:IconLabel Icon="/Assets/check.png" Content="{loc:Loc language-selector-save}" />
+          </Button>
+          <Button Grid.Column="1" Grid.Row="0" Classes="OpenLeft" IsEnabled="{Binding IsChangeSelected}"
+                  Command="{Binding OnCancelButtonPressed}">
+            <v:IconLabel Icon="/Assets/cross.png" Content="{loc:Loc language-selector-cancel}" />
+          </Button>
+          <Button Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" Classes="OpenRight"
+                  Content="{loc:Loc language-selector-help-translate}"
+                  Command="{Binding OnHelpTranslateButtonPressed}" />
+        </Grid>
+        <!-- Main contents -->
+        <ScrollViewer Margin="2">
+          <StackPanel>
+            <ItemsControl ItemsSource="{Binding Languages}">
+              <ItemsControl.ItemTemplate>
+                <DataTemplate x:DataType="vm:LanguageSelectorLanguageViewModel">
+                  <RadioButton GroupName="Language" Content="{Binding Text}"
+                               IsChecked="{Binding IsChecked, Mode=TwoWay}" />
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
+          </StackPanel>
+        </ScrollViewer>
+      </DockPanel>
+    </Panel>
+  </v:DropDown>
+</UserControl>

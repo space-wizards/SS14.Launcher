@@ -5,6 +5,7 @@
              xmlns:mainWindowTabs="clr-namespace:SS14.Launcher.ViewModels.MainWindowTabs"
              xmlns:models="clr-namespace:SS14.Launcher.Models"
              xmlns:views="clr-namespace:SS14.Launcher.Views"
+             xmlns:loc="clr-namespace:SS14.Launcher.Localization"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SS14.Launcher.Views.MainWindowTabs.ServerEntryView">
   <Design.DataContext>
@@ -15,7 +16,7 @@
     <Expander Name="Expando" Classes="NoPad" IsExpanded="{Binding IsExpanded}">
       <Expander.Header>
         <DockPanel>
-          <Button IsEnabled="{Binding IsOnline}" DockPanel.Dock="Right" Content="Connect"
+          <Button IsEnabled="{Binding IsOnline}" DockPanel.Dock="Right" Content="{loc:Loc server-entry-connect}"
                   Command="{Binding ConnectPressed}" />
           <TextBlock DockPanel.Dock="Right" VerticalAlignment="Center"
                      TextAlignment="Center" Text="{Binding ServerStatusString}"
@@ -63,7 +64,7 @@
             <!-- Raise to top button. -->
             <Button IsVisible="{Binding ViewedInFavoritesPane}"
                     Classes="OpenLeft"
-                    Content="Raise to top"
+                    Content="{loc:Loc server-entry-raise}"
                     Command="{Binding FavoriteRaiseButtonPressed}" />
           </DockPanel>
         </views:RowSideAlignedPanel>

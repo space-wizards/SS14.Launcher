@@ -109,6 +109,11 @@ public static class CVars
     /// Stores whether the user has seen the Wine warning.
     /// </summary>
     public static readonly CVarDef<bool> WineWarningShown = CVarDef.Create("WineWarningShown", false);
+
+    /// <summary>
+    /// Language the user selected. Null means it should be automatically selected based on system language.
+    /// </summary>
+    public static readonly CVarDef<string?> Language = CVarDef.Create<string?>("Language", null);
 }
 
 /// <summary>
@@ -132,7 +137,6 @@ public abstract class CVarDef
     public static CVarDef<T> Create<T>(
         string name,
         T defaultValue)
-        where T : notnull
     {
         return new CVarDef<T>(name, defaultValue);
     }

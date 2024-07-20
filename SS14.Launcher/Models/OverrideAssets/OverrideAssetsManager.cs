@@ -5,7 +5,6 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Net.Http;
-using System.Net.Http.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using Dapper;
@@ -19,6 +18,7 @@ public sealed class OverrideAssetsManager
 {
     private readonly DataManager _dataManager;
     private readonly HttpClient _httpClient;
+    private readonly LauncherInfoManager _infoManager;
 
     private bool _overridesUpdated;
 
@@ -26,10 +26,11 @@ public sealed class OverrideAssetsManager
 
     public event Action<OverrideAssetsChanged>? AssetsChanged;
 
-    public OverrideAssetsManager(DataManager dataManager, HttpClient httpClient)
+    public OverrideAssetsManager(DataManager dataManager, HttpClient httpClient, LauncherInfoManager infoManager)
     {
         _dataManager = dataManager;
         _httpClient = httpClient;
+        _infoManager = infoManager;
     }
 
     public void Initialize()
@@ -112,12 +113,15 @@ public sealed class OverrideAssetsManager
     [SuppressMessage("ReSharper", "UseAwaitUsing")]
     private async Task UpdateAssetsBody(CancellationToken cancel)
     {
-        var assetsOverrides = await _httpClient.GetFromJsonAsync<Dictionary<string, string?>>(
-            ConfigConstants.UrlOverrideAssets,
-            cancel).ConfigureAwait(false);
-
-        if (assetsOverrides == null)
+        await _infoManager.LoadTask.ConfigureAwait(false);
+        if (_infoManager.Model == null)
+        {
+            // Error. oh well
+            Log.Verbose("Not updating override assets due to error fetching info");
             return;
+        }
+
+        var assetsOverrides = _infoManager.Model.OverrideAssets;
 
         using var db = GetSqliteConnection();
         using var tx = db.BeginTransaction();
@@ -140,7 +144,7 @@ public sealed class OverrideAssetsManager
             Log.Debug("Downloading override asset for {AssetName}: {OverrideName}", name, overrideName);
 
             var url = ConfigConstants.UrlAssetsBase + overrideName;
-            var data = await _httpClient.GetByteArrayAsync(url, cancel);
+            var data = await url.GetByteArrayAsync(_httpClient, cancel);
 
             db.Execute("INSERT OR REPLACE INTO OverrideAsset(Name, OverrideName, Data) VALUES (@Name, @OverrideName, @Data)",
                 new

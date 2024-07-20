@@ -1,0 +1,9 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:views="clr-namespace:SS14.Launcher.Views">
+  <Style Selector="views|RandomMessage > TextBlock">
+    <Setter Property="Foreground" Value="{DynamicResource ThemeForegroundMutedBrush}" />
+  </Style>
+  <Style Selector="views|RandomMessage">
+    <Setter Property="HorizontalAlignment" Value="Center" />
+  </Style>
+</Styles>
