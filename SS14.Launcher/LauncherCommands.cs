@@ -163,6 +163,7 @@ public class LauncherCommands
             // Substring 9 to remove b and the file:///
 
             // todo figure out why sometimes the file:/// is there and sometimes it isn't
+            // 2025: Do i need the substring now that we do istoragefile
             if (cmd.StartsWith("file:///"))
                 await Task.Run(() => ConnectingViewModel.StartContentBundle(_windowVm, cmd.Substring(9)));
             else

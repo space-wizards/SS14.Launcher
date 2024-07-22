@@ -269,7 +269,7 @@ public sealed class MainWindowViewModel : ViewModelBase, IErrorOverlayOwner
         if (ConnectingVM != null)
             return false;
 
-        return new List<string> { ".zip", ".rtbundle", ".rtreplay" }.Contains(Path.GetExtension(fileName));
+        return new List<string> { ".zip", ".rtbundle", ".rtreplay" }.Contains(Path.GetExtension(file.Name));
     }
 
     public void Dropped(IStorageFile file)
