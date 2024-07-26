@@ -66,20 +66,13 @@ public static class ProtocolSetup
         if (OperatingSystem.IsMacOS())
         {
             // Yeah you cant get this to work on dev builds
-            //todo macos protocol pass params
             #if !FULL_RELEASE
             return;
             #endif
             var path = $"{AppDomain.CurrentDomain.BaseDirectory}";
 
-            // > be me
-            // > write protocol registration code
-            // > application runs in some wierd sandbox folder
-            // > :despair:
-            // > find out its about that its cause the user needs to move the app to the applications folder...
-            // > ... or any "suitable" folder...
             // tldr user needs to move the app manually to get this sandbox restriction lifted. This can be done by
-            // making one of those installer dmg stuff
+            // making one of those installer dmg stuff... for now lets just stop
             if (path.Contains("AppTranslocation"))
             {
                 Log.Error("I have been put in apple jail... move me to your application folder");
