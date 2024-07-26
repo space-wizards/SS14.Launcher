@@ -2,6 +2,7 @@ using System;
 using System.Text;
 using System.Threading.Channels;
 using System.Threading.Tasks;
+using Avalonia.Platform.Storage;
 using Avalonia.Threading;
 using Serilog;
 using Splat;
@@ -18,13 +19,15 @@ public class LauncherCommands
     private MainWindowViewModel _windowVm;
     private LoginManager _loginMgr;
     private LauncherMessaging _msgr;
+    private readonly IStorageProvider _storageProvider;
     public readonly Channel<string> CommandChannel;
 
-    public LauncherCommands(MainWindowViewModel windowVm)
+    public LauncherCommands(MainWindowViewModel windowVm, IStorageProvider provider)
     {
         _windowVm = windowVm;
         _loginMgr = Locator.Current.GetRequiredService<LoginManager>();
         _msgr = Locator.Current.GetRequiredService<LauncherMessaging>();
+        _storageProvider = provider;
 
         CommandChannel = Channel.CreateUnbounded<string>();
     }
@@ -160,14 +163,12 @@ public class LauncherCommands
         else if (cmd.StartsWith("b"))
         {
             // Content bundle file
-            // Substring 9 to remove b and the file:///
-
-            // todo figure out why sometimes the file:/// is there and sometimes it isn't
-            // 2025: Do i need the substring now that we do istoragefile
-            if (cmd.StartsWith("file:///"))
-                await Task.Run(() => ConnectingViewModel.StartContentBundle(_windowVm, cmd.Substring(9)));
+            var uri = new Uri(cmd.Substring(1));
+            var thingy = await _storageProvider.TryGetFileFromPathAsync(uri);
+            if (thingy != null)
+                await Task.Run(() => ConnectingViewModel.StartContentBundle(_windowVm, thingy));
             else
-                await Task.Run(() => ConnectingViewModel.StartContentBundle(_windowVm, cmd.Substring(1)));
+                Log.Error("File does not exist. Aborting");
         }
         else
         {

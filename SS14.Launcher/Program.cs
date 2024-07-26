@@ -149,7 +149,7 @@ internal static class Program
         _serverTask?.Wait();
     }
 
-    private static unsafe void CheckWindowsVersion()
+    private static void CheckWindowsVersion()
     {
         // 14393 is Windows 10 version 1607, minimum we currently support.
         if (!OperatingSystem.IsWindows() || Environment.OSVersion.Version.Build >= 14393)
@@ -174,7 +174,7 @@ internal static class Program
         Helpers.MessageBoxHelper(text, caption, type);
     }
 
-    private static unsafe void CheckBadAntivirus()
+    private static void CheckBadAntivirus()
     {
         // Avast Free Antivirus breaks the game due to their AMSI integration crashing the process. Awesome!
         // Oh hey back here again, turns out AVG is just the same product as Avast with different paint.
@@ -298,7 +298,7 @@ internal static class Program
             GC.Collect();
         };
 
-        var lc = new LauncherCommands(viewModel);
+        var lc = new LauncherCommands(viewModel, window.StorageProvider);
         lc.RunCommandTask();
         Locator.CurrentMutable.RegisterConstant(lc);
         _serverTask = msgr.ServerTask(lc);
