@@ -88,8 +88,8 @@ public static class ProtocolSetup
 
             var proc = new Process();
             // Yes you have to manually go to this
-            proc.StartInfo.FileName = "/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister";
-            proc.StartInfo.Arguments = $"-f {newPath}";
+            proc.StartInfo.FileName = "/System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/LaunchServices.framework/Versions/A/Support/lsregister";
+            proc.StartInfo.Arguments = $"-R -f {newPath}";
             proc.Start();
         }
         // Linux registration
@@ -143,8 +143,8 @@ public static class ProtocolSetup
             }
 
             var proc = new Process();
-            proc.StartInfo.FileName = "/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister";
-            proc.StartInfo.Arguments = $"-u {newPath}";
+            proc.StartInfo.FileName = "/System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/LaunchServices.framework/Versions/A/Support/lsregister";
+            proc.StartInfo.Arguments = $"-R -f -u {newPath}";
             proc.Start();
         }
         // Linux unregistration
