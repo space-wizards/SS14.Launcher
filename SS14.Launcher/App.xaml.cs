@@ -45,7 +45,7 @@ public class App : Application
         if (!OperatingSystem.IsMacOS())
             return;
 
-        Log.Debug($"MacOS launch arg is {e.Urls.FirstOrDefault()}. Doing nothing since i did not implement this yet lol");
+        Program.ParseCommandLineArgs(e.Urls, new LauncherMessaging());
     }
 
     public override void Initialize()
