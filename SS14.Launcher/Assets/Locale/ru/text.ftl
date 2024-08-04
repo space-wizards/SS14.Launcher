@@ -201,6 +201,8 @@ login-forgot-error = Ошибка
 # Strings for the "login" view on login
 login-login-title = Войти
 # Strings for the "login" view on login
+login-login-show-password = Показать пароль
+# Strings for the "login" view on login
 login-login-username-watermark = Имя пользователя или e-mail
 # Strings for the "login" view on login
 login-login-password-watermark = Пароль

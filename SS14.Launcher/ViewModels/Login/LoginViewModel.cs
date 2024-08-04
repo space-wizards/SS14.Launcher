@@ -20,6 +20,7 @@ public class LoginViewModel : BaseLoginViewModel
     [Reactive] public string EditingPassword { get; set; } = "";
 
     [Reactive] public bool IsInputValid { get; private set; }
+    [Reactive] public bool IsPasswordVisible { get; private set; }
 
     public LoginViewModel(MainWindowLoginViewModel parentVm, AuthApi authApi,
         LoginManager loginMgr, DataManager dataManager) : base(parentVm)
