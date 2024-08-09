@@ -4,6 +4,7 @@ using Avalonia.Interactivity;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
 using ReactiveUI;
+using Serilog;
 using SS14.Launcher.Utility;
 using SS14.Launcher.ViewModels.MainWindowTabs;
 
@@ -42,5 +43,15 @@ public partial class OptionsTabView : UserControl
     private async void OpenHubSettings(object? sender, RoutedEventArgs args)
     {
         await new HubSettingsDialog().ShowDialog((Window)this.GetVisualRoot()!);
+    }
+
+    private async void RegisterProtocols(object? _1, RoutedEventArgs _2)
+    {
+        ProtocolSetup.RegisterProtocol();
+    }
+
+    private async void UnregisterProtocols(object? _1, RoutedEventArgs _2)
+    {
+        ProtocolSetup.UnregisterProtocol();
     }
 }

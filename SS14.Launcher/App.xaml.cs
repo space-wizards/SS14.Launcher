@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
@@ -34,6 +35,17 @@ public class App : Application
     public App(OverrideAssetsManager overrideAssets)
     {
         _overrideAssets = overrideAssets;
+
+        UrlsOpened += OnOSXUrlsOpened;
+    }
+
+    public void OnOSXUrlsOpened(object? sender, UrlOpenedEventArgs e)
+    {
+        // I think this only works on macOS anyway? Well i will leave this here just so I don't surprise myself later.
+        if (!OperatingSystem.IsMacOS())
+            return;
+
+        Program.ParseCommandLineArgs(e.Urls, new LauncherMessaging());
     }
 
     public override void Initialize()
