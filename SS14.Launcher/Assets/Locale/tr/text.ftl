@@ -329,7 +329,7 @@ main-window-error-unknown = Bilinmeyen hata oluştu
 # Strings for the "home" tab
 tab-home-favorites-guide = Kolayca bulmak için sunucuları favori olarak işaretleyin
 # Strings for the "options" tab
-tab-options-account-settings-desc = Email ve şifre değiştirme gibi hesap ayarlarını websitemizden yapabilirisin.
+tab-options-account-settings-desc = Email ve şifre değiştirme gibi hesap ayarlarını websitemizden yapabilirsin.
 # Strings for the general main window layout of the launcher
 main-window-busy-checking-login-status = Login statüsü yenileniyor…
 # Strings for the "options" tab
@@ -341,7 +341,7 @@ server-entry-fetching = Getiriliyor…
 # Strings for the "servers" tab
 tab-servers-list-status-updating-master = Master sunucu listesi getiriliyor…
 # Strings for the "options" tab
-tab-options-log-launcher-desc = Launcherın her hareketi için logları açar. Geliştiriciler için işlevlidir. (Launcher yeniden başlatılması gerekir)
+tab-options-log-launcher-desc = Launcherın her hareketi için logları açar. Geliştiriciler için işlevlidir. (Launcherın yeniden başlatılması gerekir)
 # Strings for the "options" tab
 tab-options-verbose-launcher-logging-desc = Geliştiricilerin sorununu *bi türlü* çözemediği zaman için. (Launcherın yeniden başlatılması gerekir)
 # Strings for the "connecting" menu that appears when connecting to a server.
@@ -525,3 +525,5 @@ language-selector-label = Dil
 language-selector-help-translate = Çevirmeye yardım mı etmek istiyorsun? Edebilirisin!
 # For the language selection menu.
 language-selector-system-language = Sistem dili ({ $languageName })
+# Strings for the "login" view on login
+login-login-show-password = Şifreyi göster
