@@ -39,7 +39,7 @@ login-forgot-message = Om du har glömt ditt lösenord kan du ange e-postadresse
 # Long region names for server tag filters (shown in tooltip)
 region-asia-north = Nordasien
 # Short region names for server tag filters (shown in filter check box)
-region-short-north-america-central = Centrala NA
+region-short-north-america-central = Centrala N.Am.
 # Strings for the server filters menu
 filters-player-count-hide-full-desc = Fulla servrar visas inte
 # Strings for the "forgot password" view on login
@@ -69,7 +69,7 @@ tab-servers-list-status-partial-error = Några eller alla serverlistor kunde int
 # These aren't shown to users so they're not very important
 tab-development-disable-signing-desc = { "[" }DEV ONLY] Avaktiverar kontroll av spelmotorsignaturer. AKTIVERA INTE OM DU INTE VET PRECIS VAD DU HÅLLER PÅ MED.
 # Strings for the "options" tab
-tab-options-account-settings-desc = Du kan hantera dina kontoinställningar, t.ex. ändra e-postadress eller lösenord, via vår webbsida.
+tab-options-account-settings-desc = Du kan hantera dina kontoinställningar, t.ex. ändra e-postadress eller lösenord, på vår webbsida.
 # Strings for the "options" tab
 tab-options-log-launcher-desc = Sparar alla launcherns loggmeddelanden. Värdefullt för utvecklare. (kräver omstart av launchern)
 # Strings for the "options" tab
@@ -94,7 +94,7 @@ add-favorite-window-label-address = Adress:
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-cancel = Avbryt
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-status-none = Öppnar anslutning…
+connecting-status-none = Etablerar anslutning…
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-update-error = Ett fel uppstod vid nedladdning av serverinnehåll. Fråga gärna efter hjälp på Discord om problemet kvarstår.
 # Strings for the "connecting" menu that appears when connecting to a server.
@@ -315,21 +315,21 @@ region-short-india = Indien
 # Short region names for server tag filters (shown in filter check box)
 region-short-middle-east = Mellanöstern
 # Short region names for server tag filters (shown in filter check box)
-region-short-north-america-east = Östra NA
+region-short-north-america-east = Östra N.Am.
 # Short region names for server tag filters (shown in filter check box)
-region-short-north-america-west = Västra NA
+region-short-north-america-west = Västra N.Am.
 # Short region names for server tag filters (shown in filter check box)
 region-short-oceania = Oceanien
 # Short region names for server tag filters (shown in filter check box)
-region-short-south-america-east = Östra SA
+region-short-south-america-east = Östra S.Am.
 # Short region names for server tag filters (shown in filter check box)
-region-short-south-america-south = Södra SA
+region-short-south-america-south = Södra S.Am.
 # Short region names for server tag filters (shown in filter check box)
-region-short-south-america-west = Västra SA
+region-short-south-america-west = Västra S.Am.
 # Strings for the "servers" tab
 tab-servers-title = Servrar
 # Strings for the "servers" tab
-tab-servers-refresh = Ladda om
+tab-servers-refresh = Uppdatera
 # Strings for the "servers" tab
 filters = Filter ({ $filteredServers } / { $totalServers })
 # Strings for the "servers" tab
@@ -429,7 +429,7 @@ tab-home-title = Start
 tab-development-title = { "[" }DEV]
 # Strings for the "Development" tab
 # These aren't shown to users so they're not very important
-tab-development-title-override = { "[" }DEV (override active!!!)]
+tab-development-title-override = { "[" }DEV (override aktiv!!!)]
 # Strings for the "Development" tab
 # These aren't shown to users so they're not very important
 tab-development-enable-engine-override = Aktivera spelmotor-override
@@ -438,7 +438,7 @@ tab-home-favorite-servers = Favoritservrar:
 # Strings for the "home" tab
 tab-home-add-favorite = Lägg till favorit…
 # Strings for the "home" tab
-tab-home-refresh = Ladda om
+tab-home-refresh = Uppdatera
 # Strings for the "home" tab
 tab-home-go-to-servers-tab = Gå till serverfliken
 # Strings for the "home" tab
@@ -462,7 +462,7 @@ tab-options-account-settings = Kontoinställningar
 # Strings for the "options" tab
 tab-options-compatibility-mode = Kompatibilitetsläge
 # Strings for the "options" tab
-tab-options-compatibility-mode-desc = Detta använder OpenGL ES 2 (ev. via ANGLE), vilket är mindre troligt att lida av drivrutinsbuggar. Prova detta om du upplever grafiska problem eller kraschar.
+tab-options-compatibility-mode-desc = Detta använder OpenGL ES 2 (ev. via ANGLE), som generellt lider av färre drivrutinsbuggar. Prova detta om du upplever grafiska problem eller kraschar.
 # Strings for the "options" tab
 tab-options-log-client = Logga klient
 # Strings for the "options" tab
@@ -484,7 +484,7 @@ tab-options-hub-settings = Hubbinställningar
 # Strings for the "options" tab
 tab-options-hub-settings-desc = Ändra vilken eller vilka hubbservrar du vill använda för att hämta serverlistan.
 # Strings for the "hub settings" dialog window.
-hub-settings-explanation = Här kan du lägga till fler hubbar att läsa in spelservrar från. Du bör endast lägga till hubbar som du litar på, eftersom de kan imitera spelservrar från andra hubbar. Ordningsföljden på hubbarna spelar roll; om två hubbar listar samma spelserver visas enbart den från hubben med högst prioritet (högre upp i listan).
+hub-settings-explanation = Här kan du lägga till fler hubbar att läsa in spelservrar från. Du bör endast lägga till hubbar som du litar på, eftersom de kan imitera spelservrar från andra hubbar. Ordningsföljden på hubbarna spelar roll: om två hubbar listar samma spelserver visas enbart den från hubben med högst prioritet (högre upp i listan).
 # For the language selection menu.
 # Text on the button that opens the menu.
 language-selector-label = Språk
@@ -525,3 +525,5 @@ login-expired-password-watermark = Lösenord
 tab-development-enable-engine-override-desc = Sökväg till spelmotor-zipfiler att skriva över med (release/ i RobustToolbox)
 # Strings for the "home" tab
 tab-home-run-content-bundle = Kör kontent-paket/replay
+# Strings for the "login" view on login
+login-login-show-password = Visa lösenord
