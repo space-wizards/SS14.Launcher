@@ -435,11 +435,11 @@ tab-options-compatibility-mode-desc = Это использует OpenGL ES 2 (�
 # Strings for the "forgot password" view on login
 login-forgot-button-back = Назад ко входу
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-status-client-crashed = Вероятно, клиент непредвиденно завершил работу при запуске. Если это продолжится, пожалуйста, обратитесь за помощью в GitHub или Discord.
+connecting-status-client-crashed = Клиент вылетает при запуске. Если вылеты повторяются, пожалуйста, обратитесь в Discord или Github за помощью.
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-update-status-downloading-content = Загрузка контента сервера…
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-update-status-verifying = Проверка целостности загрузки…
+connecting-update-status-verifying = Подтверждение целостности загрузки…
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-update-status-culling-engine = Очистка старого контента…
 # Strings for the "connecting" menu that appears when connecting to a server.
