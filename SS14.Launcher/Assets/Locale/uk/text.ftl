@@ -525,3 +525,5 @@ tab-development-enable-engine-override = Увімкнути перезапис �
 tab-options-disable-signing = Вимкнути перевірки сигнатур рушія
 # Strings for the "options" tab
 tab-options-disable-signing-desc = { "[" }DEV ONLY] Вимикає перевірку сигнатур рушія. НЕ ВМИКАЙТЕ, ЯКЩО ВИ ТОЧНО НЕ ЗНАЄТЕ, ЩО РОБИТЕ.
+# Strings for the "login" view on login
+login-login-show-password = Показати пароль
