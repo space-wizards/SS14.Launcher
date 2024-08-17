@@ -45,7 +45,7 @@ connecting-status-updating = Оновлення: { $status }
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-connecting = Отримання інформації о з'єднанні з сервером…
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-status-connection-failed = Не вдалося з'єднатися з сервером!
+connecting-status-connection-failed = Не вдалось приєднатись до серверу!
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-starting-client = Запуск клієнта…
 # Strings for the "connecting" menu that appears when connecting to a server.
@@ -103,7 +103,7 @@ connecting-update-status-unknown = Ви не повинні цього бачи�
 # Strings for the "direct connect" dialog window.
 direct-connect-title = Пряме з'єднання…
 # Strings for the "direct connect" dialog window.
-direct-connect-text = Введіть адрес сервера для підключення:
+direct-connect-text = Введіть адресу сервера для під'єднання:
 # Strings for the "direct connect" dialog window.
 direct-connect-connect = Під'єднатися
 # Strings for the "direct connect" dialog window.
@@ -149,7 +149,7 @@ login-errors-button-ok = Ок
 # Strings for 2FA login
 login-2fa-title = Потрібна 2х-факторна автентифікація
 # Strings for 2FA login
-login-2fa-message = Будь ласка, введіть код автентифікації з вашого додатку.
+login-2fa-message = Будь ласка, введіть код автентифікації з вашого застосунку.
 # Strings for 2FA login
 login-2fa-button-confirm = Підтвердити
 # Strings for 2FA login
@@ -157,7 +157,7 @@ login-2fa-button-recovery-code = Код відновлення
 # Strings for 2FA login
 login-2fa-button-cancel = Відмінити
 # Strings for the "login expired" view on login
-login-expired-title = Закінчився термін дії входу
+login-expired-title = Термін дії входу вичерпано
 # Strings for the "login expired" view on login
 login-expired-password-watermark = Пароль
 # Strings for the "login expired" view on login
@@ -363,11 +363,11 @@ tab-servers-table-players = Гравці
 # Strings for the "servers" tab
 tab-servers-table-name = Назва серверу
 # Strings for the "servers" tab
-tab-servers-list-status-partial-error = Не вдалося отримати деякі або всі списки серверів. Перевірте правильність конфігурації хаба.
+tab-servers-list-status-partial-error = Не вдалося отримати деякі або всі списки серверів. Перевірте правильність конфігурації хабу.
 # Strings for the "servers" tab
 tab-servers-list-status-updating-master = Отримання списку головних серверів…
 # Strings for the "servers" tab
-tab-servers-list-status-none = Публічних серверів немає. Переконайтеся, що конфігурація вашого хаба правильна.
+tab-servers-list-status-none = Публічних серверів немає. Переконайтеся, що конфігурація вашого хабу правильна.
 # Strings for the server filters menu
 filters-title = Фільтри
 # Strings for the server filters menu
@@ -429,13 +429,13 @@ server-entry-add-favorite = Додати в обрані
 # Strings for entries in the server list (including home page)
 server-entry-remove-favorite = Видалити з обраного
 # Strings for entries in the server list (including home page)
-server-entry-offline = OFFLINE
+server-entry-offline = ОФЛАЙН
 # Strings for entries in the server list (including home page)
 server-entry-description-offline = Не вдається зв'язатися з сервером
 # Strings for entries in the server list (including home page)
 server-entry-description-error = Помилка при отриманні опису сервера
 # Strings for entries in the server list (including home page)
-server-entry-description-none = Опис сервера не вказано
+server-entry-description-none = Опис серверу не вказано
 # Strings for entries in the server list (including home page)
 server-fetched-from-hub = Отримано з { $hub }
 # Strings for the "Development" tab
@@ -494,7 +494,7 @@ tab-options-seasonal-branding = Сезонний брендинг
 # Strings for the "options" tab
 tab-options-hub-settings = Налаштування Хаба
 # Strings for the "options" tab
-tab-options-hub-settings-desc = Змініть сервер або сервери хаба, які ви хочете використовувати для отримання списку серверів.
+tab-options-hub-settings-desc = Змініть сервер або сервери хабу, які ви хочете використовувати для отримання списку серверів.
 # Strings for the general main window layout of the launcher
 main-window-error-unknown = Виникла невідома помилка
 # For the language selection menu.
@@ -504,7 +504,7 @@ language-selector-label = Мова
 # "Save" button.
 language-selector-save = Зберегти
 # For the language selection menu.
-language-selector-help-translate = Хочете допомогти з перекладом? Ви можете!
+language-selector-help-translate = Хочете допомогти з перекладом? Ви можете це зробити!
 # For the language selection menu.
 language-selector-system-language = Мова системи ({ $languageName })
 # Strings for entries in the server list (including home page)
