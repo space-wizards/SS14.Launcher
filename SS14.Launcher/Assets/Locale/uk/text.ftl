@@ -472,7 +472,7 @@ tab-options-clear-content = Очистити встановлений конте
 # Strings for the "options" tab
 tab-options-open-log-directory = Відкрити директорію логів
 # Strings for the "options" tab
-tab-options-account-settings = Налаштування Облікового Запису
+tab-options-account-settings = Налаштування облікового запису
 # Strings for the "options" tab
 tab-options-account-settings-desc = Ви можете керувати налаштуваннями свого акаунта, наприклад, змінити електронну пошту або пароль, через наш веб-сайт.
 # Strings for the "options" tab
