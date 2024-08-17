@@ -1,19 +1,19 @@
 # Localization for the "add favorite server" dialog window
 add-favorite-window-title = Додати Обраний Сервер
 # Strings for the drop-down window to manage your active account
-account-drop-down-none-selected = Акаунт не обрано
+account-drop-down-none-selected = Обліковий запис не обрано
 # Strings for the drop-down window to manage your active account
 account-drop-down-not-logged-in = Ви не уввійшли
 # Strings for the drop-down window to manage your active account
 account-drop-down-log-out = Вийти
 # Strings for the drop-down window to manage your active account
-account-drop-down-log-out-of = Вийти з акаунта { $name }
+account-drop-down-log-out-of = Вийти з облікового запису { $name }
 # Strings for the drop-down window to manage your active account
-account-drop-down-switch-account = Змінити акаунт:
+account-drop-down-switch-account = Змінити обліковий запис:
 # Strings for the drop-down window to manage your active account
-account-drop-down-select-account = Обрати акаунт:
+account-drop-down-select-account = Вибрати обліковий запис:
 # Strings for the drop-down window to manage your active account
-account-drop-down-add-account = Додати акаунт
+account-drop-down-add-account = Додати обліковий запис
 # Localization for the "add favorite server" dialog window
 add-favorite-window-address-invalid = Адреса недійсна
 # Localization for the "add favorite server" dialog window
@@ -79,14 +79,14 @@ login-error-invalid-credentials = Невірні облікові дані дл�
 # Strings for 2FA login
 login-2fa-input-watermark = Код автентифікації
 # Strings for the "forgot password" view on login
-login-forgot-message = Якщо ви забули свій пароль, ви можете ввести адресу електронної пошти, прив'язану до вашого акаунта, тут, щоб отримати посилання для його відновлення.
+login-forgot-message = Якщо ви забули свій пароль, ви можете ввести адресу електронної пошти, прив'язану до вашого облікового запису, тут, щоб отримати посилання для його відновлення.
 # Error messages for login
-login-error-account-unconfirmed = Адреса електронної пошти для цього акаунта все ще потребує підтвердження. Будь ласка, підтвердіть свою адресу електронної пошти перед спробою входу
+login-error-account-unconfirmed = Адреса електронної пошти для цього облікового запису все ще потребує підтвердження. Будь ласка, підтвердіть свою адресу електронної пошти перед спробою входу
 # Strings for the "register confirmation" view on login
 login-confirmation-busy = Вхід…
 # Strings for the "login expired" view on login
 login-expired-message =
-    Сесія для цього акаунта закінчилася.
+    Сесія для цього облікового запису закінчилася.
     Будь ласка, введіть пароль ще раз.
 # Strings for the "forgot password" view on login
 login-forgot-button-back = Повернутися до входу
@@ -95,7 +95,7 @@ login-confirmation-confirmation-title = Підтвердження реєстр�
 # Strings for the "register confirmation" view on login
 login-confirmation-confirmation-message = Будь ласка, перевірте свою електронну пошту, щоб підтвердити обліковий запис. Після підтвердження облікового запису натисніть кнопку нижче, щоб увійти.
 # Strings for the "register confirmation" view on login
-login-confirmation-button-confirm = Я підтвердив свій акаунт
+login-confirmation-button-confirm = Я підтвердив свій обліковий запис
 # Strings for the "register confirmation" view on login
 login-confirmation-button-cancel = Відмінити
 # Strings for the "connecting" menu that appears when connecting to a server.
@@ -141,7 +141,7 @@ login-error-account-2fa-required = Потрібна 2х-факторна авт�
 # Error messages for login
 login-error-account-2fa-invalid = Код 2х-факторної автентифікації невірний
 # Error messages for login
-login-error-account-account-locked = Акаунт заблоковано. Будь ласка, зв'яжіться з нами, якщо ви вважаєте, що це помилка.
+login-error-account-account-locked = Обліковий запис заблоковано. Будь ласка, зв'яжіться з нами, якщо ви вважаєте, що це помилка.
 # Error messages for login
 login-error-unknown = Невідома помилка
 # Error messages for login
@@ -193,7 +193,7 @@ login-login-button-forgot = Забули ваш пароль?
 # Strings for the "login" view on login
 login-login-button-resend = Повторно надіслати підтвердження на email
 # Strings for the "login" view on login
-login-login-button-register = Не маєте акаунта? Зареєструйтесь!
+login-login-button-register = Не маєте облікового запису? Зареєструйтесь!
 # Strings for the "login" view on login
 login-login-busy-logging-in = Вхід…
 # Strings for the "login" view on login
@@ -277,7 +277,7 @@ main-window-busy-checking-update = Перевірка оновлення лау�
 # Strings for the general main window layout of the launcher
 main-window-busy-checking-login-status = Оновлення статусу входу…
 # Strings for the general main window layout of the launcher
-main-window-busy-checking-account-status = Перевірка стану акаунта
+main-window-busy-checking-account-status = Перевірка стану облікового запису
 # Strings for the general main window layout of the launcher
 main-window-error-connecting-auth-server = Помилка з'єднання з сервером автентифікації
 # Long region names for server tag filters (shown in tooltip)
@@ -472,7 +472,7 @@ tab-options-clear-content = Очистити встановлений конте
 # Strings for the "options" tab
 tab-options-open-log-directory = Відкрити директорію логів
 # Strings for the "options" tab
-tab-options-account-settings = Налаштування акаунта
+tab-options-account-settings = Налаштування Облікового Запису
 # Strings for the "options" tab
 tab-options-account-settings-desc = Ви можете керувати налаштуваннями свого акаунта, наприклад, змінити електронну пошту або пароль, через наш веб-сайт.
 # Strings for the "options" tab
