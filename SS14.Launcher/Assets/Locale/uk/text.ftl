@@ -1,9 +1,9 @@
 # Localization for the "add favorite server" dialog window
 add-favorite-window-title = Додати Обраний Сервер
 # Strings for the drop-down window to manage your active account
-account-drop-down-none-selected = Акаунт не вибрано
+account-drop-down-none-selected = Акаунт не обрано
 # Strings for the drop-down window to manage your active account
-account-drop-down-not-logged-in = Ви не ввійшли
+account-drop-down-not-logged-in = Ви не уввійшли
 # Strings for the drop-down window to manage your active account
 account-drop-down-log-out = Вийти
 # Strings for the drop-down window to manage your active account
@@ -11,15 +11,15 @@ account-drop-down-log-out-of = Вийти з акаунта { $name }
 # Strings for the drop-down window to manage your active account
 account-drop-down-switch-account = Змінити акаунт:
 # Strings for the drop-down window to manage your active account
-account-drop-down-select-account = Вибрати акаунт:
+account-drop-down-select-account = Обрати акаунт:
 # Strings for the drop-down window to manage your active account
 account-drop-down-add-account = Додати акаунт
 # Localization for the "add favorite server" dialog window
-add-favorite-window-address-invalid = Адрес недійсний
+add-favorite-window-address-invalid = Адреса недійсна
 # Localization for the "add favorite server" dialog window
 add-favorite-window-label-name = Назва:
 # Localization for the "add favorite server" dialog window
-add-favorite-window-label-address = Адрес:
+add-favorite-window-label-address = Адреса:
 # Localization for the "add favorite server" dialog window
 # 'Example' name shown as a watermark in the name input box
 add-favorite-window-example-name = Хонк Станція
@@ -31,7 +31,7 @@ connecting-update-status-loading-into-db = Зберігання асетів у 
 # Used for contents of each language button.
 language-selector-language = { $languageName } ({ $englishName })
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-title-connecting = Підключення…
+connecting-title-connecting = Під'єднання…
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-title-content-bundle = Завантаження…
 # Strings for the "connecting" menu that appears when connecting to a server.
@@ -39,11 +39,11 @@ connecting-cancel = Відмінити
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-none = Початок з'єднання…
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-status-update-error = Сталася помилка під час завантаження контенту сервера. Будь ласка, зверніться за підтримкою в Discord, якщо проблема не зникне.
+connecting-status-update-error = Сталася помилка під час завантаження контенту сервера. Будь ласка, зверніться за підтримкою у Discord, якщо проблема не зникне.
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-updating = Оновлення: { $status }
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-status-connecting = Отримання інформації з'єднання з сервера…
+connecting-status-connecting = Отримання інформації о з'єднанні з сервером…
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-connection-failed = Не вдалося з'єднатися з сервером!
 # Strings for the "connecting" menu that appears when connecting to a server.
@@ -51,7 +51,7 @@ connecting-status-starting-client = Запуск клієнта…
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-not-a-content-bundle = Файл не є дійсним набором контенту!
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-status-client-crashed = Здається, клієнт зазнав збою під час запуску. Якщо проблема не зникне, зверніться за підтримкою в Discord або GitHub.
+connecting-status-client-crashed = Здається, клієнт зазнав збою під час запуску. Якщо проблема не зникне, зверніться за підтримкою у Discord або GitHub.
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-update-status-checking-client-update = Перевірка оновлення контенту сервера…
 # Strings for the "connecting" menu that appears when connecting to a server.
@@ -101,13 +101,13 @@ login-confirmation-button-cancel = Відмінити
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-update-status-unknown = Ви не повинні цього бачити
 # Strings for the "direct connect" dialog window.
-direct-connect-title = Пряме підключення…
+direct-connect-title = Пряме з'єднання…
 # Strings for the "direct connect" dialog window.
 direct-connect-text = Введіть адрес сервера для підключення:
 # Strings for the "direct connect" dialog window.
-direct-connect-connect = Підключитися
+direct-connect-connect = Під'єднатися
 # Strings for the "direct connect" dialog window.
-direct-connect-address-invalid = Адрес недійсний
+direct-connect-address-invalid = Адреса недійсна
 # Strings for the "hub settings" dialog window.
 hub-settings-title = Налаштування Хабу
 # Strings for the "hub settings" dialog window.
@@ -137,9 +137,9 @@ hub-settings-warning-duplicate = Дубльовані хаби
 # Strings for the login screen
 login-log-launcher = Логувати Лаунчер
 # Error messages for login
-login-error-account-2fa-required = Потрібна 2-факторна автентифікація
+login-error-account-2fa-required = Потрібна 2х-факторна автентифікація
 # Error messages for login
-login-error-account-2fa-invalid = Код 2-факторної автентифікації невірний
+login-error-account-2fa-invalid = Код 2х-факторної автентифікації невірний
 # Error messages for login
 login-error-account-account-locked = Акаунт заблоковано. Будь ласка, зв'яжіться з нами, якщо ви вважаєте, що це помилка.
 # Error messages for login
@@ -147,7 +147,7 @@ login-error-unknown = Невідома помилка
 # Error messages for login
 login-errors-button-ok = Ок
 # Strings for 2FA login
-login-2fa-title = Потрібна 2-факторна автентифікація
+login-2fa-title = Потрібна 2х-факторна автентифікація
 # Strings for 2FA login
 login-2fa-message = Будь ласка, введіть код автентифікації з вашого додатку.
 # Strings for 2FA login
@@ -279,7 +279,7 @@ main-window-busy-checking-login-status = Оновлення статусу вх�
 # Strings for the general main window layout of the launcher
 main-window-busy-checking-account-status = Перевірка стану акаунта
 # Strings for the general main window layout of the launcher
-main-window-error-connecting-auth-server = Помилка підключення до сервера автентифікації
+main-window-error-connecting-auth-server = Помилка з'єднання з сервером автентифікації
 # Long region names for server tag filters (shown in tooltip)
 region-africa-central = Центральна Африка
 # Long region names for server tag filters (shown in tooltip)
@@ -355,7 +355,7 @@ region-short-south-america-west = Пд. Америка - Захід
 # Strings for the "servers" tab
 tab-servers-title = Сервери
 # Strings for the "servers" tab
-tab-servers-refresh = Обновити
+tab-servers-refresh = Оновити
 # Strings for the "servers" tab
 filters = Фільтри ({ $filteredServers } / { $totalServers })
 # Strings for the "servers" tab
@@ -423,7 +423,7 @@ filters-rp-high = Високий
 # Server roleplay levels for the filters menu
 filters-rp-high-desc = Високий
 # Strings for entries in the server list (including home page)
-server-entry-connect = Підключитися
+server-entry-connect = Під'єднатися
 # Strings for entries in the server list (including home page)
 server-entry-add-favorite = Додати в обрані
 # Strings for entries in the server list (including home page)
@@ -450,7 +450,7 @@ tab-home-add-favorite = Додати в обрані…
 # Strings for the "home" tab
 tab-home-refresh = Оновити
 # Strings for the "home" tab
-tab-home-direct-connect = Пряме підключення до сервера…
+tab-home-direct-connect = Пряме під'єднання до сервера…
 # Strings for the "home" tab
 tab-home-run-content-bundle = Запустити контент набору/повтору
 # Strings for the "home" tab
@@ -466,7 +466,7 @@ tab-options-title = Налаштування
 # Strings for the "options" tab
 tab-options-flip = { "*" }переворот
 # Strings for the "options" tab
-tab-options-clear-engines = Очистити встановлені движки
+tab-options-clear-engines = Очистити встановлені рушії
 # Strings for the "options" tab
 tab-options-clear-content = Очистити встановлений контент серверів
 # Strings for the "options" tab
@@ -514,14 +514,14 @@ server-entry-raise = Підняти до верху
 tab-development-enable-engine-override-desc = Замінити шлях для завантаження архівів рушія з (release/ в RobustToolbox)
 # Strings for the "Development" tab
 # These aren't shown to users so they're not very important
-tab-development-disable-signing = Відключити перевірки сігнатури движка
+tab-development-disable-signing = Вимкнути перевірку сигнатур рушія
 # Strings for the "Development" tab
 # These aren't shown to users so they're not very important
-tab-development-disable-signing-desc = { "[" }DEV ONLY] Відключає перевірку сигнатур движка. НЕ ВМИКАЙТЕ, ЯКЩО ВИ ТОЧНО НЕ ЗНАЄТЕ, ЩО РОБИТЕ.
+tab-development-disable-signing-desc = { "[" }DEV ONLY] Вимикає перевірку сигнатур рушія. НЕ ВМИКАЙТЕ, ЯКЩО ВИ ТОЧНО НЕ ЗНАЄТЕ, ЩО РОБИТЕ.
 # Strings for the "Development" tab
 # These aren't shown to users so they're not very important
-tab-development-enable-engine-override = Увімкнути перезапис движка
+tab-development-enable-engine-override = Увімкнути перезапис рушія
 # Strings for the "options" tab
-tab-options-disable-signing = Віключити перевірки сигнатур движка
+tab-options-disable-signing = Вимкнути перевірки сигнатур рушія
 # Strings for the "options" tab
-tab-options-disable-signing-desc = { "[" }DEV ONLY] Відключає перевірку сигнатур движка. НЕ ВМИКАЙТЕ, ЯКЩО ВИ ТОЧНО НЕ ЗНАЄТЕ, ЩО РОБИТЕ.
+tab-options-disable-signing-desc = { "[" }DEV ONLY] Вимикає перевірку сигнатур рушія. НЕ ВМИКАЙТЕ, ЯКЩО ВИ ТОЧНО НЕ ЗНАЄТЕ, ЩО РОБИТЕ.
