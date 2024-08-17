@@ -73,7 +73,7 @@ login-errors-button-ok = ОК
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-cancel = Отмена
 # Strings for the drop-down window to manage your active account
-account-drop-down-none-selected = Не выбран аккаунт
+account-drop-down-none-selected = Не switched accounts
 # Strings for the drop-down window to manage your active account
 account-drop-down-log-out = Выйти
 # Strings for the drop-down window to manage your active account
