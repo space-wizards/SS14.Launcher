@@ -401,7 +401,7 @@ filters-rp-high-desc = Hög
 # Strings for entries in the server list (including home page)
 server-entry-connect = Anslut
 # Strings for entries in the server list (including home page)
-server-entry-add-favorite = Lågg till favorit
+server-entry-add-favorite = Lägg till favorit
 # Strings for entries in the server list (including home page)
 server-entry-remove-favorite = Ta bort favorit
 # Strings for entries in the server list (including home page)
