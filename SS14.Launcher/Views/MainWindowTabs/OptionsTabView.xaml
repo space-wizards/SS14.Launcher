@@ -66,6 +66,5 @@
                    Margin="8" />
       </StackPanel>
     </DockPanel>
-
   </ScrollViewer>
 </UserControl>
