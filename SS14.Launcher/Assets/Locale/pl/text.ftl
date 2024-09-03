@@ -460,3 +460,9 @@ server-entry-description-offline = Nie można skontaktować się z serwerem
 # Strings for the "Development" tab
 # These aren't shown to users so they're not very important
 tab-development-disable-signing-desc = { "[" }TYLKO DLA DEWELOPERÓW] Wyłącza weryfikację sygnatur silnika. NIE WŁĄCZAJ, CHYBA ŻE WIESZ DOKŁADNIE, CO ROBISZ.
+# Strings for entries in the server list (including home page)
+server-entry-player-count =
+    { $players } / { $max ->
+        [0] ∞
+       *[1] { $max }
+    }
