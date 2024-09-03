@@ -478,3 +478,7 @@ tab-development-enable-engine-override-desc = Nadpisywanie ścięzki do wczytani
 tab-home-favorites-guide = Oznacz serwery jako ulubione, aby mieć do nich ułatwiony dostęp
 # Strings for the "options" tab
 tab-options-log-client = Rejestruj klienta
+# Strings for the "news" tab
+tab-news-title = Aktualności
+# Strings for the "servers" tab
+tab-servers-list-status-partial-error = Nie udało się pobrać niektórych lub wszystkich list serwerów. Upewnij się, że konfiguracja huba jest prawidłowa.
