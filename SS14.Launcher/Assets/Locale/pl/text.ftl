@@ -493,3 +493,7 @@ tab-options-open-log-directory = Otwórz folder z rejestrami
 tab-servers-list-status-none = Nie ma publicznych serwerów. Upewnij się, że Twoja konfiguracja list jest poprawna.
 # Strings for the server filters menu
 filters-title-hub = Lista Serwerów
+# Strings for the "options" tab
+tab-options-compatibility-mode-desc = To wykorzystuje OpenGL ES 2 (w razie potrzeby za pośrednictwem ANGLE), który jest mniej podatny na błędy sterowników. Wypróbuj tę opcję, jeśli doświadczasz problemów graficznych lub awarii.
+# Strings for the "options" tab
+tab-options-log-client-desc = Umożliwia logowanie jakichkolwiek wyników klienta gry. Przydatne dla deweloperów.
