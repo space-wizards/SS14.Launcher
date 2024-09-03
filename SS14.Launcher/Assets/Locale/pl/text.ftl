@@ -504,4 +504,26 @@ tab-options-log-launcher-desc = Umożliwia rejestracje programu uruchamiającego
 # Strings for the "options" tab
 tab-options-verbose-launcher-logging = Szczegółowa rejestracja programu uruchamiającego
 # Strings for the "options" tab
-tab-options-seasonal-branding = Sezonowy branding
+tab-options-seasonal-branding = Sezonowy Branding
+# Strings for the "hub settings" dialog window.
+hub-settings-button-add-tooltip = Dodaj listę serwerów
+# Strings for the "hub settings" dialog window.
+hub-settings-button-remove-tooltip = Usuń listę serwerów
+# Strings for the "hub settings" dialog window.
+hub-settings-warning-invalid = Nieprawidłowa lista (Nie zapomnij o http(s)://)
+# Strings for the "hub settings" dialog window.
+hub-settings-warning-duplicate = Zduplikowane listy
+# Strings for the "options" tab
+tab-options-hub-settings = Ustawienia Listy Serwerów
+# Strings for the "options" tab
+tab-options-hub-settings-desc = Zmień listy z którywch chcesz pobierać serwery.
+# Strings for the "options" tab
+tab-options-disable-signing-desc = { "[" } TYLKO DLA DEWELOPERÓW] Wyłącza weryfikację sygnatur silnika. NIE WŁĄCZAJ, JEŚLI NIE WIESZ CO ROBISZ.
+# Strings for the "hub settings" dialog window.
+hub-settings-title = Ustawienia Listy Serwerów
+# Strings for the "hub settings" dialog window.
+hub-settings-explanation = Tutaj możesz dodać dodatkowe listy z których będą pobierane serwery gier. Należy dodać tylko zaufane listy, ponieważ mogą one dodawać niepożądane serwery. Kolejność list ma znaczenie; jeżeli dwie listy reklamują ten sam serwer gry, ta z wyższym priorytetem (wyżej na liście) będzia miała pierwszeństwo.
+# Strings for the general main window layout of the launcher
+main-window-out-of-date-download-manual = Pobierz (ręcznie)
+# Strings for the general main window layout of the launcher
+main-window-drag-drop-prompt = Upuść aby odtworzyć grę
