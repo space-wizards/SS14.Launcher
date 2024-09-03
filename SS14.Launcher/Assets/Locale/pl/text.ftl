@@ -423,3 +423,17 @@ login-confirmation-button-confirm = Potwierdziłem/am swoje konto
 main-window-out-of-date-desc-steam =
     Ten program uruchamiający jest nieaktualny.
     Zezwól platformie Steam na aktualizację gry.
+# Strings for the "login" view on login
+login-login-button-resend = Ponownie wyślij potwierdzenie e-mail
+# Strings for the "login" view on login
+login-login-error-title = Nie można się zalogować
+# Strings for the general main window layout of the launcher
+main-window-early-access-desc = Space Station 14 wciąż znajduje się w fazie alfa. Mamy nadzieję, że spodoba Ci się to, co zobaczysz, a może nawet zostaniesz na dłużej, ale pamiętaj, by na ten moment mieć skromne oczekiwania.
+# Strings for the general main window layout of the launcher
+main-window-out-of-date = Nieaktualny program uruchamiający
+# Strings for the general main window layout of the launcher
+main-window-out-of-date-desc =
+    Ten program uruchamiający jest nieaktualny.
+    Pobierz nowszą wersję z naszej strony internetowej.
+# Short region names for server tag filters (shown in filter check box)
+region-short-north-america-central = NA Central
