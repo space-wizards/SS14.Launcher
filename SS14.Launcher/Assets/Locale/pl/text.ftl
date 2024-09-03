@@ -496,4 +496,10 @@ filters-title-hub = Lista Serwerów
 # Strings for the "options" tab
 tab-options-compatibility-mode-desc = To wykorzystuje OpenGL ES 2 (w razie potrzeby za pośrednictwem ANGLE), który jest mniej podatny na błędy sterowników. Wypróbuj tę opcję, jeśli doświadczasz problemów graficznych lub awarii.
 # Strings for the "options" tab
-tab-options-log-client-desc = Umożliwia logowanie jakichkolwiek wyników klienta gry. Przydatne dla deweloperów.
+tab-options-log-client-desc = Umożliwia rejestrowanie jakichkolwiek wyników klienta gry. Przydatne dla deweloperów.
+# Strings for the "options" tab
+tab-options-log-launcher = Rejestruj program uruchamiający
+# Strings for the "options" tab
+tab-options-log-launcher-desc = Umożliwia rejestracje programu uruchamiającego. Przydatne dla deweloperów. (wymagany restart programu uruchamiającego)
+# Strings for the "options" tab
+tab-options-verbose-launcher-logging = Szczegółowa rejestracja programu uruchamiającego
