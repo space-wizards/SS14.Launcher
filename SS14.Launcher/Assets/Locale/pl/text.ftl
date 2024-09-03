@@ -503,3 +503,5 @@ tab-options-log-launcher = Rejestruj program uruchamiający
 tab-options-log-launcher-desc = Umożliwia rejestracje programu uruchamiającego. Przydatne dla deweloperów. (wymagany restart programu uruchamiającego)
 # Strings for the "options" tab
 tab-options-verbose-launcher-logging = Szczegółowa rejestracja programu uruchamiającego
+# Strings for the "options" tab
+tab-options-seasonal-branding = Sezonowy branding
