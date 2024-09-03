@@ -436,6 +436,16 @@ main-window-out-of-date-desc =
     Ten program uruchamiający jest nieaktualny.
     Pobierz nowszą wersję z naszej strony internetowej.
 # Short region names for server tag filters (shown in filter check box)
-region-short-north-america-central = NA Central
+region-short-north-america-central = Północna Ameryka Środkowa
 # Strings for the "login" view on login
 login-login-show-password = Pokaż Hasło
+# Short region names for server tag filters (shown in filter check box)
+region-short-north-america-east = Północna Ameryka Wschodnia
+# Short region names for server tag filters (shown in filter check box)
+region-short-south-america-west = Południowa Ameryka Zachodnia
+# Short region names for server tag filters (shown in filter check box)
+region-short-south-america-east = Południowa Ameryka Wschodnia
+# Short region names for server tag filters (shown in filter check box)
+region-short-north-america-west = Północna Ameryka Zachodnia
+# Short region names for server tag filters (shown in filter check box)
+region-short-south-america-south = Południowa Ameryka Południowa
