@@ -459,7 +459,7 @@ filters-unspecified-desc = Nieokreślone
 server-entry-description-offline = Nie można skontaktować się z serwerem
 # Strings for the "Development" tab
 # These aren't shown to users so they're not very important
-tab-development-disable-signing-desc = { "[" }TYLKO DLA DEWELOPERÓW] Wyłącza weryfikację sygnatur silnika. NIE WŁĄCZAJ, CHYBA ŻE WIESZ DOKŁADNIE, CO ROBISZ.
+tab-development-disable-signing-desc = { "[" }TYLKO DLA DEWELOPERÓW] Wyłącza weryfikację sygnatur silnika. NIE WŁĄCZAJ, JEŻELI NIE WIESZ CO ROBISZ.
 # Strings for entries in the server list (including home page)
 server-entry-player-count =
     { $players } / { $max ->
@@ -468,3 +468,9 @@ server-entry-player-count =
     }
 # Strings for the server filters menu
 filters-title-rp = Poziom Role-play
+# Strings for the "Development" tab
+# These aren't shown to users so they're not very important
+tab-development-enable-engine-override = Włącz nadpisywanie silnika
+# Strings for the "Development" tab
+# These aren't shown to users so they're not very important
+tab-development-enable-engine-override-desc = Nadpisywanie ścięzki do wczytania plików zip silnika (release/ w RobustToolbox)
