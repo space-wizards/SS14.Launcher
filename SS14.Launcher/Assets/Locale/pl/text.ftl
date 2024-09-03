@@ -481,6 +481,15 @@ tab-options-log-client = Rejestruj klienta
 # Strings for the "news" tab
 tab-news-title = Aktualności
 # Strings for the "servers" tab
-tab-servers-list-status-partial-error = Nie udało się pobrać niektórych lub wszystkich list serwerów. Upewnij się, że konfiguracja huba jest prawidłowa.
+tab-servers-list-status-partial-error = Nie udało się pobrać niektórych lub wszystkich list serwerów. Upewnij się, że konfiguracja list jest prawidłowa.
 # Strings for the "options" tab
 tab-options-flip = { "*" }obrót
+# Strings for the "Development" tab
+# These aren't shown to users so they're not very important
+tab-development-title-override = { "[" }DEV (nadpisywanie aktywne!!!)]
+# Strings for the "options" tab
+tab-options-open-log-directory = Otwórz folder z rejestrami
+# Strings for the "servers" tab
+tab-servers-list-status-none = Nie ma publicznych serwerów. Upewnij się, że Twoja konfiguracja list jest poprawna.
+# Strings for the server filters menu
+filters-title-hub = Lista Serwerów
