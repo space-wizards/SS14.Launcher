@@ -392,3 +392,6 @@ connecting-status-not-a-content-bundle = Plik nie jest poprawnym pakietem treśc
 connecting-status-connection-failed = Połączenie z serwerem nie powiodło się!
 # Strings for entries in the server list (including home page)
 server-entry-fetching = Pobieranie…
+# Localization for the "add favorite server" dialog window
+# 'Example' name shown as a watermark in the name input box
+add-favorite-window-example-name = Stacja Honk
