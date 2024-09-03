@@ -451,3 +451,12 @@ region-short-north-america-west = Północna Ameryka Zachodnia
 region-short-south-america-south = Południowa Ameryka Południowa
 # Strings for the "servers" tab
 filters = Filtry ({ $filteredServers } / { $totalServers })
+# Strings for the server filters menu
+filters-unspecified = Nieokreślone
+# Strings for the server filters menu
+filters-unspecified-desc = Nieokreślone
+# Strings for entries in the server list (including home page)
+server-entry-description-offline = Nie można skontaktować się z serwerem
+# Strings for the "Development" tab
+# These aren't shown to users so they're not very important
+tab-development-disable-signing-desc = { "[" }TYLKO DLA DEWELOPERÓW] Wyłącza weryfikację sygnatur silnika. NIE WŁĄCZAJ, CHYBA ŻE WIESZ DOKŁADNIE, CO ROBISZ.
