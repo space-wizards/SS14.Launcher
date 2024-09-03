@@ -449,3 +449,5 @@ region-short-south-america-east = Południowa Ameryka Wschodnia
 region-short-north-america-west = Północna Ameryka Zachodnia
 # Short region names for server tag filters (shown in filter check box)
 region-short-south-america-south = Południowa Ameryka Południowa
+# Strings for the "servers" tab
+filters = Filtry ({ $filteredServers } / { $totalServers })
