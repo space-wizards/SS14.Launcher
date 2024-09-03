@@ -399,3 +399,7 @@ add-favorite-window-example-name = Stacja Honk
 connecting-status-updating = Aktualizowanie: { $status }
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-connecting = Pobieranie informacji o połączeniu z serwerem…
+# Strings for the "connecting" menu that appears when connecting to a server.
+connecting-status-starting-client = Uruchamianie klienta…
+# Strings for the drop-down window to manage your active account
+account-drop-down-switch-account = Przełącz konto:
