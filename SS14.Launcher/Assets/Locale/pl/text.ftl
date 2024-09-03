@@ -395,3 +395,7 @@ server-entry-fetching = Pobieranie…
 # Localization for the "add favorite server" dialog window
 # 'Example' name shown as a watermark in the name input box
 add-favorite-window-example-name = Stacja Honk
+# Strings for the "connecting" menu that appears when connecting to a server.
+connecting-status-updating = Aktualizowanie: { $status }
+# Strings for the "connecting" menu that appears when connecting to a server.
+connecting-status-connecting = Pobieranie informacji o połączeniu z serwerem…
