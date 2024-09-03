@@ -437,3 +437,5 @@ main-window-out-of-date-desc =
     Pobierz nowszą wersję z naszej strony internetowej.
 # Short region names for server tag filters (shown in filter check box)
 region-short-north-america-central = NA Central
+# Strings for the "login" view on login
+login-login-show-password = Pokaż Hasło
