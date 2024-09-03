@@ -466,3 +466,5 @@ server-entry-player-count =
         [0] ∞
        *[1] { $max }
     }
+# Strings for the server filters menu
+filters-title-rp = Poziom Role-play
