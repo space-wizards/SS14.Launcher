@@ -474,3 +474,5 @@ tab-development-enable-engine-override = Włącz nadpisywanie silnika
 # Strings for the "Development" tab
 # These aren't shown to users so they're not very important
 tab-development-enable-engine-override-desc = Nadpisywanie ścięzki do wczytania plików zip silnika (release/ w RobustToolbox)
+# Strings for the "home" tab
+tab-home-favorites-guide = Oznacz serwery jako ulubione, aby tutaj mieć ułatwiony do nich dostęp
