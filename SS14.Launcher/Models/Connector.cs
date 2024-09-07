@@ -467,13 +467,6 @@ public class Connector : ReactiveObject
         EnvVar("DOTNET_TieredPGO", "1");
         EnvVar("DOTNET_ReadyToRun", "0");
 
-        if (OperatingSystem.IsLinux())
-        {
-            // Work around https://github.com/space-wizards/RobustToolbox/issues/2563
-            // Yuck.
-            EnvVar("GLIBC_TUNABLES", "glibc.rtld.dynamic_sort=1");
-        }
-
         ConfigureMultiWindow(launchInfo, startInfo);
 
         // DON'T ENABLE THIS THE LOADER USES THE LAUNCHER .NET VERSION ALWAYS SO ROLLFORWARD SHOULDN'T BE SPECIFIED.
