@@ -136,9 +136,7 @@
       <TextBlock Text="{loc:Loc main-window-drag-drop-prompt}" />
     </ContentControl>
 
-    <!-- > margin 730 -->
-    <!-- Oh god this sucks I will be turned to chicken nuggets by PJB -->
-    <TextBlock IsVisible="{Binding LoggedIn}" Text="{Binding Version}"
-               VerticalAlignment="Bottom" Classes="SubText" Margin="730,0,0,8"/>
+    <TextBlock Text="{Binding Version}" HorizontalAlignment="Right"
+               VerticalAlignment="Bottom" Classes="SubText" Margin="6"/>
   </Panel>
 </UserControl>
