@@ -20,7 +20,6 @@ using SS14.Launcher.Models.Data;
 using SS14.Launcher.Models.EngineManager;
 using SS14.Launcher.Models.Logins;
 using SS14.Launcher.Utility;
-using SS14.Launcher.ViewModels.MainWindowTabs;
 
 namespace SS14.Launcher.Models;
 
