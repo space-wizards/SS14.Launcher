@@ -224,15 +224,6 @@ public class Connector : ReactiveObject
     {
         var cVars = new List<(string, string)>();
 
-        var disableIncompatibleMacOS = OperatingSystem.IsMacOS();
-
-        if (disableIncompatibleMacOS)
-        {
-            // MacOS does not support Compatibility mode due to not having OpenGL ES 2. If its enabled the game will not launch.
-            _cfg.SetCVar(CVars.CompatMode, false);
-            _cfg.CommitConfig();
-        }
-
         if (info != null && info.AuthInformation.Mode != AuthMode.Disabled && _loginManager.ActiveAccount != null)
         {
             var account = _loginManager.ActiveAccount;
@@ -252,7 +243,7 @@ public class Connector : ReactiveObject
                 "--username", _loginManager.ActiveAccount?.Username ?? ConfigConstants.FallbackUsername,
 
                 // GLES2 forcing or using default fallback
-                "--cvar", $"display.compat={_cfg.GetCVar(CVars.CompatMode)}",
+                "--cvar", $"display.compat={_cfg.GetCVar(CVars.CompatMode) && !OperatingSystem.IsMacOS()}",
 
                 // Tell game we are launcher
                 "--cvar", "launch.launcher=true"
