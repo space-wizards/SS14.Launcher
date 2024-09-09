@@ -28,6 +28,8 @@ internal static class LauncherDiagnostics
             "Processor: {ProcessorCount}x {ProcessorModel}",
             Environment.ProcessorCount,
             GetProcessorModel());
+        Log.Information("System Memory: {TotalMemory} MiB",
+            GC.GetGCMemoryInfo().TotalAvailableMemoryBytes / 1024 / 1024);
 
         Log.Information("SQLite version: {SqliteVersion}", raw.sqlite3_libversion().utf8_to_string());
     }

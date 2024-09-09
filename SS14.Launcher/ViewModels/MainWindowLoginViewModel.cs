@@ -38,8 +38,6 @@ public class MainWindowLoginViewModel : ViewModelBase
         SwitchToLogin();
     }
 
-    public string Version => $"v{LauncherVersion.Version}";
-
     public void SwitchToLogin()
     {
         Screen = new LoginViewModel(this, _authApi, _loginMgr, _cfg);

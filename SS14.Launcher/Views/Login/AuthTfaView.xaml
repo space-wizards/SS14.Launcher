@@ -11,7 +11,7 @@
   </Design.DataContext>
 
   <DockPanel LastChildFill="False">
-    <TextBlock HorizontalAlignment="Center" DockPanel.Dock="Top" Classes="NanoHeadingMedium" Text="{loc:Loc login-2fa-input-title}" />
+    <TextBlock HorizontalAlignment="Center" DockPanel.Dock="Top" Classes="NanoHeadingMedium" Text="{loc:Loc login-2fa-title}" />
 
     <TextBlock HorizontalAlignment="Center" DockPanel.Dock="Top" TextWrapping="Wrap" MaxWidth="400"
                Text="{loc:Loc login-2fa-message}" />

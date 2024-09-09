@@ -21,8 +21,6 @@
 
       <Button Content="{loc:Loc tab-options-open-log-directory}" DockPanel.Dock="Left" HorizontalAlignment="Left"
               Command="{Binding OpenLogDirectory}"/>
-      <TextBlock Text="{Binding Version}" DockPanel.Dock="Right" VerticalAlignment="Center" Margin="4"
-                 Classes="SubText" />
     </DockPanel>
     <Panel Background="{DynamicResource ThemeStripebackEdgeBrush}" MinHeight="2" DockPanel.Dock="Bottom" />
 

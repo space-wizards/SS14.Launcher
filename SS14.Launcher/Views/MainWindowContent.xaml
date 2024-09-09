@@ -135,5 +135,8 @@
     <ContentControl Classes="OverlayBox" Name="DragDropOverlay" IsVisible="False">
       <TextBlock Text="{loc:Loc main-window-drag-drop-prompt}" />
     </ContentControl>
+
+    <TextBlock Text="{Binding Version}" HorizontalAlignment="Right"
+               VerticalAlignment="Bottom" Classes="SubText" Margin="6"/>
   </Panel>
 </UserControl>

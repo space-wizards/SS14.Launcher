@@ -3,7 +3,7 @@ login-confirmation-confirmation-title = Подтверждение регист�
 # Strings for the "register confirmation" view on login
 login-confirmation-button-confirm = Я подтвердил свой аккаунт
 # Strings for the "register confirmation" view on login
-login-confirmation-busy = Вход...
+login-confirmation-busy = Вход…
 # Localization for the "add favorite server" dialog window
 # 'Example' name shown as a watermark in the name input box
 add-favorite-window-example-name = Honk Station
@@ -20,11 +20,11 @@ account-drop-down-log-out-of = Выйти из { $name }
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-title-connecting = Подключение…
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-status-update-error = Произошла ошибка во время загрузки сереврного контента. Пожалуйста, обратитесь в Discord за помощью, если проблема не исчезнет.
+connecting-status-update-error = Произошла ошибка во время загрузки серверного контента. Пожалуйста, обратитесь в Discord за помощью, если проблема не исчезнет.
 # Strings for the "hub settings" dialog window.
-hub-settings-explanation = Здесь вы можете добавлять дополнительные хабы для получения игровых серверов. Вы должны добавлять только хабы, которым вы доверятете, так как они могут подделывать игровые сервера других хабов. Порядок хабов важен. Если два хаба рекламируют сервер дважды, то приоритет будет иметь хаб с большим приоритетом (расположен выше в списке).
+hub-settings-explanation = Здесь вы можете добавлять дополнительные хабы для получения игровых серверов. Вы должны добавлять только хабы, которым вы доверяете, так как они могут подделывать игровые сервера других хабов. Порядок хабов важен. Если два хаба рекламируют сервер дважды, то приоритет будет иметь хаб с большим приоритетом (расположен выше в списке).
 # Long region names for server tag filters (shown in tooltip)
-region-north-america-west = Западная Северная Америка
+region-north-america-west = Северная Америка - Запад
 # Strings for the "hub settings" dialog window.
 hub-settings-warning-duplicate = Дублированные хабы
 # Error messages for login
@@ -36,7 +36,7 @@ region-central-america = Центральная Америка
 # Strings for the "servers" tab
 tab-servers-list-status-partial-error = Не удалось получить некоторые или все списки серверов. Убедитесь в правильности вашей настройки хабов.
 # Strings for the "servers" tab
-tab-servers-list-status-updating-master = Получение главного списка серверов...
+tab-servers-list-status-updating-master = Получение главного списка серверов…
 # Strings for the server filters menu
 filters-player-count-maximum-desc = Серверы с большим количеством игроков не будут показаны
 # Strings for the "login" view on login
@@ -48,7 +48,7 @@ main-window-out-of-date-desc =
 # Strings for the general main window layout of the launcher
 main-window-early-access-desc = Space Station 14 всё еще в стадии альфа-версии. Мы надеемся, вам нравится, что вы видите, и, возможно, вы даже останетесь здесь, однако постарайтесь пока что придержать свои скромные ожидания.
 # Long region names for server tag filters (shown in tooltip)
-region-north-america-east = Восточная Северная Америка
+region-north-america-east = Северная Америка - Восток
 # Strings for the "servers" tab
 filters = Фильтры ({ $filteredServers } / { $totalServers })
 # Strings for the "servers" tab
@@ -73,7 +73,7 @@ login-errors-button-ok = ОК
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-cancel = Отмена
 # Strings for the drop-down window to manage your active account
-account-drop-down-none-selected = Не выбран аккаунт
+account-drop-down-none-selected = Не switched accounts
 # Strings for the drop-down window to manage your active account
 account-drop-down-log-out = Выйти
 # Strings for the drop-down window to manage your active account
@@ -95,17 +95,17 @@ connecting-title-content-bundle = Загрузка…
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-updating = Обновление: { $status }
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-status-connecting = Получение информации о подключении от сервера...
+connecting-status-connecting = Получение информации о подключении от сервера…
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-connection-failed = Не удалось подключиться к серверу!
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-status-starting-client = Запуск клиента...
+connecting-status-starting-client = Запуск клиента…
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-not-a-content-bundle = Файл не является допустимым набором контента!
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-update-status-checking-client-update = Проверка на обновление серверного контента...
+connecting-update-status-checking-client-update = Проверка на обновление серверного контента…
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-update-status-fetching-manifest = Получение манифеста сервера...
+connecting-update-status-fetching-manifest = Получение манифеста сервера…
 # Strings for the "hub settings" dialog window.
 hub-settings-button-cancel = Отмена
 # Error messages for login
@@ -113,11 +113,11 @@ login-error-unknown = Неизвестная ошибка
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-update-status-ready = Обновление завершено!
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-update-status-checking-engine-modules = Проверка дополнительных зависимостей...
+connecting-update-status-checking-engine-modules = Проверка дополнительных зависимостей…
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-update-status-downloading-engine-modules = Скачивание дополнительных зависимостей...
+connecting-update-status-downloading-engine-modules = Скачивание дополнительных зависимостей…
 # Strings for the "direct connect" dialog window.
-direct-connect-title = Прямое подключение...
+direct-connect-title = Прямое подключение…
 # Strings for the "direct connect" dialog window.
 direct-connect-text = Введите адрес сервера для подключения:
 # Strings for the "direct connect" dialog window.
@@ -135,9 +135,9 @@ hub-settings-button-reset-tooltip = Сбросить к настройкам п�
 # Strings for the "hub settings" dialog window.
 hub-settings-button-add-tooltip = Добавить хаб
 # Strings for the "hub settings" dialog window.
-hub-settings-button-increase-priority-tooltip = Увеличить приоритет
+hub-settings-button-increase-priority-tooltip = Повысить приоритет
 # Strings for the "hub settings" dialog window.
-hub-settings-button-decrease-priority-tooltip = Уменьшить приоритет
+hub-settings-button-decrease-priority-tooltip = Понизить приоритет
 # Strings for the "hub settings" dialog window.
 hub-settings-heading-default = По умолчанию
 # Strings for the "hub settings" dialog window.
@@ -145,7 +145,7 @@ hub-settings-heading-custom = Пользовательские
 # Strings for the "hub settings" dialog window.
 hub-settings-warning-invalid = Неправильный хаб (не забудьте http(s)://)
 # Strings for the login screen
-login-log-launcher = Логировать ланучер
+login-log-launcher = Логировать лаунчер
 # Error messages for login
 login-error-invalid-credentials = Неправильные данные для входа
 # Error messages for login
@@ -191,7 +191,7 @@ login-forgot-email-watermark = Ваш e-mail адрес
 # Strings for the "forgot password" view on login
 login-forgot-button-submit = Отправить
 # Strings for the "forgot password" view on login
-login-forgot-busy-sending = Отправка e-mail письма...
+login-forgot-busy-sending = Отправка e-mail письма…
 # Strings for the "forgot password" view on login
 login-forgot-success-title = E-mail письмо для сброса отправлено
 # Strings for the "forgot password" view on login
@@ -200,6 +200,8 @@ login-forgot-success-message = Ссылка для сброса была отп�
 login-forgot-error = Ошибка
 # Strings for the "login" view on login
 login-login-title = Войти
+# Strings for the "login" view on login
+login-login-show-password = Показать пароль
 # Strings for the "login" view on login
 login-login-username-watermark = Имя пользователя или e-mail
 # Strings for the "login" view on login
@@ -211,7 +213,7 @@ login-login-button-forgot = Забыли пароль?
 # Strings for the "login" view on login
 login-login-button-register = Нет аккаунта? Зарегистрироваться!
 # Strings for the "login" view on login
-login-login-busy-logging-in = Вход...
+login-login-busy-logging-in = Вход…
 # Strings for the "login" view on login
 login-login-error-title = Не удалось войти
 # Strings for the general main window layout of the launcher
@@ -229,15 +231,15 @@ main-window-out-of-date-exit = Выйти
 # Strings for the general main window layout of the launcher
 main-window-out-of-date-download-manual = Скачать (вручную)
 # Strings for the general main window layout of the launcher
-main-window-early-access-title = Берегись!
+main-window-early-access-title = Внимание!
 # Strings for the general main window layout of the launcher
 main-window-early-access-accept = Понятно!
 # Strings for the general main window layout of the launcher
 main-window-drag-drop-prompt = Отпустите для запуска игры
 # Strings for the general main window layout of the launcher
-main-window-busy-checking-update = Проверка обновления лаунчера...
+main-window-busy-checking-update = Проверка обновления лаунчера…
 # Strings for the general main window layout of the launcher
-main-window-busy-checking-login-status = Обновление статуса входа...
+main-window-busy-checking-login-status = Обновление статуса входа…
 # Strings for the general main window layout of the launcher
 main-window-busy-checking-account-status = Проверка статуса аккаунта
 # Strings for the general main window layout of the launcher
@@ -267,15 +269,15 @@ region-greenland = Гренландия
 # Long region names for server tag filters (shown in tooltip)
 region-india = Индия
 # Long region names for server tag filters (shown in tooltip)
-region-middle-east = Средний Восток
+region-middle-east = Ближний Восток
 # Long region names for server tag filters (shown in tooltip)
 region-the-moon = Луна
 # Long region names for server tag filters (shown in tooltip)
-region-north-america-central = Центральная Северная Америка
+region-north-america-central = Северная Америка - Центр
 # Long region names for server tag filters (shown in tooltip)
 region-oceania = Океания
 # Long region names for server tag filters (shown in tooltip)
-region-south-america-east = Восточная Южная Америка
+region-south-america-east = Южная Америка - Восток
 # Short region names for server tag filters (shown in filter check box)
 region-short-africa-central = Центральная Африка
 # Short region names for server tag filters (shown in filter check box)
@@ -309,13 +311,13 @@ tab-servers-title = Серверы
 # Strings for the "servers" tab
 tab-servers-refresh = Обновить
 # Strings for the "servers" tab
-tab-servers-search-watermark = Поиск серверов...
+tab-servers-search-watermark = Поиск серверов…
 # Strings for the "servers" tab
 tab-servers-table-players = Игроки
 # Strings for the "servers" tab
 tab-servers-table-name = Название сервера
 # Strings for the "servers" tab
-tab-servers-list-status-none-filtered = Ни один сервер не удовлетворяет вашему поиску или фильтру.
+tab-servers-list-status-none-filtered = Нет серверов, удовлетворяющих вашему поиску или фильтру.
 # Strings for the "servers" tab
 tab-servers-list-status-none = Публичных серверов нет. Убедитесь в правильности вашей настройки хабов.
 # Strings for the server filters menu
@@ -379,9 +381,9 @@ server-entry-remove-favorite = Убрать из избранного
 # Strings for entries in the server list (including home page)
 server-entry-offline = OFFLINE
 # Strings for entries in the server list (including home page)
-server-entry-fetching = Получение...
+server-entry-fetching = Получение…
 # Strings for entries in the server list (including home page)
-server-entry-description-fetching = Получение статуса сервера...
+server-entry-description-fetching = Получение статуса сервера…
 # Strings for entries in the server list (including home page)
 server-entry-description-error = Произошла ошибка во время получения описания сервера
 # Strings for entries in the server list (including home page)
@@ -396,14 +398,132 @@ tab-home-title = Главная
 # Strings for the "home" tab
 tab-home-favorite-servers = Избранные серверы:
 # Strings for the "home" tab
-tab-home-add-favorite = Добавить в избранное...
+tab-home-add-favorite = Добавить в избранное…
 # Strings for the "home" tab
 tab-home-refresh = Обновить
 # Strings for the "home" tab
-tab-home-run-content-bundle = Запустить набор контента / потвор
+tab-home-run-content-bundle = Запустить набор контента / повтор
 # Strings for the "home" tab
-tab-home-go-to-servers-tab = Перейти к вкладке серверов
+tab-home-go-to-servers-tab = Перейти на вкладку серверов
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-status-none = Начинается подключение…
+connecting-status-none = Начало подключения…
 # Strings for the drop-down window to manage your active account
-account-drop-down-not-logged-in = Нет аккаунта
+account-drop-down-not-logged-in = Не выполнен вход
+# For the language selection menu.
+# Used for contents of each language button.
+language-selector-language = { $languageName } ({ $englishName })
+# Strings for the "Development" tab
+# These aren't shown to users so they're not very important
+tab-development-title-override = { "[" }DEV (перезапись активна!!!)]
+# Strings for the "Development" tab
+# These aren't shown to users so they're not very important
+tab-development-enable-engine-override = Включить перезапись движка
+# Strings for the "news" tab
+tab-news-title = Новости
+# Strings for the "news" tab
+tab-news-recent-news = Последние новости:
+# Strings for the "connecting" menu that appears when connecting to a server.
+connecting-update-status-downloading-engine = Загрузка контента сервера…
+# Long region names for server tag filters (shown in tooltip)
+region-south-america-west = Южная Америка - Запад
+# Strings for the "options" tab
+tab-options-hub-settings-desc = Изменить, какой хаб или хабы, вы хотите использовать для получения списка серверов.
+# Long region names for server tag filters (shown in tooltip)
+region-south-america-south = Южная Америка - Юг
+# Strings for the "options" tab
+tab-options-compatibility-mode-desc = Это использует OpenGL ES 2 (через ANGLE при необходимости), который менее вероятнее будет подвержен драйверным багам. Попробуйте это, если испытываете графические проблемы или вылеты.
+# Strings for the "forgot password" view on login
+login-forgot-button-back = Назад ко входу
+# Strings for the "connecting" menu that appears when connecting to a server.
+connecting-status-client-crashed = Клиент вылетает при запуске. Если вылеты повторяются, пожалуйста, обратитесь в Discord или Github за помощью.
+# Strings for the "connecting" menu that appears when connecting to a server.
+connecting-update-status-downloading-content = Загрузка контента сервера…
+# Strings for the "connecting" menu that appears when connecting to a server.
+connecting-update-status-verifying = Подтверждение целостности загрузки…
+# Strings for the "connecting" menu that appears when connecting to a server.
+connecting-update-status-culling-engine = Очистка старого контента…
+# Strings for the "connecting" menu that appears when connecting to a server.
+connecting-update-status-culling-content = Очистка старого контента сервера…
+# Strings for the "connecting" menu that appears when connecting to a server.
+connecting-update-status-committing-download = Синхронизация с диском…
+# Strings for the "connecting" menu that appears when connecting to a server.
+connecting-update-status-loading-into-db = Сохранение объектов в базе данных…
+# Strings for the "connecting" menu that appears when connecting to a server.
+connecting-update-status-loading-content-bundle = Загрузка набора контента…
+# Short region names for server tag filters (shown in filter check box)
+region-short-north-america-central = Сев. Америка - Центр
+# Short region names for server tag filters (shown in filter check box)
+region-short-north-america-east = Сев. Америка - Восток
+# Short region names for server tag filters (shown in filter check box)
+region-short-north-america-west = Сев. Америка - Запад
+# Short region names for server tag filters (shown in filter check box)
+region-short-south-america-east = Южн. Америка - Восток
+# Short region names for server tag filters (shown in filter check box)
+region-short-south-america-south = Южн. Америка - Юг
+# Short region names for server tag filters (shown in filter check box)
+region-short-south-america-west = Южн. Америка - Запад
+# Strings for the "Development" tab
+# These aren't shown to users so they're not very important
+tab-development-disable-signing-desc = { "[" }DEV ONLY] Отключает проверку подписей движка. НЕ ВКЛЮЧАЙТЕ, ЕСЛИ ВЫ НЕ ЗНАЕТЕ, ЧТО ДЕЛАЕТЕ.
+# Strings for the "Development" tab
+# These aren't shown to users so they're not very important
+tab-development-enable-engine-override-desc = Перезаписать путь до архивов загрузки движка из (release/ in RobustToolbox)
+# Strings for the "home" tab
+tab-home-direct-connect = Прямое подключение к серверу…
+# Strings for the "home" tab
+tab-home-favorites-guide = Помечайте серверы избранными для быстрого доступа к ним отсюда
+# Strings for the "options" tab
+tab-options-flip = { "*" }переворот
+# Strings for the "options" tab
+tab-options-compatibility-mode = Режим совместимости
+# Strings for the "options" tab
+tab-options-disable-signing = Отключить проверки сигнатур движка
+# Strings for the "options" tab
+tab-options-disable-signing-desc = { "[" }DEV ONLY] Отключает проверку подписей движка. НЕ ВКЛЮЧАЙТЕ, ЕСЛИ ВЫ НЕ ЗНАЕТЕ, ЧТО КОНКРЕТНО ВЫ ДЕЛАЕТЕ.
+# Strings for the "options" tab
+tab-options-hub-settings = Настройки хаба
+# For the language selection menu.
+# Text on the button that opens the menu.
+language-selector-label = Язык
+# For the language selection menu.
+# "Save" button.
+language-selector-save = Сохранить
+# For the language selection menu.
+# "Cancel" button.
+language-selector-cancel = Отмена
+# For the language selection menu.
+language-selector-help-translate = Хотите помочь с переводом? Вы можете!
+# For the language selection menu.
+language-selector-system-language = Язык системы ({ $languageName })
+# Strings for the "options" tab
+tab-options-clear-content = Очистить установленный серверный контент
+# Strings for the "options" tab
+tab-options-account-settings-desc = Вы можете изменить настройки вашего аккаунта, такие как e-mail адрес или пароль, на сайте.
+# Strings for the "options" tab
+tab-options-seasonal-branding-desc = Любые временные тематические иконки и логотипы, которые мы придумаем.
+# Strings for the "news" tab
+tab-news-pulling-news = Получение новостей…
+# Strings for the "options" tab
+tab-options-title = Настройки
+# Strings for the "options" tab
+tab-options-clear-engines = Очистить установленные движки
+# Strings for the "options" tab
+tab-options-open-log-directory = Открыть папку логов
+# Strings for the "options" tab
+tab-options-account-settings = Настройки аккаунта
+# Strings for the "options" tab
+tab-options-log-client = Логировать клиент
+# Strings for the "options" tab
+tab-options-log-client-desc = Влючает логирование любого вывода клиента игры. Полезно для разработчиков.
+# Strings for the "options" tab
+tab-options-log-launcher = Логировать лаунчер
+# Strings for the "options" tab
+tab-options-log-launcher-desc = Включает логирование лаунчера. Полезно для разработчиков. (требуется перезапустить лаунчер)
+# Strings for the "options" tab
+tab-options-verbose-launcher-logging = Подробное логирование лаунчера
+# Strings for the "options" tab
+tab-options-verbose-launcher-logging-desc = Для тех случаев, когда разработчики *очень* озадачены вашей проблемой. (требуется перезапустить лаунчер)
+# Strings for the "options" tab
+tab-options-seasonal-branding = Сезонное оформление
+# Strings for entries in the server list (including home page)
+server-entry-raise = Поднять на самый верх

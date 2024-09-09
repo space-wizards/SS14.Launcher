@@ -168,6 +168,9 @@ public class Connector : ReactiveObject
             //
 
             installation = await InstallContentBundleAsync(zipFile, zipHash, metadata, cancel);
+
+            if (metadata.ServerGC == true)
+                installation = installation with { ServerGC = true };
         }
 
         Log.Debug("Launching client");
@@ -463,12 +466,8 @@ public class Connector : ReactiveObject
         EnvVar("DOTNET_TieredPGO", "1");
         EnvVar("DOTNET_ReadyToRun", "0");
 
-        if (OperatingSystem.IsLinux())
-        {
-            // Work around https://github.com/space-wizards/RobustToolbox/issues/2563
-            // Yuck.
-            EnvVar("GLIBC_TUNABLES", "glibc.rtld.dynamic_sort=1");
-        }
+        if (launchInfo.ServerGC)
+            EnvVar("DOTNET_gcServer", "1");
 
         ConfigureMultiWindow(launchInfo, startInfo);
 
@@ -691,6 +690,7 @@ public class Connector : ReactiveObject
 }
 
 public sealed record ContentBundleMetadata(
+    [property: JsonPropertyName("server_gc")] bool? ServerGC,
     [property: JsonPropertyName("engine_version")] string EngineVersion,
     [property: JsonPropertyName("base_build")] ContentBundleBaseBuild? BaseBuild
 );
