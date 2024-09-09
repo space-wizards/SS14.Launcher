@@ -24,18 +24,7 @@ public class OptionsTabViewModel : MainWindowTabViewModel
         _contentManager = Locator.Current.GetRequiredService<ContentManager>();
 
         DisableIncompatibleMacOS = OperatingSystem.IsMacOS();
-        CheckIncompatible();
     }
-
-    private void CheckIncompatible()
-    {
-        // MacOS
-        if (DisableIncompatibleMacOS)
-        {
-            CompatMode = false;
-        }
-    }
-
     public bool DisableIncompatibleMacOS { get; }
 
 #if RELEASE

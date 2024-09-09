@@ -20,6 +20,7 @@ using SS14.Launcher.Models.Data;
 using SS14.Launcher.Models.EngineManager;
 using SS14.Launcher.Models.Logins;
 using SS14.Launcher.Utility;
+using SS14.Launcher.ViewModels.MainWindowTabs;
 
 namespace SS14.Launcher.Models;
 
@@ -223,6 +224,15 @@ public class Connector : ReactiveObject
         bool contentBundle)
     {
         var cVars = new List<(string, string)>();
+
+        var disableIncompatibleMacOS = OperatingSystem.IsMacOS();
+
+        if (disableIncompatibleMacOS)
+        {
+            // MacOS does not support Compatibility mode due to not having OpenGL ES 2. If its enabled the game will not launch.
+            _cfg.SetCVar(CVars.CompatMode, false);
+            _cfg.CommitConfig();
+        }
 
         if (info != null && info.AuthInformation.Mode != AuthMode.Disabled && _loginManager.ActiveAccount != null)
         {
