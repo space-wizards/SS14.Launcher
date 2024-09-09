@@ -20,9 +20,6 @@
       <views:LanguageSelector DockPanel.Dock="Left" VerticalAlignment="Center" Margin="4" DataContext="{Binding LanguageSelector}" />
 
       <CheckBox DockPanel.Dock="Left" VerticalAlignment="Center" Margin="4" IsChecked="{Binding LogLauncher}" Content="{loc:Loc login-log-launcher}" />
-
-      <TextBlock Text="{Binding Version}" DockPanel.Dock="Right" VerticalAlignment="Center" Margin="4"
-                 Classes="SubText" />
     </DockPanel>
     <Panel Background="{DynamicResource ThemeStripebackEdgeBrush}" MinHeight="2" DockPanel.Dock="Bottom" />
 
