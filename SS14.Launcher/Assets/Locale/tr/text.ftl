@@ -315,7 +315,7 @@ tab-options-clear-content = Yüklenmiş sunucu bilgilerini temizle
 # Strings for the "options" tab
 tab-options-compatibility-mode = Uyumluluk Modu
 # Strings for the "options" tab
-tab-options-compatibility-mode-desc = Bu OpenGL ES2 (gerekirse ANGLE ile) kullanır, bu driver hatalarını azaltır. Eğer grafik sorunlar veya hatalar yaşıyorsanız bunu deneyin.
+tab-options-compatibility-mode-desc = Bu oyunun başka bir grafik backend kullanmasını zorlar ve bu driver hatalarını azaltabilir. Eğer grafik sorunlar veya hatalar yaşıyorsanız bunu deneyin.
 # Strings for the "forgot password" view on login
 login-forgot-message = Şifreni unuttuysan, hesabına bağlı olan email adresini girerek sıfırlama linki alabilirsin.
 # For the language selection menu.
@@ -527,3 +527,4 @@ language-selector-help-translate = Çevirmeye yardım mı etmek istiyorsun? Edeb
 language-selector-system-language = Sistem dili ({ $languageName })
 # Strings for the "login" view on login
 login-login-show-password = Şifreyi göster
+tab-options-desc-incompatible = Bu seçenek platformunuzla uyumsuzdur ve devre dışı bırakılmıştır.
