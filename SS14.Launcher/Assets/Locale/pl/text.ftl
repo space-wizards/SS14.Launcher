@@ -494,7 +494,7 @@ tab-servers-list-status-none = Nie ma publicznych serwerów. Upewnij się, że T
 # Strings for the server filters menu
 filters-title-hub = Lista Serwerów
 # Strings for the "options" tab
-tab-options-compatibility-mode-desc = To wykorzystuje OpenGL ES 2 (w razie potrzeby za pośrednictwem ANGLE), który jest mniej podatny na błędy sterowników. Wypróbuj tę opcję, jeśli doświadczasz problemów graficznych lub awarii.
+tab-options-compatibility-mode-desc = To wymusza użycie innego kodu graficznego, który jest mniej podatny na błędy sterowników. Wypróbuj tę opcję, jeśli doświadczasz problemów graficznych lub awarii.
 # Strings for the "options" tab
 tab-options-log-client-desc = Umożliwia rejestrowanie jakichkolwiek wyników klienta gry. Przydatne dla deweloperów.
 # Strings for the "options" tab
@@ -527,3 +527,4 @@ hub-settings-explanation = Tutaj możesz dodać dodatkowe listy z których będ�
 main-window-out-of-date-download-manual = Pobierz (ręcznie)
 # Strings for the general main window layout of the launcher
 main-window-drag-drop-prompt = Upuść aby odtworzyć grę
+tab-options-desc-incompatible = Ta opcja nie jest dostępna na tej platformie i została zablokowana.
