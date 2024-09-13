@@ -365,7 +365,7 @@ login-expired-message =
     Bu hesap için oturum süresi oldu.
     Lütfen şifrenizi yeniden giriniz.
 # Strings for the "login expired" view on login
-login-expired-title = Login oturumu sona erdi
+login-expired-title = Oturumunuz sona erdi
 # Strings for the "forgot password" view on login
 login-forgot-button-submit = Gönder
 # Strings for the "login" view on login
