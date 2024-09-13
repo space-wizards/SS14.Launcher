@@ -9,7 +9,7 @@
   <Design.DataContext>
     <models:ServerInfoLink />
   </Design.DataContext>
-  <Button Click="Button_OnClick" HorizontalContentAlignment="Stretch">
+  <Button Click="Button_OnClick" HorizontalContentAlignment="Stretch" ToolTip.Tip="{Binding Url}">
     <views:IconLabel Name="IconLabel" Content="{Binding Name}" />
   </Button>
 </UserControl>
