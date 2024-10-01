@@ -431,7 +431,7 @@ tab-options-hub-settings-desc = Изменить, какой хаб или ха�
 # Long region names for server tag filters (shown in tooltip)
 region-south-america-south = Южная Америка - Юг
 # Strings for the "options" tab
-tab-options-compatibility-mode-desc = Это использует OpenGL ES 2 (через ANGLE при необходимости), который менее вероятнее будет подвержен драйверным багам. Попробуйте это, если испытываете графические проблемы или вылеты.
+tab-options-compatibility-mode-desc = Это заставит игру использовать другой графический интерфейс, который менее вероятнее будет подвержен драйверным багам. Попробуйте это, если испытываете графические проблемы или вылеты.
 # Strings for the "forgot password" view on login
 login-forgot-button-back = Назад ко входу
 # Strings for the "connecting" menu that appears when connecting to a server.
@@ -527,3 +527,4 @@ tab-options-verbose-launcher-logging-desc = Для тех случаев, ког
 tab-options-seasonal-branding = Сезонное оформление
 # Strings for entries in the server list (including home page)
 server-entry-raise = Поднять на самый верх
+tab-options-desc-incompatible = Эта опция несовместима с вашей платформой, поэтому она отключена.
