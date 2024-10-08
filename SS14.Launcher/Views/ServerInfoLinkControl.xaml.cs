@@ -16,7 +16,8 @@ public sealed partial class ServerInfoLinkControl : UserControl
         "wiki",
         "web",
         "github",
-        "forum"
+        "forum",
+        "telegram",
     };
 
     public ServerInfoLinkControl()
