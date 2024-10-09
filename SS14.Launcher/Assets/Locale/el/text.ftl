@@ -474,7 +474,7 @@ tab-options-verbose-launcher-logging-desc = Για όταν οι προγραμ�
 # Strings for the "options" tab
 tab-options-title = Ρυθμίσεις
 # Strings for the "options" tab
-tab-options-compatibility-mode-desc = Χρησιμοποιείται το OpenGL ES 2 (μέσω του ANGLE αν χρειαστεί), το οποίο είναι λιγότερο πιθανό να υποφέρει από σφάλματα. Δοκιμάστε το αν αντιμετωπίζετε προβλήματα γραφικών ή κρασαρίσματα.
+tab-options-compatibility-mode-desc = Αναγκάζει το παιχνίδι να χρησιμοποιεί διαφορετικό backend γραφικών, το οποίο είναι λιγότερο πιθανό να υποφέρει από σφάλματα. Δοκιμάστε το αν αντιμετωπίζετε προβλήματα γραφικών ή κρασαρίσματα.
 # Strings for the "options" tab
 tab-options-log-launcher = Log Launcher
 # Strings for the "options" tab
@@ -525,3 +525,5 @@ tab-options-account-settings = Pυθμίσεις Λογαριασμού
 tab-options-account-settings-desc = Μπορείτε να διαχειρίστείτε τις ρυθμίσεις του λογαριασμού σας, όπως αλλαγή email ή κωδικού σας, από την ιστοσελίδα μας.
 # Strings for the "options" tab
 tab-options-compatibility-mode = Κατάσταση συμβατότητας
+tab-options-desc-incompatible = Αυτή η επιλογή δεν είναι συμβατή με την πλατφόρμα σας και έχει απενεργοποιηθεί.
+login-login-show-password = Εμφάνιση κωδικού πρόσβασης
