@@ -13,7 +13,7 @@ account-drop-down-select-account = Hesap seç:
 # Strings for the drop-down window to manage your active account
 account-drop-down-not-logged-in = Giriş yapılmamış
 # Strings for the drop-down window to manage your active account
-account-drop-down-none-selected = Hesap seçilmemiş
+account-drop-down-none-selected = Hiçbir Hesap Seçilmedi
 # Localization for the "add favorite server" dialog window
 add-favorite-window-title = Favori sunucu ekle
 # Localization for the "add favorite server" dialog window
@@ -25,7 +25,7 @@ connecting-title-content-bundle = Yükleniyor…
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-cancel = İptal
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-status-update-error = Sunucu içeriği indirilirken bir hata oluştu. Hata devam ederse Discorddan yardım isteyiniz.
+connecting-status-update-error = Sunucu içeriği indirilirken bir hata oluştu. Hata devam ederse Discord'dan yardım isteyiniz.
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-connection-failed = Sunucuya bağlanma başarısız!
 # Localization for the "add favorite server" dialog window
@@ -76,7 +76,7 @@ account-drop-down-add-account = Hesap ekle
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-none = Bağlatı başlatılıyor…
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-status-client-crashed = İstemci başlatılırken çökmüş gibi duruyor. Eğer bu devam ederse, Discorddan veya GitHubdan yardım isteyiniz.
+connecting-status-client-crashed = İstemci başlatılırken çökmüş gibi duruyor. Eğer bu devam ederse, Discord'dan veya GitHub'dan yardım isteyiniz.
 # Strings for the "hub settings" dialog window.
 hub-settings-button-remove-tooltip = Sunucu merkezini sil
 # Strings for the "connecting" menu that appears when connecting to a server.
@@ -122,15 +122,15 @@ login-confirmation-button-cancel = İptal
 # Strings for the "register confirmation" view on login
 login-confirmation-busy = Giriş yapılıyor…
 # Strings for the "hub settings" dialog window.
-hub-settings-button-increase-priority-tooltip = Önemi arttır
+hub-settings-button-increase-priority-tooltip = Önceliği arttır
 # Strings for the "hub settings" dialog window.
-hub-settings-button-decrease-priority-tooltip = Önemi azalt
+hub-settings-button-decrease-priority-tooltip = Önceliği azalt
 # Strings for the login screen
 login-log-launcher = Log Launcher
 # Error messages for login
 login-error-account-unconfirmed = Bu hesaba bağlı olan email adresinin onaylanması gerekiyor. Lütfen giriş yapmadan önce email adresinizi onaylayın.
 # Error messages for login
-login-error-account-2fa-required = 2 faktörlü kimlik doğrulaması zorunlu
+login-error-account-2fa-required = 2 faktörlü kimlik doğrulaması gerekli
 # Error messages for login
 login-error-account-2fa-invalid = 2 faktörlü kimlik doğrulama kodu geçersiz
 # Error messages for login
@@ -335,7 +335,7 @@ main-window-busy-checking-login-status = Login statüsü yenileniyor…
 # Strings for the "options" tab
 tab-options-log-launcher = Log Launcher
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-update-status-checking-engine-modules = Ekstra bağlılıklar kontrol ediliyor…
+connecting-update-status-checking-engine-modules = Ekstra gereksinimler kontrol ediliyor…
 # Strings for entries in the server list (including home page)
 server-entry-fetching = Getiriliyor…
 # Strings for the "servers" tab
@@ -349,7 +349,7 @@ connecting-status-not-a-content-bundle = Dosya geçerli bir içerik paketi deği
 # Strings for the "options" tab
 tab-options-hub-settings-desc = Hangi sunucu merkezini yada sunucuları kullanarak sunucu listesini getirmesini istediğinizi seçiniz.
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-update-status-downloading-engine-modules = Ekstra bağlılıklar indiriliyor…
+connecting-update-status-downloading-engine-modules = Ekstra gereksinimler indiriliyor…
 # Strings for the "register confirmation" view on login
 login-confirmation-confirmation-title = Kaydolmayı onayla
 # Strings for the "connecting" menu that appears when connecting to a server.
