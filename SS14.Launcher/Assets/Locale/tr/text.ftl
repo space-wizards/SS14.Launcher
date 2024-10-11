@@ -13,7 +13,7 @@ account-drop-down-select-account = Hesap seç:
 # Strings for the drop-down window to manage your active account
 account-drop-down-not-logged-in = Giriş yapılmamış
 # Strings for the drop-down window to manage your active account
-account-drop-down-none-selected = Hiçbir Hesap Seçilmedi
+account-drop-down-none-selected = Hiçbir hesap seçilmedi
 # Localization for the "add favorite server" dialog window
 add-favorite-window-title = Favori sunucu ekle
 # Localization for the "add favorite server" dialog window
