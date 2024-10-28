@@ -381,7 +381,7 @@ tab-home-favorite-servers = Serveurs Favoris:
 # Strings for the "options" tab
 tab-options-log-launcher-desc = Active l'historique d'activité du launcher. Utile pour les développeurs. (nécessite de redémarrer le launcher)
 # Strings for the "news" tab
-tab-news-recent-news = Nouvelles actualités:
+tab-news-recent-news = Nouvelles actualités :
 # Strings for the "news" tab
 tab-news-pulling-news = Recherche d'actualités…
 # Strings for the "hub settings" dialog window.
