@@ -7,7 +7,7 @@ account-drop-down-log-out = Se déconnecter
 # Strings for the drop-down window to manage your active account
 account-drop-down-log-out-of = Se déconnecter de { $name }
 # Strings for the drop-down window to manage your active account
-account-drop-down-switch-account = Changer de compte:
+account-drop-down-switch-account = Changer de compte :
 # Strings for the drop-down window to manage your active account
 account-drop-down-select-account = Sélectionner un compte :
 # Strings for the drop-down window to manage your active account
