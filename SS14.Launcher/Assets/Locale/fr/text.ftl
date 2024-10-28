@@ -399,7 +399,7 @@ region-africa-north = Afrique du Nord
 # Long region names for server tag filters (shown in tooltip)
 region-africa-south = Afrique Sud
 # Strings for the "hub settings" dialog window.
-hub-settings-explanation = Ici, vous pouvez ajouter des hubs supplémentaires afin de récupérer des serveurs de jeu. N'ajoutez que des hubs en lesquels vous avez confiance car ils peuvent provoquer une « attaque par usurpation » des serveurs d'autres hubs. L'ordre des hubs est important ; si deux hubs annoncent le même serveur de jeu, le hub ayant la priorité la plus élevée (plus haut dans la liste) apparaîtra.
+hub-settings-explanation = Ici, vous pouvez ajouter des hubs supplémentaires afin de récupérer des serveurs de jeu. N'ajoutez que des hubs en lesquels vous avez confiance, car ils peuvent provoquer une « attaque par usurpation » des serveurs d'autres hubs. L'ordre des hubs est important ; si deux hubs annoncent le même serveur de jeu, le serveur apparaîtra depuis le hub ayant la priorité la plus élevée (placé le plus haut dans la liste).
 # Strings for the "hub settings" dialog window.
 hub-settings-warning-invalid = Hub invalide (n'oubliez pas http(s)://)
 # Strings for the general main window layout of the launcher
