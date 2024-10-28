@@ -98,7 +98,7 @@ login-2fa-title = Authentification à deux facteurs requise
 # Strings for 2FA login
 login-2fa-message = Veuillez entre le code d'authentification à deux facteurs.
 # Strings for 2FA login
-login-2fa-input-watermark = Code d'authentification à deux facteurs
+login-2fa-input-watermark = Code d'authentification
 # Strings for 2FA login
 login-2fa-button-confirm = Confirmer
 # Strings for 2FA login
@@ -200,13 +200,13 @@ login-confirmation-confirmation-message = Veuillez ouvrir votre courrier électr
 # Strings for the general main window layout of the launcher
 main-window-early-access-desc = Space Station 14 est toujours en version alpha. On espère que vous apprécierez le jeu dans son état actuel, peut-être même que vous resterez, mais gardez des attentes modestes pour l'instant.
 # Error messages for login
-login-error-account-account-locked = Ce compte a été verrouillé. Contactez-nous si vous croyez que c'est une erreur.
+login-error-account-account-locked = Ce compte a été verrouillé. Contactez-nous si vous pensez qu'il s'agit d'une erreur.
 # Strings for the "login expired" view on login
 login-expired-message =
     Connexion expirée pour ce compte.
     Veuillez rentrer votre mot de passe à nouveau.
 # Strings for the "forgot password" view on login
-login-forgot-message = Si vous avez oublié votre mot de passe, vous pouvez ici saisir l'adresse mail liée à votre compte pour recevoir un lien de réinitialisation.
+login-forgot-message = Si vous avez oublié votre mot de passe, vous pouvez saisir l'adresse mail liée à votre compte ici pour recevoir un lien de réinitialisation.
 # Strings for the "forgot password" view on login
 login-forgot-busy-sending = Envoi du courriel…
 # Strings for the "forgot password" view on login
