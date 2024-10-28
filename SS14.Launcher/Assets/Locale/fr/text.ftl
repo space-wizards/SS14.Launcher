@@ -32,7 +32,7 @@ connecting-status-none = Ouverture de la connexion…
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-updating = Mise à jour : { $status }
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-status-connection-failed = Connexion au serveur échouée!
+connecting-status-connection-failed = Connexion au serveur échouée !
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-starting-client = Démarrage du client…
 # Strings for the "connecting" menu that appears when connecting to a server.
@@ -60,7 +60,7 @@ connecting-update-status-downloading-engine-modules = Téléchargement des dépe
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-update-status-loading-into-db = Stockage des ressources dans la base de données…
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-update-status-loading-content-bundle = Chargement du bundle de contenu…
+connecting-update-status-loading-content-bundle = Chargement du paquet de contenu…
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-update-status-unknown = Vous ne devriez pas voir ça
 # Strings for the "direct connect" dialog window.
@@ -70,7 +70,7 @@ direct-connect-text = Entrez l'adresse du serveur :
 # Strings for the "direct connect" dialog window.
 direct-connect-connect = Connexion
 # Strings for the "hub settings" dialog window.
-hub-settings-title = Options Hub
+hub-settings-title = Options du Hub
 # Strings for the "hub settings" dialog window.
 hub-settings-button-done = Terminé
 # Strings for the "hub settings" dialog window.
@@ -178,7 +178,7 @@ add-favorite-window-address-invalid = Adresse invalide
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-connecting = Récupération des informations de connexion du serveur…
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-status-update-error = Il y a eu une erreur lors du téléchargement du contenu du serveur. Contactez le support sur Discord si le problème persiste.
+connecting-status-update-error = Il y a eu une erreur lors du téléchargement du contenu du serveur. Demandez de l'aide sur Discord si le problème persiste.
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-update-status-fetching-manifest = Récupération du manifeste du serveur…
 # Strings for the "connecting" menu that appears when connecting to a server.
@@ -399,7 +399,7 @@ region-africa-north = Afrique du Nord
 # Long region names for server tag filters (shown in tooltip)
 region-africa-south = Afrique Sud
 # Strings for the "hub settings" dialog window.
-hub-settings-explanation = Ici, vous pouvez ajouter des hubs supplémentaires pour récupérer des serveurs de jeu. Vous ne devez ajouter que des hubs en lesquels vous avez confiance car ils peuvent "usurper" les serveurs de jeu d'autres hubs. L'ordre des hubs est important; si deux hubs annoncent le même serveur de jeu, le hub ayant la priorité la plus élevée (plus haut dans la liste) sera prioritaire.
+hub-settings-explanation = Ici, vous pouvez ajouter des hubs supplémentaires afin de récupérer des serveurs de jeu. N'ajoutez que des hubs en lesquels vous avez confiance car ils peuvent provoquer une « attaque par usurpation » des serveurs d'autres hubs. L'ordre des hubs est important ; si deux hubs annoncent le même serveur de jeu, le hub ayant la priorité la plus élevée (plus haut dans la liste) apparaîtra.
 # Strings for the "hub settings" dialog window.
 hub-settings-warning-invalid = Hub invalide (n'oubliez pas http(s)://)
 # Strings for the general main window layout of the launcher
