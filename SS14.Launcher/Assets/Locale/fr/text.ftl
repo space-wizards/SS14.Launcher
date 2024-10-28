@@ -196,7 +196,7 @@ login-error-invalid-credentials = Informations de connexion invalides
 # Error messages for login
 login-error-account-2fa-invalid = Code d'authentification à deux facteurs invalide
 # Strings for the "register confirmation" view on login
-login-confirmation-confirmation-message = Veuillez ouvrir votre courrier électronique pour vérifier votre compte. Quand votre compte sera vérifié, cliquez sur le bouton ci-dessous pour vous connecter.
+login-confirmation-confirmation-message = Veuillez ouvrir votre courrier électronique pour vérifier votre compte. Une fois votre compte vérifié, cliquez sur le bouton ci-dessous pour vous connecter.
 # Strings for the general main window layout of the launcher
 main-window-early-access-desc = Space Station 14 est toujours en version alpha. On espère que vous apprécierez le jeu dans son état actuel, peut-être même que vous resterez, mais gardez des attentes modestes pour l'instant.
 # Error messages for login
@@ -234,7 +234,7 @@ filters = Filtres ({ $filteredServers } / { $totalServers })
 # Strings for the "servers" tab
 tab-servers-list-status-none-filtered = Aucun serveur ne correspond à vos paramètres de recherche ou de filtrage.
 # Strings for the "servers" tab
-tab-servers-list-status-none = Il n'y a aucun serveur public. Vérifiez que la configuration de votre hub est correcte.
+tab-servers-list-status-none = Il n'y a aucun serveur public. Vérifiez la configuration de vos hubs.
 # Strings for the server filters menu
 filters-title-language = Langue
 # Strings for the server filters menu
