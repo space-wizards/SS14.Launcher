@@ -423,7 +423,7 @@ language-selector-label = Langue
 # "Save" button.
 language-selector-save = Sauvegarder
 # For the language selection menu.
-language-selector-help-translate = Vous voulez nous aider pour la traduction ? Vous le pouvez !
+language-selector-help-translate = Voulez-vous nous aider pour la traduction ? Vous le pouvez !
 # For the language selection menu.
 language-selector-system-language = Langue du système ({ $languageName })
 # For the language selection menu.
