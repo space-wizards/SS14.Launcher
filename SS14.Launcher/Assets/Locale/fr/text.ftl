@@ -525,3 +525,5 @@ region-short-south-america-east = SA Est
 tab-home-add-favorite = Ajouter aux Favoris…
 # Strings for the "options" tab
 tab-options-flip = { "*" }retourner
+login-login-show-password = Afficher le mot de passe
+tab-options-desc-incompatible = Cette option a été désactivée parce qu'elle est incompatible avec votre platforme
