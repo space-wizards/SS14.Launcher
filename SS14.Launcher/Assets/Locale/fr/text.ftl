@@ -7,17 +7,17 @@ account-drop-down-log-out = Se déconnecter
 # Strings for the drop-down window to manage your active account
 account-drop-down-log-out-of = Se déconnecter de { $name }
 # Strings for the drop-down window to manage your active account
-account-drop-down-switch-account = Changer de compte :
+account-drop-down-switch-account = Changer de compte:
 # Strings for the drop-down window to manage your active account
-account-drop-down-select-account = Sélectionner un compte:
+account-drop-down-select-account = Sélectionner un compte :
 # Strings for the drop-down window to manage your active account
 account-drop-down-add-account = Ajouter un compte
 # Localization for the "add favorite server" dialog window
 add-favorite-window-title = Ajouter un Serveur Favori
 # Localization for the "add favorite server" dialog window
-add-favorite-window-label-name = Nom:
+add-favorite-window-label-name = Nom :
 # Localization for the "add favorite server" dialog window
-add-favorite-window-label-address = Adresse:
+add-favorite-window-label-address = Adresse :
 # Localization for the "add favorite server" dialog window
 # 'Example' name shown as a watermark in the name input box
 add-favorite-window-example-name = Station Clown
@@ -30,7 +30,7 @@ connecting-cancel = Annuler
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-none = Ouverture de la connexion…
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-status-updating = Mise à jour: { $status }
+connecting-status-updating = Mise à jour : { $status }
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-connection-failed = Connexion au serveur échouée!
 # Strings for the "connecting" menu that appears when connecting to a server.
@@ -38,7 +38,7 @@ connecting-status-starting-client = Démarrage du client…
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-not-a-content-bundle = Le fichier n'est pas un bundle de contenu valide !
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-status-client-crashed = Le client semble s'être arrêté au démarrage. Contactez le support sur Discord ou GitHub.
+connecting-status-client-crashed = Le client semble s'être arrêté au démarrage. Si ce problème persiste, demandez de l'aide sur Discord ou GitHub.
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-update-status-checking-client-update = Recherche de mise à jour du contenu du serveur…
 # Strings for the "connecting" menu that appears when connecting to a server.
