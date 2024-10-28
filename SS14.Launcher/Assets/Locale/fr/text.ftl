@@ -387,7 +387,7 @@ tab-news-pulling-news = Recherche d'actualités…
 # Strings for the "hub settings" dialog window.
 hub-settings-warning-duplicate = Dupliquer les hubs
 # Strings for the login screen
-login-log-launcher = Lanceur du journal
+login-log-launcher = Lanceur de rapports
 # Strings for the general main window layout of the launcher
 main-window-busy-checking-login-status = Actualisation du statut de la connexion…
 # Strings for the general main window layout of the launcher
