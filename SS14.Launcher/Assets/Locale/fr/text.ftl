@@ -363,7 +363,7 @@ tab-options-log-client = Historique d'activité
 # Strings for the "options" tab
 tab-options-log-client-desc = Permet la journalisation de toute sortie du client de jeu. Utile pour les développeurs.
 # Strings for the "options" tab
-tab-options-log-launcher = Lanceur du journal
+tab-options-log-launcher = Lanceur de rapports
 # Strings for the "options" tab
 tab-options-verbose-launcher-logging = Historique d'activité détaillé du launcher
 # Strings for the "options" tab
@@ -526,4 +526,4 @@ tab-home-add-favorite = Ajouter aux Favoris…
 # Strings for the "options" tab
 tab-options-flip = { "*" }retourner
 login-login-show-password = Afficher le mot de passe
-tab-options-desc-incompatible = Cette option a été désactivée parce qu'elle est incompatible avec votre platforme
+tab-options-desc-incompatible = Cette option a été désactivée parce qu'elle est incompatible avec votre platforme.
