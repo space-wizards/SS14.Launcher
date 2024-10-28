@@ -357,7 +357,7 @@ tab-options-open-log-directory = Ouvrir l'historique d'activité (log directory)
 # Strings for the "options" tab
 tab-options-compatibility-mode = Mode de compatibilité
 # Strings for the "options" tab
-tab-options-compatibility-mode-desc = Utilise OpenGL ES 2 (via ANGLE si nécessaire), qui est moins susceptible de souffrir de bugs de pilotes. À essayer si vous rencontrez des problèmes graphiques ou des plantages.
+tab-options-compatibility-mode-desc = Force le jeu à utiliser un back-end graphique différent, qui est moins susceptible de souffrir de bugs de pilotes. À essayer si vous rencontrez des problèmes graphiques ou des plantages.
 # Strings for the "options" tab
 tab-options-log-client = Historique d'activité
 # Strings for the "options" tab
