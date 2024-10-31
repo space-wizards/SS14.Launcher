@@ -103,6 +103,7 @@ public sealed class Updater : ReactiveObject
         catch (Exception e)
         {
             Status = UpdateStatus.Error;
+            ExceptionMessage = e.Message;
             Log.Error(e, "Exception while trying to run updates");
         }
         finally
@@ -1443,6 +1444,8 @@ public sealed class Updater : ReactiveObject
         public string[] Modules = Array.Empty<string>();
         public bool MultiWindow = false;
     }
+
+    public string ExceptionMessage;
 
     public enum UpdateStatus
     {
