@@ -371,7 +371,7 @@ login-forgot-button-submit = Gönder
 # Strings for the "login" view on login
 login-login-button-resend = Email doğrulamasını yeniden gönder
 # Strings for the general main window layout of the launcher
-main-window-out-of-date = Launcher güncellenmemiş
+main-window-out-of-date = Başlatıcı güncel değil
 # Strings for the general main window layout of the launcher
 main-window-out-of-date-desc =
     Bu launcher güncellenmemiş.
