@@ -374,8 +374,8 @@ login-login-button-resend = Email doğrulamasını yeniden gönder
 main-window-out-of-date = Başlatıcı güncel değil
 # Strings for the general main window layout of the launcher
 main-window-out-of-date-desc =
-    Bu launcher güncellenmemiş.
-    Lütfen yeni versiyonu websitemizden indirin.
+    Bu başlatıcı güncel olmayan bir sürüm.
+    Lütfen güncel versiyonu websitemizden indirin.
 # Strings for the general main window layout of the launcher
 main-window-out-of-date-desc-steam =
     Bu launcher güncellenmemiş.
