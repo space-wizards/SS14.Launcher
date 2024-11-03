@@ -343,7 +343,7 @@ tab-servers-list-status-updating-master = Master sunucu listesi getiriliyor…
 # Strings for the "options" tab
 tab-options-log-launcher-desc = Launcherın davranışlarını günlüğe kaydeder. Geliştiriciler için işlevlidir. (Launcherın yeniden başlatılması gerekir)
 # Strings for the "options" tab
-tab-options-verbose-launcher-logging-desc = Geliştiricilerin sorununu *bi türlü* çözemediği zaman için. (Launcherın yeniden başlatılması gerekir)
+tab-options-verbose-launcher-logging-desc = Geliştiricilerin sorununu *bi' türlü* çözemediği zaman için. (Başlatıcının yeniden başlatılması gerekir)
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-not-a-content-bundle = Dosya geçerli bir içerik paketi değil!
 # Strings for the "options" tab
@@ -509,7 +509,7 @@ tab-home-run-content-bundle = İçerik paketi/replay oynat
 # Strings for the "options" tab
 tab-options-clear-engines = İndirilmiş motorları temizle
 # Strings for the "options" tab
-tab-options-open-log-directory = Log dizinlerini aç
+tab-options-open-log-directory = Günlük kaydı dizinini aç
 # Strings for the "Development" tab
 # These aren't shown to users so they're not very important
 tab-development-enable-engine-override-desc = Motor ziplerini indirmek için path ovrerride (release/ in RobustToolbox)
