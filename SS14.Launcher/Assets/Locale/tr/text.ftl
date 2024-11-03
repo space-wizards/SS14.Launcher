@@ -192,7 +192,7 @@ main-window-title = Space Station 14 Launcher
 # Strings for the general main window layout of the launcher
 main-window-header-link-discord = Discord
 # Strings for the general main window layout of the launcher
-main-window-header-link-website = Websitesi
+main-window-header-link-website = Website
 # Strings for the general main window layout of the launcher
 main-window-out-of-date-download-manual = İndir (manuel)
 # Strings for the general main window layout of the launcher
