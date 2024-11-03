@@ -315,7 +315,7 @@ tab-options-clear-content = Yüklenmiş sunucu bilgilerini temizle
 # Strings for the "options" tab
 tab-options-compatibility-mode = Uyumluluk Modu
 # Strings for the "options" tab
-tab-options-compatibility-mode-desc = Oyunun, sürücü hatalarıyla karşılaşma ihtimali daha düşük başka bir grafik arka uç kullanmasını zorunlu kılar. Eğer grafik sorunlar veya hatalar yaşıyorsanız bunu deneyin.
+tab-options-compatibility-mode-desc = Oyunun, sürücü hatalarıyla karşılaşma ihtimali daha düşük başka bir grafik arka uç kullanmasını zorunlu kılar, bu sürücü hatalarını azaltabilir. Eğer grafik sorunlar veya hatalar yaşıyorsanız bunu deneyin.
 # Strings for the "forgot password" view on login
 login-forgot-message = Şifreni unuttuysan, hesabına bağlı olan email adresini girerek sıfırlama linki alabilirsin.
 # For the language selection menu.
