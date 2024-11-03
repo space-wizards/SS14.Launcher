@@ -333,7 +333,7 @@ tab-options-account-settings-desc = Email ve şifre değiştirme gibi hesap ayar
 # Strings for the general main window layout of the launcher
 main-window-busy-checking-login-status = Giriş statüsü yenileniyor…
 # Strings for the "options" tab
-tab-options-log-launcher = Log Launcher
+tab-options-log-launcher = Başlatıcıyı Günlüğe Kaydet
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-update-status-checking-engine-modules = Ekstra gereksinimler kontrol ediliyor…
 # Strings for entries in the server list (including home page)
@@ -492,9 +492,9 @@ tab-development-title-override = { "[" }DEV (override aktif!!!)]
 # Strings for the "options" tab
 tab-options-account-settings = Hesap Ayarları
 # Strings for the "options" tab
-tab-options-log-client = Log İstemcisi
+tab-options-log-client = İstemciyi Günlüğe Kaydet
 # Strings for the "options" tab
-tab-options-log-client-desc = Oyun istemcisinin herhangi bir hareketi için log tutmayı açar. Geliştiriciler için işlevlidir.
+tab-options-log-client-desc = Oyun istemcisinin davranışlarını günlüğe kayıt almayı açar. Geliştiriciler için işlevlidir.
 # Strings for the "Development" tab
 # These aren't shown to users so they're not very important
 tab-development-disable-signing = Motor İmza Doğrulamasını Kapat
