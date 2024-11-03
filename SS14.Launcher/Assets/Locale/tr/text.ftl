@@ -514,7 +514,7 @@ tab-options-open-log-directory = Log dizinlerini aç
 # These aren't shown to users so they're not very important
 tab-development-enable-engine-override-desc = Motor ziplerini indirmek için path ovrerride (release/ in RobustToolbox)
 # Strings for the "options" tab
-tab-options-verbose-launcher-logging = Verbose Launcher Logları
+tab-options-verbose-launcher-logging = Başlatıcıyı Günlüğe Ayrıntılı Kaydet
 # For the language selection menu.
 # Used for contents of each language button.
 language-selector-language = { $languageName } ({ $englishName })
