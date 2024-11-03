@@ -378,8 +378,8 @@ main-window-out-of-date-desc =
     Lütfen güncel versiyonu websitemizden indirin.
 # Strings for the general main window layout of the launcher
 main-window-out-of-date-desc-steam =
-    Bu launcher güncellenmemiş.
-    Lütfen Steam'in güncellemesine izin verin.
+    Bu başlatıcı güncel olmayan bir sürüm.
+    Lütfen Steam üzerinden oyunu güncelleyin.
 # Strings for the general main window layout of the launcher
 main-window-out-of-date-exit = Çıkış
 # Strings for the general main window layout of the launcher
