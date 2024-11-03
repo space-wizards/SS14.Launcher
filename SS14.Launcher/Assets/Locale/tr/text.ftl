@@ -188,7 +188,7 @@ login-login-busy-logging-in = Giriş yapılıyor…
 # Strings for the "login" view on login
 login-login-error-title = Giriş yapılamıyor
 # Strings for the general main window layout of the launcher
-main-window-title = Space Station 14 Launcher
+main-window-title = Space Station 14 Başlatıcısı
 # Strings for the general main window layout of the launcher
 main-window-header-link-discord = Discord
 # Strings for the general main window layout of the launcher
@@ -483,9 +483,9 @@ tab-options-hub-settings = Sunucu Merkezi Ayarları
 # Strings for the "options" tab
 tab-options-seasonal-branding-desc = Yapabildiğimiz herhangi bir geçici ikon ve logolardan.
 # Strings for the "options" tab
-tab-options-disable-signing = Motor Signature Checkleri kapat
+tab-options-disable-signing = Motor İmzalarının Doğrulanmasını Kapat
 # Strings for the "options" tab
-tab-options-disable-signing-desc = { "[" }DEV ONLY] Motor engine signatureların doğrulanmasınu kapatır. NE YAPTIĞINI BİLMİYORSAN AÇMA.
+tab-options-disable-signing-desc = { "[" }SADECE GELİŞTİRİCİLER] Motor imzalarının doğrulanmasını kapatır. NE YAPTIĞINI BİLMİYORSAN AÇMA.
 # Strings for the "Development" tab
 # These aren't shown to users so they're not very important
 tab-development-title-override = { "[" }DEV (override aktif!!!)]
