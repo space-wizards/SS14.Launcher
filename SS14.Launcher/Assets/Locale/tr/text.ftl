@@ -341,7 +341,7 @@ server-entry-fetching = Getiriliyor…
 # Strings for the "servers" tab
 tab-servers-list-status-updating-master = Master sunucu listesi getiriliyor…
 # Strings for the "options" tab
-tab-options-log-launcher-desc = Launcherın her hareketi için logları açar. Geliştiriciler için işlevlidir. (Launcherın yeniden başlatılması gerekir)
+tab-options-log-launcher-desc = Başlatıcının davranışını günlüğe kaydeder. Geliştiriciler için işlevlidir. (Başlatıcının yeniden başlatılması gerekir)
 # Strings for the "options" tab
 tab-options-verbose-launcher-logging-desc = Geliştiricilerin sorununu *bi türlü* çözemediği zaman için. (Launcherın yeniden başlatılması gerekir)
 # Strings for the "connecting" menu that appears when connecting to a server.
