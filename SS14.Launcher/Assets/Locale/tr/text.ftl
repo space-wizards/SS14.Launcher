@@ -333,7 +333,7 @@ tab-options-account-settings-desc = Email ve şifre değiştirme gibi hesap ayar
 # Strings for the general main window layout of the launcher
 main-window-busy-checking-login-status = Giriş statüsü yenileniyor…
 # Strings for the "options" tab
-tab-options-log-launcher = Başlatıcıyı Günlüğe Kaydet
+tab-options-log-launcher = Launcherı Günlüğe Kaydet
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-update-status-checking-engine-modules = Ekstra gereksinimler kontrol ediliyor…
 # Strings for entries in the server list (including home page)
