@@ -385,7 +385,7 @@ main-window-out-of-date-exit = Çıkış
 # Strings for the general main window layout of the launcher
 main-window-early-access-accept = Tamamdır!
 # Strings for the general main window layout of the launcher
-main-window-busy-checking-update = Launcher için güncellemeler kontrol ediliyor…
+main-window-busy-checking-update = Başlatıcı için güncellemeler kontrol ediliyor…
 # Strings for the general main window layout of the launcher
 main-window-error-connecting-auth-server = Kimlik doğrulama sunucusuna bağlanırken hata oluştu
 # Strings for the general main window layout of the launcher
