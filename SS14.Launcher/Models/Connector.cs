@@ -600,7 +600,7 @@ public class Connector : ReactiveObject
                 "SS14.Loader", "bin", "Debug", "net8.0"));
         }
 
-        if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux) || RuntimeInformation.IsOSPlatform(OSPlatform.FreeBSD))
         {
             return new ProcessStartInfo
             {
