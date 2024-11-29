@@ -55,7 +55,7 @@
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0 10">
           <Button Content="{loc:Loc 'connecting-privacy-policy-accept'}" Command="{Binding PrivacyPolicyAccept}"
                   Classes="OpenRight" />
-          <Button Content="{loc:Loc 'connecting-privacy-policy-deny'}" Command="{Binding PrivacyPolicyDeny}"
+          <Button Content="{loc:Loc 'connecting-privacy-policy-decline'}" Command="{Binding PrivacyPolicyDeny}"
                   Classes="OpenLeft"/>
         </StackPanel>
       </StackPanel>

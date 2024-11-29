@@ -49,7 +49,7 @@ connecting-privacy-policy-text = This server requires that you accept its privac
 connecting-privacy-policy-text-version-changed = This server has updated its privacy policy since the last time you played. You must accept the new version before connecting.
 connecting-privacy-policy-view = View privacy policy
 connecting-privacy-policy-accept = Accept (continue)
-connecting-privacy-policy-deny = Deny (disconnect)
+connecting-privacy-policy-decline = Decline (disconnect)
 
 ## Strings for the "direct connect" dialog window.
 
