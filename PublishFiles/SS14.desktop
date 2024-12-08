@@ -5,3 +5,5 @@ Version=1.0
 Type=Application
 Exec=env ./SS14.Launcher %u
 Name=Space Station 14
+MimeType=x-scheme-handler/ss14s;
+MimeType=x-scheme-handler/ss14;
