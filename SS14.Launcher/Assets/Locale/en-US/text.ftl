@@ -45,6 +45,12 @@ connecting-update-status-loading-into-db = Storing assets in database…
 connecting-update-status-loading-content-bundle = Loading content bundle…
 connecting-update-status-unknown = You shouldn't see this
 
+connecting-privacy-policy-text = This server requires that you accept its privacy policy before connecting.
+connecting-privacy-policy-text-version-changed = This server has updated its privacy policy since the last time you played. You must accept the new version before connecting.
+connecting-privacy-policy-view = View privacy policy
+connecting-privacy-policy-accept = Accept (continue)
+connecting-privacy-policy-decline = Decline (disconnect)
+
 ## Strings for the "direct connect" dialog window.
 
 direct-connect-title = Direct Connect…
