@@ -531,3 +531,5 @@ tab-options-desc-incompatible = Bu seçenek platformunuzla uyumsuzdur ve devre d
 connecting-privacy-policy-view = Gizlilik politikasını görüntüle
 connecting-privacy-policy-text = Bu sunucuya bağlanmadan önce gizlilik politikasını kabul etmeniz gerekiyor.
 connecting-privacy-policy-text-version-changed = Bu sunucu son oynadığınızdan beri gizlilik politikasını güncelledi. Bağlanmadan önce yeni halini kabul etmelisiniz.
+connecting-privacy-policy-accept = Kabul et (devam et)
+connecting-privacy-policy-decline = Reddet (bağlantıyı kes)
