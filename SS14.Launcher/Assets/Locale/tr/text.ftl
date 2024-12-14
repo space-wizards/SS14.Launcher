@@ -528,3 +528,5 @@ language-selector-system-language = Sistem dili ({ $languageName })
 # Strings for the "login" view on login
 login-login-show-password = Şifreyi göster
 tab-options-desc-incompatible = Bu seçenek platformunuzla uyumsuzdur ve devre dışı bırakılmıştır.
+connecting-privacy-policy-view = Gizlilik politikasını görüntüle
+connecting-privacy-policy-text = Bu sunucuya bağlanmadan önce gizlilik politikasını kabul etmeniz gerekiyor.
