@@ -530,3 +530,4 @@ login-login-show-password = Şifreyi göster
 tab-options-desc-incompatible = Bu seçenek platformunuzla uyumsuzdur ve devre dışı bırakılmıştır.
 connecting-privacy-policy-view = Gizlilik politikasını görüntüle
 connecting-privacy-policy-text = Bu sunucuya bağlanmadan önce gizlilik politikasını kabul etmeniz gerekiyor.
+connecting-privacy-policy-text-version-changed = u sunucu son oynadığınızdan beri gizlilik politikasını güncelledi. Bağlanmadan önce yeni halini kabul etmelisiniz.
