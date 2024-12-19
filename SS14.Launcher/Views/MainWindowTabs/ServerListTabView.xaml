@@ -34,6 +34,17 @@
           <Rectangle DockPanel.Dock="Right" Classes="VerticalSeparator"/>
           <TextBlock DockPanel.Dock="Right" Text="{loc:Loc tab-servers-table-players}" Classes="SubText" TextAlignment="Center" MinWidth="80" Margin="10 0"/>
           <Rectangle DockPanel.Dock="Right" Classes="VerticalSeparator" />
+          <TextBlock DockPanel.Dock="Right" Text="⏲️" Classes="SubText" TextAlignment="Center" MinWidth="20" Margin="5 0" ToolTip.ShowDelay="0">
+            <ToolTip.Tip>
+              <StackPanel>
+                <TextBlock TextAlignment="Left" Text="Panic bunker status. Servers with a panic bunker enabled" />
+                <TextBlock TextAlignment="Left" Text="are not accepting new players, and might have specific" />
+                <TextBlock TextAlignment="Left" Text="requirements to connect, such as a playtime prerequisite," />
+                <TextBlock TextAlignment="Left" Text="or a manual whitelist process." />
+              </StackPanel>
+            </ToolTip.Tip>
+          </TextBlock>
+          <Rectangle DockPanel.Dock="Right" Classes="VerticalSeparator" />
           <TextBlock Text="{loc:Loc tab-servers-table-name}" Classes="SubText"/>
         </DockPanel>
 
