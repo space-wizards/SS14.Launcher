@@ -108,7 +108,6 @@ public sealed class ServerListCache : ReactiveObject, IServerSource
                     else if (request.IsCanceled)
                     {
                         Log.Warning("Request to hub {HubAddress} failed: canceled", hub);
-
                     }
 
                     allSucceeded = false;
@@ -136,7 +135,14 @@ public sealed class ServerListCache : ReactiveObject, IServerSource
                 return statusData;
             }));
 
-            Status = allSucceeded ? RefreshListStatus.Updated : RefreshListStatus.PartialError;
+            if (_allServers.Count == 0)
+                // We did not get any servers
+                Status = RefreshListStatus.Error;
+            else if (!allSucceeded)
+                // Some hubs succeeded and returned data
+                Status = RefreshListStatus.PartialError;
+            else
+                Status = RefreshListStatus.Updated;
         }
         catch (OperationCanceledException)
         {
