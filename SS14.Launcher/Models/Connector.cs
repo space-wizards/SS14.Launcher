@@ -373,7 +373,6 @@ public class Connector : ReactiveObject
             // Pass build info to client. This is not critical to the client's function,
             // it was added to aid client replay recording.
 
-            // No point reporting engine version: obviously the client already knows that.
             BuildCVar("download_url", serverBuildInformation?.DownloadUrl);
             BuildCVar("manifest_url", serverBuildInformation?.ManifestUrl);
             BuildCVar("manifest_download_url", serverBuildInformation?.ManifestDownloadUrl);
@@ -381,6 +380,9 @@ public class Connector : ReactiveObject
             BuildCVar("fork_id", serverBuildInformation?.ForkId);
             BuildCVar("hash", serverBuildInformation?.Hash);
             BuildCVar("manifest_hash", serverBuildInformation?.ManifestHash);
+            // This overrides the clients engine_version cvar which gets used in client replay recordings.
+            // the only case where serverBuildInformation is running replays, in which case this cvar is not used on the client.
+            BuildCVar("engine_version", serverBuildInformation?.EngineVersion);
 
             void BuildCVar(string name, string? value)
             {
