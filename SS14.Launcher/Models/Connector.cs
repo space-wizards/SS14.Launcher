@@ -370,8 +370,8 @@ public class Connector : ReactiveObject
                 args.Add(parsedAddr.ToString());
             }
 
-            // Pass build info to client. This is not critical to the client's function,
-            // it was added to aid client replay recording.
+            // Pass build info to client. Initally added for replays, it is now used for connecting on modern robust CDN versions.
+            // If engine_version or manifest_hash is null, the client WILL fail to connect.
 
             BuildCVar("download_url", serverBuildInformation?.DownloadUrl);
             BuildCVar("manifest_url", serverBuildInformation?.ManifestUrl);
