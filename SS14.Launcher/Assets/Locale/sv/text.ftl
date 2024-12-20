@@ -462,7 +462,7 @@ tab-options-account-settings = Kontoinställningar
 # Strings for the "options" tab
 tab-options-compatibility-mode = Kompatibilitetsläge
 # Strings for the "options" tab
-tab-options-compatibility-mode-desc = Detta använder OpenGL ES 2 (ev. via ANGLE), som generellt lider av färre drivrutinsbuggar. Prova detta om du upplever grafiska problem eller kraschar.
+tab-options-compatibility-mode-desc = Detta tvingar spelet att använda en annan bakgrundsprocess för grafiken, som generellt lider av färre drivrutinsbuggar. Prova detta om du upplever grafiska problem eller kraschar.
 # Strings for the "options" tab
 tab-options-log-client = Logga klient
 # Strings for the "options" tab
@@ -527,3 +527,4 @@ tab-development-enable-engine-override-desc = Sökväg till spelmotor-zipfiler a
 tab-home-run-content-bundle = Kör kontent-paket/replay
 # Strings for the "login" view on login
 login-login-show-password = Visa lösenord
+tab-options-desc-incompatible = Denna inställning är ej kompatibel med din maskin och har inaktiverats.
