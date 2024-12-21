@@ -57,4 +57,5 @@ public enum ServerFilterCategory : byte
     EighteenPlus = 4,
     PlayerCount = 5,
     Hub = 6,
+    Bunker = 7,
 }
