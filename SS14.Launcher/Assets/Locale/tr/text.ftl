@@ -146,7 +146,7 @@ hub-settings-title = Sunucu merkezi ayarları
 # Error messages for login
 login-error-unknown = Bilinmeyen hata
 # Error messages for login
-login-errors-button-ok = Ok
+login-errors-button-ok = Tamam
 # Strings for 2FA login
 login-2fa-button-confirm = Onayla
 # Strings for 2FA login
@@ -522,7 +522,7 @@ language-selector-language = { $languageName } ({ $englishName })
 # Text on the button that opens the menu.
 language-selector-label = Dil
 # For the language selection menu.
-language-selector-help-translate = Çevirmeye yardım mı etmek istiyorsun? Edebilirisin!
+language-selector-help-translate = Çevirmeye yardım mı etmek istiyorsun? Edebilirsin!
 # For the language selection menu.
 language-selector-system-language = Sistem dili ({ $languageName })
 # Strings for the "login" view on login
