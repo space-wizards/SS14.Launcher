@@ -36,7 +36,7 @@
 
 }:
 let
-  version = "0.28.0";
+  version = "0.30.2";
   pname = "space-station-14-launcher";
 in
 buildDotnetModule rec {
@@ -50,7 +50,7 @@ buildDotnetModule rec {
     owner = "space-wizards";
     repo = "SS14.Launcher";
     rev = "v${version}";
-    hash = "sha256-mBFTXwnxijXAP6i7DNQ/3bujualysCGjDDjmhe15s4I=";
+    hash = "sha256-Rx39FuDPh5sGVjcKjCo4mTQ8Z/x9PD1CvBQh5ICES9Q=";
     fetchSubmodules = true;
   };
 
@@ -68,9 +68,9 @@ buildDotnetModule rec {
     inherit version;
   };
 
-  # SDK 6.0 required for Robust.LoaderApi
-  dotnet-sdk = with dotnetCorePackages; combinePackages [ sdk_8_0 sdk_6_0 ];
-  dotnet-runtime = dotnetCorePackages.runtime_8_0;
+  # SDK 8.0 & 6.0 required for Robust.LoaderApi
+  dotnet-sdk = with dotnetCorePackages; combinePackages [ sdk_9_0 sdk_8_0 sdk_6_0 ];
+  dotnet-runtime = dotnetCorePackages.runtime_9_0;
 
   dotnetFlags = [
     "-p:FullRelease=true"
@@ -113,7 +113,10 @@ buildDotnetModule rec {
     # TODO: Figure out dependencies for CEF support.
   ];
 
-  makeWrapperArgs = [ ''--set ROBUST_SOUNDFONT_OVERRIDE "${soundfont-path}"'' ];
+  # ${soundfont-path} is escaped here:
+  # https://github.com/NixOS/nixpkgs/blob/d29975d32b1dc7fe91d5cb275d20f8f8aba399ad/pkgs/build-support/setup-hooks/make-wrapper.sh#L126C35-L126C45
+  # via https://www.gnu.org/software/bash/manual/html_node/Shell-Parameter-Expansion.html under ${parameter@operator}
+  makeWrapperArgs = [ ''--set ROBUST_SOUNDFONT_OVERRIDE ${soundfont-path}'' ];
 
   executables = [ "SS14.Launcher" ];
 
