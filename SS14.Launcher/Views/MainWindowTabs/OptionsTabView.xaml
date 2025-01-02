@@ -21,6 +21,10 @@
               HorizontalAlignment="Left" Click="ClearServerContentPressed" />
       <Button Content="{loc:Loc tab-options-open-log-directory}" DockPanel.Dock="Bottom" HorizontalAlignment="Left"
               Command="{Binding OpenLogDirectory}"/>
+      <Button Name="RegProtocols" Content="Register Protocols" DockPanel.Dock="Bottom"
+              HorizontalAlignment="Left" Click="RegisterProtocols" />
+      <Button Name="UnProtocols" Content="Unregister Protocols" DockPanel.Dock="Bottom"
+              HorizontalAlignment="Left" Click="UnregisterProtocols" />
 
       <StackPanel Orientation="Vertical">
         <views:LanguageSelector HorizontalAlignment="Left" Margin="4" DataContext="{Binding Language}"
