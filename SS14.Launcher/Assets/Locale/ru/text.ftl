@@ -531,4 +531,4 @@ tab-options-desc-incompatible = Эта опция несовместима с в
 connecting-privacy-policy-text-version-changed = Этот сервер обновил политику конфиденциальности с момента вашей последней игры. Вы должны принять новую версию перед подключением.
 connecting-privacy-policy-text = Этот сервер требует чтобы вы приняли его политику конфиденциальности перед подключением.
 connecting-privacy-policy-view = Посмотреть политику конфиденциальности
-connecting-privacy-policy-accept = Принять (Продолжить)
+connecting-privacy-policy-accept = Принять (продолжить)
