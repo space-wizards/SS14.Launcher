@@ -532,4 +532,4 @@ connecting-privacy-policy-text = Цей сервер вимагає щоб ви 
 connecting-privacy-policy-text-version-changed = Цей сервер оновив свою політику конфіденційності з моменту вашої останньої гри. Ви повинні прийняти нову версію перед підключенням.
 connecting-privacy-policy-view = Переглянути політику конфіденційності
 connecting-privacy-policy-accept = Прийняти (продовжити)
-connecting-privacy-policy-decline = Відмова (відключитися)
+connecting-privacy-policy-decline = Відхилити (відключитися)
