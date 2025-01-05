@@ -15,7 +15,7 @@ account-drop-down-select-account = Вибрати обліковий запис:
 # Strings for the drop-down window to manage your active account
 account-drop-down-add-account = Додати обліковий запис
 # Localization for the "add favorite server" dialog window
-add-favorite-window-address-invalid = Адреса недійсна
+add-favorite-window-address-invalid = Адреса невірна
 # Localization for the "add favorite server" dialog window
 add-favorite-window-label-name = Назва:
 # Localization for the "add favorite server" dialog window
