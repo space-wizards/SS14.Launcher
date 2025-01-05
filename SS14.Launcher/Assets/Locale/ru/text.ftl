@@ -532,4 +532,4 @@ connecting-privacy-policy-text-version-changed = Этот сервер обно�
 connecting-privacy-policy-text = Этот сервер требует чтобы вы приняли его политику конфиденциальности перед подключением.
 connecting-privacy-policy-view = Посмотреть политику конфиденциальности
 connecting-privacy-policy-accept = Принять (продолжить)
-connecting-privacy-policy-decline = Отклонить (Отключиться)
+connecting-privacy-policy-decline = Отклонить (отключиться)
