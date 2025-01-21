@@ -25,5 +25,6 @@
     <StyleInclude Source="/Theme/ThemeServerList.axaml" />
     <StyleInclude Source="/Theme/ThemeCheckBox.axaml" />
     <StyleInclude Source="/Theme/ThemeIconLabel.xaml" />
+    <StyleInclude Source="/Theme/ThemeRandomMessage.xaml" />
   </Application.Styles>
 </Application>

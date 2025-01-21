@@ -11,6 +11,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
+using Avalonia.Platform.Storage;
 using DynamicData;
 using ReactiveUI;
 using Serilog;
@@ -37,6 +38,10 @@ public class Connector : ReactiveObject
     private bool _clientExitedBadly;
     private readonly HttpClient _http;
 
+    private TaskCompletionSource<PrivacyPolicyAcceptResult>? _acceptPrivacyPolicyTcs;
+    private ServerPrivacyPolicyInfo? _serverPrivacyPolicyInfo;
+    private bool _privacyPolicyDifferentVersion;
+
     public Connector()
     {
         _updater = Locator.Current.GetRequiredService<Updater>();
@@ -58,6 +63,13 @@ public class Connector : ReactiveObject
         private set => this.RaiseAndSetIfChanged(ref _clientExitedBadly, value);
     }
 
+    public ServerPrivacyPolicyInfo? PrivacyPolicyInfo => _serverPrivacyPolicyInfo;
+    public bool PrivacyPolicyDifferentVersion
+    {
+        get => _privacyPolicyDifferentVersion;
+        private set => this.RaiseAndSetIfChanged(ref _privacyPolicyDifferentVersion, value);
+    }
+
     public async void Connect(string address, CancellationToken cancel = default)
     {
         try
@@ -74,15 +86,19 @@ public class Connector : ReactiveObject
             Log.Information(e, "Cancelled connect");
             Status = ConnectionStatus.Cancelled;
         }
+        finally
+        {
+            Cleanup();
+        }
     }
 
-    public async void LaunchContentBundle(string fileName, CancellationToken cancel = default)
+    public async void LaunchContentBundle(IStorageFile file, CancellationToken cancel = default)
     {
-        Log.Information("Launching content bundle: {FileName}", fileName);
+        Log.Information("Launching content bundle: {FileName}", file.Path);
 
         try
         {
-            await LaunchContentBundleInternal(fileName, cancel);
+            await LaunchContentBundleInternal(file, cancel);
         }
         catch (ConnectException e)
         {
@@ -94,6 +110,10 @@ public class Connector : ReactiveObject
             Log.Information(e, "Cancelled launch");
             Status = ConnectionStatus.Cancelled;
         }
+        finally
+        {
+            Cleanup();
+        }
     }
 
     private async Task ConnectInternalAsync(string address, CancellationToken cancel)
@@ -101,6 +121,8 @@ public class Connector : ReactiveObject
         Status = ConnectionStatus.Connecting;
 
         var (info, parsedAddr, infoAddr) = await GetServerInfoAsync(address, cancel);
+
+        await HandlePrivacyPolicyAsync(info, cancel);
 
         // Run update.
         Status = ConnectionStatus.Updating;
@@ -112,12 +134,86 @@ public class Connector : ReactiveObject
         await LaunchClientWrap(installation, info, info.BuildInformation, connectAddress, parsedAddr, false, cancel);
     }
 
-    private async Task LaunchContentBundleInternal(string fileName, CancellationToken cancel)
+    private async Task HandlePrivacyPolicyAsync(ServerInfo info, CancellationToken cancel)
+    {
+        if (info.PrivacyPolicy == null)
+        {
+            // Server has no privacy policy configured, nothing to do.
+            return;
+        }
+
+        var identifier = info.PrivacyPolicy.Identifier;
+        var version = info.PrivacyPolicy.Version;
+
+        if (_cfg.HasAcceptedPrivacyPolicy(identifier, out var acceptedVersion))
+        {
+            if (version == acceptedVersion)
+            {
+                Log.Debug(
+                    "User has previously accepted privacy policy {Identifier} with version {Version}",
+                    identifier,
+                    acceptedVersion);
+
+                // User has previously accepted privacy policy, update last connected time in DB at least.
+                _cfg.UpdateConnectedToPrivacyPolicy(identifier);
+                _cfg.CommitConfig();
+                return;
+            }
+            else
+            {
+                Log.Debug("User previously accepted privacy policy but version has changed!");
+                PrivacyPolicyDifferentVersion = true;
+            }
+        }
+
+        // Ask user for privacy policy acceptance by waiting here.
+        Log.Debug("Prompting user for privacy policy acceptance: {Identifer} version {Version}", identifier, version);
+        _serverPrivacyPolicyInfo = info.PrivacyPolicy;
+        _acceptPrivacyPolicyTcs = new TaskCompletionSource<PrivacyPolicyAcceptResult>();
+
+        Status = ConnectionStatus.AwaitingPrivacyPolicyAcceptance;
+        var result = await _acceptPrivacyPolicyTcs.Task.WaitAsync(cancel);
+
+        if (result == PrivacyPolicyAcceptResult.Accepted)
+        {
+            // Yippee they're ok with it.
+            Log.Debug("User accepted privacy policy");
+            _cfg.AcceptPrivacyPolicy(identifier, version);
+            _cfg.CommitConfig();
+            return;
+        }
+
+        // They're not ok with it. Just throw cancellation so the code cleans up I guess.
+        // We could just have the connection screen treat "deny" as a cancellation op directly,
+        // but that would make the logs less clear.
+        Log.Information("User denied privacy policy, cancelling connection attempt!");
+        throw new OperationCanceledException();
+    }
+
+    public void ConfirmPrivacyPolicy(PrivacyPolicyAcceptResult result)
+    {
+        if (_acceptPrivacyPolicyTcs == null)
+        {
+            Log.Error("_acceptPrivacyPolicyTcs is null???");
+            return;
+        }
+
+        _acceptPrivacyPolicyTcs.SetResult(result);
+    }
+
+    private void Cleanup()
+    {
+        _serverPrivacyPolicyInfo = null;
+        _acceptPrivacyPolicyTcs = null;
+        PrivacyPolicyDifferentVersion = default;
+    }
+
+    private async Task LaunchContentBundleInternal(IStorageFile file, CancellationToken cancel)
     {
         Status = ConnectionStatus.Updating;
 
         ContentLaunchInfo installation;
-        using (var zipStream = File.OpenRead(fileName))
+        await using (var zipStream = await file.OpenReadAsync())
         {
             var zipHash = await Task.Run(() => Updater.HashFileSha256(zipStream), cancel);
 
@@ -167,6 +263,9 @@ public class Connector : ReactiveObject
             //
 
             installation = await InstallContentBundleAsync(zipFile, zipHash, metadata, cancel);
+
+            if (metadata.ServerGC == true)
+                installation = installation with { ServerGC = true };
         }
 
         Log.Debug("Launching client");
@@ -242,7 +341,7 @@ public class Connector : ReactiveObject
                 "--username", _loginManager.ActiveAccount?.Username ?? ConfigConstants.FallbackUsername,
 
                 // GLES2 forcing or using default fallback
-                "--cvar", $"display.compat={_cfg.GetCVar(CVars.CompatMode)}",
+                "--cvar", $"display.compat={_cfg.GetCVar(CVars.CompatMode) && !OperatingSystem.IsMacOS()}",
 
                 // Tell game we are launcher
                 "--cvar", "launch.launcher=true"
@@ -466,12 +565,8 @@ public class Connector : ReactiveObject
         EnvVar("DOTNET_TieredPGO", "1");
         EnvVar("DOTNET_ReadyToRun", "0");
 
-        if (OperatingSystem.IsLinux())
-        {
-            // Work around https://github.com/space-wizards/RobustToolbox/issues/2563
-            // Yuck.
-            EnvVar("GLIBC_TUNABLES", "glibc.rtld.dynamic_sort=1");
-        }
+        if (launchInfo.ServerGC)
+            EnvVar("DOTNET_gcServer", "1");
 
         ConfigureMultiWindow(launchInfo, startInfo);
 
@@ -597,10 +692,10 @@ public class Connector : ReactiveObject
             basePath = Path.GetFullPath(Path.Combine(
                 LauncherPaths.DirLauncherInstall,
                 "..", "..", "..", "..",
-                "SS14.Loader", "bin", "Debug", "net8.0"));
+                "SS14.Loader", "bin", "Debug", "net9.0"));
         }
 
-        if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux) || RuntimeInformation.IsOSPlatform(OSPlatform.FreeBSD))
         {
             return new ProcessStartInfo
             {
@@ -668,6 +763,7 @@ public class Connector : ReactiveObject
         Updating,
         UpdateError,
         Connecting,
+        AwaitingPrivacyPolicyAcceptance,
         ConnectionFailed,
         StartingClient,
         ClientRunning,
@@ -694,6 +790,7 @@ public class Connector : ReactiveObject
 }
 
 public sealed record ContentBundleMetadata(
+    [property: JsonPropertyName("server_gc")] bool? ServerGC,
     [property: JsonPropertyName("engine_version")] string EngineVersion,
     [property: JsonPropertyName("base_build")] ContentBundleBaseBuild? BaseBuild
 );
@@ -709,3 +806,9 @@ public sealed record ContentBundleBaseBuild(
     [property: JsonPropertyName("manifest_url")] string? ManifestUrl,
     [property: JsonPropertyName("manifest_hash")] string? ManifestHash
 );
+
+public enum PrivacyPolicyAcceptResult
+{
+    Denied,
+    Accepted,
+}

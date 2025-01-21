@@ -5,6 +5,7 @@
              xmlns:vm="clr-namespace:SS14.Launcher.ViewModels;assembly=SS14.Launcher"
              xmlns:vl="clr-namespace:SS14.Launcher.Views.Login;assembly=SS14.Launcher"
              xmlns:views="clr-namespace:SS14.Launcher.Views"
+             xmlns:loc="clr-namespace:SS14.Launcher.Localization"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SS14.Launcher.Views.MainWindowLogin">
   <Design.DataContext>
@@ -16,10 +17,9 @@
     <DockPanel Background="{DynamicResource ThemeStripeBackBrush}" DockPanel.Dock="Bottom"
                LastChildFill="False">
 
-      <CheckBox DockPanel.Dock="Left" VerticalAlignment="Center" Margin="4" IsChecked="{Binding LogLauncher}">Log Launcher</CheckBox>
+      <views:LanguageSelector DockPanel.Dock="Left" VerticalAlignment="Center" Margin="4" DataContext="{Binding LanguageSelector}" />
 
-      <TextBlock Text="{Binding Version}" DockPanel.Dock="Right" VerticalAlignment="Center" Margin="4"
-                 Classes="SubText" />
+      <CheckBox DockPanel.Dock="Left" VerticalAlignment="Center" Margin="4" IsChecked="{Binding LogLauncher}" Content="{loc:Loc login-log-launcher}" />
     </DockPanel>
     <Panel Background="{DynamicResource ThemeStripebackEdgeBrush}" MinHeight="2" DockPanel.Dock="Bottom" />
 

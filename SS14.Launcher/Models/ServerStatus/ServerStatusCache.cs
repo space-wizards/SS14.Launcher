@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
+using System.Net.Sockets;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
@@ -103,7 +104,7 @@ public sealed class ServerStatusCache : IServerSource
 
                 cancel.ThrowIfCancellationRequested();
             }
-            catch (Exception e) when (e is JsonException or HttpRequestException or InvalidDataException)
+            catch (Exception e) when (e is JsonException or HttpRequestException or InvalidDataException or IOException or SocketException)
             {
                 data.Status = ServerStatusCode.Offline;
                 return;
@@ -212,8 +213,9 @@ public sealed class ServerStatusCache : IServerSource
     {
         UpdateInfoForCore(statusData, async cancel =>
         {
-            var statusAddr = UriHelper.GetServerInfoAddress(statusData.Address);
-            return await _http.GetFromJsonAsync<ServerInfo>(statusAddr, cancel);
+            var uriBuilder = new UriBuilder(UriHelper.GetServerInfoAddress(statusData.Address));
+            uriBuilder.Query = "?can_skip_build=1";
+            return await _http.GetFromJsonAsync<ServerInfo>(uriBuilder.ToString(), cancel);
         });
     }
 

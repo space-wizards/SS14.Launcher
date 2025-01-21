@@ -1,12 +1,13 @@
 using ReactiveUI.Fody.Helpers;
 using SS14.Launcher.Api;
-using SS14.Launcher.Models.Data;
+using SS14.Launcher.Localization;
 
 namespace SS14.Launcher.ViewModels.Login;
 
 public sealed class ForgotPasswordViewModel : BaseLoginViewModel
 {
     private readonly AuthApi _authApi;
+    private readonly LocalizationManager _loc = LocalizationManager.Instance;
 
     [Reactive] public string EditingEmail { get; set; } = "";
 
@@ -36,14 +37,14 @@ public sealed class ForgotPasswordViewModel : BaseLoginViewModel
             if (!_errored)
             {
                 // This isn't an error lol but that's what I called the control.
-                OverlayControl = new AuthErrorsOverlayViewModel(this, "Reset email sent", new[]
+                OverlayControl = new AuthErrorsOverlayViewModel(this, _loc.GetString("login-forgot-success-title"), new[]
                 {
-                    "A reset link has been sent to your email address."
+                    _loc.GetString("login-forgot-success-message")
                 });
             }
             else
             {
-                OverlayControl = new AuthErrorsOverlayViewModel(this, "Error", errors!);
+                OverlayControl = new AuthErrorsOverlayViewModel(this, _loc.GetString("login-forgot-error"), errors!);
             }
         }
         finally

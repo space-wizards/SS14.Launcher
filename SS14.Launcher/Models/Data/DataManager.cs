@@ -61,6 +61,9 @@ public sealed class DataManager : ReactiveObject
     private readonly List<DbCommand> _dbCommandQueue = new();
     private readonly SemaphoreSlim _dbWritingSemaphore = new(1);
 
+    // Privacy policy IDs accepted along with the last accepted version.
+    private readonly Dictionary<string, string> _acceptedPrivacyPolicies = new();
+
     static DataManager()
     {
         SqlMapper.AddTypeHandler(new GuidTypeHandler());
@@ -216,6 +219,43 @@ public sealed class DataManager : ReactiveObject
         CommitConfig();
     }
 
+    public bool HasAcceptedPrivacyPolicy(string privacyPolicy, [NotNullWhen(true)] out string? version)
+    {
+        return _acceptedPrivacyPolicies.TryGetValue(privacyPolicy, out version);
+    }
+
+    public void AcceptPrivacyPolicy(string privacyPolicy, string version)
+    {
+        if (_acceptedPrivacyPolicies.ContainsKey(privacyPolicy))
+        {
+            // Accepting new version
+            AddDbCommand(db => db.Execute("""
+                UPDATE AcceptedPrivacyPolicy
+                SET Version = @Version, LastConnected = DATETIME('now')
+                WHERE Identifier = @Identifier
+                """, new { Identifier = privacyPolicy, Version = version }));
+        }
+        else
+        {
+            // Accepting new privacy policy entirely.
+            AddDbCommand(db => db.Execute("""
+                INSERT OR REPLACE INTO AcceptedPrivacyPolicy (Identifier, Version, AcceptedTime, LastConnected)
+                VALUES (@Identifier, @Version, DATETIME('now'), DATETIME('now'))
+                """, new { Identifier = privacyPolicy, Version = version }));
+        }
+
+        _acceptedPrivacyPolicies[privacyPolicy] = version;
+    }
+
+    public void UpdateConnectedToPrivacyPolicy(string privacyPolicy)
+    {
+        AddDbCommand(db => db.Execute("""
+            UPDATE AcceptedPrivacyPolicy
+            SET LastConnected = DATETIME('now')
+            WHERE Version = @Version
+            """, new { Version = privacyPolicy }));
+    }
+
     /// <summary>
     ///     Loads config file from disk, or resets the loaded config to default if the config doesn't exist on disk.
     /// </summary>
@@ -281,7 +321,7 @@ public sealed class DataManager : ReactiveObject
                 continue;
 
             if (entry.Type == typeof(string))
-                Set((string) v);
+                Set((string?) v);
             else if (entry.Type == typeof(bool))
                 Set((long) v != 0);
             else if (entry.Type == typeof(int))
@@ -292,6 +332,12 @@ public sealed class DataManager : ReactiveObject
 
         _filters.UnionWith(sqliteConnection.Query<ServerFilter>("SELECT Category, Data FROM ServerFilter"));
         _hubs.AddRange(sqliteConnection.Query<Hub>("SELECT Address,Priority FROM Hub"));
+
+        foreach (var (identifier, version) in sqliteConnection.Query<(string, string)>(
+                     "SELECT Identifier, Version FROM AcceptedPrivacyPolicy"))
+        {
+            _acceptedPrivacyPolicies[identifier] = version;
+        }
 
         // Avoid DB commands from config load.
         _dbCommandQueue.Clear();

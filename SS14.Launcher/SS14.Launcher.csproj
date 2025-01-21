@@ -65,6 +65,7 @@
     <PackageReference Include="JetBrains.Annotations" />
     <PackageReference Include="Microsoft.NET.ILLink.Tasks" />
     <PackageReference Include="System.Net.Http.WinHttpHandler" />
+    <PackageReference Include="Linguini.Bundle" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Utility\runtime.json" />

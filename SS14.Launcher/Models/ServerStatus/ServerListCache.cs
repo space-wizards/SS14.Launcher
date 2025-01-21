@@ -129,8 +129,6 @@ public sealed class ServerListCache : ReactiveObject, IServerSource
                 }
             }
 
-            Status = RefreshListStatus.Updating;
-
             _allServers.AddItems(entries.Select(entry =>
             {
                 var statusData = new ServerStatusData(entry.Address, entry.HubAddress);
@@ -200,11 +198,6 @@ public enum RefreshListStatus
     /// Fetching master server list.
     /// </summary>
     UpdatingMaster,
-
-    /// <summary>
-    /// Fetched master server list and currently fetching information from master servers.
-    /// </summary>
-    Updating,
 
     /// <summary>
     /// Fetched information from ALL servers from the hub.

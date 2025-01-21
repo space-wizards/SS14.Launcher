@@ -3,6 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vml="clr-namespace:SS14.Launcher.ViewModels.Login;assembly=SS14.Launcher"
+             xmlns:loc="clr-namespace:SS14.Launcher.Localization"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SS14.Launcher.Views.Login.RegisterNeedsConfirmationView"
              Name="Register">
@@ -12,15 +13,15 @@
 
   <DockPanel LastChildFill="False">
     <TextBlock HorizontalAlignment="Center" DockPanel.Dock="Top" Classes="NanoHeadingMedium"
-               Text="Register confirmation" />
+               Text="{loc:Loc login-confirmation-confirmation-title}" />
 
     <TextBlock HorizontalAlignment="Center" DockPanel.Dock="Top" TextWrapping="Wrap" MaxWidth="400"
-               Text="Please check your email to confirm your account. Once you have confirmed your account, press the button below to log in." />
+               Text="{loc:Loc login-confirmation-confirmation-message}" />
 
     <Button Content="{Binding ConfirmButtonText}" Command="{Binding ConfirmButtonPressed}"
             IsEnabled="{Binding ConfirmButtonEnabled}" DockPanel.Dock="Top" HorizontalAlignment="Center" />
 
-    <Button Content="Cancel" Command="{Binding ParentVM.SwitchToRegister}"
+    <Button Content="{loc:Loc login-confirmation-button-cancel}" Command="{Binding ParentVM.SwitchToRegister}"
             DockPanel.Dock="Bottom" HorizontalAlignment="Center" />
   </DockPanel>
 </UserControl>

@@ -3,6 +3,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:SS14.Launcher.ViewModels"
+             xmlns:views="clr-namespace:SS14.Launcher.Views"
+             xmlns:loc="clr-namespace:SS14.Launcher.Localization"
              mc:Ignorable="d" d:DesignWidth="300" d:DesignHeight="100"
              x:Class="SS14.Launcher.Views.ConnectingOverlay">
 
@@ -10,34 +12,53 @@
     <vm:ConnectingViewModel />
   </Design.DataContext>
   <ContentControl Classes="OverlayBox">
-    <StackPanel Orientation="Vertical">
-      <TextBlock HorizontalAlignment="Center" Classes="NanoHeadingMedium" Text="Connecting..." />
-      <TextBlock HorizontalAlignment="Center" Margin="0 10" DockPanel.Dock="Top" Text="{Binding StatusText}"
-                 TextWrapping="Wrap"  MaxWidth="400" />
-      <ProgressBar DockPanel.Dock="Bottom" Maximum="1" Value="{Binding Progress}"
-                   IsIndeterminate="{Binding ProgressIndeterminate}" IsVisible="{Binding ProgressBarVisible}"
-                   MinWidth="300" />
+    <Panel>
+      <StackPanel Orientation="Vertical" IsVisible="{Binding !IsAskingPrivacyPolicy}">
+        <TextBlock HorizontalAlignment="Center" Classes="NanoHeadingMedium" Text="{Binding TitleText}" />
+        <TextBlock HorizontalAlignment="Center" Margin="0 10" DockPanel.Dock="Top" Text="{Binding StatusText}"
+                   TextWrapping="Wrap"  MaxWidth="400" />
+        <ProgressBar DockPanel.Dock="Bottom" Maximum="1" Value="{Binding Progress}"
+                     IsIndeterminate="{Binding ProgressIndeterminate}" IsVisible="{Binding ProgressBarVisible}"
+                     MinWidth="300" />
 
-      <Panel DockPanel.Dock="Bottom">
-        <Button Content="Ok" IsVisible="{Binding IsErrored}" HorizontalAlignment="Center"
-                Command="{Binding ErrorDismissed}" MinWidth="75" />
+        <Panel DockPanel.Dock="Bottom">
+          <Button Content="Ok" IsVisible="{Binding IsErrored}" HorizontalAlignment="Center"
+                  Command="{Binding ErrorDismissed}" MinWidth="75" />
 
-        <DockPanel LastChildFill="False">
-          <Button DockPanel.Dock="Left"
-                  Name="CancelButton"
-                  Content="Cancel"
-                  Command="{Binding Cancel}"
-                  IsVisible="{Binding !IsErrored}" />
+          <DockPanel LastChildFill="False">
+            <Button DockPanel.Dock="Left"
+                    Name="CancelButton"
+                    Content="{loc:Loc connecting-cancel}"
+                    Command="{Binding Cancel}"
+                    IsVisible="{Binding !IsErrored}" />
 
-          <TextBlock DockPanel.Dock="Right" Margin="8 4 0 4" Text="{Binding ProgressText}"
-                     TextWrapping="Wrap"
-                     IsVisible="{Binding !ProgressIndeterminate}" />
+            <TextBlock DockPanel.Dock="Right" Margin="8 4 0 4" Text="{Binding ProgressText}"
+                       TextWrapping="Wrap"
+                       IsVisible="{Binding !ProgressIndeterminate}" />
 
-          <TextBlock DockPanel.Dock="Right" Margin="0 4" Text="{Binding SpeedText}"
-                     TextWrapping="Wrap"
-                     IsVisible="{Binding !SpeedIndeterminate}" />
-        </DockPanel>
-      </Panel>
-    </StackPanel>
+            <TextBlock DockPanel.Dock="Right" Margin="0 4" Text="{Binding SpeedText}"
+                       TextWrapping="Wrap"
+                       IsVisible="{Binding !SpeedIndeterminate}" />
+          </DockPanel>
+        </Panel>
+
+        <views:RandomMessage Name="Messages" Margin="0 6 0 0" MaxWidth="250" />
+      </StackPanel>
+      <StackPanel Orientation="Vertical" IsVisible="{Binding IsAskingPrivacyPolicy}">
+        <TextBlock HorizontalAlignment="Center" Classes="NanoHeadingMedium" Text="{Binding TitleText}" />
+        <TextBlock HorizontalAlignment="Center" Margin="0 10" DockPanel.Dock="Top" Text="{Binding PrivacyPolicyText}"
+                   TextWrapping="Wrap" MaxWidth="400" />
+
+        <Button Content="{loc:Loc 'connecting-privacy-policy-view'}" Command="{Binding PrivacyPolicyView}"
+                HorizontalAlignment="Center" />
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0 10">
+          <Button Content="{loc:Loc 'connecting-privacy-policy-accept'}" Command="{Binding PrivacyPolicyAccept}"
+                  Classes="OpenRight" />
+          <Button Content="{loc:Loc 'connecting-privacy-policy-decline'}" Command="{Binding PrivacyPolicyDeny}"
+                  Classes="OpenLeft"/>
+        </StackPanel>
+      </StackPanel>
+    </Panel>
   </ContentControl>
 </UserControl>

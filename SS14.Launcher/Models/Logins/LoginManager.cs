@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Threading;
@@ -105,7 +106,10 @@ public sealed class LoginManager : ReactiveObject
     {
         Log.Debug("Refreshing all tokens.");
 
-        await Task.WhenAll(_logins.Items.Select(async l =>
+        const int delayStart = 2;
+        const int delayValue = 200;
+
+        await Task.WhenAll(_logins.Items.Select(async (l, i) =>
         {
             if (l.Status == AccountLoginStatus.Expired)
             {
@@ -121,6 +125,9 @@ public sealed class LoginManager : ReactiveObject
                 l.SetStatus(AccountLoginStatus.Expired);
                 return;
             }
+
+            if (i > delayStart)
+                await Task.Delay(delayValue * (i - delayStart));
 
             try
             {

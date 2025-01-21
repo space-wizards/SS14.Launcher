@@ -2,21 +2,22 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:loc="clr-namespace:SS14.Launcher.Localization"
         mc:Ignorable="d" d:DesignWidth="300" d:DesignHeight="100"
         MinWidth="350" MinHeight="100"
         Width="350" Height="100"
         x:Class="SS14.Launcher.Views.DirectConnectDialog"
         Icon="{DynamicResource WindowIcon}"
-        Title="Direct Connect..."
+        Title="{loc:Loc direct-connect-title}"
         WindowStartupLocation="CenterOwner">
 
   <DockPanel Margin="4">
     <TextBlock Classes="NanoHeadingMedium" HorizontalAlignment="Center" DockPanel.Dock="Top"
-               Text="Enter server address to connect:" />
+               Text="{loc:Loc direct-connect-text}" />
 
     <DockPanel DockPanel.Dock="Bottom">
-      <Button DockPanel.Dock="Right" Name="SubmitButton" Content="Connect" />
-      <TextBlock Name="InvalidLabel" Text="Address is invalid" VerticalAlignment="Center" />
+      <Button DockPanel.Dock="Right" Name="SubmitButton" Content="{loc:Loc direct-connect-connect}" />
+      <TextBlock Name="InvalidLabel" Text="{loc:Loc direct-connect-address-invalid}" VerticalAlignment="Center" />
     </DockPanel>
 
     <TextBox Name="AddressBox" Watermark="ss14://example.com:1212" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" />

@@ -6,8 +6,15 @@
         1. Packaging scripts.
         2. Download .NET runtime script.
         3. Local dev SS14.Loader launching code.
+        4. build-test.yml GitHub Actions workflow
         -->
-        <TargetFramework>net8.0</TargetFramework>
-        <Version>0.25.1</Version>
+        <TargetFramework>net9.0</TargetFramework>
+        <Version>0.30.2</Version>
+
+        <!--
+        CET breaks for people on older, but still supported Windows versions:
+        https://github.com/space-wizards/SS14.Launcher/issues/198
+        -->
+        <CETCompat>false</CETCompat>
     </PropertyGroup>
 </Project>
