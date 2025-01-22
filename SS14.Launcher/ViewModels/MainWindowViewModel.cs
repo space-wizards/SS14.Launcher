@@ -296,10 +296,10 @@ public sealed class MainWindowViewModel : ViewModelBase, IErrorOverlayOwner
 
         var dialog = new ConfirmDialog
         {
-            Title = "Error Reporting",
-            DialogContent = "Allow errors to automatically be uploaded?",
-            ConfirmButtonText = "Allow",
-            CancelButtonText = "Deny"
+            Title = LocalizationManager.Instance.GetString("sentry-permission-dialog-title"),
+            DialogContent = LocalizationManager.Instance.GetString("sentry-permission-dialog-content"),
+            ConfirmButtonText = LocalizationManager.Instance.GetString("sentry-permission-dialog-confirm"),
+            CancelButtonText = LocalizationManager.Instance.GetString("sentry-permission-dialog-cancel"),
         };
 
         var result = await dialog.ShowDialog<bool>(Control!);

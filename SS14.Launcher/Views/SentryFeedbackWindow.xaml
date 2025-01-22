@@ -2,12 +2,13 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:loc="clr-namespace:SS14.Launcher.Localization"
         mc:Ignorable="d" d:DesignWidth="300" d:DesignHeight="100"
         MinWidth="550" MinHeight="300"
         Width="550" Height="300"
         x:Class="SS14.Launcher.Views.SentryFeedbackWindow"
         Icon="{DynamicResource WindowIcon}"
-        Title="Launcher Error"
+        Title="{loc:Loc sentry-error-dialog-title }"
         Padding="8"
         WindowStartupLocation="CenterOwner">
 
@@ -34,18 +35,18 @@
         </DrawingImage>
       </Image>
       <TextBlock Width="350" TextWrapping="Wrap" Name="Content" HorizontalAlignment="Left" DockPanel.Dock="Top"
-                 Text="An error occured and an anonymous report will automatically be sent."/>
+                 Text="{loc:Loc sentry-error-dialog-message }"/>
     </StackPanel>
 
-    <TextBlock DockPanel.Dock="Top" Text="Feedback" Classes="NanoHeadingSmall"/>
-    <TextBox Name="FeedbackField" Margin="4" DockPanel.Dock="Top"  Watermark="Write what happened..."
+    <TextBlock DockPanel.Dock="Top" Text="{loc:Loc sentry-error-dialog-feedback-label }" Classes="NanoHeadingSmall"/>
+    <TextBox Name="FeedbackField" Margin="4" DockPanel.Dock="Top"  Watermark="{loc:Loc sentry-error-dialog-feedback-placeholder }"
              NewLine="&#x0a;" AcceptsReturn="True" HorizontalAlignment="Stretch" Height="180"
              PropertyChanged="FeedbackTextChanged"/>
 
     <TextBlock DockPanel.Dock="Top" Name="ValidationText" Classes="SubText"/>
 
     <StackPanel Orientation="Horizontal" FlowDirection="RightToLeft"  HorizontalAlignment="Stretch" VerticalAlignment="Bottom" DockPanel.Dock="Bottom" Height="42">
-      <Button HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="4 0" Name="SendButton" Content="Send" />
+      <Button HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="4 0" Name="SendButton" Content="{loc:Loc sentry-error-dialog-send-button }" />
     </StackPanel>
   </DockPanel>
 </Window>

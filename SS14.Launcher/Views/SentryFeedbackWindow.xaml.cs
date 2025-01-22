@@ -2,6 +2,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using ReactiveUI;
+using SS14.Launcher.Localization;
 
 namespace SS14.Launcher.Views;
 
@@ -63,7 +64,7 @@ public partial class SentryFeedbackWindow : Window
         }
 
         FeedbackField.Text = text[..MaxFeedbackLength];
-        ValidationText.Text = $"Feedback can't be longer than {MaxFeedbackLength} characters";
+        ValidationText.Text = LocalizationManager.Instance.GetString("sentry-error-dialog-validation-max-length-error", ("maxFeedbackLength", MaxFeedbackLength));
         FeedbackField.Classes.Add("Invalid");
     }
 }
