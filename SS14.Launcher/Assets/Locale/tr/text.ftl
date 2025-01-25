@@ -74,7 +74,7 @@ hub-settings-button-add-tooltip = Sunucu merkezi ekle
 # Strings for the drop-down window to manage your active account
 account-drop-down-add-account = Hesap ekle
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-status-none = Bağlatı başlatılıyor…
+connecting-status-none = Bağlantı başlatılıyor…
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-client-crashed = İstemci başlatılırken çökmüş gibi duruyor. Eğer bu devam ederse, Discord'dan veya GitHub'dan yardım isteyiniz.
 # Strings for the "hub settings" dialog window.
