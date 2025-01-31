@@ -333,6 +333,21 @@ tab-options-disable-signing-desc = { "[" }DEV ONLY] Disables verification of eng
 tab-options-hub-settings = Hub Settings
 tab-options-hub-settings-desc = Change what hub server or servers you would like to use to fetch the server list.
 tab-options-desc-incompatible = This option is incompatible with your platform and has been disabled.
+tab-options-sentry = Error Reporting
+tab-options-sentry-desc = Automatically report errors. (requires launcher restart)
+
+## Strings for error reporting
+sentry-permission-dialog-title = Error Reporting
+sentry-permission-dialog-content = Allow errors to automatically be uploaded?
+sentry-permission-dialog-confirm = Allow
+sentry-permission-dialog-cancel = Deny
+sentry-error-dialog-title = Launcher Error
+sentry-error-dialog-message = An error occured and an anonymous report will automatically be sent.
+sentry-error-dialog-feedback-label = Feedback
+sentry-error-dialog-feedback-placeholder = Write what happened...
+sentry-error-dialog-send-button = Send
+sentry-error-dialog-validation-max-length-error = Feedback can't be longer than { $maxFeedbackLength } characters
+
 
 ## For the language selection menu.
 

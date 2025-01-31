@@ -56,6 +56,11 @@
                    Text="{loc:Loc tab-options-verbose-launcher-logging-desc}"
                    Margin="8" />
 
+        <CheckBox VerticalAlignment="Center" Margin="4" IsChecked="{Binding EnableSentry}" Content="{loc:Loc tab-options-sentry}"></CheckBox>
+        <TextBlock VerticalAlignment="Center" TextWrapping="Wrap"
+                   Text="{loc:Loc tab-options-sentry-desc}"
+                   Margin="8" />
+
         <CheckBox VerticalAlignment="Center" Margin="4" IsChecked="{Binding OverrideAssets}" Content="{loc:Loc tab-options-seasonal-branding}" />
         <TextBlock VerticalAlignment="Center" TextWrapping="Wrap"
                    Text="{loc:Loc tab-options-seasonal-branding-desc}"

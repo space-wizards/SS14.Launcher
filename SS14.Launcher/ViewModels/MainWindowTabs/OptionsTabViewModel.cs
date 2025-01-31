@@ -75,6 +75,16 @@ public class OptionsTabViewModel : MainWindowTabViewModel
         }
     }
 
+    public bool EnableSentry
+    {
+        get => Cfg.GetCVar(CVars.EnableSentry);
+        set
+        {
+            Cfg.SetCVar(CVars.EnableSentry, value);
+            Cfg.CommitConfig();
+        }
+    }
+
     public bool DisableSigning
     {
         get => Cfg.GetCVar(CVars.DisableSigning);

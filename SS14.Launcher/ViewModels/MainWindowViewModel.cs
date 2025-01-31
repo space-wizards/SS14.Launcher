@@ -280,4 +280,30 @@ public sealed class MainWindowViewModel : ViewModelBase, IErrorOverlayOwner
 
         ConnectingViewModel.StartContentBundle(this, file);
     }
+
+    public async Task OnWindowLoaded()
+    {
+#if !DEBUG
+            await InquireSentryPermission();
+#endif
+    }
+
+    private async Task InquireSentryPermission()
+    {
+        if (_cfg.GetCVar(CVars.HasSeenSentryInquiry))
+            return;
+
+
+        var dialog = new ConfirmDialog
+        {
+            Title = LocalizationManager.Instance.GetString("sentry-permission-dialog-title"),
+            DialogContent = LocalizationManager.Instance.GetString("sentry-permission-dialog-content"),
+            ConfirmButtonText = LocalizationManager.Instance.GetString("sentry-permission-dialog-confirm"),
+            CancelButtonText = LocalizationManager.Instance.GetString("sentry-permission-dialog-cancel"),
+        };
+
+        var result = await dialog.ShowDialog<bool>(Control!);
+        _cfg.SetCVar(CVars.HasSeenSentryInquiry, true);
+        _cfg.SetCVar(CVars.EnableSentry, result);
+    }
 }
