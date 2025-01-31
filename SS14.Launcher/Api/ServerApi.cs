@@ -13,6 +13,8 @@ public static class ServerApi
         int PlayerCount,
         [property: JsonPropertyName("soft_max_players")]
         int SoftMaxPlayerCount,
+        [property: JsonPropertyName("panic_bunker")]
+        bool? PanicBunker,
         [property: JsonPropertyName("tags")] string[]? Tags);
 
     /// <summary>

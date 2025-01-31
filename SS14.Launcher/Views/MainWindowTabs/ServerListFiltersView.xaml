@@ -57,6 +57,11 @@
           <ItemsControl ItemsSource="{Binding FiltersEighteenPlus}"
                         ItemsPanel="{StaticResource PanelTemplate}" ItemTemplate="{StaticResource FilterTemplate}"/>
         </DockPanel>
+        <DockPanel Classes="ServerFilterGroup">
+          <TextBlock MinWidth="150" DockPanel.Dock="Left" VerticalAlignment="Center" Classes="SubText" Text="Panic Bunker" />
+          <ItemsControl ItemsSource="{Binding FiltersBunker}"
+                        ItemsPanel="{StaticResource PanelTemplate}" ItemTemplate="{StaticResource FilterTemplate}"/>
+        </DockPanel>
 
         <DockPanel Classes="ServerFilterGroup">
           <TextBlock MinWidth="150" DockPanel.Dock="Left" Classes="SubText" Text="{loc:Loc filters-title-hub}" />

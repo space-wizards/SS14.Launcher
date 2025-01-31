@@ -25,4 +25,6 @@ public interface IServerStatusData : INotifyPropertyChanged
     int PlayerCount { get; set; }
 
     int SoftMaxPlayerCount { get; set; }
+
+    bool? PanicBunker { get; set; }
 }

@@ -94,6 +94,38 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
         }
     }
 
+    public string BunkerIcon
+    {
+        get
+        {
+            switch (_cacheData.PanicBunker)
+            {
+                case true:
+                    return "⏲️"; //TODO: replace this with a proper icon. This might be doable in 126? We'd rather not step on Visne's toes for now, so a system-dependant emoji will do.
+                case null:
+                    return "?";
+                default:
+                    return "";
+            }
+        }
+    }
+
+    public string BunkerText
+    {
+        get
+        {
+            switch (_cacheData.PanicBunker)
+            {
+                case true:
+                    return "Panic Bunker Enabled";
+                case false:
+                    return "Panic Bunker Disabled";
+                default:
+                    return "Missing Panic Bunker Information";
+            }
+        }
+    }
+
     public string Description
     {
         get
@@ -211,6 +243,12 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
             case nameof(IServerStatusData.PlayerCount):
             case nameof(IServerStatusData.SoftMaxPlayerCount):
                 OnPropertyChanged(nameof(ServerStatusString));
+                break;
+
+            case nameof(IServerStatusData.PanicBunker):
+                OnPropertyChanged(nameof(ServerStatusString));
+                OnPropertyChanged(nameof(BunkerIcon));
+                OnPropertyChanged(nameof(BunkerText));
                 break;
 
             case nameof(IServerStatusData.Status):
