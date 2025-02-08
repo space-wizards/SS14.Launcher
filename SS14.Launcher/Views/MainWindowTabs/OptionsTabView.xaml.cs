@@ -45,13 +45,15 @@ public partial class OptionsTabView : UserControl
         await new HubSettingsDialog().ShowDialog((Window)this.GetVisualRoot()!);
     }
 
-    private async void RegisterProtocols(object? _1, RoutedEventArgs _2)
+    public async void OSProtocol(object? sender, RoutedEventArgs args)
     {
-        ProtocolSetup.RegisterProtocol();
-    }
-
-    private async void UnregisterProtocols(object? _1, RoutedEventArgs _2)
-    {
-        ProtocolSetup.UnregisterProtocol();
+        if (Protocol.CheckExisting())
+        {
+            await Protocol.UnregisterProtocol();
+        }
+        else
+        {
+            await Protocol.RegisterProtocol();
+        }
     }
 }

@@ -291,6 +291,8 @@ tab-development-disable-signing = Disable Engine Signature Checks
 tab-development-disable-signing-desc = { "[" }DEV ONLY] Disables verification of engine signatures. DO NOT ENABLE UNLESS YOU KNOW EXACTLY WHAT YOU'RE DOING.
 tab-development-enable-engine-override = Enable engine override
 tab-development-enable-engine-override-desc = Override path to load engine zips from (release/ in RobustToolbox)
+tab-development-force-register-os-protocols = Force Register OS Protocols
+tab-development-force-unregister-os-protocols = Force Unegister OS Protocols
 
 ## Strings for the "home" tab
 
@@ -332,6 +334,9 @@ tab-options-disable-signing = Disable Engine Signature Checks
 tab-options-disable-signing-desc = { "[" }DEV ONLY] Disables verification of engine signatures. DO NOT ENABLE UNLESS YOU KNOW EXACTLY WHAT YOU'RE DOING.
 tab-options-hub-settings = Hub Settings
 tab-options-hub-settings-desc = Change what hub server or servers you would like to use to fetch the server list.
+tab-options-os-protocol = Register/Unregister File extensions & URL protocol
+tab-options-os-protocol-desc = Register the launcher to your operating system, this will allow you to use ss14(s):// links and file extensions like .rtreplay.
+
 tab-options-desc-incompatible = This option is incompatible with your platform and has been disabled.
 
 ## For the language selection menu.

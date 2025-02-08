@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using Microsoft.Win32;
 using Serilog;
 
 namespace SS14.Launcher;
 
-public static class ProtocolSetup
+public static class Protocol
 {
     public static bool CheckExisting()
     {
@@ -42,7 +43,7 @@ public static class ProtocolSetup
 
         return result;
     }
-    public static void RegisterProtocol()
+    public static Task<bool> RegisterProtocol()
     {
         // Windows registration
         if (OperatingSystem.IsWindows())
@@ -60,30 +61,23 @@ public static class ProtocolSetup
             {
                 // Do nothing, the user either declined UAC, they don't have administrator rights or something else went wrong.
                 Log.Warning("User declined UAC or doesn't have admin rights.");
+                return Task.FromResult(false);
             }
         }
         // macOS registration
         if (OperatingSystem.IsMacOS())
         {
             // Yeah you cant get this to work on dev builds
-            //todo macos protocol pass params
             #if !FULL_RELEASE
-            return;
+            return Task.FromResult(false);
             #endif
             var path = $"{AppDomain.CurrentDomain.BaseDirectory}";
 
-            // > be me
-            // > write protocol registration code
-            // > application runs in some wierd sandbox folder
-            // > :despair:
-            // > find out its about that its cause the user needs to move the app to the applications folder...
-            // > ... or any "suitable" folder...
-            // tldr user needs to move the app manually to get this sandbox restriction lifted. This can be done by
-            // making one of those installer dmg stuff
+            // User needs to move the app manually to get this sandbox restriction lifted. This can be done "automated" by making one of those installer dmg stuff
             if (path.Contains("AppTranslocation"))
             {
-                Log.Error("I have been put in apple jail... move me to your application folder");
-                return;
+                Log.Error("I have been put in apple jail (Gatekeeper path randomisation)... move me to your application folder");
+                return Task.FromResult(false);
             }
 
             var newPath = string.Empty;
@@ -110,9 +104,11 @@ public static class ProtocolSetup
             proc.StartInfo.Arguments = $"default {desktopfile} x-scheme-handler/ss14;xdg-mime default SS14.desktop x-scheme-handler/ss14s";
             proc.Start();
         }
+
         Log.Information("Successfully registered protocol");
+        return Task.FromResult(true);
     }
-    public static void UnregisterProtocol()
+    public static Task<bool> UnregisterProtocol()
     {
         // Windows unregistration
         if (OperatingSystem.IsWindows())
@@ -130,6 +126,7 @@ public static class ProtocolSetup
             {
                 // Do nothing, the user either declined UAC, they don't have administrator rights or something else went wrong.
                 Log.Warning("User declined UAC or doesn't have admin rights.");
+                return Task.FromResult(false);
             }
         }
         // macOS unregistration
@@ -137,7 +134,7 @@ public static class ProtocolSetup
         {
             // This just... seems to do nothing. Its correct to my documentation...
             #if !FULL_RELEASE
-            return;
+            return Task.FromResult(false);
             #endif
             Log.Information("Unregistering protocol for macos...");
             var path = $"{AppDomain.CurrentDomain.BaseDirectory}";
@@ -160,5 +157,7 @@ public static class ProtocolSetup
             // todo ditto (2)
         }
         Log.Information("Successfully unregistered protocol");
+
+        return Task.FromResult(true);
     }
 }
