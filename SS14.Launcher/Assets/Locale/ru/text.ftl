@@ -73,7 +73,7 @@ login-errors-button-ok = ОК
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-cancel = Отмена
 # Strings for the drop-down window to manage your active account
-account-drop-down-none-selected = Не выбран аккаунт
+account-drop-down-none-selected = Аккаунт не выбран
 # Strings for the drop-down window to manage your active account
 account-drop-down-log-out = Выйти
 # Strings for the drop-down window to manage your active account
@@ -200,6 +200,8 @@ login-forgot-success-message = Ссылка для сброса была отп�
 login-forgot-error = Ошибка
 # Strings for the "login" view on login
 login-login-title = Войти
+# Strings for the "login" view on login
+login-login-show-password = Показать пароль
 # Strings for the "login" view on login
 login-login-username-watermark = Имя пользователя или e-mail
 # Strings for the "login" view on login
@@ -406,7 +408,7 @@ tab-home-go-to-servers-tab = Перейти на вкладку серверов
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-none = Начало подключения…
 # Strings for the drop-down window to manage your active account
-account-drop-down-not-logged-in = Нет аккаунта
+account-drop-down-not-logged-in = Не выполнен вход
 # For the language selection menu.
 # Used for contents of each language button.
 language-selector-language = { $languageName } ({ $englishName })
@@ -429,15 +431,15 @@ tab-options-hub-settings-desc = Изменить, какой хаб или ха�
 # Long region names for server tag filters (shown in tooltip)
 region-south-america-south = Южная Америка - Юг
 # Strings for the "options" tab
-tab-options-compatibility-mode-desc = Это использует OpenGL ES 2 (через ANGLE при необходимости), который менее вероятнее будет подвержен драйверным багам. Попробуйте это, если испытываете графические проблемы или вылеты.
+tab-options-compatibility-mode-desc = Это заставит игру использовать другой графический интерфейс, который менее вероятнее будет подвержен драйверным багам. Попробуйте это, если испытываете графические проблемы или вылеты.
 # Strings for the "forgot password" view on login
 login-forgot-button-back = Назад ко входу
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-status-client-crashed = Вероятно, клиент непредвиденно завершил работу при запуске. Если это продолжится, пожалуйста, обратитесь за помощью в GitHub или Discord.
+connecting-status-client-crashed = Клиент вылетает при запуске. Если вылеты повторяются, пожалуйста, обратитесь в Discord или Github за помощью.
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-update-status-downloading-content = Загрузка контента сервера…
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-update-status-verifying = Проверка целостности загрузки…
+connecting-update-status-verifying = Подтверждение целостности загрузки…
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-update-status-culling-engine = Очистка старого контента…
 # Strings for the "connecting" menu that appears when connecting to a server.
@@ -525,3 +527,9 @@ tab-options-verbose-launcher-logging-desc = Для тех случаев, ког
 tab-options-seasonal-branding = Сезонное оформление
 # Strings for entries in the server list (including home page)
 server-entry-raise = Поднять на самый верх
+tab-options-desc-incompatible = Эта опция несовместима с вашей платформой, поэтому она отключена.
+connecting-privacy-policy-text-version-changed = Этот сервер обновил политику конфиденциальности с момента вашей последней игры. Вы должны принять новую версию перед подключением.
+connecting-privacy-policy-text = Этот сервер требует чтобы вы приняли его политику конфиденциальности перед подключением.
+connecting-privacy-policy-view = Посмотреть политику конфиденциальности
+connecting-privacy-policy-accept = Принять (продолжить)
+connecting-privacy-policy-decline = Отклонить (отключиться)

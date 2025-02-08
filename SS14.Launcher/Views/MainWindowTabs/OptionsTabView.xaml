@@ -34,9 +34,15 @@
                    Text="{loc:Loc tab-options-account-settings-desc}"
                    Margin="8" />
 
-        <CheckBox VerticalAlignment="Center" Margin="4" IsChecked="{Binding CompatMode}" Content="{loc:Loc tab-options-compatibility-mode}" />
-        <TextBlock VerticalAlignment="Center" TextWrapping="Wrap"
+        <CheckBox VerticalAlignment="Center" IsVisible="{Binding !DisableIncompatibleMacOS}"
+                  Margin="4" IsChecked="{Binding CompatMode}" Content="{loc:Loc tab-options-compatibility-mode}" />
+        <CheckBox VerticalAlignment="Center" IsVisible="{Binding DisableIncompatibleMacOS}"
+                  Margin="4" IsChecked="False" IsEnabled="False" Opacity="0.8" Content="{loc:Loc tab-options-compatibility-mode}" />
+        <TextBlock VerticalAlignment="Center" IsVisible="{Binding !DisableIncompatibleMacOS}" TextWrapping="Wrap"
                    Text="{loc:Loc tab-options-compatibility-mode-desc}"
+                   Margin="8" />
+        <TextBlock VerticalAlignment="Center" IsVisible="{Binding DisableIncompatibleMacOS}" TextWrapping="Wrap"
+                   Text="{loc:Loc tab-options-desc-incompatible}"
                    Margin="8" />
 
         <CheckBox VerticalAlignment="Center" Margin="4" IsChecked="{Binding LogClient}" Content="{loc:Loc tab-options-log-client}" />
@@ -70,6 +76,5 @@
                    Margin="8" />
       </StackPanel>
     </DockPanel>
-
   </ScrollViewer>
 </UserControl>

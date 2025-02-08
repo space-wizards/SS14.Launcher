@@ -1,3 +1,4 @@
+using System;
 using System.Diagnostics;
 using Splat;
 using SS14.Launcher.Localization;
@@ -21,7 +22,10 @@ public class OptionsTabViewModel : MainWindowTabViewModel
         Cfg = Locator.Current.GetRequiredService<DataManager>();
         _engineManager = Locator.Current.GetRequiredService<IEngineManager>();
         _contentManager = Locator.Current.GetRequiredService<ContentManager>();
+
+        DisableIncompatibleMacOS = OperatingSystem.IsMacOS();
     }
+    public bool DisableIncompatibleMacOS { get; }
 
 #if RELEASE
         public bool HideDisableSigning => true;

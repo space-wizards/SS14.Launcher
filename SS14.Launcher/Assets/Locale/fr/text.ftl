@@ -7,17 +7,17 @@ account-drop-down-log-out = Se déconnecter
 # Strings for the drop-down window to manage your active account
 account-drop-down-log-out-of = Se déconnecter de { $name }
 # Strings for the drop-down window to manage your active account
-account-drop-down-switch-account = Changer de compte :
+account-drop-down-switch-account = Changer de compte :
 # Strings for the drop-down window to manage your active account
-account-drop-down-select-account = Sélectionner un compte:
+account-drop-down-select-account = Sélectionner un compte :
 # Strings for the drop-down window to manage your active account
 account-drop-down-add-account = Ajouter un compte
 # Localization for the "add favorite server" dialog window
 add-favorite-window-title = Ajouter un Serveur Favori
 # Localization for the "add favorite server" dialog window
-add-favorite-window-label-name = Nom:
+add-favorite-window-label-name = Nom :
 # Localization for the "add favorite server" dialog window
-add-favorite-window-label-address = Adresse:
+add-favorite-window-label-address = Adresse :
 # Localization for the "add favorite server" dialog window
 # 'Example' name shown as a watermark in the name input box
 add-favorite-window-example-name = Station Clown
@@ -30,15 +30,15 @@ connecting-cancel = Annuler
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-none = Ouverture de la connexion…
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-status-updating = Mise à jour: { $status }
+connecting-status-updating = Mise à jour : { $status }
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-status-connection-failed = Connexion au serveur échouée!
+connecting-status-connection-failed = Connexion au serveur échouée !
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-starting-client = Démarrage du client…
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-not-a-content-bundle = Le fichier n'est pas un bundle de contenu valide !
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-status-client-crashed = Le client semble s'être arrêté au démarrage. Contactez le support sur Discord ou GitHub.
+connecting-status-client-crashed = Le client semble s'être arrêté au démarrage. Si ce problème persiste, demandez de l'aide sur Discord ou GitHub.
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-update-status-checking-client-update = Recherche de mise à jour du contenu du serveur…
 # Strings for the "connecting" menu that appears when connecting to a server.
@@ -60,7 +60,7 @@ connecting-update-status-downloading-engine-modules = Téléchargement des dépe
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-update-status-loading-into-db = Stockage des ressources dans la base de données…
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-update-status-loading-content-bundle = Chargement du bundle de contenu…
+connecting-update-status-loading-content-bundle = Chargement du paquet de contenu…
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-update-status-unknown = Vous ne devriez pas voir ça
 # Strings for the "direct connect" dialog window.
@@ -70,7 +70,7 @@ direct-connect-text = Entrez l'adresse du serveur :
 # Strings for the "direct connect" dialog window.
 direct-connect-connect = Connexion
 # Strings for the "hub settings" dialog window.
-hub-settings-title = Options Hub
+hub-settings-title = Options du Hub
 # Strings for the "hub settings" dialog window.
 hub-settings-button-done = Terminé
 # Strings for the "hub settings" dialog window.
@@ -98,7 +98,7 @@ login-2fa-title = Authentification à deux facteurs requise
 # Strings for 2FA login
 login-2fa-message = Veuillez entre le code d'authentification à deux facteurs.
 # Strings for 2FA login
-login-2fa-input-watermark = Code d'authentification à deux facteurs
+login-2fa-input-watermark = Code d'authentification
 # Strings for 2FA login
 login-2fa-button-confirm = Confirmer
 # Strings for 2FA login
@@ -178,7 +178,7 @@ add-favorite-window-address-invalid = Adresse invalide
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-connecting = Récupération des informations de connexion du serveur…
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-status-update-error = Il y a eu une erreur lors du téléchargement du contenu du serveur. Contactez le support sur Discord si le problème persiste.
+connecting-status-update-error = Il y a eu une erreur lors du téléchargement du contenu du serveur. Demandez de l'aide sur Discord si le problème persiste.
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-update-status-fetching-manifest = Récupération du manifeste du serveur…
 # Strings for the "connecting" menu that appears when connecting to a server.
@@ -196,17 +196,17 @@ login-error-invalid-credentials = Informations de connexion invalides
 # Error messages for login
 login-error-account-2fa-invalid = Code d'authentification à deux facteurs invalide
 # Strings for the "register confirmation" view on login
-login-confirmation-confirmation-message = Veuillez ouvrir votre courrier électronique pour vérifier votre compte. Quand votre compte sera vérifié, cliquez sur le bouton ci-dessous pour vous connecter.
+login-confirmation-confirmation-message = Veuillez ouvrir votre courrier électronique pour vérifier votre compte. Une fois votre compte vérifié, cliquez sur le bouton ci-dessous pour vous connecter.
 # Strings for the general main window layout of the launcher
 main-window-early-access-desc = Space Station 14 est toujours en version alpha. On espère que vous apprécierez le jeu dans son état actuel, peut-être même que vous resterez, mais gardez des attentes modestes pour l'instant.
 # Error messages for login
-login-error-account-account-locked = Ce compte a été verrouillé. Contactez-nous si vous croyez que c'est une erreur.
+login-error-account-account-locked = Ce compte a été verrouillé. Contactez-nous si vous pensez qu'il s'agit d'une erreur.
 # Strings for the "login expired" view on login
 login-expired-message =
     Connexion expirée pour ce compte.
     Veuillez rentrer votre mot de passe à nouveau.
 # Strings for the "forgot password" view on login
-login-forgot-message = Si vous avez oublié votre mot de passe, vous pouvez ici saisir l'adresse mail liée à votre compte pour recevoir un lien de réinitialisation.
+login-forgot-message = Si vous avez oublié votre mot de passe, vous pouvez saisir l'adresse mail liée à votre compte ici pour recevoir un lien de réinitialisation.
 # Strings for the "forgot password" view on login
 login-forgot-busy-sending = Envoi du courriel…
 # Strings for the "forgot password" view on login
@@ -234,7 +234,7 @@ filters = Filtres ({ $filteredServers } / { $totalServers })
 # Strings for the "servers" tab
 tab-servers-list-status-none-filtered = Aucun serveur ne correspond à vos paramètres de recherche ou de filtrage.
 # Strings for the "servers" tab
-tab-servers-list-status-none = Il n'y a aucun serveur public. Vérifiez que la configuration de votre hub est correcte.
+tab-servers-list-status-none = Il n'y a aucun serveur public. Vérifiez la configuration de vos hubs.
 # Strings for the server filters menu
 filters-title-language = Langue
 # Strings for the server filters menu
@@ -357,13 +357,13 @@ tab-options-open-log-directory = Ouvrir l'historique d'activité (log directory)
 # Strings for the "options" tab
 tab-options-compatibility-mode = Mode de compatibilité
 # Strings for the "options" tab
-tab-options-compatibility-mode-desc = Utilise OpenGL ES 2 (via ANGLE si nécessaire), qui est moins susceptible de souffrir de bugs de pilotes. À essayer si vous rencontrez des problèmes graphiques ou des plantages.
+tab-options-compatibility-mode-desc = Force le jeu à utiliser un back-end graphique différent, qui est moins susceptible de souffrir de bugs de pilotes. À essayer si vous rencontrez des problèmes graphiques ou des plantages.
 # Strings for the "options" tab
 tab-options-log-client = Historique d'activité
 # Strings for the "options" tab
 tab-options-log-client-desc = Permet la journalisation de toute sortie du client de jeu. Utile pour les développeurs.
 # Strings for the "options" tab
-tab-options-log-launcher = Lanceur de journaux
+tab-options-log-launcher = Lanceur de rapports
 # Strings for the "options" tab
 tab-options-verbose-launcher-logging = Historique d'activité détaillé du launcher
 # Strings for the "options" tab
@@ -381,13 +381,13 @@ tab-home-favorite-servers = Serveurs Favoris:
 # Strings for the "options" tab
 tab-options-log-launcher-desc = Active l'historique d'activité du launcher. Utile pour les développeurs. (nécessite de redémarrer le launcher)
 # Strings for the "news" tab
-tab-news-recent-news = Actualités récentes:
+tab-news-recent-news = Nouvelles actualités :
 # Strings for the "news" tab
 tab-news-pulling-news = Recherche d'actualités…
 # Strings for the "hub settings" dialog window.
 hub-settings-warning-duplicate = Dupliquer les hubs
 # Strings for the login screen
-login-log-launcher = Journal du launcher
+login-log-launcher = Lanceur de rapports
 # Strings for the general main window layout of the launcher
 main-window-busy-checking-login-status = Actualisation du statut de la connexion…
 # Strings for the general main window layout of the launcher
@@ -399,7 +399,7 @@ region-africa-north = Afrique du Nord
 # Long region names for server tag filters (shown in tooltip)
 region-africa-south = Afrique Sud
 # Strings for the "hub settings" dialog window.
-hub-settings-explanation = Ici, vous pouvez ajouter des hubs supplémentaires pour récupérer des serveurs de jeu. Vous ne devez ajouter que des hubs en lesquels vous avez confiance car ils peuvent "usurper" les serveurs de jeu d'autres hubs. L'ordre des hubs est important; si deux hubs annoncent le même serveur de jeu, le hub ayant la priorité la plus élevée (plus haut dans la liste) sera prioritaire.
+hub-settings-explanation = Ici, vous pouvez ajouter des hubs supplémentaires afin de récupérer des serveurs de jeu. N'ajoutez que des hubs en lesquels vous avez confiance, car ils peuvent provoquer une « attaque par usurpation » des serveurs d'autres hubs. L'ordre des hubs est important ; si deux hubs annoncent le même serveur de jeu, le serveur apparaîtra depuis le hub ayant la priorité la plus élevée (placé le plus haut dans la liste).
 # Strings for the "hub settings" dialog window.
 hub-settings-warning-invalid = Hub invalide (n'oubliez pas http(s)://)
 # Strings for the general main window layout of the launcher
@@ -423,7 +423,7 @@ language-selector-label = Langue
 # "Save" button.
 language-selector-save = Sauvegarder
 # For the language selection menu.
-language-selector-help-translate = Vous voulez nous aider pour la traduction ? Vous le pouvez !
+language-selector-help-translate = Voulez-vous nous aider pour la traduction ? Vous le pouvez !
 # For the language selection menu.
 language-selector-system-language = Langue du système ({ $languageName })
 # For the language selection menu.
@@ -525,3 +525,5 @@ region-short-south-america-east = SA Est
 tab-home-add-favorite = Ajouter aux Favoris…
 # Strings for the "options" tab
 tab-options-flip = { "*" }retourner
+login-login-show-password = Afficher le mot de passe
+tab-options-desc-incompatible = Cette option a été désactivée parce qu'elle est incompatible avec votre platforme.

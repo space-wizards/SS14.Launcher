@@ -525,3 +525,5 @@ language-selector-cancel = Cancelar
 language-selector-language = { $languageName } { $englishName }
 # Strings for entries in the server list (including home page)
 server-entry-raise = Mover ao topo
+# Strings for the "login" view on login
+login-login-show-password = Mostrar Senha

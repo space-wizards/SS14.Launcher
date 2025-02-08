@@ -45,6 +45,12 @@ connecting-update-status-loading-into-db = Storing assets in database…
 connecting-update-status-loading-content-bundle = Loading content bundle…
 connecting-update-status-unknown = You shouldn't see this
 
+connecting-privacy-policy-text = This server requires that you accept its privacy policy before connecting.
+connecting-privacy-policy-text-version-changed = This server has updated its privacy policy since the last time you played. You must accept the new version before connecting.
+connecting-privacy-policy-view = View privacy policy
+connecting-privacy-policy-accept = Accept (continue)
+connecting-privacy-policy-decline = Decline (disconnect)
+
 ## Strings for the "direct connect" dialog window.
 
 direct-connect-title = Direct Connect…
@@ -120,6 +126,7 @@ login-forgot-error = Error
 login-login-title = Log in
 login-login-username-watermark = Username or email
 login-login-password-watermark = Password
+login-login-show-password = Show Password
 login-login-button-log-in = Log in
 login-login-button-forgot = Forgot your password?
 login-login-button-resend = Resend email confirmation
@@ -312,7 +319,7 @@ tab-options-open-log-directory = Open log directory
 tab-options-account-settings = Account Settings
 tab-options-account-settings-desc = You can manage your account settings, such as changing email or password, through our website.
 tab-options-compatibility-mode = Compatibility Mode
-tab-options-compatibility-mode-desc = This uses OpenGL ES 2 (via ANGLE if necessary), which is less likely to suffer from driver bugs. Try this if you are experiencing graphical issues or crashes.
+tab-options-compatibility-mode-desc = This forces the game to use a different graphics backend, which is less likely to suffer from driver bugs. Try this if you are experiencing graphical issues or crashes.
 tab-options-log-client = Log Client
 tab-options-log-client-desc = Enables logging of any game client output. Useful for developers.
 tab-options-log-launcher = Log Launcher
@@ -325,6 +332,7 @@ tab-options-disable-signing = Disable Engine Signature Checks
 tab-options-disable-signing-desc = { "[" }DEV ONLY] Disables verification of engine signatures. DO NOT ENABLE UNLESS YOU KNOW EXACTLY WHAT YOU'RE DOING.
 tab-options-hub-settings = Hub Settings
 tab-options-hub-settings-desc = Change what hub server or servers you would like to use to fetch the server list.
+tab-options-desc-incompatible = This option is incompatible with your platform and has been disabled.
 
 ## For the language selection menu.
 

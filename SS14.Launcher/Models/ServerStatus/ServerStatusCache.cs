@@ -213,8 +213,9 @@ public sealed class ServerStatusCache : IServerSource
     {
         UpdateInfoForCore(statusData, async cancel =>
         {
-            var statusAddr = UriHelper.GetServerInfoAddress(statusData.Address);
-            return await _http.GetFromJsonAsync<ServerInfo>(statusAddr, cancel);
+            var uriBuilder = new UriBuilder(UriHelper.GetServerInfoAddress(statusData.Address));
+            uriBuilder.Query = "?can_skip_build=1";
+            return await _http.GetFromJsonAsync<ServerInfo>(uriBuilder.ToString(), cancel);
         });
     }
 

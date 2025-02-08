@@ -18,8 +18,14 @@
              Watermark="{loc:Loc login-login-username-watermark}"
              Text="{Binding EditingUsername, Mode=TwoWay}" IsEnabled="{Binding !Busy}" />
 
-    <TextBox DockPanel.Dock="Top" Name="PasswordBox" MaxWidth="300" Margin="0, 4, 0, 0" Watermark="{loc:Loc login-login-password-watermark}"
-             Text="{Binding EditingPassword, Mode=TwoWay}" PasswordChar="•" IsEnabled="{Binding !Busy}" />
+    <TextBox DockPanel.Dock="Top" Name="PasswordBox" MaxWidth="300" Margin="0, 4, 0, 0"
+             Watermark="{loc:Loc login-login-password-watermark}"
+             Text="{Binding EditingPassword, Mode=TwoWay}" RevealPassword="{Binding IsPasswordVisible}"
+             PasswordChar="•"
+             IsEnabled="{Binding !Busy}" />
+
+    <CheckBox DockPanel.Dock="Top" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="4"
+              IsChecked="{Binding IsPasswordVisible}" Content="{loc:Loc login-login-show-password}" />
 
     <DockPanel DockPanel.Dock="Top" LastChildFill="False" MaxWidth="300" Margin="0 20 0 0">
       <Button DockPanel.Dock="Right" HorizontalAlignment="Center"

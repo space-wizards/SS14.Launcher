@@ -392,3 +392,139 @@ connecting-status-not-a-content-bundle = Plik nie jest poprawnym pakietem treśc
 connecting-status-connection-failed = Połączenie z serwerem nie powiodło się!
 # Strings for entries in the server list (including home page)
 server-entry-fetching = Pobieranie…
+# Localization for the "add favorite server" dialog window
+# 'Example' name shown as a watermark in the name input box
+add-favorite-window-example-name = Stacja Honk
+# Strings for the "connecting" menu that appears when connecting to a server.
+connecting-status-updating = Aktualizowanie: { $status }
+# Strings for the "connecting" menu that appears when connecting to a server.
+connecting-status-connecting = Pobieranie informacji o połączeniu z serwerem…
+# Strings for the "connecting" menu that appears when connecting to a server.
+connecting-status-starting-client = Uruchamianie klienta…
+# Strings for the drop-down window to manage your active account
+account-drop-down-switch-account = Przełącz konto:
+# Strings for the "connecting" menu that appears when connecting to a server.
+connecting-status-client-crashed = Klient napotkał błąd podczas uruchamiania. Jeżeli ten błąd nie ustąpi, poproś o pomoc na platformie Discord lub GitHub.
+# Strings for the "connecting" menu that appears when connecting to a server.
+connecting-update-status-fetching-manifest = Pobieranie manifestu servera…
+# Strings for the login screen
+login-log-launcher = Rejestruj błędy programu uruchamiającego
+# Strings for the "forgot password" view on login
+login-forgot-success-title = E-mail resetujący został wysłany
+# Strings for the "forgot password" view on login
+login-forgot-success-message = Link resetujący został wysłany na Twój adres e-mail.
+# Strings for the "forgot password" view on login
+login-forgot-message = Jeżeli nie pamiętasz hasła, możesz wprowadzić adres e-mail powiązany z Twoim kontem aby otrzymać link resetujący.
+# Strings for the "register confirmation" view on login
+login-confirmation-confirmation-message = Sprawdź swój e-mail, aby potwierdzić konto. Po potwierdzeniu konta, naciśnij przycisk poniżej aby się zalogować.
+# Strings for the "register confirmation" view on login
+login-confirmation-button-confirm = Potwierdziłem/am swoje konto
+# Strings for the general main window layout of the launcher
+main-window-out-of-date-desc-steam =
+    Ten program uruchamiający jest nieaktualny.
+    Zezwól platformie Steam na aktualizację gry.
+# Strings for the "login" view on login
+login-login-button-resend = Ponownie wyślij potwierdzenie e-mail
+# Strings for the "login" view on login
+login-login-error-title = Nie można się zalogować
+# Strings for the general main window layout of the launcher
+main-window-early-access-desc = Space Station 14 wciąż znajduje się w fazie alfa. Mamy nadzieję, że spodoba Ci się to, co zobaczysz, a może nawet zostaniesz na dłużej, ale pamiętaj, by na ten moment mieć skromne oczekiwania.
+# Strings for the general main window layout of the launcher
+main-window-out-of-date = Nieaktualny program uruchamiający
+# Strings for the general main window layout of the launcher
+main-window-out-of-date-desc =
+    Ten program uruchamiający jest nieaktualny.
+    Pobierz nowszą wersję z naszej strony internetowej.
+# Short region names for server tag filters (shown in filter check box)
+region-short-north-america-central = Północna Ameryka Środkowa
+# Strings for the "login" view on login
+login-login-show-password = Pokaż Hasło
+# Short region names for server tag filters (shown in filter check box)
+region-short-north-america-east = Północna Ameryka Wschodnia
+# Short region names for server tag filters (shown in filter check box)
+region-short-south-america-west = Południowa Ameryka Zachodnia
+# Short region names for server tag filters (shown in filter check box)
+region-short-south-america-east = Południowa Ameryka Wschodnia
+# Short region names for server tag filters (shown in filter check box)
+region-short-north-america-west = Północna Ameryka Zachodnia
+# Short region names for server tag filters (shown in filter check box)
+region-short-south-america-south = Południowa Ameryka Południowa
+# Strings for the "servers" tab
+filters = Filtry ({ $filteredServers } / { $totalServers })
+# Strings for the server filters menu
+filters-unspecified = Nieokreślone
+# Strings for the server filters menu
+filters-unspecified-desc = Nieokreślone
+# Strings for entries in the server list (including home page)
+server-entry-description-offline = Nie można skontaktować się z serwerem
+# Strings for the "Development" tab
+# These aren't shown to users so they're not very important
+tab-development-disable-signing-desc = { "[" }TYLKO DLA DEWELOPERÓW] Wyłącza weryfikację sygnatur silnika. NIE WŁĄCZAJ, JEŻELI NIE WIESZ CO ROBISZ.
+# Strings for entries in the server list (including home page)
+server-entry-player-count =
+    { $players } / { $max ->
+        [0] ∞
+       *[1] { $max }
+    }
+# Strings for the server filters menu
+filters-title-rp = Poziom Role-play
+# Strings for the "Development" tab
+# These aren't shown to users so they're not very important
+tab-development-enable-engine-override = Włącz nadpisywanie silnika
+# Strings for the "Development" tab
+# These aren't shown to users so they're not very important
+tab-development-enable-engine-override-desc = Nadpisywanie ścięzki do wczytania plików zip silnika (release/ w RobustToolbox)
+# Strings for the "home" tab
+tab-home-favorites-guide = Oznacz serwery jako ulubione, aby mieć do nich ułatwiony dostęp
+# Strings for the "options" tab
+tab-options-log-client = Rejestruj klienta
+# Strings for the "news" tab
+tab-news-title = Aktualności
+# Strings for the "servers" tab
+tab-servers-list-status-partial-error = Nie udało się pobrać niektórych lub wszystkich list serwerów. Upewnij się, że konfiguracja list jest prawidłowa.
+# Strings for the "options" tab
+tab-options-flip = { "*" }obrót
+# Strings for the "Development" tab
+# These aren't shown to users so they're not very important
+tab-development-title-override = { "[" }DEV (nadpisywanie aktywne!!!)]
+# Strings for the "options" tab
+tab-options-open-log-directory = Otwórz folder z rejestrami
+# Strings for the "servers" tab
+tab-servers-list-status-none = Nie ma publicznych serwerów. Upewnij się, że Twoja konfiguracja list jest poprawna.
+# Strings for the server filters menu
+filters-title-hub = Lista Serwerów
+# Strings for the "options" tab
+tab-options-compatibility-mode-desc = To wymusza użycie innego kodu graficznego, który jest mniej podatny na błędy sterowników. Wypróbuj tę opcję, jeśli doświadczasz problemów graficznych lub awarii.
+# Strings for the "options" tab
+tab-options-log-client-desc = Umożliwia rejestrowanie jakichkolwiek wyników klienta gry. Przydatne dla deweloperów.
+# Strings for the "options" tab
+tab-options-log-launcher = Rejestruj program uruchamiający
+# Strings for the "options" tab
+tab-options-log-launcher-desc = Umożliwia rejestracje programu uruchamiającego. Przydatne dla deweloperów. (wymagany restart programu uruchamiającego)
+# Strings for the "options" tab
+tab-options-verbose-launcher-logging = Szczegółowa rejestracja programu uruchamiającego
+# Strings for the "options" tab
+tab-options-seasonal-branding = Sezonowy Branding
+# Strings for the "hub settings" dialog window.
+hub-settings-button-add-tooltip = Dodaj listę serwerów
+# Strings for the "hub settings" dialog window.
+hub-settings-button-remove-tooltip = Usuń listę serwerów
+# Strings for the "hub settings" dialog window.
+hub-settings-warning-invalid = Nieprawidłowa lista (Nie zapomnij o http(s)://)
+# Strings for the "hub settings" dialog window.
+hub-settings-warning-duplicate = Zduplikowane listy
+# Strings for the "options" tab
+tab-options-hub-settings = Ustawienia Listy Serwerów
+# Strings for the "options" tab
+tab-options-hub-settings-desc = Zmień listy z którywch chcesz pobierać serwery.
+# Strings for the "options" tab
+tab-options-disable-signing-desc = { "[" } TYLKO DLA DEWELOPERÓW] Wyłącza weryfikację sygnatur silnika. NIE WŁĄCZAJ, JEŚLI NIE WIESZ CO ROBISZ.
+# Strings for the "hub settings" dialog window.
+hub-settings-title = Ustawienia Listy Serwerów
+# Strings for the "hub settings" dialog window.
+hub-settings-explanation = Tutaj możesz dodać dodatkowe listy z których będą pobierane serwery gier. Należy dodać tylko zaufane listy, ponieważ mogą one dodawać niepożądane serwery. Kolejność list ma znaczenie; jeżeli dwie listy reklamują ten sam serwer gry, ta z wyższym priorytetem (wyżej na liście) będzia miała pierwszeństwo.
+# Strings for the general main window layout of the launcher
+main-window-out-of-date-download-manual = Pobierz (ręcznie)
+# Strings for the general main window layout of the launcher
+main-window-drag-drop-prompt = Upuść aby odtworzyć grę
+tab-options-desc-incompatible = Ta opcja nie jest dostępna na tej platformie i została zablokowana.

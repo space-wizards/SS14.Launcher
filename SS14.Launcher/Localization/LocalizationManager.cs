@@ -33,6 +33,12 @@ public sealed class LocalizationManager
         new LanguageInfo("uk"),
         new LanguageInfo("fr"),
         new LanguageInfo("tr"),
+        new LanguageInfo("sv"),
+        new LanguageInfo("fi"),
+        new LanguageInfo("zh-Hans"),
+        new LanguageInfo("et"),
+        new LanguageInfo("pl"),
+        new LanguageInfo("ja"),
     ];
 
     private const string FallbackCulture = "en";
@@ -125,17 +131,26 @@ public sealed class LocalizationManager
             AddLanguageFiles(bundle, culture.Parent);
 
         var count = 0;
-        foreach (var ftl in AssetLoader.GetAssets(new Uri($"avares://SS14.Launcher/Assets/Locale/{culture.Name}"), null))
+        string[] attemptNames = [$"avares://SS14.Launcher/Assets/Locale/{culture.Name}"];
+        // Weblate stores secondary language codes (like zh-Hans) with an UNDERSCORE.
+        // WHY.
+        if (culture.Name.Contains('-'))
+            attemptNames = [..attemptNames, $"avares://SS14.Launcher/Assets/Locale/{culture.Name.Replace("-", "_")}"];
+
+        foreach (var location in attemptNames)
         {
-            using var asset = AssetLoader.Open(ftl);
-            using var reader = new StreamReader(asset, Encoding.UTF8);
-            var resource = new LinguiniParser(reader).Parse();
-            foreach (var resourceError in resource.Errors)
+            foreach (var ftl in AssetLoader.GetAssets(new Uri(location), null))
             {
-                Log.Error("Error in loc {LocFile}: {Error}", ftl, resourceError);
+                using var asset = AssetLoader.Open(ftl);
+                using var reader = new StreamReader(asset, Encoding.UTF8);
+                var resource = new LinguiniParser(reader).Parse();
+                foreach (var resourceError in resource.Errors)
+                {
+                    Log.Error("Error in loc {LocFile}: {Error}", ftl, resourceError);
+                }
+                bundle.AddResourceOverriding(resource);
+                count += 1;
             }
-            bundle.AddResourceOverriding(resource);
-            count += 1;
         }
 
         Log.Verbose("Loaded {Count} files for locale: {CultureName} ({CultureDisplayName})", count, culture.Name, culture.DisplayName);

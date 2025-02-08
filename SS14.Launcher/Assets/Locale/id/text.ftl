@@ -151,3 +151,17 @@ login-expired-title = Masa masuk sudah kadaluarsa
 login-error-account-unconfirmed = Alamat email untuk akun ini masih perlu dikonfirmasi. Harap mengkonfirmasikan alamat email Anda sebelum mencoba masuk
 # Strings for the "hub settings" dialog window.
 hub-settings-explanation = Di sini, Anda dapat menambahkan pusat server tambahan untuk mengambil server game. Anda sebaiknya hanya menambahkan hub yang Anda percayai, karena mereka dapat 'menipu' Anda menggunakan server game dari hub lain. Urutan hub penting; bila dua hub terdapat server yang sama, hub dengan prioritas lebih tinggi (lebih tinggi dalam daftar) akan diutamakan.
+# Strings for the "forgot password" view on login
+login-forgot-message = Bila Anda lupa kata sandi, Anda dapat memasukkan alamat email yang terkait dengan akun Anda di sini untuk menerima tautan pengaturan ulang.
+# Strings for the "forgot password" view on login
+login-forgot-email-watermark = Alamat email Anda
+# Strings for the "forgot password" view on login
+login-forgot-button-submit = Kirim
+# Strings for the "forgot password" view on login
+login-forgot-button-back = Kembali ke login
+# Strings for the "forgot password" view on login
+login-forgot-busy-sending = Mengirimkan email…
+# Strings for the "forgot password" view on login
+login-forgot-success-title = Email pengaturan ulang terkirim
+# Strings for the "forgot password" view on login
+login-forgot-success-message = Tautan pengaturan ulang telah dikirim kepada alamat email Anda.

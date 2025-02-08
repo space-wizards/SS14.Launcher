@@ -134,6 +134,7 @@ public sealed class MainWindowViewModel : ViewModelBase, IErrorOverlayOwner
     }
 
     public ICVarEntry<bool> HasDismissedEarlyAccessWarning => Cfg.GetCVarEntry(CVars.HasDismissedEarlyAccessWarning);
+    public string Version => $"v{LauncherVersion.Version}";
 
     public async void OnWindowInitialized()
     {

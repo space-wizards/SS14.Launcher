@@ -158,7 +158,7 @@ public static class HappyEyeballsHttp
         }
         else if (ipv6.Length > ipv4.Length)
         {
-            ipv4.AsSpan(commonLength).CopyTo(result.AsSpan(commonLength * 2));
+            ipv6.AsSpan(commonLength).CopyTo(result.AsSpan(commonLength * 2));
         }
 
         return result;

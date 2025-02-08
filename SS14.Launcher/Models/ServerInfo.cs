@@ -15,6 +15,8 @@ public sealed class ServerInfo
 
     [JsonPropertyName("desc")] public string? Desc { get; set; }
     [JsonPropertyName("links")] public ServerInfoLink[]? Links { get; set; }
+
+    [JsonPropertyName("privacy_policy")] public ServerPrivacyPolicyInfo? PrivacyPolicy { get; set; }
 }
 
 public sealed record ServerInfoLink(string Name, string? Icon, string Url);
@@ -64,3 +66,10 @@ public enum AuthMode
     Required = 1,
     Disabled = 2
 }
+
+public sealed record ServerPrivacyPolicyInfo(
+    [property: JsonPropertyName("link")] string Link,
+    [property: JsonPropertyName("identifier")]
+    string Identifier,
+    [property: JsonPropertyName("version")]
+    string Version);
