@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
 using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
 using Splat;
 using SS14.Launcher.Localization;
 using SS14.Launcher.Models.ServerStatus;
@@ -11,7 +11,7 @@ using SS14.Launcher.Utility;
 
 namespace SS14.Launcher.ViewModels.MainWindowTabs;
 
-public class ServerListTabViewModel : MainWindowTabViewModel
+public partial class ServerListTabViewModel : MainWindowTabViewModel
 {
     private readonly LocalizationManager _loc = LocalizationManager.Instance;
     private readonly MainWindowViewModel _windowVm;
@@ -65,7 +65,7 @@ public class ServerListTabViewModel : MainWindowTabViewModel
         }
     }
 
-    [Reactive] public bool FiltersVisible { get; set; }
+    [ObservableProperty] private bool _filtersVisible;
 
     public ServerListFiltersViewModel Filters { get; }
 
