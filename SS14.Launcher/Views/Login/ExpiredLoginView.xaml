@@ -21,12 +21,12 @@
              Text="{Binding Account.Username}" IsEnabled="False" />
 
     <TextBox DockPanel.Dock="Top" Name="PasswordBox" MaxWidth="300" Margin="0, 4, 0, 0" Watermark="{loc:Loc login-expired-message}"
-             Text="{Binding EditingPassword, Mode=TwoWay}" PasswordChar="•" />
+             Text="{Binding Password}" PasswordChar="•" />
 
     <DockPanel DockPanel.Dock="Top" LastChildFill="False" MaxWidth="300" Margin="0 20 0 0">
       <Button DockPanel.Dock="Right" HorizontalAlignment="Center"
               Content="{loc:Loc login-expired-button-log-in}" Command="{Binding OnLogInButtonPressed}"
-              IsEnabled="{Binding EditingPassword, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
+              IsEnabled="{Binding Password, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
 
       <Button DockPanel.Dock="Left" HorizontalAlignment="Center"
               Content="{loc:Loc login-expired-button-log-out}" Command="{Binding OnLogOutButtonPressed}" />
