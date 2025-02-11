@@ -28,10 +28,10 @@ public partial class LoginViewModel : BaseLoginViewModel
 
         PropertyChanged += (_, e) =>
         {
-            switch (e)
+            switch (e.PropertyName)
             {
-                case { PropertyName: nameof(Username) }:
-                case { PropertyName: nameof(Password) }:
+                case nameof(Username):
+                case nameof(Password):
                     IsInputValid = !string.IsNullOrEmpty(Username) && !string.IsNullOrEmpty(Password);
                     break;
             }
