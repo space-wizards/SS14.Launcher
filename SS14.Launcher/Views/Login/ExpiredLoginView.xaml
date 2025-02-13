@@ -26,7 +26,8 @@
     <DockPanel DockPanel.Dock="Top" LastChildFill="False" MaxWidth="300" Margin="0 20 0 0">
       <Button DockPanel.Dock="Right" HorizontalAlignment="Center"
               Content="{loc:Loc login-expired-button-log-in}" Command="{Binding OnLogInButtonPressed}"
-              IsEnabled="{Binding Password, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
+              IsEnabled="{Binding Password, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+              IsDefault="True" />
 
       <Button DockPanel.Dock="Left" HorizontalAlignment="Center"
               Content="{loc:Loc login-expired-button-log-out}" Command="{Binding OnLogOutButtonPressed}" />
