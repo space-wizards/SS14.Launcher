@@ -1,12 +1,11 @@
 using System;
-using System.Reactive.Linq;
 using System.Threading;
 using Avalonia.Platform.Storage;
-using ReactiveUI;
 using Splat;
 using SS14.Launcher.Localization;
 using SS14.Launcher.Models;
 using SS14.Launcher.Utility;
+using static SS14.Launcher.Models.Connector.ConnectionStatus;
 
 namespace SS14.Launcher.ViewModels;
 
@@ -22,16 +21,11 @@ public class ConnectingViewModel : ViewModelBase
 
     private string? _reasonSuffix;
 
-    private Connector.ConnectionStatus _connectorStatus;
-    private Updater.UpdateStatus _updaterStatus;
-    private (long downloaded, long total, Updater.ProgressUnit unit)? _updaterProgress;
-    private long? _updaterSpeed;
-
-    public bool IsErrored => _connectorStatus == Connector.ConnectionStatus.ConnectionFailed ||
-                             _connectorStatus == Connector.ConnectionStatus.UpdateError ||
-                             _connectorStatus == Connector.ConnectionStatus.NotAContentBundle ||
-                             _connectorStatus == Connector.ConnectionStatus.ClientExited &&
-                             _connector.ClientExitedBadly;
+    public bool IsErrored
+        => _connector.Status == ConnectionFailed ||
+           _connector.Status == UpdateError ||
+           _connector.Status == NotAContentBundle ||
+           _connector is { Status: ClientExited, ClientExitedBadly: true };
 
     public static event Action? StartedConnecting;
 
@@ -44,81 +38,67 @@ public class ConnectingViewModel : ViewModelBase
         _connectionType = connectionType;
         _reasonSuffix = (givenReason != null) ? ("\n" + givenReason) : "";
 
-        this.WhenAnyValue(x => x._updater.Progress)
-            .ObserveOn(RxApp.MainThreadScheduler)
-            .Subscribe(progress =>
+        _updater.PropertyChanged += (_, e) =>
+        {
+            switch (e.PropertyName)
             {
-                _updaterProgress = progress;
+                case nameof(_updater.Progress):
+                    OnPropertyChanged(nameof(Progress));
+                    OnPropertyChanged(nameof(ProgressIndeterminate));
+                    OnPropertyChanged(nameof(ProgressText));
+                    break;
 
-                this.RaisePropertyChanged(nameof(Progress));
-                this.RaisePropertyChanged(nameof(ProgressIndeterminate));
-                this.RaisePropertyChanged(nameof(ProgressText));
-            });
+                case nameof(_updater.Speed):
+                    OnPropertyChanged(nameof(SpeedText));
+                    OnPropertyChanged(nameof(SpeedIndeterminate));
+                    break;
 
-        this.WhenAnyValue(x => x._updater.Speed)
-            .ObserveOn(RxApp.MainThreadScheduler)
-            .Subscribe(speed =>
+                case nameof(_updater.Status):
+                    OnPropertyChanged(nameof(StatusText));
+                    break;
+            }
+        };
+
+        _connector.PropertyChanged += (_, e) =>
+        {
+            switch (e.PropertyName)
             {
-                _updaterSpeed = speed;
+                case nameof(_connector.Status):
+                    OnPropertyChanged(nameof(ProgressIndeterminate));
+                    OnPropertyChanged(nameof(StatusText));
+                    OnPropertyChanged(nameof(ProgressBarVisible));
+                    OnPropertyChanged(nameof(IsErrored));
+                    OnPropertyChanged(nameof(IsAskingPrivacyPolicy));
 
-                this.RaisePropertyChanged(nameof(SpeedText));
-                this.RaisePropertyChanged(nameof(SpeedIndeterminate));
-            });
+                    if (_connector.Status == ClientRunning
+                        || _connector.Status == Cancelled
+                        || _connector is { Status: ClientExited, ClientExitedBadly: false })
+                    {
+                        CloseOverlay();
+                    }
 
-        this.WhenAnyValue(x => x._updater.Status)
-            .ObserveOn(RxApp.MainThreadScheduler)
-            .Subscribe(status =>
-            {
-                _updaterStatus = status;
-                this.RaisePropertyChanged(nameof(StatusText));
-            });
-
-        this.WhenAnyValue(x => x._connector.Status)
-            .ObserveOn(RxApp.MainThreadScheduler)
-            .Subscribe(val =>
-            {
-                _connectorStatus = val;
-
-                this.RaisePropertyChanged(nameof(ProgressIndeterminate));
-                this.RaisePropertyChanged(nameof(StatusText));
-                this.RaisePropertyChanged(nameof(ProgressBarVisible));
-                this.RaisePropertyChanged(nameof(IsErrored));
-                this.RaisePropertyChanged(nameof(IsAskingPrivacyPolicy));
-
-                if (val == Connector.ConnectionStatus.ClientRunning
-                    || val == Connector.ConnectionStatus.Cancelled
-                    || val == Connector.ConnectionStatus.ClientExited && !_connector.ClientExitedBadly)
-                {
-                    CloseOverlay();
-                }
-            });
-
-        this.WhenAnyValue(x => x._connector.PrivacyPolicyDifferentVersion)
-            .ObserveOn(RxApp.MainThreadScheduler)
-            .Subscribe(_ =>
-            {
-                this.RaisePropertyChanged(nameof(PrivacyPolicyText));
-            });
-
-        this.WhenAnyValue(x => x._connector.ClientExitedBadly)
-            .ObserveOn(RxApp.MainThreadScheduler)
-            .Subscribe(_ =>
-            {
-                this.RaisePropertyChanged(nameof(StatusText));
-                this.RaisePropertyChanged(nameof(IsErrored));
-            });
+                    break;
+                case nameof(_connector.PrivacyPolicyDifferentVersion):
+                    OnPropertyChanged(nameof(PrivacyPolicyText));
+                    break;
+                case nameof(_connector.ClientExitedBadly):
+                    OnPropertyChanged(nameof(StatusText));
+                    OnPropertyChanged(nameof(IsErrored));
+                    break;
+            }
+        };
     }
 
     public float Progress
     {
         get
         {
-            if (_updaterProgress == null)
+            if (_updater.Progress == null)
             {
                 return 0;
             }
 
-            var (downloaded, total, _) = _updaterProgress.Value;
+            var (downloaded, total, _) = _updater.Progress.Value;
 
             return downloaded / (float)total;
         }
@@ -128,12 +108,12 @@ public class ConnectingViewModel : ViewModelBase
     {
         get
         {
-            if (_updaterProgress == null)
+            if (_updater.Progress == null)
             {
                 return "";
             }
 
-            var (downloaded, total, unit) = _updaterProgress.Value;
+            var (downloaded, total, unit) = _updater.Progress.Value;
 
             return unit switch
             {
@@ -143,34 +123,36 @@ public class ConnectingViewModel : ViewModelBase
         }
     }
 
-    public bool ProgressIndeterminate => _connectorStatus != Connector.ConnectionStatus.Updating
-                                         || _updaterProgress == null;
+    public bool ProgressIndeterminate
+        => _connector.Status != Updating
+           || _updater.Progress == null;
 
-    public bool ProgressBarVisible => _connectorStatus != Connector.ConnectionStatus.ClientExited &&
-                                      _connectorStatus != Connector.ConnectionStatus.ClientRunning &&
-                                      _connectorStatus != Connector.ConnectionStatus.ConnectionFailed &&
-                                      _connectorStatus != Connector.ConnectionStatus.UpdateError &&
-                                      _connectorStatus != Connector.ConnectionStatus.NotAContentBundle;
+    public bool ProgressBarVisible
+        => _connector.Status != ClientExited &&
+           _connector.Status != ClientRunning &&
+           _connector.Status != ConnectionFailed &&
+           _connector.Status != UpdateError &&
+           _connector.Status != NotAContentBundle;
 
-    public bool SpeedIndeterminate => _connectorStatus != Connector.ConnectionStatus.Updating || _updaterSpeed == null;
+    public bool SpeedIndeterminate => _connector.Status != Updating || _updater.Speed == null;
 
     public string SpeedText
     {
         get
         {
-            if (_updaterSpeed is not { } speed)
+            if (_updater.Speed is not { } speed)
                 return "";
 
             return $"{Helpers.FormatBytes(speed)}/s";
         }
     }
 
-    public string StatusText =>
-        _connectorStatus switch
+    public string StatusText
+        => _connector.Status switch
         {
-            Connector.ConnectionStatus.None => _loc.GetString("connecting-status-none") + _reasonSuffix,
-            Connector.ConnectionStatus.UpdateError => _loc.GetString("connecting-status-update-error"),
-            Connector.ConnectionStatus.Updating => _loc.GetString("connecting-status-updating", ("status", _loc.GetString(_updaterStatus switch
+            None => _loc.GetString("connecting-status-none") + _reasonSuffix,
+            UpdateError => _loc.GetString("connecting-status-update-error"),
+            Updating => _loc.GetString("connecting-status-updating", ("status", _loc.GetString(_updater.Status switch
             {
                 Updater.UpdateStatus.CheckingClientUpdate => "connecting-update-status-checking-client-update",
                 Updater.UpdateStatus.DownloadingEngineVersion => "connecting-update-status-downloading-engine",
@@ -187,11 +169,11 @@ public class ConnectingViewModel : ViewModelBase
                 Updater.UpdateStatus.LoadingContentBundle => "connecting-update-status-loading-content-bundle",
                 _ => "connecting-update-status-unknown"
             }))) + _reasonSuffix,
-            Connector.ConnectionStatus.Connecting => _loc.GetString("connecting-status-connecting") + _reasonSuffix,
-            Connector.ConnectionStatus.ConnectionFailed => _loc.GetString("connecting-status-connection-failed"),
-            Connector.ConnectionStatus.StartingClient => _loc.GetString("connecting-status-starting-client") + _reasonSuffix,
-            Connector.ConnectionStatus.NotAContentBundle => _loc.GetString("connecting-status-not-a-content-bundle"),
-            Connector.ConnectionStatus.ClientExited => _connector.ClientExitedBadly
+            Connecting => _loc.GetString("connecting-status-connecting") + _reasonSuffix,
+            ConnectionFailed => _loc.GetString("connecting-status-connection-failed"),
+            StartingClient => _loc.GetString("connecting-status-starting-client") + _reasonSuffix,
+            NotAContentBundle => _loc.GetString("connecting-status-not-a-content-bundle"),
+            ClientExited => _connector.ClientExitedBadly
                 ? _loc.GetString("connecting-status-client-crashed")
                 : "",
             _ => ""
@@ -204,7 +186,7 @@ public class ConnectingViewModel : ViewModelBase
         _ => ""
     };
 
-    public bool IsAskingPrivacyPolicy => _connectorStatus == Connector.ConnectionStatus.AwaitingPrivacyPolicyAcceptance;
+    public bool IsAskingPrivacyPolicy => _connector.Status == AwaitingPrivacyPolicyAcceptance;
 
     public string PrivacyPolicyText => _connector.PrivacyPolicyDifferentVersion
         ? _loc.GetString("connecting-privacy-policy-text-version-changed")
