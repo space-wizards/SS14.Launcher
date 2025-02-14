@@ -5,11 +5,10 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Serilog;
 using Splat;
 using SS14.Launcher.Utility;
-using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
 using SS14.Launcher.Api;
 using SS14.Launcher.Models.Data;
 using static SS14.Launcher.Api.HubApi;
@@ -19,24 +18,17 @@ namespace SS14.Launcher.Models.ServerStatus;
 /// <summary>
 ///     Caches the Hub's server list.
 /// </summary>
-public sealed class ServerListCache : ReactiveObject, IServerSource
+public sealed partial class ServerListCache : ObservableObject, IServerSource
 {
-    private readonly HubApi _hubApi;
-    private readonly DataManager _dataManager;
+    private readonly HubApi _hubApi = Locator.Current.GetRequiredService<HubApi>();
+    private readonly DataManager _dataManager = Locator.Current.GetRequiredService<DataManager>();
 
     private CancellationTokenSource? _refreshCancel;
 
     public ObservableCollection<ServerStatusData> AllServers => _allServers;
     private readonly ServerListCollection _allServers = new();
 
-    [Reactive]
-    public RefreshListStatus Status { get; private set; } = RefreshListStatus.NotUpdated;
-
-    public ServerListCache()
-    {
-        _hubApi = Locator.Current.GetRequiredService<HubApi>();
-        _dataManager = Locator.Current.GetRequiredService<DataManager>();
-    }
+    [ObservableProperty] private RefreshListStatus _status = RefreshListStatus.NotUpdated;
 
     /// <summary>
     /// This function requests the initial update from the server if one hasn't already been requested.
