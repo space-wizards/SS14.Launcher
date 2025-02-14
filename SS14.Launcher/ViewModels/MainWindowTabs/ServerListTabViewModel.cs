@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
-using ReactiveUI;
 using Splat;
 using SS14.Launcher.Localization;
 using SS14.Launcher.Models.ServerStatus;
@@ -28,7 +27,13 @@ public partial class ServerListTabViewModel : MainWindowTabViewModel
         get => _searchString;
         set
         {
-            this.RaiseAndSetIfChanged(ref _searchString, value);
+            if (_searchString == value)
+                return;
+
+            OnPropertyChanging(nameof(SearchString));
+            _searchString = value;
+            OnPropertyChanged(nameof(SearchString));
+
             UpdateSearchedList();
         }
     }
@@ -84,9 +89,9 @@ public partial class ServerListTabViewModel : MainWindowTabViewModel
             switch (args.PropertyName)
             {
                 case nameof(ServerListCache.Status):
-                    this.RaisePropertyChanged(nameof(ListText));
-                    this.RaisePropertyChanged(nameof(ListTextVisible));
-                    this.RaisePropertyChanged(nameof(SpinnerVisible));
+                    OnPropertyChanged(nameof(ListText));
+                    OnPropertyChanged(nameof(ListTextVisible));
+                    OnPropertyChanged(nameof(SpinnerVisible));
                     break;
             }
         };
