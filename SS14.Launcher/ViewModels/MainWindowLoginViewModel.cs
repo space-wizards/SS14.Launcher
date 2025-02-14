@@ -1,4 +1,3 @@
-using ReactiveUI;
 using Splat;
 using SS14.Launcher.Api;
 using SS14.Launcher.Models.Data;
@@ -22,7 +21,13 @@ public class MainWindowLoginViewModel : ViewModelBase
         get => _screen;
         set
         {
-            this.RaiseAndSetIfChanged(ref _screen, value);
+            if (_screen == value)
+                return;
+
+            OnPropertyChanging(nameof(Screen));
+            _screen = value;
+            OnPropertyChanged(nameof(Screen));
+
             value.Activated();
         }
     }
