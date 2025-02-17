@@ -24,9 +24,9 @@ public class MainWindowLoginViewModel : ViewModelBase
             if (_screen == value)
                 return;
 
-            OnPropertyChanging(nameof(Screen));
+            OnPropertyChanging();
             _screen = value;
-            OnPropertyChanged(nameof(Screen));
+            OnPropertyChanged();
 
             value.Activated();
         }

@@ -1,5 +1,4 @@
-﻿using System.ComponentModel;
-using Splat;
+﻿using Splat;
 using SS14.Launcher.Localization;
 using SS14.Launcher.Models.Data;
 using SS14.Launcher.Utility;
@@ -16,7 +15,7 @@ public sealed class DevelopmentTabViewModel : MainWindowTabViewModel
         // TODO: This sucks and leaks.
         _cfg.GetCVarEntry(CVars.EngineOverrideEnabled).PropertyChanged += (_, _) =>
         {
-            OnPropertyChanged(new PropertyChangedEventArgs(nameof(Name)));
+            OnPropertyChanged(nameof(Name));
         };
     }
 

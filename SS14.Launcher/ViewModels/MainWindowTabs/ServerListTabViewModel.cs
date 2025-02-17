@@ -30,9 +30,9 @@ public partial class ServerListTabViewModel : MainWindowTabViewModel
             if (_searchString == value)
                 return;
 
-            OnPropertyChanging(nameof(SearchString));
+            OnPropertyChanging();
             _searchString = value;
-            OnPropertyChanged(nameof(SearchString));
+            OnPropertyChanged();
 
             UpdateSearchedList();
         }

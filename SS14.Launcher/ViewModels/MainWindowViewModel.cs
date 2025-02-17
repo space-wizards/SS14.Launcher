@@ -107,9 +107,9 @@ public sealed partial class MainWindowViewModel : ViewModelBase, IErrorOverlayOw
 
             if (!EqualityComparer<int>.Default.Equals(_selectedIndex, value))
             {
-                OnPropertyChanging(nameof(SelectedIndex));
+                OnPropertyChanging();
                 _selectedIndex = value;
-                OnPropertyChanged(nameof(SelectedIndex));
+                OnPropertyChanged();
             }
 
             RunSelectedOnTab();
