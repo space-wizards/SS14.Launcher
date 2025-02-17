@@ -76,7 +76,7 @@ public partial class MainWindow : Window
         var hWnd = (HWND)handle.Handle;
 
         COLORREF r = 0x00262121;
-        Windows.DwmSetWindowAttribute(hWnd, 35, &r, (uint) sizeof(COLORREF));
+        TerraFX.Interop.Windows.Windows.DwmSetWindowAttribute(hWnd, 35, &r, (uint) sizeof(COLORREF));
 
         // Removes the top margin of the window on Windows 11, since there's ample space after we recolor the title bar.
         Classes.Add("WindowsTitlebarColorActive");
