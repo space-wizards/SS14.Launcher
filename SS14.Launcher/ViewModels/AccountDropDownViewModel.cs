@@ -116,23 +116,20 @@ public class AccountDropDownViewModel : ViewModelBase
     }
 }
 
-public sealed class AvailableAccountViewModel : ViewModelBase
+public sealed partial class AvailableAccountViewModel : ViewModelBase
 {
-    public extern string StatusText { [ObservableAsProperty] get; }
+    [ObservableProperty] private LoggedInAccount _account;
 
-    public LoggedInAccount Account { get; }
+    public string StatusText
+        => Account.Username + Account.Status switch
+        {
+            AccountLoginStatus.Available => "",
+            AccountLoginStatus.Expired => " (!)",
+            _ => " (?)",
+        };
 
     public AvailableAccountViewModel(LoggedInAccount account)
     {
         Account = account;
-
-        this.WhenAnyValue<AvailableAccountViewModel, AccountLoginStatus, string>(p => p.Account.Status, p => p.Account.Username)
-            .Select(p => p.Item1 switch
-            {
-                AccountLoginStatus.Available => $"{p.Item2}",
-                AccountLoginStatus.Expired => $"{p.Item2} (!)",
-                _ => $"{p.Item2} (?)"
-            })
-            .ToPropertyEx(this, x => x.StatusText);
     }
 }
