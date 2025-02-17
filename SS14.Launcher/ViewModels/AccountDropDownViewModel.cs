@@ -1,10 +1,12 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Reactive.Linq;
+using System.Linq;
 using DynamicData;
 using JetBrains.Annotations;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Serilog;
 using Splat;
 using SS14.Launcher.Api;
@@ -15,7 +17,7 @@ using SS14.Launcher.Utility;
 
 namespace SS14.Launcher.ViewModels;
 
-public class AccountDropDownViewModel : ViewModelBase
+public partial class AccountDropDownViewModel : ViewModelBase
 {
     private readonly MainWindowViewModel _mainVm;
     private readonly DataManager _cfg;
@@ -48,8 +50,8 @@ public class AccountDropDownViewModel : ViewModelBase
 
         _loginMgr.Logins.Connect().Subscribe(_ =>
         {
-            this.RaisePropertyChanged(nameof(LogoutText));
-            this.RaisePropertyChanged(nameof(AccountSwitchVisible));
+            OnPropertyChanged(nameof(LogoutText));
+            OnPropertyChanged(nameof(AccountSwitchVisible));
         });
 
         var filterObservable = this.WhenAnyValue(x => x._loginMgr.ActiveAccount)
@@ -82,7 +84,7 @@ public class AccountDropDownViewModel : ViewModelBase
 
     public bool AccountControlsVisible => _loginMgr.ActiveAccount != null;
 
-    [Reactive] public bool IsDropDownOpen { get; set; }
+    [ObservableProperty] private bool _isDropDownOpen;
 
     public async void LogoutPressed()
     {
