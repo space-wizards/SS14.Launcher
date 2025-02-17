@@ -1,11 +1,7 @@
 using System;
-using System.Collections.ObjectModel;
-using System.Reactive.Linq;
+using System.Collections.Generic;
 using System.Linq;
-using DynamicData;
 using JetBrains.Annotations;
-using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Serilog;
 using Splat;
@@ -23,10 +19,9 @@ public partial class AccountDropDownViewModel : ViewModelBase
     private readonly DataManager _cfg;
     private readonly AuthApi _authApi;
     private readonly LoginManager _loginMgr;
-    private readonly ReadOnlyObservableCollection<AvailableAccountViewModel> _accounts;
     private readonly LocalizationManager _loc;
 
-    public ReadOnlyObservableCollection<AvailableAccountViewModel> Accounts => _accounts;
+    private ObservableList<AvailableAccountViewModel> Accounts { get; }
 
     public bool EnableMultiAccounts => _cfg.ActuallyMultiAccounts;
 
@@ -38,36 +33,35 @@ public partial class AccountDropDownViewModel : ViewModelBase
         _loginMgr = Locator.Current.GetRequiredService<LoginManager>();
         _loc = LocalizationManager.Instance;
 
-        this.WhenAnyValue(x => x._loginMgr.ActiveAccount)
-            .Subscribe(_ =>
-            {
-                this.RaisePropertyChanged(nameof(LoginText));
-                this.RaisePropertyChanged(nameof(AccountSwitchText));
-                this.RaisePropertyChanged(nameof(LogoutText));
-                this.RaisePropertyChanged(nameof(AccountControlsVisible));
-                this.RaisePropertyChanged(nameof(AccountSwitchVisible));
-            });
+        Accounts = new(GetInactiveAccounts());
+
+        _loginMgr.PropertyChanged += (_, e) =>
+        {
+            if (e.PropertyName is not nameof(_loginMgr.ActiveAccount))
+                return;
+
+            OnPropertyChanged(nameof(LoginText));
+            OnPropertyChanged(nameof(AccountSwitchText));
+            OnPropertyChanged(nameof(LogoutText));
+            OnPropertyChanged(nameof(AccountControlsVisible));
+            OnPropertyChanged(nameof(AccountSwitchVisible));
+
+            Accounts.SetItems(GetInactiveAccounts());
+        };
 
         _loginMgr.Logins.Connect().Subscribe(_ =>
         {
             OnPropertyChanged(nameof(LogoutText));
             OnPropertyChanged(nameof(AccountSwitchVisible));
         });
-
-        var filterObservable = this.WhenAnyValue(x => x._loginMgr.ActiveAccount)
-            .Select(MakeFilter);
-
-        _loginMgr.Logins
-            .Connect()
-            .Filter(filterObservable)
-            .Transform(p => new AvailableAccountViewModel(p))
-            .Bind(out _accounts)
-            .Subscribe();
     }
 
-    private static Func<LoggedInAccount?, bool> MakeFilter(LoggedInAccount? selected)
+    private IEnumerable<AvailableAccountViewModel> GetInactiveAccounts()
     {
-        return l => l != selected;
+        return _loginMgr.Logins
+            .Items
+            .Where(a => a != _loginMgr.ActiveAccount)
+            .Select(a => new AvailableAccountViewModel(a));
     }
 
     public string LoginText => _loginMgr.ActiveAccount?.Username ??
