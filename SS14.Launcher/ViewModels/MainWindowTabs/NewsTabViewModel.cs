@@ -1,14 +1,15 @@
 using System;
-using System.Collections.ObjectModel;
+using System.Linq;
 using CodeHollow.FeedReader;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using SS14.Launcher.Localization;
+using SS14.Launcher.Utility;
 
 namespace SS14.Launcher.ViewModels.MainWindowTabs;
 
 public partial class NewsTabViewModel : MainWindowTabViewModel
 {
-    public ObservableCollection<NewsEntryViewModel> NewsEntries { get; } = new ([]);
+    public ObservableList<NewsEntryViewModel> NewsEntries { get; } = [];
     public override string Name => LocalizationManager.Instance.GetString("tab-news-title");
 
     private bool _startedPullingNews;
@@ -26,18 +27,12 @@ public partial class NewsTabViewModel : MainWindowTabViewModel
     private async void PullNews()
     {
         if (_startedPullingNews)
-        {
             return;
-        }
 
         _startedPullingNews = true;
         var feed = await FeedReader.ReadAsync(ConfigConstants.NewsFeedUrl);
 
-        foreach (var feedItem in feed.Items)
-        {
-            NewsEntries.Add(new NewsEntryViewModel(feedItem.Title, new Uri(feedItem.Link)));
-        }
-
+        NewsEntries.AddRange(feed.Items.Select(i => new NewsEntryViewModel(i.Title, new Uri(i.Link))));
         NewsPulled = true;
     }
 }

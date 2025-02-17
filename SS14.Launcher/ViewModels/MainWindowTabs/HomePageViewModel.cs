@@ -57,7 +57,6 @@ public partial class HomePageViewModel : MainWindowTabViewModel
     }
 
     public ReadOnlyObservableCollection<ServerEntryViewModel> Favorites { get; }
-    public ObservableCollection<ServerEntryViewModel> Suggestions { get; } = new();
 
     [ObservableProperty] private bool _favoritesEmpty = true;
 

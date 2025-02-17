@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Collections.Specialized;
 using System.Globalization;
 using System.Linq;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
@@ -22,17 +20,11 @@ public sealed partial class ServerListFiltersViewModel : ObservableObject
     private int _totalServers;
     private int _filteredServers;
 
-    private readonly FilterListCollection _filtersLanguage = new();
-    private readonly FilterListCollection _filtersRegion = new();
-    private readonly FilterListCollection _filtersRolePlay = new();
-    private readonly FilterListCollection _filtersEighteenPlus = new();
-    private readonly FilterListCollection _filtersHub = new();
-
-    public ObservableCollection<ServerFilterViewModel> FiltersLanguage => _filtersLanguage;
-    public ObservableCollection<ServerFilterViewModel> FiltersRegion => _filtersRegion;
-    public ObservableCollection<ServerFilterViewModel> FiltersRolePlay => _filtersRolePlay;
-    public ObservableCollection<ServerFilterViewModel> FiltersEighteenPlus => _filtersEighteenPlus;
-    public ObservableCollection<ServerFilterViewModel> FiltersHub => _filtersHub;
+    public ObservableList<ServerFilterViewModel> FiltersLanguage { get; } = [];
+    public ObservableList<ServerFilterViewModel> FiltersRegion { get; } = [];
+    public ObservableList<ServerFilterViewModel> FiltersRolePlay { get; } = [];
+    public ObservableList<ServerFilterViewModel> FiltersEighteenPlus { get; } = [];
+    public ObservableList<ServerFilterViewModel> FiltersHub { get; } = [];
 
     public ServerFilterViewModel FilterPlayerCountHideEmpty { get; }
     public ServerFilterViewModel FilterPlayerCountHideFull { get; }
@@ -204,10 +196,10 @@ public sealed partial class ServerListFiltersViewModel : ObservableObject
             new ServerFilter(ServerFilterCategory.RolePlay, ServerFilter.DataUnspecified), this));
 
         // Set.
-        _filtersLanguage.SetItems(filtersLanguage);
-        _filtersRegion.SetItems(filtersRegion);
-        _filtersRolePlay.SetItems(filtersRolePlay);
-        _filtersHub.SetItems(filtersHub);
+        FiltersLanguage.SetItems(filtersLanguage);
+        FiltersRegion.SetItems(filtersRegion);
+        FiltersRolePlay.SetItems(filtersRolePlay);
+        FiltersHub.SetItems(filtersHub);
     }
 
     public bool GetFilter(ServerFilterCategory category, string data) => GetFilter(new ServerFilter(category, data));
@@ -403,21 +395,6 @@ public sealed partial class ServerListFiltersViewModel : ObservableObject
             var idxX = _order[x.Filter.Data];
             var idxY = _order[y.Filter.Data];
             return idxX.CompareTo(idxY);
-        }
-    }
-
-    private sealed class FilterListCollection : ObservableCollection<ServerFilterViewModel>
-    {
-        public void SetItems(IEnumerable<ServerFilterViewModel> items)
-        {
-            Items.Clear();
-
-            foreach (var item in items)
-            {
-                Items.Add(item);
-            }
-
-            OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
         }
     }
 }

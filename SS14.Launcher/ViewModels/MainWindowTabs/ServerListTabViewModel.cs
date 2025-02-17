@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.Linq;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Splat;
 using SS14.Launcher.Localization;
@@ -16,7 +16,7 @@ public partial class ServerListTabViewModel : MainWindowTabViewModel
     private readonly MainWindowViewModel _windowVm;
     private readonly ServerListCache _serverListCache;
 
-    public ObservableCollection<ServerEntryViewModel> SearchedServers { get; } = new();
+    public ObservableList<ServerEntryViewModel> SearchedServers { get; } = [];
 
     private string? _searchString;
 
@@ -135,12 +135,8 @@ public partial class ServerListTabViewModel : MainWindowTabViewModel
 
         sortList.Sort(ServerSortComparer.Instance);
 
-        SearchedServers.Clear();
-        foreach (var server in sortList)
-        {
-            var vm = new ServerEntryViewModel(_windowVm, server, _serverListCache, _windowVm.Cfg);
-            SearchedServers.Add(vm);
-        }
+        SearchedServers.SetItems(sortList.Select(server
+            => new ServerEntryViewModel(_windowVm, server, _serverListCache, _windowVm.Cfg)));
     }
 
     private bool DoesSearchMatch(ServerStatusData data)

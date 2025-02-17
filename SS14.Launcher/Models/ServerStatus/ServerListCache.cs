@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Collections.Specialized;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -25,8 +23,7 @@ public sealed partial class ServerListCache : ObservableObject, IServerSource
 
     private CancellationTokenSource? _refreshCancel;
 
-    public ObservableCollection<ServerStatusData> AllServers => _allServers;
-    private readonly ServerListCollection _allServers = new();
+    public ObservableList<ServerStatusData> AllServers { get; } = [];
 
     [ObservableProperty] private RefreshListStatus _status = RefreshListStatus.NotUpdated;
 
@@ -47,14 +44,14 @@ public sealed partial class ServerListCache : ObservableObject, IServerSource
     public void RequestRefresh()
     {
         _refreshCancel?.Cancel();
-        _allServers.Clear();
+        AllServers.Clear();
         _refreshCancel = new CancellationTokenSource(10000);
         RefreshServerList(_refreshCancel.Token);
     }
 
     public async void RefreshServerList(CancellationToken cancel)
     {
-        _allServers.Clear();
+        AllServers.Clear();
         Status = RefreshListStatus.UpdatingMaster;
 
         try
@@ -121,7 +118,7 @@ public sealed partial class ServerListCache : ObservableObject, IServerSource
                 }
             }
 
-            _allServers.AddItems(entries.Select(entry =>
+            AllServers.AddRange(entries.Select(entry =>
             {
                 var statusData = new ServerStatusData(entry.Address, entry.HubAddress);
                 ServerStatusCache.ApplyStatus(statusData, entry.StatusData);
@@ -151,19 +148,6 @@ public sealed partial class ServerListCache : ObservableObject, IServerSource
         ServerStatusCache.UpdateInfoForCore(
             statusData,
             async token => await _hubApi.GetServerInfo(statusData.Address, statusData.HubAddress, token));
-    }
-
-    private sealed class ServerListCollection : ObservableCollection<ServerStatusData>
-    {
-        public void AddItems(IEnumerable<ServerStatusData> items)
-        {
-            foreach (var item in items)
-            {
-                Items.Add(item);
-            }
-
-            OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
-        }
     }
 }
 
