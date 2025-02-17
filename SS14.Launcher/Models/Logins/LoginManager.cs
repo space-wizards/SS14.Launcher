@@ -91,7 +91,7 @@ public sealed class LoginManager : ObservableObject
     public async Task Initialize()
     {
         // Set up timer so that if the user leaves their launcher open for a month or something
-        // his tokens don't expire.
+        // their tokens don't expire.
         _timer = DispatcherTimer.Run(() =>
         {
             async void Impl()
