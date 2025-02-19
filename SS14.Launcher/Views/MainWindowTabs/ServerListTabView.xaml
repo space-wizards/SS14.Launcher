@@ -27,15 +27,18 @@
 
     <Grid>
       <!-- Main server list table -->
-      <DockPanel ZIndex="-1">
-        <DockPanel DockPanel.Dock="Top" Margin="4, 0, 4, 2">
-          <!--TODO: These measurements are just golfed based on approximations of where the sections *probably* are, and assumes a scroll bar is present. This might prove a bit wonky with localization and excessive screen sizes. It'd be ideal if this header section could dynamically adapt to the section sizes in the server list.-->
-          <Control DockPanel.Dock="Right" MinWidth="105" />
-          <Rectangle DockPanel.Dock="Right" Classes="VerticalSeparator"/>
-          <TextBlock DockPanel.Dock="Right" Text="{loc:Loc tab-servers-table-players}" Classes="SubText" TextAlignment="Center" MinWidth="80" Margin="10 0"/>
-          <Rectangle DockPanel.Dock="Right" Classes="VerticalSeparator" />
-          <TextBlock Text="{loc:Loc tab-servers-table-name}" Classes="SubText"/>
-        </DockPanel>
+      <DockPanel ZIndex="-1" Grid.IsSharedSizeScope="True">
+        <Grid DockPanel.Dock="Top" Margin="14 0 22 0">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" /> <!-- Server Name -->
+            <ColumnDefinition SharedSizeGroup="A" MinWidth="80" /> <!-- Player Count -->
+            <ColumnDefinition SharedSizeGroup="B" /> <!-- Connect Button -->
+          </Grid.ColumnDefinitions>
+
+          <TextBlock Grid.Column="0" Text="{loc:Loc tab-servers-table-name}" Classes="SubText" />
+          <TextBlock Grid.Column="1" Text="{loc:Loc tab-servers-table-players}" Classes="SubText" TextAlignment="Center" />
+          <TextBlock Grid.Column="2" Text="" Classes="SubText" />
+        </Grid>
 
         <Panel DockPanel.Dock="Top" Classes="ScrollViewerSep" />
 
@@ -45,10 +48,10 @@
           </Panel.Background>
           <ScrollViewer MinHeight="150" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Visible">
             <Grid RowDefinitions="Auto,Auto,Auto">
-              <ItemsControl Grid.Row="0" ItemsSource="{Binding SearchedServers}" Classes="ServerList" />
-              <TextBlock Grid.Row="1" IsVisible="{Binding ListTextVisible}" TextAlignment="Center" VerticalAlignment="Center"
+              <ItemsControl Grid.Column="0" Grid.Row="0" ItemsSource="{Binding SearchedServers}" Classes="ServerList" />
+              <TextBlock Grid.Column="0" Grid.Row="1" IsVisible="{Binding ListTextVisible}" TextAlignment="Center" VerticalAlignment="Center"
                          Text="{Binding ListText}" />
-              <Viewbox Grid.Row="2" IsVisible="{Binding SpinnerVisible}" Classes="DungSpinnerBox">
+              <Viewbox Grid.Column="0" Grid.Row="2" IsVisible="{Binding SpinnerVisible}" Classes="DungSpinnerBox">
                 <views:DungSpinner />
               </Viewbox>
             </Grid>

@@ -15,16 +15,27 @@
   <Panel>
     <Expander Name="Expando" Classes="NoPad" IsExpanded="{Binding IsExpanded}">
       <Expander.Header>
-        <DockPanel>
-          <Button IsEnabled="{Binding IsOnline}" DockPanel.Dock="Right" Content="{loc:Loc server-entry-connect}"
+        <Grid>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" /> <!-- Server Name -->
+            <ColumnDefinition SharedSizeGroup="A" MinWidth="80" Width="Auto" /> <!-- Player Count -->
+            <ColumnDefinition SharedSizeGroup="B" Width="Auto" /> <!-- Connect Button -->
+          </Grid.ColumnDefinitions>
+
+          <Button Grid.Column="2" IsEnabled="{Binding IsOnline}" DockPanel.Dock="Right"
+                  Content="{loc:Loc server-entry-connect}"
                   Command="{Binding ConnectPressed}" />
-          <TextBlock DockPanel.Dock="Right" VerticalAlignment="Center"
-                     TextAlignment="Center" Text="{Binding ServerStatusString}"
-                     MinWidth="80"
-                     Margin="10, 0" />
-          <Rectangle DockPanel.Dock="Right" Classes="VerticalSeparator" />
-          <TextBlock VerticalAlignment="Center" Text="{Binding Name}" TextTrimming="CharacterEllipsis"/>
-        </DockPanel>
+
+
+          <TextBlock Grid.Column="1" DockPanel.Dock="Right" VerticalAlignment="Center"
+                     TextAlignment="Center" Text="{Binding ServerStatusString}" />
+
+          <Border Grid.Column="0" Classes="VerticalSeparator">
+            <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="{Binding Name}"
+                       TextTrimming="CharacterEllipsis" />
+          </Border>
+
+        </Grid>
       </Expander.Header>
       <DockPanel Margin="4">
         <TextBlock DockPanel.Dock="Top"

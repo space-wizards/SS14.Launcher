@@ -73,6 +73,14 @@
     <Setter Property="Margin" Value="0 4" />
   </Style>
 
+  <Style Selector="Border.VerticalSeparator">
+    <Setter Property="BorderBrush">
+      <SolidColorBrush Color="{DynamicResource ThemeListSeparatorColor}" />
+    </Setter>
+    <Setter Property="BorderThickness" Value="0,0,2,0" />
+    <Setter Property="Margin" Value="0 4" />
+  </Style>
+
   <Style Selector="ScrollBar">
     <Setter Property="Margin" Value="4 0 0 0" />
   </Style>
