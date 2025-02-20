@@ -221,6 +221,10 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
                 OnPropertyChanged(nameof(ServerStatusString));
                 break;
 
+            case nameof(IServerStatusData.RoundStartTime):
+                OnPropertyChanged(nameof(RoundTimeString));
+                break;
+
             case nameof(IServerStatusData.Status):
                 OnPropertyChanged(nameof(IsOnline));
                 OnPropertyChanged(nameof(ServerStatusString));
