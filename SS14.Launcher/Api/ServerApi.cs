@@ -13,6 +13,7 @@ public static class ServerApi
         int PlayerCount,
         [property: JsonPropertyName("soft_max_players")]
         int SoftMaxPlayerCount,
+        [property: JsonPropertyName("round_start_time")] string? RoundStartTime,
         [property: JsonPropertyName("tags")] string[]? Tags);
 
     /// <summary>

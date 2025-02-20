@@ -20,7 +20,8 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
     private string _fallbackName = string.Empty;
     private bool _isExpanded;
 
-    public ServerEntryViewModel(MainWindowViewModel windowVm, ServerStatusData cacheData, IServerSource serverSource, DataManager cfg)
+    public ServerEntryViewModel(MainWindowViewModel windowVm, ServerStatusData cacheData, IServerSource serverSource,
+        DataManager cfg)
     {
         _cfg = cfg;
         _windowVm = windowVm;
@@ -67,9 +68,11 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
     }
 
     public string Name => Favorite?.Name ?? _cacheData.Name ?? _fallbackName;
+
     public string FavoriteButtonText => IsFavorite
         ? _loc.GetString("server-entry-remove-favorite")
         : _loc.GetString("server-entry-add-favorite");
+
     private bool IsFavorite => _cfg.FavoriteServers.Lookup(Address).HasValue;
 
     public bool ViewedInFavoritesPane { get; set; }
@@ -94,6 +97,9 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
         }
     }
 
+    public string RoundTimeString =>
+        _cacheData.RoundStartTime == null ? "" : GetTimeStringSince(_cacheData.RoundStartTime.Value);
+
     public string Description
     {
         get
@@ -111,7 +117,8 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
                 ServerStatusInfoCode.NotFetched => _loc.GetString("server-entry-description-fetching"),
                 ServerStatusInfoCode.Fetching => _loc.GetString("server-entry-description-fetching"),
                 ServerStatusInfoCode.Error => _loc.GetString("server-entry-description-error"),
-                ServerStatusInfoCode.Fetched => _cacheData.Description ?? _loc.GetString("server-entry-description-none"),
+                ServerStatusInfoCode.Fetched => _cacheData.Description ??
+                                                _loc.GetString("server-entry-description-none"),
                 _ => throw new ArgumentOutOfRangeException()
             };
         }
@@ -145,6 +152,7 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
             return null;
         }
     }
+
     public bool ShowFetchedFrom => _cfg.HasCustomHubs && !ViewedInFavoritesPane;
 
     public void FavoriteButtonPressed()
@@ -229,5 +237,11 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
                 OnPropertyChanged(nameof(Description));
                 break;
         }
+    }
+
+    private static string GetTimeStringSince(DateTime dateTime)
+    {
+        var ts = DateTime.Now.ToUniversalTime().Subtract(dateTime);
+        return ts.Hours > 0 ? $"{ts.Hours}H {ts.Minutes}M" : $"{ts.Minutes}M";
     }
 }
