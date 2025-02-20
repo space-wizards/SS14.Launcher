@@ -18,23 +18,24 @@
         <Grid>
           <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" /> <!-- Server Name -->
-            <ColumnDefinition SharedSizeGroup="A" MinWidth="80" Width="Auto" /> <!-- Player Count -->
-            <ColumnDefinition SharedSizeGroup="B" Width="Auto" /> <!-- Connect Button -->
+            <ColumnDefinition SharedSizeGroup="StatusCol" MinWidth="80" Width="Auto" />
+            <ColumnDefinition SharedSizeGroup="ConnectCol" Width="Auto" />
           </Grid.ColumnDefinitions>
 
-          <Button Grid.Column="2" IsEnabled="{Binding IsOnline}" DockPanel.Dock="Right"
-                  Content="{loc:Loc server-entry-connect}"
-                  Command="{Binding ConnectPressed}" />
-
-
-          <TextBlock Grid.Column="1" DockPanel.Dock="Right" VerticalAlignment="Center"
-                     TextAlignment="Center" Text="{Binding ServerStatusString}" />
-
-          <Border Grid.Column="0" Classes="VerticalSeparator">
-            <TextBlock Grid.Column="0" VerticalAlignment="Center" Text="{Binding Name}"
-                       TextTrimming="CharacterEllipsis" />
+          <Border Grid.Column="0" Classes="GridCell">
+            <TextBlock VerticalAlignment="Center" Text="{Binding Name}" TextTrimming="CharacterEllipsis" HorizontalAlignment="Left" />
           </Border>
 
+          <Border Grid.Column="1" Classes="GridCell">
+            <TextBlock DockPanel.Dock="Right"
+                       Margin="10 0"
+                       Text="{Binding ServerStatusString}" />
+          </Border>
+
+          <Border Grid.Column="2" Classes="GridCell">
+            <Button IsEnabled="{Binding IsOnline}" DockPanel.Dock="Right" Content="{loc:Loc server-entry-connect}"
+                    Command="{Binding ConnectPressed}" />
+          </Border>
         </Grid>
       </Expander.Header>
       <DockPanel Margin="4">

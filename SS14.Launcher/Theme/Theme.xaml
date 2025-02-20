@@ -65,20 +65,21 @@
     <Setter Property="FontSize" Value="20" />
   </Style>
 
-  <Style Selector="Rectangle.VerticalSeparator">
-    <Setter Property="Fill">
-      <SolidColorBrush Color="{DynamicResource ThemeListSeparatorColor}" />
-    </Setter>
-    <Setter Property="Width" Value="2" />
-    <Setter Property="Margin" Value="0 4" />
-  </Style>
-
-  <Style Selector="Border.VerticalSeparator">
+  <Style Selector="Border.GridCell">
     <Setter Property="BorderBrush">
       <SolidColorBrush Color="{DynamicResource ThemeListSeparatorColor}" />
     </Setter>
     <Setter Property="BorderThickness" Value="0,0,2,0" />
-    <Setter Property="Margin" Value="0 4" />
+    <Setter Property="Padding" Value="4 0" />
+    <Style Selector="^:nth-last-child(1)">
+      <!-- Disable divider line for the last column -->
+      <Setter Property="BorderThickness" Value="0" />
+    </Style>
+    <Style Selector="^ TextBlock">
+      <Setter Property="VerticalAlignment" Value="Center" />
+      <Setter Property="TextAlignment" Value="Center" />
+      <Setter Property="HorizontalAlignment" Value="Center" />
+    </Style>
   </Style>
 
   <Style Selector="ScrollBar">
