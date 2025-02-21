@@ -80,6 +80,17 @@
       <Setter Property="TextAlignment" Value="Center" />
       <Setter Property="HorizontalAlignment" Value="Center" />
     </Style>
+    <Style Selector="^ TextBlock.Mono">
+      <Setter Property="FontFamily" Value="Mono" />
+      <Setter Property="TextAlignment" Value="Right" />
+      <Setter Property="HorizontalAlignment" Value="Right" />
+
+      <!--
+      This is to offset a bug with monospace fonts being rendered slightly off-center vertically
+      https://github.com/AvaloniaUI/Avalonia/issues/10658 (Bug is present as of Feb '25)
+      -->
+      <Setter Property="Margin" Value="0 3 0 0" />
+    </Style>
   </Style>
 
   <Style Selector="ScrollBar">

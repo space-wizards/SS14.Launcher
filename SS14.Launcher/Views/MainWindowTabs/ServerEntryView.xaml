@@ -33,19 +33,11 @@
           </Border>
 
           <Border Grid.Column="1" Classes="GridCell" IsVisible="{Binding HaveData}">
-            <TextBlock DockPanel.Dock="Right"
-                       FontFamily="Mono"
-                       HorizontalAlignment="Right"
-                       TextAlignment="Right"
-                       Text="{Binding RoundTimeString}" />
+            <TextBlock DockPanel.Dock="Right" Classes="Mono" Text="{Binding RoundTimeString}" />
           </Border>
 
           <Border Grid.Column="2" Classes="GridCell" IsVisible="{Binding HaveData}">
-            <TextBlock DockPanel.Dock="Right"
-                       FontFamily="Mono"
-                       HorizontalAlignment="Right"
-                       TextAlignment="Right"
-                       Text="{Binding PlayerCountString}" />
+            <TextBlock DockPanel.Dock="Right" Classes="Mono" Text="{Binding PlayerCountString}" />
           </Border>
 
           <Border Grid.Column="3" Classes="GridCell">
