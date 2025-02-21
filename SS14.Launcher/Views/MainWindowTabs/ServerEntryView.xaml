@@ -18,21 +18,37 @@
         <Grid>
           <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" /> <!-- Server Name -->
+            <ColumnDefinition SharedSizeGroup="TimeCol" MinWidth="80" Width="Auto" />
             <ColumnDefinition SharedSizeGroup="StatusCol" MinWidth="80" Width="Auto" />
             <ColumnDefinition SharedSizeGroup="ConnectCol" Width="Auto" />
           </Grid.ColumnDefinitions>
 
           <Border Grid.Column="0" Classes="GridCell">
-            <TextBlock VerticalAlignment="Center" Text="{Binding Name}" TextTrimming="CharacterEllipsis" HorizontalAlignment="Left" />
+            <TextBlock VerticalAlignment="Center" Text="{Binding Name}" TextTrimming="CharacterEllipsis"
+                       HorizontalAlignment="Left" />
           </Border>
 
-          <Border Grid.Column="1" Classes="GridCell">
+          <Border Grid.Column="1" Classes="GridCell" Grid.ColumnSpan="2" IsVisible="{Binding !HaveData}">
+            <TextBlock Text="{Binding ServerStatusString}" />
+          </Border>
+
+          <Border Grid.Column="1" Classes="GridCell" IsVisible="{Binding HaveData}">
             <TextBlock DockPanel.Dock="Right"
-                       Margin="10 0"
-                       Text="{Binding ServerStatusString}" />
+                       FontFamily="Mono"
+                       HorizontalAlignment="Right"
+                       TextAlignment="Right"
+                       Text="{Binding RoundTimeString}" />
           </Border>
 
-          <Border Grid.Column="2" Classes="GridCell">
+          <Border Grid.Column="2" Classes="GridCell" IsVisible="{Binding HaveData}">
+            <TextBlock DockPanel.Dock="Right"
+                       FontFamily="Mono"
+                       HorizontalAlignment="Right"
+                       TextAlignment="Right"
+                       Text="{Binding PlayerCountString}" />
+          </Border>
+
+          <Border Grid.Column="3" Classes="GridCell">
             <Button IsEnabled="{Binding IsOnline}" DockPanel.Dock="Right" Content="{loc:Loc server-entry-connect}"
                     Command="{Binding ConnectPressed}" />
           </Border>

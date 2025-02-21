@@ -77,6 +77,8 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
 
     public bool ViewedInFavoritesPane { get; set; }
 
+    public bool HaveData => _cacheData.Status == ServerStatusCode.Online;
+
     public string ServerStatusString
     {
         get
@@ -85,17 +87,20 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
             {
                 case ServerStatusCode.Offline:
                     return _loc.GetString("server-entry-offline");
-                case ServerStatusCode.Online:
-                    // Give a ratio for servers with a defined player count, or just a current number for those without.
-                    return _loc.GetString("server-entry-player-count",
-                        ("players", _cacheData.PlayerCount), ("max", _cacheData.SoftMaxPlayerCount));
                 case ServerStatusCode.FetchingStatus:
+                case ServerStatusCode.Online:
                     return _loc.GetString("server-entry-fetching");
                 default:
                     throw new NotSupportedException();
             }
         }
     }
+
+    // Give a ratio for servers with a defined player count, or just a current number for those without.
+    public string PlayerCountString =>
+        _loc.GetString("server-entry-player-count",
+            ("players", _cacheData.PlayerCount), ("max", _cacheData.SoftMaxPlayerCount));
+
 
     public string RoundTimeString =>
         _cacheData.RoundStartTime == null ? "" : GetTimeStringSince(_cacheData.RoundStartTime.Value);
@@ -219,6 +224,7 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
             case nameof(IServerStatusData.PlayerCount):
             case nameof(IServerStatusData.SoftMaxPlayerCount):
                 OnPropertyChanged(nameof(ServerStatusString));
+                OnPropertyChanged(nameof(PlayerCountString));
                 break;
 
             case nameof(IServerStatusData.RoundStartTime):
@@ -228,7 +234,9 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
             case nameof(IServerStatusData.Status):
                 OnPropertyChanged(nameof(IsOnline));
                 OnPropertyChanged(nameof(ServerStatusString));
+                OnPropertyChanged(nameof(PlayerCountString));
                 OnPropertyChanged(nameof(Description));
+                OnPropertyChanged(nameof(HaveData));
                 CheckUpdateInfo();
                 break;
 
@@ -239,6 +247,7 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
             case nameof(IServerStatusData.Description):
             case nameof(IServerStatusData.StatusInfo):
                 OnPropertyChanged(nameof(Description));
+                OnPropertyChanged(nameof(HaveData));
                 break;
         }
     }
