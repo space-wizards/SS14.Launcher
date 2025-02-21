@@ -254,7 +254,7 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
 
     private static string GetTimeStringSince(DateTime dateTime)
     {
-        var ts = DateTime.Now.ToUniversalTime().Subtract(dateTime);
+        var ts = DateTime.UtcNow.Subtract(dateTime);
         return ts.Hours > 0 ? $"{ts.Hours}H {ts.Minutes}M" : $"{ts.Minutes}M";
     }
 }
