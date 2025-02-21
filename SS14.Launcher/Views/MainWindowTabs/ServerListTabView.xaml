@@ -42,7 +42,7 @@
             <TextBlock Text="{loc:Loc tab-servers-table-name}" Classes="SubText" HorizontalAlignment="Left" />
           </Border>
           <Border Grid.Column="1" Classes="GridCell">
-            <TextBlock Text="Time" Classes="SubText" />
+            <TextBlock Text="{loc:Loc tab-servers-table-round-time}" Classes="SubText" />
           </Border>
           <Border Grid.Column="2" Classes="GridCell">
             <TextBlock Text="{loc:Loc tab-servers-table-players}" Classes="SubText" />

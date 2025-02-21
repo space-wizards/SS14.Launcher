@@ -222,6 +222,7 @@ filters = Filters ({ $filteredServers } / { $totalServers })
 tab-servers-search-watermark = Search For Servers…
 tab-servers-table-players = Players
 tab-servers-table-name = Server Name
+tab-servers-table-round-time = Time
 tab-servers-list-status-error = There was an error fetching the master server lists.
 tab-servers-list-status-partial-error = Failed to fetch some or all server lists. Ensure your hub configuration is correct.
 tab-servers-list-status-updating-master = Fetching master server list…
