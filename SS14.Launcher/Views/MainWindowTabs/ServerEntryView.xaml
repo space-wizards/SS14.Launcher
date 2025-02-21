@@ -15,16 +15,28 @@
   <Panel>
     <Expander Name="Expando" Classes="NoPad" IsExpanded="{Binding IsExpanded}">
       <Expander.Header>
-        <DockPanel>
-          <Button IsEnabled="{Binding IsOnline}" DockPanel.Dock="Right" Content="{loc:Loc server-entry-connect}"
-                  Command="{Binding ConnectPressed}" />
-          <TextBlock DockPanel.Dock="Right" VerticalAlignment="Center"
-                     TextAlignment="Center" Text="{Binding ServerStatusString}"
-                     MinWidth="80"
-                     Margin="10, 0" />
-          <Rectangle DockPanel.Dock="Right" Classes="VerticalSeparator" />
-          <TextBlock VerticalAlignment="Center" Text="{Binding Name}" TextTrimming="CharacterEllipsis"/>
-        </DockPanel>
+        <Grid>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" /> <!-- Server Name -->
+            <ColumnDefinition SharedSizeGroup="StatusCol" MinWidth="80" Width="Auto" />
+            <ColumnDefinition SharedSizeGroup="ConnectCol" Width="Auto" />
+          </Grid.ColumnDefinitions>
+
+          <Border Grid.Column="0" Classes="GridCell">
+            <TextBlock VerticalAlignment="Center" Text="{Binding Name}" TextTrimming="CharacterEllipsis" HorizontalAlignment="Left" />
+          </Border>
+
+          <Border Grid.Column="1" Classes="GridCell">
+            <TextBlock DockPanel.Dock="Right"
+                       Margin="10 0"
+                       Text="{Binding ServerStatusString}" />
+          </Border>
+
+          <Border Grid.Column="2" Classes="GridCell">
+            <Button IsEnabled="{Binding IsOnline}" DockPanel.Dock="Right" Content="{loc:Loc server-entry-connect}"
+                    Command="{Binding ConnectPressed}" />
+          </Border>
+        </Grid>
       </Expander.Header>
       <DockPanel Margin="4">
         <TextBlock DockPanel.Dock="Top"
