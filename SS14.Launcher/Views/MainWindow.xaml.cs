@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
@@ -27,6 +28,12 @@ public partial class MainWindow : Window
         AddHandler(DragDrop.DragLeaveEvent, DragLeave);
         AddHandler(DragDrop.DragOverEvent, DragOver);
         AddHandler(DragDrop.DropEvent, Drop);
+        AddHandler(LoadedEvent, Load);
+    }
+
+    private async void Load(object? sender, RoutedEventArgs e)
+    {
+        await _viewModel!.OnWindowLoaded();
 
         _content = (MainWindowContent) Content!;
 

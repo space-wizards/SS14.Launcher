@@ -46,6 +46,7 @@
     <PackageReference Include="Dapper" />
     <PackageReference Include="DynamicData" />
     <PackageReference Include="Microsoft.Data.Sqlite.Core" />
+    <PackageReference Include="Sentry.Serilog" />
     <PackageReference Include="SQLitePCLRaw.provider.sqlite3" Condition="'$(UseSystemSqlite)' == 'True'" />
     <PackageReference Include="SQLitePCLRaw.bundle_e_sqlite3" Condition="'$(UseSystemSqlite)' != 'True'" />
     <PackageReference Include="Microsoft.Toolkit.Mvvm" />

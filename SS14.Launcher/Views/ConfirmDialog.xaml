@@ -1,0 +1,22 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="300" d:DesignHeight="100"
+        MinWidth="350" MinHeight="100"
+        Width="350" Height="100"
+        x:Class="SS14.Launcher.Views.ConfirmDialog"
+        Icon="{DynamicResource WindowIcon}"
+        Title="Confirm"
+        WindowStartupLocation="CenterOwner">
+
+  <DockPanel Margin="8">
+    <TextBlock Name="Content"  HorizontalAlignment="Left" DockPanel.Dock="Top"
+               Text="Are you sure?" />
+
+    <StackPanel Orientation="Horizontal" FlowDirection="RightToLeft"  HorizontalAlignment="Stretch" VerticalAlignment="Bottom" DockPanel.Dock="Bottom" Height="42">
+      <Button HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="4 0" Name="ConfirmButton" Content="Confirm" />
+      <Button HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="4 0" Name="CancelButton" Content="Cancel" />
+    </StackPanel>
+  </DockPanel>
+</Window>
