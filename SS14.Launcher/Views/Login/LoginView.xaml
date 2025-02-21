@@ -16,19 +16,19 @@
 
     <TextBox DockPanel.Dock="Top" Name="NameBox" MaxWidth="300" Margin="0, 10, 0, 0"
              Watermark="{loc:Loc login-login-username-watermark}"
-             Text="{Binding EditingUsername, Mode=TwoWay}" IsEnabled="{Binding !Busy}" />
+             Text="{Binding Username}" IsEnabled="{Binding !Busy}" />
 
     <TextBox DockPanel.Dock="Top" Name="PasswordBox" MaxWidth="300" Margin="0, 4, 0, 0"
              Watermark="{loc:Loc login-login-password-watermark}"
-             Text="{Binding EditingPassword, Mode=TwoWay}" RevealPassword="{Binding IsPasswordVisible}"
+             Text="{Binding Password}"
              PasswordChar="•"
              IsEnabled="{Binding !Busy}" />
 
     <CheckBox DockPanel.Dock="Top" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="4"
-              IsChecked="{Binding IsPasswordVisible}" Content="{loc:Loc login-login-show-password}" />
+              Name="ShowPassword" IsCheckedChanged="ToggleShowPassword" Content="{loc:Loc login-login-show-password}" />
 
     <DockPanel DockPanel.Dock="Top" LastChildFill="False" MaxWidth="300" Margin="0 20 0 0">
-      <Button DockPanel.Dock="Right" HorizontalAlignment="Center"
+      <Button DockPanel.Dock="Right" HorizontalAlignment="Center" IsDefault="True"
               Content="{loc:Loc login-login-button-log-in}" Command="{Binding OnLogInButtonPressed}">
         <Button.IsEnabled>
           <MultiBinding Converter="{x:Static BoolConverters.And}">

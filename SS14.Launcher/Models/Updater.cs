@@ -18,8 +18,7 @@ using System.Threading.Tasks;
 using Avalonia.Threading;
 using Dapper;
 using Microsoft.Data.Sqlite;
-using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Serilog;
 using SharpZstd.Interop;
 using SpaceWizards.Sodium;
@@ -35,7 +34,7 @@ using static SQLitePCL.raw;
 
 namespace SS14.Launcher.Models;
 
-public sealed class Updater : ReactiveObject
+public sealed partial class Updater : ObservableObject
 {
     private const int ManifestDownloadProtocolVersion = 1;
 
@@ -61,9 +60,9 @@ public sealed class Updater : ReactiveObject
     }
 
     // Note: these get updated from different threads. Observe responsibly.
-    [Reactive] public UpdateStatus Status { get; private set; }
-    [Reactive] public (long downloaded, long total, ProgressUnit unit)? Progress { get; private set; }
-    [Reactive] public long? Speed { get; private set; }
+    [ObservableProperty] private UpdateStatus _status;
+    [ObservableProperty] private (long downloaded, long total, ProgressUnit unit)? _progress;
+    [ObservableProperty] private long? _speed;
 
     public async Task<ContentLaunchInfo?> RunUpdateForLaunchAsync(
         ServerBuildInformation buildInformation,
