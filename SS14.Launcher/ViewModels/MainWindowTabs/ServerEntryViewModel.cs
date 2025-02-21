@@ -252,9 +252,9 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
         }
     }
 
-    private static string GetTimeStringSince(DateTime dateTime)
+    private string GetTimeStringSince(DateTime dateTime)
     {
         var ts = DateTime.UtcNow.Subtract(dateTime);
-        return ts.Hours > 0 ? $"{ts.Hours}H {ts.Minutes}M" : $"{ts.Minutes}M";
+        return _loc.GetString("server-entry-round-time", ("hours", ts.Hours), ("mins", ts.Minutes.ToString().PadLeft(2, '0')));
     }
 }
