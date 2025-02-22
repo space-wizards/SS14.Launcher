@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:mainWindowTabs="clr-namespace:SS14.Launcher.ViewModels.MainWindowTabs"
              xmlns:models="clr-namespace:SS14.Launcher.Models"
+             xmlns:controls="clr-namespace:SS14.Launcher.Controls"
              xmlns:views="clr-namespace:SS14.Launcher.Views"
              xmlns:loc="clr-namespace:SS14.Launcher.Localization"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
@@ -33,7 +34,7 @@
           </Border>
 
           <Border Grid.Column="1" Classes="GridCell" IsVisible="{Binding HaveData}">
-            <TextBlock DockPanel.Dock="Right" Classes="Mono" Text="{Binding RoundTimeString}" />
+            <controls:TimerTextBlock Value="{Binding RoundStartTime}" />
           </Border>
 
           <Border Grid.Column="2" Classes="GridCell" IsVisible="{Binding HaveData}">

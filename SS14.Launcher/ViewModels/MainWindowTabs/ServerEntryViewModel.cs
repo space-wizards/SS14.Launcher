@@ -50,6 +50,11 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
         FallbackName = ssdfb.FallbackName ?? "";
     }
 
+    public void Tick()
+    {
+        OnPropertyChanged(nameof(RoundStartTime));
+    }
+
     public void ConnectPressed()
     {
         ConnectingViewModel.StartConnect(_windowVm, Address);
@@ -101,6 +106,8 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
         _loc.GetString("server-entry-player-count",
             ("players", _cacheData.PlayerCount), ("max", _cacheData.SoftMaxPlayerCount));
 
+
+    public DateTime? RoundStartTime => _cacheData.RoundStartTime;
 
     public string RoundTimeString =>
         _cacheData.RoundStartTime == null ? "" : GetTimeStringSince(_cacheData.RoundStartTime.Value);
@@ -229,6 +236,7 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
 
             case nameof(IServerStatusData.RoundStartTime):
                 OnPropertyChanged(nameof(RoundTimeString));
+                OnPropertyChanged(nameof(RoundStartTime));
                 break;
 
             case nameof(IServerStatusData.Status):
