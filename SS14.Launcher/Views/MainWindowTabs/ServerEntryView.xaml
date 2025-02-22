@@ -34,7 +34,7 @@
           </Border>
 
           <Border Grid.Column="1" Classes="GridCell" IsVisible="{Binding HaveData}">
-            <controls:TimerTextBlock Value="{Binding RoundStartTime}" />
+            <controls:TimerTextCell Value="{Binding RoundStartTime}" />
           </Border>
 
           <Border Grid.Column="2" Classes="GridCell" IsVisible="{Binding HaveData}">

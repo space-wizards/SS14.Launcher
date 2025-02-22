@@ -6,19 +6,19 @@ using SS14.Launcher.Localization;
 
 namespace SS14.Launcher.Controls;
 
-public class TimerTextBlock : TemplatedControl
+public class TimerTextCell : TemplatedControl
 {
     private readonly LocalizationManager _loc = LocalizationManager.Instance;
 
-    public static readonly DirectProperty<TimerTextBlock, DateTime?> ValueProperty =
-        AvaloniaProperty.RegisterDirect<TimerTextBlock, DateTime?>(
+    public static readonly DirectProperty<TimerTextCell, DateTime?> ValueProperty =
+        AvaloniaProperty.RegisterDirect<TimerTextCell, DateTime?>(
             nameof(Value),
             o => o.Value,
             (o, v) => o.Value = v
         );
 
-    public static readonly DirectProperty<TimerTextBlock, string> TextProperty =
-        AvaloniaProperty.RegisterDirect<TimerTextBlock, string>(
+    public static readonly DirectProperty<TimerTextCell, string> TextProperty =
+        AvaloniaProperty.RegisterDirect<TimerTextCell, string>(
             nameof(Text),
             o => o.Text,
             (o, v) => o.Text = v
