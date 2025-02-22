@@ -109,9 +109,6 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
 
     public DateTime? RoundStartTime => _cacheData.RoundStartTime;
 
-    public string RoundTimeString =>
-        _cacheData.RoundStartTime == null ? "" : GetTimeStringSince(_cacheData.RoundStartTime.Value);
-
     public string Description
     {
         get
@@ -235,7 +232,6 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
                 break;
 
             case nameof(IServerStatusData.RoundStartTime):
-                OnPropertyChanged(nameof(RoundTimeString));
                 OnPropertyChanged(nameof(RoundStartTime));
                 break;
 
@@ -258,11 +254,5 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
                 OnPropertyChanged(nameof(HaveData));
                 break;
         }
-    }
-
-    private string GetTimeStringSince(DateTime dateTime)
-    {
-        var ts = DateTime.UtcNow.Subtract(dateTime);
-        return _loc.GetString("server-entry-round-time", ("hours", ts.Hours), ("mins", ts.Minutes.ToString().PadLeft(2, '0')));
     }
 }
