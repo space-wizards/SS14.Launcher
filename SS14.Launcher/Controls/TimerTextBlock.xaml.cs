@@ -25,6 +25,7 @@ public class TimerTextBlock : TemplatedControl
         );
 
     private DateTime? _value;
+    private bool _attached;
 
     public DateTime? Value
     {
@@ -40,18 +41,7 @@ public class TimerTextBlock : TemplatedControl
         set => SetAndRaise(TextProperty, ref _text, value);
     }
 
-    private readonly DispatcherTimer _timer = new DispatcherTimer();
-
-    public TimerTextBlock()
-    {
-        _timer.Interval = TimeSpan.FromSeconds(1);
-        _timer.Tick += Timer_Tick;
-    }
-
-    private void Timer_Tick(object? sender, EventArgs e)
-    {
-        UpdateText();
-    }
+    private IDisposable? _timer;
 
     protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
     {
@@ -59,28 +49,45 @@ public class TimerTextBlock : TemplatedControl
 
         if (change.Property == ValueProperty)
         {
-            this.UpdateText();
+            UpdateText();
         }
     }
 
     protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
     {
-        _timer.Start();
+        _attached = true;
+        StartTimer();
     }
 
     protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
     {
-        _timer.Stop();
+        _attached = false;
+        _timer?.Dispose();
+    }
+
+    // Trigger an update when the visible timer will roll over to the next minute
+    private void StartTimer()
+    {
+        _timer?.Dispose();
+
+        // Only start a new timer if we have a DateTime
+        // and we’re on the visual tree.
+        if (_attached && Value is { } dt)
+        {
+            var ts = DateTime.UtcNow.Subtract(dt);
+            _timer = DispatcherTimer.RunOnce(UpdateText, TimeSpan.FromSeconds(ts.Seconds));
+        }
     }
 
     private void UpdateText()
     {
         this.Text = Value is { } dt ? GetTimeStringSince(dt) : "";
+        StartTimer();
     }
 
     private string GetTimeStringSince(DateTime dateTime)
     {
-        var ts = DateTime.Now.ToUniversalTime().Subtract(dateTime);
+        var ts = DateTime.UtcNow.Subtract(dateTime);
         return _loc.GetString("server-entry-round-time", ("hours", ts.Hours),
             ("mins", ts.Minutes.ToString().PadLeft(2, '0')));
     }
