@@ -80,7 +80,7 @@
       <Setter Property="TextAlignment" Value="Center" />
       <Setter Property="HorizontalAlignment" Value="Center" />
     </Style>
-    <Style Selector="^ TextBlock.Mono">
+    <Style Selector="^ TextBlock.Numeric">
       <Setter Property="FontFamily" Value="Mono" />
       <Setter Property="TextAlignment" Value="Right" />
       <Setter Property="HorizontalAlignment" Value="Right" />

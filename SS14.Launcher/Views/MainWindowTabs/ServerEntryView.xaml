@@ -38,7 +38,7 @@
           </Border>
 
           <Border Grid.Column="2" Classes="GridCell" IsVisible="{Binding HaveData}">
-            <TextBlock DockPanel.Dock="Right" Classes="Mono" Text="{Binding PlayerCountString}" />
+            <TextBlock DockPanel.Dock="Right" Classes="Numeric" Text="{Binding PlayerCountString}" />
           </Border>
 
           <Border Grid.Column="3" Classes="GridCell">

@@ -5,7 +5,7 @@
     <Setter Property="Template">
       <ControlTemplate>
         <DataValidationErrors>
-          <TextBlock Text="{TemplateBinding Text}" Classes="Mono" />
+          <TextBlock Text="{TemplateBinding Text}" Classes="Numeric" />
         </DataValidationErrors>
       </ControlTemplate>
     </Setter>
