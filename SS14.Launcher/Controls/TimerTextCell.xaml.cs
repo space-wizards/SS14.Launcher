@@ -75,7 +75,7 @@ public class TimerTextCell : TemplatedControl
         if (_attached && Value is { } dt)
         {
             var ts = DateTime.UtcNow.Subtract(dt);
-            _timer = DispatcherTimer.RunOnce(UpdateText, TimeSpan.FromSeconds(ts.Seconds));
+            _timer = DispatcherTimer.RunOnce(UpdateText, TimeSpan.FromSeconds((ts.Seconds >= 0 ? ts.Seconds : 60)));
         }
     }
 
