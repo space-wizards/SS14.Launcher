@@ -20,7 +20,8 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
     private string _fallbackName = string.Empty;
     private bool _isExpanded;
 
-    public ServerEntryViewModel(MainWindowViewModel windowVm, ServerStatusData cacheData, IServerSource serverSource, DataManager cfg)
+    public ServerEntryViewModel(MainWindowViewModel windowVm, ServerStatusData cacheData, IServerSource serverSource,
+        DataManager cfg)
     {
         _cfg = cfg;
         _windowVm = windowVm;
@@ -49,6 +50,11 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
         FallbackName = ssdfb.FallbackName ?? "";
     }
 
+    public void Tick()
+    {
+        OnPropertyChanged(nameof(RoundStartTime));
+    }
+
     public void ConnectPressed()
     {
         ConnectingViewModel.StartConnect(_windowVm, Address);
@@ -67,12 +73,16 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
     }
 
     public string Name => Favorite?.Name ?? _cacheData.Name ?? _fallbackName;
+
     public string FavoriteButtonText => IsFavorite
         ? _loc.GetString("server-entry-remove-favorite")
         : _loc.GetString("server-entry-add-favorite");
+
     private bool IsFavorite => _cfg.FavoriteServers.Lookup(Address).HasValue;
 
     public bool ViewedInFavoritesPane { get; set; }
+
+    public bool HaveData => _cacheData.Status == ServerStatusCode.Online;
 
     public string ServerStatusString
     {
@@ -82,17 +92,27 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
             {
                 case ServerStatusCode.Offline:
                     return _loc.GetString("server-entry-offline");
-                case ServerStatusCode.Online:
-                    // Give a ratio for servers with a defined player count, or just a current number for those without.
-                    return _loc.GetString("server-entry-player-count",
-                        ("players", _cacheData.PlayerCount), ("max", _cacheData.SoftMaxPlayerCount));
                 case ServerStatusCode.FetchingStatus:
+                case ServerStatusCode.Online:
                     return _loc.GetString("server-entry-fetching");
                 default:
                     throw new NotSupportedException();
             }
         }
     }
+
+    // Give a ratio for servers with a defined player count, or just a current number for those without.
+    public string PlayerCountString =>
+        _loc.GetString("server-entry-player-count",
+            ("players", _cacheData.PlayerCount), ("max", _cacheData.SoftMaxPlayerCount));
+
+
+    public DateTime? RoundStartTime => _cacheData.RoundStartTime;
+
+    public string RoundStatusString =>
+        _cacheData.RoundStatus == GameRoundStatus.InLobby
+            ? _loc.GetString("server-entry-status-lobby")
+            : "";
 
     public string Description
     {
@@ -111,7 +131,8 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
                 ServerStatusInfoCode.NotFetched => _loc.GetString("server-entry-description-fetching"),
                 ServerStatusInfoCode.Fetching => _loc.GetString("server-entry-description-fetching"),
                 ServerStatusInfoCode.Error => _loc.GetString("server-entry-description-error"),
-                ServerStatusInfoCode.Fetched => _cacheData.Description ?? _loc.GetString("server-entry-description-none"),
+                ServerStatusInfoCode.Fetched => _cacheData.Description ??
+                                                _loc.GetString("server-entry-description-none"),
                 _ => throw new ArgumentOutOfRangeException()
             };
         }
@@ -145,6 +166,7 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
             return null;
         }
     }
+
     public bool ShowFetchedFrom => _cfg.HasCustomHubs && !ViewedInFavoritesPane;
 
     public void FavoriteButtonPressed()
@@ -211,12 +233,23 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
             case nameof(IServerStatusData.PlayerCount):
             case nameof(IServerStatusData.SoftMaxPlayerCount):
                 OnPropertyChanged(nameof(ServerStatusString));
+                OnPropertyChanged(nameof(PlayerCountString));
+                break;
+
+            case nameof(IServerStatusData.RoundStartTime):
+                OnPropertyChanged(nameof(RoundStartTime));
+                break;
+
+            case nameof(IServerStatusData.RoundStatus):
+                OnPropertyChanged(nameof(RoundStatusString));
                 break;
 
             case nameof(IServerStatusData.Status):
                 OnPropertyChanged(nameof(IsOnline));
                 OnPropertyChanged(nameof(ServerStatusString));
+                OnPropertyChanged(nameof(PlayerCountString));
                 OnPropertyChanged(nameof(Description));
+                OnPropertyChanged(nameof(HaveData));
                 CheckUpdateInfo();
                 break;
 
@@ -227,6 +260,7 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
             case nameof(IServerStatusData.Description):
             case nameof(IServerStatusData.StatusInfo):
                 OnPropertyChanged(nameof(Description));
+                OnPropertyChanged(nameof(HaveData));
                 break;
         }
     }

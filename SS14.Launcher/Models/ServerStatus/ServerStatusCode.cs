@@ -14,3 +14,10 @@ public enum ServerStatusInfoCode
     Error,
     Fetched
 }
+
+public enum GameRoundStatus
+{
+    Unknown,
+    InLobby,
+    InRound,
+}
