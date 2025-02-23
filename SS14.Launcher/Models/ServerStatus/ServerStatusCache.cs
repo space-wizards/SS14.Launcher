@@ -124,6 +124,7 @@ public sealed class ServerStatusCache : IServerSource
         data.Name = status.Name;
         data.PlayerCount = status.PlayerCount;
         data.SoftMaxPlayerCount = status.SoftMaxPlayerCount;
+        data.IsInRound = status.RunLevel == ServerApi.GameRunLevel.InRound;
         if (status.RoundStartTime != null)
         {
             data.RoundStartTime = DateTime.Parse(status.RoundStartTime);

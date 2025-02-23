@@ -12,6 +12,7 @@ public sealed class ServerStatusData : ObservableObject, IServerStatusData
     private int _playerCount;
     private int _softMaxPlayerCount;
     private DateTime? _roundStartTime;
+    private bool _isInRound;
     private ServerStatusCode _status = ServerStatusCode.FetchingStatus;
     private ServerStatusInfoCode _statusInfo = ServerStatusInfoCode.NotFetched;
     private ServerInfoLink[]? _links;
@@ -82,6 +83,12 @@ public sealed class ServerStatusData : ObservableObject, IServerStatusData
     {
         get => _roundStartTime;
         set => SetProperty(ref _roundStartTime, value);
+    }
+
+    public bool IsInRound
+    {
+        get => _isInRound;
+        set => SetProperty(ref _isInRound, value);
     }
 
     public ServerInfoLink[]? Links

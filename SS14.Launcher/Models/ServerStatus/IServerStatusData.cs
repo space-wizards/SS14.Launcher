@@ -28,4 +28,6 @@ public interface IServerStatusData : INotifyPropertyChanged
     int SoftMaxPlayerCount { get; set; }
 
     DateTime? RoundStartTime { get; set; }
+
+    bool IsInRound { get; set; }
 }

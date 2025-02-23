@@ -14,7 +14,15 @@ public static class ServerApi
         [property: JsonPropertyName("soft_max_players")]
         int SoftMaxPlayerCount,
         [property: JsonPropertyName("round_start_time")] string? RoundStartTime,
+        [property: JsonPropertyName("run_level")] GameRunLevel RunLevel,
         [property: JsonPropertyName("tags")] string[]? Tags);
+
+    public enum GameRunLevel
+    {
+        PreRoundLobby = 0,
+        InRound = 1,
+        PostRound = 2
+    }
 
     /// <summary>
     /// Contains definitions for standard tags returned by game servers.

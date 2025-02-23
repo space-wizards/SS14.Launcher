@@ -109,6 +109,8 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
 
     public DateTime? RoundStartTime => _cacheData.RoundStartTime;
 
+    public bool IsInRound => _cacheData.IsInRound;
+
     public string Description
     {
         get
@@ -233,6 +235,10 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
 
             case nameof(IServerStatusData.RoundStartTime):
                 OnPropertyChanged(nameof(RoundStartTime));
+                break;
+
+            case nameof(IServerStatusData.IsInRound):
+                OnPropertyChanged(nameof(IsInRound));
                 break;
 
             case nameof(IServerStatusData.Status):
