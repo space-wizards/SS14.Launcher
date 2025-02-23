@@ -35,8 +35,8 @@
 
           <Border Grid.Column="1" Classes="GridCell" IsVisible="{Binding HaveData}">
             <Panel>
-              <controls:TimerTextCell Value="{Binding RoundStartTime}" IsVisible="{Binding IsInRound}" />
-              <TextBlock Text="{loc:Loc server-entry-status-lobby}" IsVisible="{Binding !IsInRound}" />
+              <controls:TimerTextCell Value="{Binding RoundStartTime}" IsVisible="{Binding RoundStartTime,Converter={x:Static ObjectConverters.IsNotNull}}" />
+              <TextBlock Text="{Binding RoundStatusString}" IsVisible="{Binding RoundStartTime,Converter={x:Static ObjectConverters.IsNull}}" />
             </Panel>
           </Border>
 

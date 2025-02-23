@@ -104,7 +104,8 @@ public sealed class ServerStatusCache : IServerSource
 
                 cancel.ThrowIfCancellationRequested();
             }
-            catch (Exception e) when (e is JsonException or HttpRequestException or InvalidDataException or IOException or SocketException)
+            catch (Exception e) when (e is JsonException or HttpRequestException or InvalidDataException or IOException
+                                          or SocketException)
             {
                 data.Status = ServerStatusCode.Offline;
                 return;
@@ -124,7 +125,21 @@ public sealed class ServerStatusCache : IServerSource
         data.Name = status.Name;
         data.PlayerCount = status.PlayerCount;
         data.SoftMaxPlayerCount = status.SoftMaxPlayerCount;
-        data.IsInRound = status.RunLevel == ServerApi.GameRunLevel.InRound;
+
+        switch (status.RunLevel)
+        {
+            case ServerApi.GameRunLevel.InRound:
+                data.RoundStatus = GameRoundStatus.InRound;
+                break;
+            case ServerApi.GameRunLevel.PostRound:
+            case ServerApi.GameRunLevel.PreRoundLobby:
+                data.RoundStatus = GameRoundStatus.InLobby;
+                break;
+            default:
+                data.RoundStatus = GameRoundStatus.Unknown;
+                break;
+        }
+
         if (status.RoundStartTime != null)
         {
             data.RoundStartTime = DateTime.Parse(status.RoundStartTime);

@@ -109,7 +109,10 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
 
     public DateTime? RoundStartTime => _cacheData.RoundStartTime;
 
-    public bool IsInRound => _cacheData.IsInRound;
+    public string RoundStatusString =>
+        _cacheData.RoundStatus == GameRoundStatus.InLobby
+            ? _loc.GetString("server-entry-status-lobby")
+            : "";
 
     public string Description
     {
@@ -237,8 +240,8 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
                 OnPropertyChanged(nameof(RoundStartTime));
                 break;
 
-            case nameof(IServerStatusData.IsInRound):
-                OnPropertyChanged(nameof(IsInRound));
+            case nameof(IServerStatusData.RoundStatus):
+                OnPropertyChanged(nameof(RoundStatusString));
                 break;
 
             case nameof(IServerStatusData.Status):

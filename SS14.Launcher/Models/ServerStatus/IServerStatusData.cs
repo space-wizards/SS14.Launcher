@@ -29,5 +29,5 @@ public interface IServerStatusData : INotifyPropertyChanged
 
     DateTime? RoundStartTime { get; set; }
 
-    bool IsInRound { get; set; }
+    GameRoundStatus RoundStatus { get; set; }
 }
