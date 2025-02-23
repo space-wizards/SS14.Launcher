@@ -62,7 +62,7 @@ buildDotnetModule rec {
     "SS14.Launcher/SS14.Launcher.csproj"
   ];
 
-  nugetDeps = ./deps.nix;
+  nugetDeps = ./deps.json;
 
   passthru = {
     inherit version;
