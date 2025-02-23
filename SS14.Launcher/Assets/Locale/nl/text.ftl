@@ -532,3 +532,10 @@ tab-options-desc-incompatible = Deze optie is werkt niet op jouw platform en is 
 connecting-privacy-policy-view = Bekijk privacybeleid
 connecting-privacy-policy-accept = Accepteer (doorgaan)
 connecting-privacy-policy-decline = Weigeren (verbreken)
+tab-servers-table-round-time = Tijd
+server-entry-round-time =
+    { $hours ->
+        [0] { $mins }M
+       *[1] { $hours }U { $mins }M
+    }
+server-entry-status-lobby = Lobby
