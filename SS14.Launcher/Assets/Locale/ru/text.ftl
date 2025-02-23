@@ -528,3 +528,8 @@ tab-options-seasonal-branding = Сезонное оформление
 # Strings for entries in the server list (including home page)
 server-entry-raise = Поднять на самый верх
 tab-options-desc-incompatible = Эта опция несовместима с вашей платформой, поэтому она отключена.
+connecting-privacy-policy-text-version-changed = Этот сервер обновил политику конфиденциальности с момента вашей последней игры. Вы должны принять новую версию перед подключением.
+connecting-privacy-policy-text = Этот сервер требует чтобы вы приняли его политику конфиденциальности перед подключением.
+connecting-privacy-policy-view = Посмотреть политику конфиденциальности
+connecting-privacy-policy-accept = Принять (продолжить)
+connecting-privacy-policy-decline = Отклонить (отключиться)

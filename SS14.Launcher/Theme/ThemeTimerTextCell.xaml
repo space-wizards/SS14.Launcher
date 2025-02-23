@@ -1,0 +1,13 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="using:SS14.Launcher.Controls">
+  <Style Selector="controls|TimerTextCell">
+    <Setter Property="Template">
+      <ControlTemplate>
+        <DataValidationErrors>
+          <TextBlock Text="{TemplateBinding Text}" Classes="Numeric" />
+        </DataValidationErrors>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+</Styles>

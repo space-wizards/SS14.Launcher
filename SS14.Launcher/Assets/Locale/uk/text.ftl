@@ -15,7 +15,7 @@ account-drop-down-select-account = Вибрати обліковий запис:
 # Strings for the drop-down window to manage your active account
 account-drop-down-add-account = Додати обліковий запис
 # Localization for the "add favorite server" dialog window
-add-favorite-window-address-invalid = Адреса недійсна
+add-favorite-window-address-invalid = Адреса невірна
 # Localization for the "add favorite server" dialog window
 add-favorite-window-label-name = Назва:
 # Localization for the "add favorite server" dialog window
@@ -147,7 +147,7 @@ login-error-unknown = Невідома помилка
 # Error messages for login
 login-errors-button-ok = Ок
 # Strings for 2FA login
-login-2fa-title = Потрібна 2х-факторна автентифікація
+login-2fa-title = Потрібна 2-факторна автентифікація
 # Strings for 2FA login
 login-2fa-message = Будь ласка, введіть код автентифікації з вашого застосунку.
 # Strings for 2FA login
@@ -528,3 +528,8 @@ tab-options-disable-signing-desc = { "[" }DEV ONLY] Вимикає переві�
 # Strings for the "login" view on login
 login-login-show-password = Показати пароль
 tab-options-desc-incompatible = Ця опція несумісна з вашою платформою, тому її вимкнено.
+connecting-privacy-policy-text = Цей сервер вимагає щоб ви прийняли його політику конфіденційності перед підключенням.
+connecting-privacy-policy-text-version-changed = Цей сервер оновив свою політику конфіденційності з моменту вашої останньої гри. Ви повинні прийняти нову версію перед підключенням.
+connecting-privacy-policy-view = Переглянути політику конфіденційності
+connecting-privacy-policy-accept = Прийняти (продовжити)
+connecting-privacy-policy-decline = Відхилити (відключитися)

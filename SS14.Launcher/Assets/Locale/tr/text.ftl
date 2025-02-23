@@ -74,7 +74,7 @@ hub-settings-button-add-tooltip = Sunucu merkezi ekle
 # Strings for the drop-down window to manage your active account
 account-drop-down-add-account = Hesap ekle
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-status-none = Bağlatı başlatılıyor…
+connecting-status-none = Bağlantı başlatılıyor…
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-client-crashed = İstemci başlatılırken çökmüş gibi duruyor. Eğer bu devam ederse, Discord'dan veya GitHub'dan yardım isteyiniz.
 # Strings for the "hub settings" dialog window.
@@ -146,7 +146,7 @@ hub-settings-title = Sunucu merkezi ayarları
 # Error messages for login
 login-error-unknown = Bilinmeyen hata
 # Error messages for login
-login-errors-button-ok = Ok
+login-errors-button-ok = Tamam
 # Strings for 2FA login
 login-2fa-button-confirm = Onayla
 # Strings for 2FA login
@@ -210,7 +210,7 @@ region-oceania = Okyanusya
 # Short region names for server tag filters (shown in filter check box)
 region-short-greenland = Grönland
 # Short region names for server tag filters (shown in filter check box)
-region-short-middle-east = Orta Asya
+region-short-middle-east = Orta Doğu
 # Short region names for server tag filters (shown in filter check box)
 region-short-the-moon = Ay
 # Short region names for server tag filters (shown in filter check box)
@@ -252,9 +252,9 @@ filters-player-count-maximum = Maksimum:
 # Strings for the server filters menu
 filters-player-count-maximum-desc = Daha çok oyunculu sunucular gösterilmeyecektir
 # Strings for the server filters menu
-filters-unspecified-desc = Belirlenmemiş
+filters-unspecified-desc = Belirtilmemiş
 # Strings for the server filters menu
-filters-unspecified = Belirlenmemiş
+filters-unspecified = Belirtilmemiş
 # Server roleplay levels for the filters menu
 filters-rp-none = Hiçbiri
 # Server roleplay levels for the filters menu
@@ -307,7 +307,7 @@ tab-news-recent-news = Güncel haberler:
 # Strings for the "news" tab
 tab-news-pulling-news = Haber aranıyor…
 # Strings for the "options" tab
-tab-options-title = Opsiyonlar
+tab-options-title = Seçenekler
 # Strings for the "options" tab
 tab-options-flip = { "*" }flip
 # Strings for the "options" tab
@@ -315,7 +315,7 @@ tab-options-clear-content = Yüklenmiş sunucu bilgilerini temizle
 # Strings for the "options" tab
 tab-options-compatibility-mode = Uyumluluk Modu
 # Strings for the "options" tab
-tab-options-compatibility-mode-desc = Bu oyunun başka bir grafik backend kullanmasını zorlar ve bu driver hatalarını azaltabilir. Eğer grafik sorunlar veya hatalar yaşıyorsanız bunu deneyin.
+tab-options-compatibility-mode-desc = Oyunun, sürücü hatalarıyla karşılaşma ihtimali daha düşük başka bir grafik arka uç kullanmasını zorunlu kılar, bu sürücü hatalarını azaltabilir. Eğer grafik sorunlar veya hatalar yaşıyorsanız bunu deneyin.
 # Strings for the "forgot password" view on login
 login-forgot-message = Şifreni unuttuysan, hesabına bağlı olan email adresini girerek sıfırlama linki alabilirsin.
 # For the language selection menu.
@@ -331,9 +331,9 @@ tab-home-favorites-guide = Kolayca bulmak için sunucuları favori olarak işare
 # Strings for the "options" tab
 tab-options-account-settings-desc = Email ve şifre değiştirme gibi hesap ayarlarını websitemizden yapabilirsin.
 # Strings for the general main window layout of the launcher
-main-window-busy-checking-login-status = Login statüsü yenileniyor…
+main-window-busy-checking-login-status = Giriş statüsü yenileniyor…
 # Strings for the "options" tab
-tab-options-log-launcher = Log Launcher
+tab-options-log-launcher = Launcherı Günlüğe Kaydet
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-update-status-checking-engine-modules = Ekstra gereksinimler kontrol ediliyor…
 # Strings for entries in the server list (including home page)
@@ -341,9 +341,9 @@ server-entry-fetching = Getiriliyor…
 # Strings for the "servers" tab
 tab-servers-list-status-updating-master = Master sunucu listesi getiriliyor…
 # Strings for the "options" tab
-tab-options-log-launcher-desc = Launcherın her hareketi için logları açar. Geliştiriciler için işlevlidir. (Launcherın yeniden başlatılması gerekir)
+tab-options-log-launcher-desc = Launcherın davranışlarını günlüğe kaydeder. Geliştiriciler için işlevlidir. (Launcherın yeniden başlatılması gerekir)
 # Strings for the "options" tab
-tab-options-verbose-launcher-logging-desc = Geliştiricilerin sorununu *bi türlü* çözemediği zaman için. (Launcherın yeniden başlatılması gerekir)
+tab-options-verbose-launcher-logging-desc = Geliştiricilerin sorununu *bi' türlü* çözemediği zaman için. (Launcherın yeniden başlatılması gerekir)
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-not-a-content-bundle = Dosya geçerli bir içerik paketi değil!
 # Strings for the "options" tab
@@ -371,15 +371,15 @@ login-forgot-button-submit = Gönder
 # Strings for the "login" view on login
 login-login-button-resend = Email doğrulamasını yeniden gönder
 # Strings for the general main window layout of the launcher
-main-window-out-of-date = Launcher güncellenmemiş
+main-window-out-of-date = Launcher güncel değil
 # Strings for the general main window layout of the launcher
 main-window-out-of-date-desc =
-    Bu launcher güncellenmemiş.
-    Lütfen yeni versiyonu websitemizden indirin.
+    Bu launcher güncel değil.
+    Lütfen güncel versiyonu websitemizden indirin.
 # Strings for the general main window layout of the launcher
 main-window-out-of-date-desc-steam =
-    Bu launcher güncellenmemiş.
-    Lütfen Steam'in güncellemesine izin verin.
+    Bu launcher güncel değil.
+    Lütfen Steam üzerinden oyunu güncelleyin.
 # Strings for the general main window layout of the launcher
 main-window-out-of-date-exit = Çıkış
 # Strings for the general main window layout of the launcher
@@ -447,9 +447,9 @@ region-short-asia-east = Doğu Asya
 # Short region names for server tag filters (shown in filter check box)
 region-short-asia-north = Kuzey Asya
 # Short region names for server tag filters (shown in filter check box)
-region-short-asia-south-east = Güney Asya-Doğu
+region-short-asia-south-east = Güneydoğu Asya
 # Short region names for server tag filters (shown in filter check box)
-region-short-central-america = Merkezi Amerika
+region-short-central-america = Orta Amerika
 # Short region names for server tag filters (shown in filter check box)
 region-short-europe-east = Doğu Avrupa
 # Short region names for server tag filters (shown in filter check box)
@@ -457,17 +457,17 @@ region-short-europe-west = Batı Avrupa
 # Short region names for server tag filters (shown in filter check box)
 region-short-india = Hindistan
 # Short region names for server tag filters (shown in filter check box)
-region-short-north-america-central = Merkezi NA
+region-short-north-america-central = Merkezi KA
 # Short region names for server tag filters (shown in filter check box)
-region-short-north-america-east = Doğu NA
+region-short-north-america-east = Doğu KA
 # Short region names for server tag filters (shown in filter check box)
-region-short-north-america-west = Batı NA
+region-short-north-america-west = Batı KA
 # Short region names for server tag filters (shown in filter check box)
-region-short-south-america-east = Doğu SA
+region-short-south-america-east = Doğu GA
 # Short region names for server tag filters (shown in filter check box)
-region-short-south-america-south = Güney SA
+region-short-south-america-south = Güney GA
 # Short region names for server tag filters (shown in filter check box)
-region-short-south-america-west = Batı SA
+region-short-south-america-west = Batı GA
 # Strings for the server filters menu
 filters-title-region = Bölge
 # Strings for entries in the server list (including home page)
@@ -483,24 +483,24 @@ tab-options-hub-settings = Sunucu Merkezi Ayarları
 # Strings for the "options" tab
 tab-options-seasonal-branding-desc = Yapabildiğimiz herhangi bir geçici ikon ve logolardan.
 # Strings for the "options" tab
-tab-options-disable-signing = Motor Signature Checkleri kapat
+tab-options-disable-signing = Motor İmzalarının Doğrulanmasını Kapat
 # Strings for the "options" tab
-tab-options-disable-signing-desc = { "[" }DEV ONLY] Motor engine signatureların doğrulanmasınu kapatır. NE YAPTIĞINI BİLMİYORSAN AÇMA.
+tab-options-disable-signing-desc = { "[" }SADECE GELİŞTİRİCİLER] Motor imzalarının doğrulanmasını kapatır. NE YAPTIĞINI BİLMİYORSAN AÇMA.
 # Strings for the "Development" tab
 # These aren't shown to users so they're not very important
 tab-development-title-override = { "[" }DEV (override aktif!!!)]
 # Strings for the "options" tab
 tab-options-account-settings = Hesap Ayarları
 # Strings for the "options" tab
-tab-options-log-client = Log İstemcisi
+tab-options-log-client = İstemciyi Günlüğe Kaydet
 # Strings for the "options" tab
-tab-options-log-client-desc = Oyun istemcisinin herhangi bir hareketi için log tutmayı açar. Geliştiriciler için işlevlidir.
+tab-options-log-client-desc = Oyun istemcisinin davranışlarını günlüğe kayıt almayı açar. Geliştiriciler için işlevlidir.
 # Strings for the "Development" tab
 # These aren't shown to users so they're not very important
-tab-development-disable-signing = Motor 'Signature Checks'leri kapat
+tab-development-disable-signing = Motor İmza Doğrulamasını Kapat
 # Strings for the "Development" tab
 # These aren't shown to users so they're not very important
-tab-development-disable-signing-desc = { "[" }DEV ONLY] Motor signatureların doğrulanmasını kapatır. NE YAPTIĞINI BİLMİYORSAN AÇMA.
+tab-development-disable-signing-desc = { "[" }DEV ONLY] Motor imzalarının doğrulanmasını kapatır. NE YAPTIĞINI BİLMİYORSAN AÇMA.
 # Strings for the "Development" tab
 # These aren't shown to users so they're not very important
 tab-development-enable-engine-override = Engine override'ı aç
@@ -509,12 +509,12 @@ tab-home-run-content-bundle = İçerik paketi/replay oynat
 # Strings for the "options" tab
 tab-options-clear-engines = İndirilmiş motorları temizle
 # Strings for the "options" tab
-tab-options-open-log-directory = Log dizinlerini aç
+tab-options-open-log-directory = Günlük kaydı dizinini aç
 # Strings for the "Development" tab
 # These aren't shown to users so they're not very important
 tab-development-enable-engine-override-desc = Motor ziplerini indirmek için path ovrerride (release/ in RobustToolbox)
 # Strings for the "options" tab
-tab-options-verbose-launcher-logging = Verbose Launcher Logları
+tab-options-verbose-launcher-logging = Launcherı Günlüğe Ayrıntılı Kaydet
 # For the language selection menu.
 # Used for contents of each language button.
 language-selector-language = { $languageName } ({ $englishName })
@@ -522,9 +522,14 @@ language-selector-language = { $languageName } ({ $englishName })
 # Text on the button that opens the menu.
 language-selector-label = Dil
 # For the language selection menu.
-language-selector-help-translate = Çevirmeye yardım mı etmek istiyorsun? Edebilirisin!
+language-selector-help-translate = Çevirmeye yardım mı etmek istiyorsun? Edebilirsin!
 # For the language selection menu.
 language-selector-system-language = Sistem dili ({ $languageName })
 # Strings for the "login" view on login
 login-login-show-password = Şifreyi göster
 tab-options-desc-incompatible = Bu seçenek platformunuzla uyumsuzdur ve devre dışı bırakılmıştır.
+connecting-privacy-policy-view = Gizlilik politikasını görüntüle
+connecting-privacy-policy-text = Bu sunucuya bağlanmadan önce gizlilik politikasını kabul etmeniz gerekiyor.
+connecting-privacy-policy-text-version-changed = Bu sunucu son oynadığınızdan beri gizlilik politikasını güncelledi. Bağlanmadan önce yeni halini kabul etmelisiniz.
+connecting-privacy-policy-accept = Kabul et (devam et)
+connecting-privacy-policy-decline = Reddet (bağlantıyı kes)

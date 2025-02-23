@@ -525,3 +525,10 @@ tab-options-log-launcher-desc = 启用启动器的日志记录功能。对开发
 # Strings for the "Development" tab
 # These aren't shown to users so they're not very important
 tab-development-title-override = { "[" }开发（将覆盖活跃设置！！！）]
+connecting-privacy-policy-text = 这个服务器需要你同意隐私条款才可连接。
+tab-options-desc-incompatible = 此选项与你的平台不兼容，并已被禁用。
+connecting-privacy-policy-text-version-changed = 这个服务器在你最近一次游戏之后更新了隐私条款。你必须同意此条款才可进行连接。
+connecting-privacy-policy-view = 查看隐私条款
+connecting-privacy-policy-accept = 同意（继续）
+connecting-privacy-policy-decline = 拒绝（断开连接）
+login-login-show-password = 显示密码

@@ -35,7 +35,7 @@ public static class VcRedistCheck
             }
         }
 
-        if (ret == Windows.IDYES)
+        if (ret == TerraFX.Interop.Windows.Windows.IDYES)
         {
             Process.Start(new ProcessStartInfo
                 {

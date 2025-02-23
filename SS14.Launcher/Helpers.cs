@@ -8,7 +8,9 @@ using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using Mono.Unix;
+using Serilog;
 using TerraFX.Interop.Windows;
+using Win = TerraFX.Interop.Windows.Windows;
 
 namespace SS14.Launcher;
 
@@ -88,6 +90,27 @@ public static class Helpers
         }, cancel);
     }
 
+    /// <summary>
+    /// Open a URI provided by a game server in the user's browser. Refuse to open anything other than http/https.
+    /// </summary>
+    /// <param name="uri">The URI to open.</param>
+    public static void SafeOpenServerUri(string uri)
+    {
+        if (!Uri.TryCreate(uri, UriKind.Absolute, out var parsedUri))
+        {
+            Log.Error("Unable to parse URI in server-provided link: {Link}", uri);
+            return;
+        }
+
+        if (parsedUri.Scheme is not ("http" or "https"))
+        {
+            Log.Error("Refusing to open server-provided link {Link}, only http/https are allowed", parsedUri);
+            return;
+        }
+
+        OpenUri(parsedUri.ToString());
+    }
+
     public static void OpenUri(Uri uri)
     {
         OpenUri(uri.ToString());
@@ -138,9 +161,9 @@ public static class Helpers
 
         fixed (char* pPath = path)
         {
-            var handle = Windows.CreateFileW(
+            var handle = Win.CreateFileW(
                 (ushort*)pPath,
-                Windows.GENERIC_ALL,
+                Win.GENERIC_ALL,
                 FILE.FILE_SHARE_READ,
                 null,
                 OPEN.OPEN_EXISTING,
@@ -148,9 +171,9 @@ public static class Helpers
                 HANDLE.NULL);
 
             var lpBytesReturned = 0u;
-            var lpInBuffer = (short)Windows.COMPRESSION_FORMAT_DEFAULT;
+            var lpInBuffer = (short)Win.COMPRESSION_FORMAT_DEFAULT;
 
-            Windows.DeviceIoControl(
+            Win.DeviceIoControl(
                 handle,
                 FSCTL.FSCTL_SET_COMPRESSION,
                 &lpInBuffer,
@@ -160,7 +183,7 @@ public static class Helpers
                 &lpBytesReturned,
                 null);
 
-            Windows.CloseHandle(handle);
+            Win.CloseHandle(handle);
         }
     }
 
@@ -176,7 +199,7 @@ public static class Helpers
         fixed (char* pText = text)
         fixed (char* pCaption = caption)
         {
-            return Windows.MessageBoxW(HWND.NULL, (ushort*)pText, (ushort*)pCaption, type);
+            return Win.MessageBoxW(HWND.NULL, (ushort*)pText, (ushort*)pCaption, type);
         }
     }
 }
