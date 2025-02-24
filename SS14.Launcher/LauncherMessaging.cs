@@ -23,7 +23,9 @@ public class LauncherMessaging
     /// <summary>
     /// Cancellation token used to safely shut down the pipe server.
     /// </summary>
-    public readonly CancellationTokenSource PipeServerSelfDestruct = new();
+    private readonly CancellationTokenSource _pipeServerSelfDestruct = new();
+
+    private Task? _serverTask;
 
     /// <summary>
     /// Either sends a command (a string containing anything except a carriage return or newline) to the primary launcher process,
@@ -99,13 +101,24 @@ public class LauncherMessaging
         return false;
     }
 
+    public void StartServerTask(LauncherCommands lc)
+    {
+        _serverTask = ServerTask(lc);
+    }
+
+    public void StopAndWait()
+    {
+        _pipeServerSelfDestruct.Cancel();
+        _serverTask?.Wait();
+    }
+
     /// <summary>
     /// This is the actual async server task, responsible for making everything else someone else's problem.
     /// This occurs post-Avalonia-init.
     /// </summary>
-    public async Task ServerTask(LauncherCommands lc)
+    private async Task ServerTask(LauncherCommands lc)
     {
-        var token = PipeServerSelfDestruct.Token;
+        var token = _pipeServerSelfDestruct.Token;
         // Handle initial commands before actually doing server stuff (as there may be no server).
         foreach (string s in _initialCommands)
         {
