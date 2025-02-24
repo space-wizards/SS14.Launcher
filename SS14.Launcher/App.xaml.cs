@@ -23,8 +23,6 @@ namespace SS14.Launcher;
 
 public class App : Application
 {
-    private static Task? _serverTask;
-
     private static readonly Dictionary<string, AssetDef> AssetDefs = new()
     {
         ["WindowIcon"] = new AssetDef("icon.ico", AssetType.WindowIcon),
@@ -153,7 +151,7 @@ public class App : Application
         var lc = new LauncherCommands(viewModel);
         lc.RunCommandTask();
         Locator.CurrentMutable.RegisterConstant(lc);
-        _serverTask = msgr.ServerTask(lc);
+        msgr.StartServerTask(lc);
 
         window.Show();
     }
@@ -161,9 +159,6 @@ public class App : Application
     private void OnExit(object? sender, ControlledApplicationLifetimeExitEventArgs e)
     {
         var msgr = Locator.Current.GetRequiredService<LauncherMessaging>();
-        msgr.PipeServerSelfDestruct.Cancel();
-
-        // Wait for pipe server to shut down cleanly.
-        _serverTask?.Wait();
+        msgr.StopAndWait();
     }
 }

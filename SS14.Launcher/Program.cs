@@ -119,10 +119,7 @@ internal static class Program
 
         try
         {
-            using (msgr.PipeServerSelfDestruct)
-            {
-                BuildAvaloniaApp(cfg).StartWithClassicDesktopLifetime(args);
-            }
+            BuildAvaloniaApp(cfg).StartWithClassicDesktopLifetime(args);
         }
         finally
         {
