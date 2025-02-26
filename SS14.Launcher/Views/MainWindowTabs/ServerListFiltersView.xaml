@@ -11,6 +11,12 @@
     <mainWindowTabs:ServerListFiltersViewModel />
   </Design.DataContext>
 
+  <UserControl.Styles>
+    <Style Selector=":is(Panel).ServerFilterGroup">
+      <Setter Property="Margin" Value="4" />
+    </Style>
+  </UserControl.Styles>
+
   <UserControl.Resources>
     <ItemsPanelTemplate x:Key="PanelTemplate">
       <WrapPanel />

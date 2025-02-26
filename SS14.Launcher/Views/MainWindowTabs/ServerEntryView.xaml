@@ -1,14 +1,14 @@
 <UserControl xmlns="https://github.com/avaloniaui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:mainWindowTabs="clr-namespace:SS14.Launcher.ViewModels.MainWindowTabs"
-             xmlns:models="clr-namespace:SS14.Launcher.Models"
-             xmlns:controls="clr-namespace:SS14.Launcher.Controls"
-             xmlns:views="clr-namespace:SS14.Launcher.Views"
-             xmlns:loc="clr-namespace:SS14.Launcher.Localization"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="SS14.Launcher.Views.MainWindowTabs.ServerEntryView">
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+  xmlns:mainWindowTabs="clr-namespace:SS14.Launcher.ViewModels.MainWindowTabs"
+  xmlns:models="clr-namespace:SS14.Launcher.Models"
+  xmlns:controls="clr-namespace:SS14.Launcher.Controls"
+  xmlns:views="clr-namespace:SS14.Launcher.Views"
+  xmlns:loc="clr-namespace:SS14.Launcher.Localization"
+  mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+  x:Class="SS14.Launcher.Views.MainWindowTabs.ServerEntryView">
   <Design.DataContext>
     <mainWindowTabs:ServerEntryViewModel />
   </Design.DataContext>
@@ -25,18 +25,24 @@
           </Grid.ColumnDefinitions>
 
           <Border Grid.Column="0" Classes="GridCell">
-            <TextBlock VerticalAlignment="Center" Text="{Binding Name}" TextTrimming="CharacterEllipsis"
-                       HorizontalAlignment="Left" />
+            <TextBlock VerticalAlignment="Center"
+              Text="{Binding Name}" TextTrimming="CharacterEllipsis"
+              HorizontalAlignment="Left" />
           </Border>
 
-          <Border Grid.Column="1" Classes="GridCell" Grid.ColumnSpan="2" IsVisible="{Binding !HaveData}">
-            <TextBlock Text="{Binding ServerStatusString}" />
+          <Border Grid.Column="1" Classes="GridCell" Grid.ColumnSpan="2"
+            IsVisible="{Binding !HaveData}">
+            <TextBlock Text="{Binding ServerStatusString}" TextAlignment="Left" Classes="Center" />
           </Border>
 
           <Border Grid.Column="1" Classes="GridCell" IsVisible="{Binding HaveData}">
             <Panel>
-              <controls:TimerTextCell Value="{Binding RoundStartTime}" IsVisible="{Binding RoundStatusString,Converter={x:Static StringConverters.IsNullOrEmpty}}" />
-              <TextBlock Text="{Binding RoundStatusString}" HorizontalAlignment="Right" IsVisible="{Binding RoundStatusString,Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
+              <controls:TimerTextCell Value="{Binding RoundStartTime}"
+                IsVisible="{Binding RoundStatusString,Converter={x:Static StringConverters.IsNullOrEmpty}}" />
+              <TextBlock Text="{Binding RoundStatusString}"
+                Classes="Center"
+                HorizontalAlignment="Right"
+                IsVisible="{Binding RoundStatusString,Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
             </Panel>
           </Border>
 
@@ -45,28 +51,30 @@
           </Border>
 
           <Border Grid.Column="3" Classes="GridCell">
-            <Button IsEnabled="{Binding IsOnline}" DockPanel.Dock="Right" Content="{loc:Loc server-entry-connect}"
-                    Command="{Binding ConnectPressed}" />
+            <Button IsEnabled="{Binding IsOnline}" DockPanel.Dock="Right"
+              Content="{loc:Loc server-entry-connect}"
+              Command="{Binding ConnectPressed}" />
           </Border>
         </Grid>
       </Expander.Header>
       <DockPanel Margin="4">
         <TextBlock DockPanel.Dock="Top"
-                   Name="Description" Margin="4,0,4,4"
-                   Text="{Binding Description}"
-                   TextWrapping="Wrap" />
+          Name="Description" Margin="4,0,4,4"
+          Text="{Binding Description}"
+          TextWrapping="Wrap" />
 
         <TextBlock DockPanel.Dock="Top"
-                   Margin="4,0,4,4"
-                   TextWrapping="Wrap"
-                   Foreground="{DynamicResource ThemeSubTextBrush}"
-                   Text="{Binding FetchedFrom}"
-                   IsVisible="{Binding ShowFetchedFrom}" />
+          Margin="4,0,4,4"
+          TextWrapping="Wrap"
+          Foreground="{DynamicResource ThemeSubTextBrush}"
+          Text="{Binding FetchedFrom}"
+          IsVisible="{Binding ShowFetchedFrom}" />
 
         <Control DockPanel.Dock="Top" Height="8" />
 
         <views:RowSideAlignedPanel>
-          <ItemsControl VerticalAlignment="Bottom" ItemsSource="{Binding CacheData.Links}" Name="Links">
+          <ItemsControl VerticalAlignment="Bottom" ItemsSource="{Binding CacheData.Links}"
+            Name="Links">
             <ItemsControl.ItemsPanel>
               <ItemsPanelTemplate>
                 <WrapPanel Orientation="Horizontal" />
@@ -82,14 +90,14 @@
           <DockPanel Dock="Right">
             <!-- Favorite add/remove button -->
             <Button Classes="OpenRight"
-                    Content="{Binding FavoriteButtonText}"
-                    Command="{Binding FavoriteButtonPressed}" />
+              Content="{Binding FavoriteButtonText}"
+              Command="{Binding FavoriteButtonPressed}" />
 
             <!-- Raise to top button. -->
             <Button IsVisible="{Binding ViewedInFavoritesPane}"
-                    Classes="OpenLeft"
-                    Content="{loc:Loc server-entry-raise}"
-                    Command="{Binding FavoriteRaiseButtonPressed}" />
+              Classes="OpenLeft"
+              Content="{loc:Loc server-entry-raise}"
+              Command="{Binding FavoriteRaiseButtonPressed}" />
           </DockPanel>
         </views:RowSideAlignedPanel>
       </DockPanel>
