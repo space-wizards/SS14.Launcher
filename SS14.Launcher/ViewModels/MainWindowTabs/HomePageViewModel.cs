@@ -55,6 +55,8 @@ public class HomePageViewModel : MainWindowTabViewModel
             });
 
         Favorites = favorites;
+
+        ReadOnlyCollection<ServerEntryViewModel> favoritesList = Favorites;
     }
 
     public ReadOnlyObservableCollection<ServerEntryViewModel> Favorites { get; }

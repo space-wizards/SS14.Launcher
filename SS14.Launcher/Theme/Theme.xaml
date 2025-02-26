@@ -65,34 +65,6 @@
     <Setter Property="FontSize" Value="20" />
   </Style>
 
-  <Style Selector="Border.GridCell">
-    <Setter Property="BorderBrush">
-      <SolidColorBrush Color="{DynamicResource ThemeListSeparatorColor}" />
-    </Setter>
-    <Setter Property="BorderThickness" Value="0,0,2,0" />
-    <Setter Property="Padding" Value="10 0" />
-    <Style Selector="^:nth-last-child(1)">
-      <!-- Disable divider line for the last column -->
-      <Setter Property="BorderThickness" Value="0" />
-    </Style>
-    <Style Selector="^ TextBlock">
-      <Setter Property="VerticalAlignment" Value="Center" />
-      <Setter Property="TextAlignment" Value="Center" />
-      <Setter Property="HorizontalAlignment" Value="Center" />
-    </Style>
-    <Style Selector="^ TextBlock.Numeric">
-      <Setter Property="FontFamily" Value="Mono" />
-      <Setter Property="TextAlignment" Value="Right" />
-      <Setter Property="HorizontalAlignment" Value="Right" />
-
-      <!--
-      This is to offset a bug with monospace fonts being rendered slightly off-center vertically
-      https://github.com/AvaloniaUI/Avalonia/issues/10658 (Bug is present as of Feb '25)
-      -->
-      <Setter Property="Margin" Value="0 3 0 0" />
-    </Style>
-  </Style>
-
   <Style Selector="ScrollBar">
     <Setter Property="Margin" Value="4 0 0 0" />
   </Style>
