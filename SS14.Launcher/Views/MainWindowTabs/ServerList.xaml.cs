@@ -26,22 +26,6 @@ public sealed partial class ServerList : TemplatedControl
         set => SetAndRaise(ShowHeaderProperty, ref _showHeader, value);
     }
 
-    public static readonly DirectProperty<ServerList, bool> ListTextVisibleProperty =
-        AvaloniaProperty.RegisterDirect<ServerList, bool>(
-            nameof(ListTextVisible),
-            o => o.ListTextVisible,
-            (o, v) => o.ListTextVisible = v
-        );
-
-    private bool _listTextVisible;
-
-    public bool ListTextVisible
-    {
-        get => _listTextVisible;
-        set => SetAndRaise(ListTextVisibleProperty, ref _listTextVisible, value);
-    }
-
-    // TODO No need for two properties for this, the nullable string should be enough
     public static readonly DirectProperty<ServerList, string?> ListTextProperty =
         AvaloniaProperty.RegisterDirect<ServerList, string?>(
             nameof(ListText),
@@ -51,6 +35,10 @@ public sealed partial class ServerList : TemplatedControl
 
     private string? _listText;
 
+    /// <summary>
+    /// Optional text which will be displayed in the server list area.
+    /// If null or empty no text will be added.
+    /// </summary>
     public string? ListText
     {
         get => _listText;

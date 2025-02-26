@@ -82,7 +82,7 @@
 
                 <Grid RowDefinitions="Auto,Auto,Auto">
                   <ItemsControl Grid.Column="0" Grid.Row="0" ItemsSource="{TemplateBinding List}" Classes="ServerList" />
-                  <TextBlock Grid.Column="0" Grid.Row="1" IsVisible="{TemplateBinding ListTextVisible}"
+                  <TextBlock Grid.Column="0" Grid.Row="1" IsVisible="{TemplateBinding ListText,Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
                              TextAlignment="Center"
                              VerticalAlignment="Center"
                              Text="{TemplateBinding ListText}" />
