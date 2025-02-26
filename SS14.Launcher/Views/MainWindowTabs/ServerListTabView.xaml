@@ -29,7 +29,6 @@
       <!-- Main server list table -->
       <mainWindowTabsViews:ServerList List="{Binding SearchedServers}"
                                   ListText="{Binding ListText}"
-                                  ListTextVisible="{Binding ListTextVisible}"
                                   SpinnerVisible="{Binding SpinnerVisible}"
                                   ShowHeader="True" />
 

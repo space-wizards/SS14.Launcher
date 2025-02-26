@@ -33,7 +33,6 @@ public class ServerListTabViewModel : MainWindowTabViewModel
         }
     }
 
-    public bool ListTextVisible => _serverListCache.Status != RefreshListStatus.Updated;
     public bool SpinnerVisible => _serverListCache.Status < RefreshListStatus.Updated;
 
     public string ListText
@@ -85,7 +84,6 @@ public class ServerListTabViewModel : MainWindowTabViewModel
             {
                 case nameof(ServerListCache.Status):
                     this.RaisePropertyChanged(nameof(ListText));
-                    this.RaisePropertyChanged(nameof(ListTextVisible));
                     this.RaisePropertyChanged(nameof(SpinnerVisible));
                     break;
             }
