@@ -75,17 +75,23 @@
             </Panel.Background>
             <ScrollViewer MinHeight="150" HorizontalScrollBarVisibility="Disabled"
                           VerticalScrollBarVisibility="Visible">
-              <Grid RowDefinitions="Auto,Auto,Auto">
-                <ItemsControl Grid.Column="0" Grid.Row="0" ItemsSource="{TemplateBinding List}" Classes="ServerList" />
-                <TextBlock Grid.Column="0" Grid.Row="1" IsVisible="{TemplateBinding ListTextVisible}"
-                           TextAlignment="Center"
-                           VerticalAlignment="Center"
-                           Text="{TemplateBinding ListText}" />
-                <Viewbox Grid.Column="0" Grid.Row="2" IsVisible="{TemplateBinding SpinnerVisible}"
-                         Classes="DungSpinnerBox">
-                  <views:DungSpinner />
-                </Viewbox>
-              </Grid>
+              <DockPanel LastChildFill="True">
+                <StackPanel DockPanel.Dock="Bottom" IsVisible="True">
+                  <ContentPresenter Content="{TemplateBinding Content}" HorizontalAlignment="Center" />
+                </StackPanel>
+
+                <Grid RowDefinitions="Auto,Auto,Auto">
+                  <ItemsControl Grid.Column="0" Grid.Row="0" ItemsSource="{TemplateBinding List}" Classes="ServerList" />
+                  <TextBlock Grid.Column="0" Grid.Row="1" IsVisible="{TemplateBinding ListTextVisible}"
+                             TextAlignment="Center"
+                             VerticalAlignment="Center"
+                             Text="{TemplateBinding ListText}" />
+                  <Viewbox Grid.Column="0" Grid.Row="2" IsVisible="{TemplateBinding SpinnerVisible}"
+                           Classes="DungSpinnerBox">
+                    <views:DungSpinner />
+                  </Viewbox>
+                </Grid>
+              </DockPanel>
             </ScrollViewer>
             <StackPanel Orientation="Vertical" VerticalAlignment="Center" />
           </Panel>
