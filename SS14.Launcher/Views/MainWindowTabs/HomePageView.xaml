@@ -12,7 +12,7 @@
     <mainWindowTabs:HomePageViewModel />
   </Design.DataContext>
 
-  <DockPanel Grid.IsSharedSizeScope="True">
+  <DockPanel>
     <!-- Account info -->
 
     <!-- Favorites -->
