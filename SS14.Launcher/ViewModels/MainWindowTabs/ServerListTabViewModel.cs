@@ -53,7 +53,6 @@ public class ServerListTabViewModel : MainWindowTabViewModel
                 case RefreshListStatus.Updated:
                 default:
                     if (SearchedServers.Count == 0 && _serverListCache.AllServers.Count != 0)
-                        // TODO: Actually make this show up or just remove it entirely
                         return _loc.GetString("tab-servers-list-status-none-filtered");
 
                     if (_serverListCache.AllServers.Count == 0)
@@ -136,6 +135,8 @@ public class ServerListTabViewModel : MainWindowTabViewModel
             var vm = new ServerEntryViewModel(_windowVm, server, _serverListCache, _windowVm.Cfg);
             SearchedServers.Add(vm);
         }
+
+        this.RaisePropertyChanged(nameof(ListText));
     }
 
     private bool DoesSearchMatch(ServerStatusData data)
