@@ -2,6 +2,8 @@ using System;
 using Avalonia;
 using Avalonia.Controls.Primitives;
 using System.Collections.Generic;
+using Avalonia.Controls;
+using Avalonia.Metadata;
 using Serilog;
 using SS14.Launcher.ViewModels.MainWindowTabs;
 
@@ -83,5 +85,19 @@ public sealed partial class ServerList : TemplatedControl
     {
         get => _serverList;
         set => SetAndRaise(ListProperty, ref _serverList, value);
+    }
+
+    public static readonly StyledProperty<object?> ContentProperty =
+        ContentControl.ContentProperty.AddOwner<ServerList>();
+
+    /// <summary>
+    /// If an optional content block is provided it will be
+    /// shown at the bottom of the server list.
+    /// </summary>
+    [Content]
+    public object? Content
+    {
+        get => GetValue(ContentProperty);
+        set => SetValue(ContentProperty, value);
     }
 }
