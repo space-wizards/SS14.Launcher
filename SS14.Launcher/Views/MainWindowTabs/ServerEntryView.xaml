@@ -25,18 +25,23 @@
           </Grid.ColumnDefinitions>
 
           <Border Grid.Column="0" Classes="GridCell">
-            <TextBlock VerticalAlignment="Center" Text="{Binding Name}" TextTrimming="CharacterEllipsis"
+            <TextBlock VerticalAlignment="Center"
+                       Text="{Binding Name}" TextTrimming="CharacterEllipsis"
                        HorizontalAlignment="Left" />
           </Border>
 
           <Border Grid.Column="1" Classes="GridCell" Grid.ColumnSpan="2" IsVisible="{Binding !HaveData}">
-            <TextBlock Text="{Binding ServerStatusString}" />
+            <TextBlock Text="{Binding ServerStatusString}" TextAlignment="Left" Classes="Center" />
           </Border>
 
           <Border Grid.Column="1" Classes="GridCell" IsVisible="{Binding HaveData}">
             <Panel>
-              <controls:TimerTextCell Value="{Binding RoundStartTime}" IsVisible="{Binding RoundStartTime,Converter={x:Static ObjectConverters.IsNotNull}}" />
-              <TextBlock Text="{Binding RoundStatusString}" HorizontalAlignment="Right" IsVisible="{Binding RoundStartTime,Converter={x:Static ObjectConverters.IsNull}}" />
+              <controls:TimerTextCell Value="{Binding RoundStartTime}"
+                                      IsVisible="{Binding RoundStartTime,Converter={x:Static ObjectConverters.IsNotNull}}" />
+              <TextBlock Text="{Binding RoundStatusString}"
+                         Classes="Center"
+                         HorizontalAlignment="Right"
+                         IsVisible="{Binding RoundStartTime,Converter={x:Static ObjectConverters.IsNull}}" />
             </Panel>
           </Border>
 
