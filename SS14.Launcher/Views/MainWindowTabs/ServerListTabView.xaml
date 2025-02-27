@@ -25,19 +25,24 @@
 
     <Panel DockPanel.Dock="Bottom" Classes="ScrollViewerSep" />
 
-    <Grid>
-      <!-- Main server list table -->
-      <mainWindowTabsViews:ServerList List="{Binding SearchedServers}"
-                                  ListText="{Binding ListText}"
-                                  SpinnerVisible="{Binding SpinnerVisible}"
-                                  ShowHeader="True" />
+    <DockPanel LastChildFill="True">
+      <!-- <StackPanel Orientation="Vertical"> -->
 
       <!-- Filters dialog -->
-      <Border Height="175" VerticalAlignment="Bottom" IsVisible="{Binding FiltersVisible}" BoxShadow="0 -2 4 Black">
+      <Border DockPanel.Dock="Bottom" Height="175" VerticalAlignment="Bottom" IsVisible="{Binding FiltersVisible}" BoxShadow="0 -2 4 Black">
         <Panel Background="{DynamicResource ThemeBackgroundBrush}">
           <mainWindowTabsViews:ServerListFiltersView DataContext="{Binding Filters}" />
         </Panel>
       </Border>
-    </Grid>
+
+
+      <!-- Main server list table -->
+      <mainWindowTabsViews:ServerList DockPanel.Dock="Top"  List="{Binding SearchedServers}"
+                                      ListText="{Binding ListText}"
+                                      SpinnerVisible="{Binding SpinnerVisible}"
+                                      ShowHeader="True" />
+
+      <!-- </StackPanel> -->
+    </DockPanel>
   </DockPanel>
 </UserControl>
