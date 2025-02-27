@@ -11,6 +11,12 @@
     <mainWindowTabs:ServerListTabViewModel />
   </Design.DataContext>
 
+  <UserControl.Styles>
+    <Style Selector=":is(mainWindowTabsViews|ServerList).filtersClosed">
+      <Setter Property="Grid.RowSpan" Value="3"></Setter>
+    </Style>
+  </UserControl.Styles>
+
   <DockPanel LastChildFill="True">
     <DockPanel DockPanel.Dock="Bottom" Margin="4 4 4 0">
       <Button DockPanel.Dock="Right" Content="{loc:Loc tab-servers-refresh}" Command="{Binding RefreshPressed}"
@@ -25,24 +31,34 @@
 
     <Panel DockPanel.Dock="Bottom" Classes="ScrollViewerSep" />
 
-    <DockPanel LastChildFill="True">
-      <!-- <StackPanel Orientation="Vertical"> -->
+    <Grid>
+      <Grid.RowDefinitions>
+        <RowDefinition Height="*" MinHeight="180" /> <!-- Server List -->
+        <RowDefinition Height="4" /> <!-- Grabber -->
+        <RowDefinition MinHeight="150" /> <!-- Filters Pane -->
+      </Grid.RowDefinitions>
+
+      <!-- Main server list table -->
+      <mainWindowTabsViews:ServerList Grid.Row="0" DockPanel.Dock="Top" List="{Binding SearchedServers}"
+                                      ListText="{Binding ListText}"
+                                      SpinnerVisible="{Binding SpinnerVisible}"
+                                      ShowHeader="True"
+                                      Classes.filtersClosed="{Binding !FiltersVisible}" />
+
+      <GridSplitter Grid.Row="1" BorderThickness="0"
+                    HorizontalAlignment="Stretch"
+                    ResizeDirection="Rows"
+                    IsVisible="{Binding FiltersVisible}">
+      </GridSplitter>
 
       <!-- Filters dialog -->
-      <Border DockPanel.Dock="Bottom" Height="175" VerticalAlignment="Bottom" IsVisible="{Binding FiltersVisible}" BoxShadow="0 -2 4 Black">
+      <Border Grid.Row="2" DockPanel.Dock="Bottom"
+              IsVisible="{Binding FiltersVisible}"
+              BoxShadow="0 -2 4 Black">
         <Panel Background="{DynamicResource ThemeBackgroundBrush}">
           <mainWindowTabsViews:ServerListFiltersView DataContext="{Binding Filters}" />
         </Panel>
       </Border>
-
-
-      <!-- Main server list table -->
-      <mainWindowTabsViews:ServerList DockPanel.Dock="Top"  List="{Binding SearchedServers}"
-                                      ListText="{Binding ListText}"
-                                      SpinnerVisible="{Binding SpinnerVisible}"
-                                      ShowHeader="True" />
-
-      <!-- </StackPanel> -->
-    </DockPanel>
+    </Grid>
   </DockPanel>
 </UserControl>
