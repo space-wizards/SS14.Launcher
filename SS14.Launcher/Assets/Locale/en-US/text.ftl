@@ -341,7 +341,7 @@ tab-options-disable-signing-desc = { "[" }DEV ONLY] Disables verification of eng
 tab-options-hub-settings = Hub Settings
 tab-options-hub-settings-desc = Change what hub server or servers you would like to use to fetch the server list.
 tab-options-os-protocol = Register/Unregister File extensions & URL protocol
-tab-options-os-protocol-desc = Register the launcher to your operating system, this will allow you to use ss14(s):// links and file extensions like .rtreplay.
+tab-options-os-protocol-desc = Register the launcher to your operating system, this will allow you to use ss14(s):// links on web browsers and file extensions like .rtreplay.
 
 tab-options-desc-incompatible = This option is incompatible with your platform and has been disabled.
 
@@ -357,3 +357,33 @@ language-selector-help-translate = Want to help translate? You can!
 language-selector-system-language = System language ({ $languageName })
 # Used for contents of each language button.
 language-selector-language = { $languageName } ({ $englishName })
+
+# Strings for the dialog box for protocol registration
+protocols-dialog-title = OS protocol registration
+protocols-dialog-content =
+    Would you like to allow the launcher to be able to open special links and files?
+
+    This will allow you to launch replay files by just double clicking them on your
+    computer, or allow you to join a server directly from your web browser.
+
+    You can disable this feature later on in options.
+protocols-dialog-confirm = For sure!
+protocols-dialog-deny = No Thanks
+protocols-dialog-error-title = OS protocol error
+protocols-dialog-error-windows =
+    It appears we were unable to register the launcher to Windows
+    Do you have administrator rights to this computer? Or deny the admin prompt?
+
+    Want to try again?
+protocols-dialog-error-macos-translocation =
+
+protocols-dialog-error-generic =
+    It appears we were unable to register the launcher to your operating system
+
+        Want to try again?
+protocols-dialog-error-os-not-supported =
+    We do not support automatic protocol setup for your operating system.
+    Currently only Windows, MacOS and Linux are supported
+
+    If you know how to set it up, we suggest making a pull request adding your operating system!
+protocols-dialog-error-again = Try again
