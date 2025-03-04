@@ -222,6 +222,7 @@ filters = Filters ({ $filteredServers } / { $totalServers })
 tab-servers-search-watermark = Search For Servers…
 tab-servers-table-players = Players
 tab-servers-table-name = Server Name
+tab-servers-table-round-time = Time
 tab-servers-list-status-error = There was an error fetching the master server lists.
 tab-servers-list-status-partial-error = Failed to fetch some or all server lists. Ensure your hub configuration is correct.
 tab-servers-list-status-updating-master = Fetching master server list…
@@ -274,11 +275,16 @@ server-entry-player-count =
         [0] ∞
        *[1] { $max }
     }
+server-entry-round-time = { $hours ->
+ [0] { $mins }M
+*[1] { $hours }H { $mins }M
+}
 server-entry-fetching = Fetching…
 server-entry-description-offline = Unable to contact server
 server-entry-description-fetching = Fetching server status…
 server-entry-description-error = Error while fetching server description
 server-entry-description-none = No server description provided
+server-entry-status-lobby = Lobby
 server-fetched-from-hub = Fetched from { $hub }
 server-entry-raise = Raise to top
 

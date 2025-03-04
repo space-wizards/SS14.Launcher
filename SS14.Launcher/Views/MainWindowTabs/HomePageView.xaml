@@ -38,11 +38,12 @@
       </Panel.Background>
       <ScrollViewer MinHeight="150" HorizontalScrollBarVisibility="Disabled">
         <Panel>
-          <DockPanel IsVisible="{Binding !FavoritesEmpty}" LastChildFill="True">
+          <DockPanel IsVisible="{Binding !FavoritesEmpty}" LastChildFill="True" Grid.IsSharedSizeScope="True">
             <StackPanel DockPanel.Dock="Bottom" IsVisible="True">
             <Button Content="{loc:Loc tab-home-go-to-servers-tab}" Command="{Binding MainWindowViewModel.SelectTabServers}"
                     HorizontalAlignment="Center" />
             </StackPanel>
+
             <ItemsControl ItemsSource="{Binding Favorites}"
                           Classes="ServerList" />
           </DockPanel>
