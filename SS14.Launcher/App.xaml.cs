@@ -43,16 +43,23 @@ public class App : Application
     {
         _overrideAssets = overrideAssets;
 
-        UrlsOpened += OnOSXUrlsOpened;
+        if (Current?.TryGetFeature<IActivatableLifetime>(out var lifetime) == true)
+        {
+            lifetime.Activated += OnOSXUrlsOpened;
+        }
     }
 
-    public void OnOSXUrlsOpened(object? sender, UrlOpenedEventArgs e)
+    private void OnOSXUrlsOpened(object? sender, ActivatedEventArgs e)
     {
-        // I think this only works on macOS anyway? Well i will leave this here just so I don't surprise myself later.
+        // I think this only works on macOS anyway? Well I will leave this here just so I don't surprise myself later.
         if (!OperatingSystem.IsMacOS())
             return;
 
-        Program.ParseCommandLineArgs(e.Urls, new LauncherMessaging());
+        var args = Environment.GetCommandLineArgs();
+        if (args.Length > 1)
+        {
+            Program.ParseCommandLineArgs(args[1..], new LauncherMessaging());
+        }
     }
 
     public override void Initialize()
