@@ -8,4 +8,4 @@ Name=Space Station 14
 Comment=Open source Multiplayer Disaster Simulator
 Categories=Game;
 Keywords=ss14;
-MimeType=x-scheme-handler/ss14s;x-scheme-handler/ss14;application/rtbundle;application/rtreplay;
+MimeType=x-scheme-handler/ss14s;x-scheme-handler/ss14;application/rtbundle;application/rtreplay;application/zip
