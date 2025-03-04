@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
@@ -160,7 +158,7 @@ public class App : Application
             GC.Collect();
         };
 
-        var lc = new LauncherCommands(viewModel);
+        var lc = new LauncherCommands(viewModel, window.StorageProvider);
         lc.RunCommandTask();
         Locator.CurrentMutable.RegisterConstant(lc);
         msgr.StartServerTask(lc);
