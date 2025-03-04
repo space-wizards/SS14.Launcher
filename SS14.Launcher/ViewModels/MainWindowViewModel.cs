@@ -280,4 +280,11 @@ public sealed class MainWindowViewModel : ViewModelBase, IErrorOverlayOwner
 
         ConnectingViewModel.StartContentBundle(this, file);
     }
+
+    public async Task OnWindowLoaded()
+    {
+    #if !DEBUG
+        await Protocol.ProtocolPopup(Control!, _cfg);
+    #endif
+    }
 }

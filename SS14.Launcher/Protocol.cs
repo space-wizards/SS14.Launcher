@@ -3,11 +3,16 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.Win32;
 using Serilog;
+using SS14.Launcher.Localization;
+using SS14.Launcher.Models.Data;
+using SS14.Launcher.Views;
 
 namespace SS14.Launcher;
 
-public static class Protocol
+public abstract class Protocol
 {
+    private readonly DataManager _cfg;
+
     public static bool CheckExisting()
     {
         var result = false;
@@ -159,5 +164,81 @@ public static class Protocol
         Log.Information("Successfully unregistered protocol");
 
         return Task.FromResult(true);
+    }
+
+    // UI popup stuff
+    public static async Task ProtocolPopup(MainWindow control, DataManager cfg)
+    {
+        if (!IsCandidateForProtocols(cfg))
+            return;
+
+        var dialog = new ConfirmDialog
+        {
+            Title = LocalizationManager.Instance.GetString("protocols-dialog-title"),
+            DialogContent = LocalizationManager.Instance.GetString("protocols-dialog-content"),
+            ConfirmButtonText = LocalizationManager.Instance.GetString("protocols-dialog-confirm"),
+            CancelButtonText = LocalizationManager.Instance.GetString("protocols-dialog-deny"),
+        };
+
+        var result = await dialog.ShowDialog<bool>(control);
+
+        if (result)
+        {
+            await RegisterProtocol();
+        }
+
+        // Myra got annoyed at the popup being disabled while she was developing it.
+        #if FULL_RELEASE
+        _cfg.SetCVar(CVars.HasSeenProtocolsDialog, true);
+        #endif
+    }
+
+    private static async Task ErrorPopup(MainWindow control)
+    {
+        string dialogContent;
+
+        dialogContent = LocalizationManager.Instance.GetString(OperatingSystem.IsWindows() ? "protocols-dialog-error-windows" : "protocols-dialog-error-generic");
+
+        var dialog = new ConfirmDialog
+        {
+            Title = LocalizationManager.Instance.GetString("protocols-dialog-error-title"),
+            DialogContent = dialogContent,
+            ConfirmButtonText = LocalizationManager.Instance.GetString("protocols-dialog-error-again"),
+            CancelButtonText = LocalizationManager.Instance.GetString("protocols-dialog-deny"),
+        };
+
+        var result = await dialog.ShowDialog<bool>(control);
+
+        if (result)
+        {
+            await RegisterProtocol();
+        }
+    }
+
+    private static bool IsCandidateForProtocols(DataManager cfg)
+    {
+        // They have been shown this dialog before, don't bother.
+        if (cfg.GetCVar(CVars.HasSeenProtocolsDialog))
+            return false;
+
+        // It already exists. Either cause of a reset config file or already installed by steam.
+        // Let's also set the cvar.
+        // todo remove
+#if FULL_RELEASE
+        if (CheckExisting())
+        {
+            cfg.SetCVar(CVars.HasSeenProtocolsDialog, true);
+
+
+            return false;
+        }
+#endif
+
+        // Check if the OS is compatible... im sorry freebsd users
+        if (!OperatingSystem.IsWindows() && !OperatingSystem.IsMacOS() && !OperatingSystem.IsLinux())
+            return false;
+
+        // We (hopefully) are ready!
+        return true;
     }
 }
