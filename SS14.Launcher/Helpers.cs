@@ -205,6 +205,7 @@ public static class Helpers
         }
     }
 
+    // Has two buttons, Confirm/Deny that returns true or false respectively
     public static async Task<bool> ConfirmDialogBuilder(MainWindow control, string title, string dialogContent, string confirmButtonText, string cancelButtonText)
     {
         var dialog = new ConfirmDialog
@@ -220,13 +221,14 @@ public static class Helpers
         return answer;
     }
 
-    public static async Task OkDialogBuilder(MainWindow control, string title, string DialogContent, string ConfirmButtonText)
+    // Only one button and no bool is returned.
+    public static async Task OkDialogBuilder(MainWindow control, string title, string dialogContent, string confirmButtonText)
     {
         var dialog = new OkDialog()
         {
             Title = LocalizationManager.Instance.GetString(title),
-            DialogContent = LocalizationManager.Instance.GetString(DialogContent),
-            ButtonText = LocalizationManager.Instance.GetString(ConfirmButtonText),
+            DialogContent = LocalizationManager.Instance.GetString(dialogContent),
+            ButtonText = LocalizationManager.Instance.GetString(confirmButtonText),
         };
 
         await dialog.ShowDialog<bool>(control);

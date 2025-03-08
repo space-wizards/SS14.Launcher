@@ -367,8 +367,13 @@ protocols-dialog-content =
     computer, or allow you to join a server directly from your web browser.
 
     You can disable this feature later on in options.
+protocols-dialog-content-success =
+    The launcher has been successfully registered to your operating system!
+
+    You can now use ss14(s):// links on web browsers and file extensions like .rtreplay
 protocols-dialog-confirm = For sure!
 protocols-dialog-deny = No Thanks
+protocols-dialog-ok = Yay
 protocols-dialog-error-title = OS protocol error
 protocols-dialog-error-windows-uac =
     It appears we were unable to register the launcher to Windows

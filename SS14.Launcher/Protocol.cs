@@ -156,6 +156,12 @@ public abstract class Protocol
     }
 
     // UI popup stuff
+    public static async Task OptionsManualPopup(MainWindow control)
+    {
+        var result = CheckExisting() ? await UnregisterProtocol() : await RegisterProtocol();
+        await HandleResult(result, control);
+    }
+
     public static async Task ProtocolSignupPopup(MainWindow control, DataManager cfg)
     {
         if (IsCandidateForProtocols(cfg))
@@ -169,42 +175,51 @@ public abstract class Protocol
 
         if (answer)
         {
-            retryPoint:
-
-            switch (await RegisterProtocol())
-            {
-                case ProtocolsResultCode.Success:
-                    break;
-                case ProtocolsResultCode.ErrorWindowsUac:
-                    var retryUac = await Helpers.ConfirmDialogBuilder(control,
-                        "protocols-dialog-error-title",
-                        "protocols-dialog-error-windows-uac",
-                        "protocols-dialog-error-again",
-                        "protocols-dialog-deny");
-                    if (retryUac)
-                        goto retryPoint;
-                    break;
-                case ProtocolsResultCode.ErrorMacOSTranslocation:
-                    await Helpers.OkDialogBuilder(control,
-                        "protocols-dialog-error-title",
-                        "protocols-dialog-error-macos-translocation",
-                        "protocols-dialog-error-ok");
-                    break;
-                case ProtocolsResultCode.ErrorUnknown:
-                    var retryUnknown = await Helpers.ConfirmDialogBuilder(control,
-                        "protocols-dialog-error-title",
-                        "protocols-dialog-error-generic",
-                        "protocols-dialog-error-again",
-                        "protocols-dialog-deny");
-                    if (retryUnknown)
-                        goto retryPoint;
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-        }
+            await HandleResult(await RegisterProtocol(), control);
         }
 
         cfg.SetCVar(CVars.HasSeenProtocolsDialog, true);
+    }
+
+    private static async Task HandleResult(ProtocolsResultCode result, MainWindow control)
+    {
+        retryPoint:
+
+        switch (result)
+        {
+            case ProtocolsResultCode.Success:
+                await Helpers.OkDialogBuilder(control,
+                    "protocols-dialog-title",
+                    "protocols-dialog-content-success",
+                    "protocols-dialog-ok");
+                break;
+            case ProtocolsResultCode.ErrorWindowsUac:
+                var retryUac = await Helpers.ConfirmDialogBuilder(control,
+                    "protocols-dialog-error-title",
+                    "protocols-dialog-error-windows-uac",
+                    "protocols-dialog-error-again",
+                    "protocols-dialog-deny");
+                if (retryUac)
+                    goto retryPoint;
+                break;
+            case ProtocolsResultCode.ErrorMacOSTranslocation:
+                await Helpers.OkDialogBuilder(control,
+                    "protocols-dialog-error-title",
+                    "protocols-dialog-error-macos-translocation",
+                    "protocols-dialog-error-ok");
+                break;
+            case ProtocolsResultCode.ErrorUnknown:
+                var retryUnknown = await Helpers.ConfirmDialogBuilder(control,
+                    "protocols-dialog-error-title",
+                    "protocols-dialog-error-generic",
+                    "protocols-dialog-error-again",
+                    "protocols-dialog-deny");
+                if (retryUnknown)
+                    goto retryPoint;
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
     }
 
     private static bool IsCandidateForProtocols(DataManager cfg)

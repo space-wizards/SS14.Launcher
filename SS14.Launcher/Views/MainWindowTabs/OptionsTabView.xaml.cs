@@ -49,14 +49,9 @@ public partial class OptionsTabView : UserControl
     {
         try
         {
-            if (Protocol.CheckExisting())
-            {
-                await Protocol.UnregisterProtocol();
-            }
-            else
-            {
-                await Protocol.RegisterProtocol();
-            }
+            var mainWindow = (MainWindow?)this.GetVisualRoot();
+            if (mainWindow != null)
+                await Protocol.OptionsManualPopup(mainWindow);
         }
         catch (Exception e)
         {
