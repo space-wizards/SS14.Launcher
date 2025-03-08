@@ -533,3 +533,10 @@ connecting-privacy-policy-text = Bu sunucuya bağlanmadan önce gizlilik politik
 connecting-privacy-policy-text-version-changed = Bu sunucu son oynadığınızdan beri gizlilik politikasını güncelledi. Bağlanmadan önce yeni halini kabul etmelisiniz.
 connecting-privacy-policy-accept = Kabul et (devam et)
 connecting-privacy-policy-decline = Reddet (bağlantıyı kes)
+tab-servers-table-round-time = Zaman
+server-entry-round-time =
+    { $hours ->
+        [0] { $mins }M
+       *[1] { $hours }H { $mins }M
+    }
+server-entry-status-lobby = Lobi
