@@ -10,7 +10,7 @@ namespace SS14.Launcher;
 
 public abstract class Protocol
 {
-    public static bool CheckExisting()
+    private static bool CheckExisting()
     {
         var result = false;
         if (OperatingSystem.IsWindows())
