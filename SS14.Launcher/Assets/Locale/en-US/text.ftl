@@ -371,8 +371,16 @@ protocols-dialog-content-success =
     The launcher has been successfully registered to your operating system!
 
     You can now use ss14(s):// links on web browsers and file extensions like .rtreplay
+protocols-dialog-content-action-question =
+    You are about to { $action } the operating system protocols from the Launcher
+
+    Do you want to continue?
+protocols-dialog-action-register = Register
+protocols-dialog-action-unregister = =Unregister
 protocols-dialog-confirm = For sure!
 protocols-dialog-deny = No Thanks
+protocols-dialog-continue = Yes, please continue
+protocols-dialog-back = Keep it as is
 protocols-dialog-ok = Yay
 protocols-dialog-error-title = OS protocol error
 protocols-dialog-error-windows-uac =

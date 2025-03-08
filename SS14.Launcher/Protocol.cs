@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.Win32;
 using Serilog;
+using SS14.Launcher.Localization;
 using SS14.Launcher.Models.Data;
 using SS14.Launcher.Views;
 
@@ -158,8 +159,24 @@ public abstract class Protocol
     // UI popup stuff
     public static async Task OptionsManualPopup(MainWindow control)
     {
-        var result = CheckExisting() ? await UnregisterProtocol() : await RegisterProtocol();
-        await HandleResult(result, control);
+        // Not using ConfirmDialogBuilder because I am not sure how to make it support variables or whatever they are named
+        var dialog = new ConfirmDialog
+        {
+            Title = LocalizationManager.Instance.GetString("protocols-dialog-title"),
+            DialogContent = LocalizationManager.Instance.GetString("protocols-dialog-content-action-question",
+                ("action", CheckExisting() ? LocalizationManager.Instance.GetString("protocols-dialog-action-register")
+                    : LocalizationManager.Instance.GetString("protocols-dialog-action-unregister"))),
+            ConfirmButtonText = LocalizationManager.Instance.GetString("protocols-dialog-continue"),
+            CancelButtonText = LocalizationManager.Instance.GetString("protocols-dialog-back"),
+        };
+
+        var question = await dialog.ShowDialog<bool>(control);
+
+        if (question)
+        {
+            var result = CheckExisting() ? await UnregisterProtocol() : await RegisterProtocol();
+            await HandleResult(result, control);
+        }
     }
 
     public static async Task ProtocolSignupPopup(MainWindow control, DataManager cfg)
