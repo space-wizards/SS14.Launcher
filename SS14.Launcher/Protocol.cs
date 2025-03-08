@@ -159,12 +159,14 @@ public abstract class Protocol
     // UI popup stuff
     public static async Task OptionsManualPopup(MainWindow control)
     {
+        var existing = CheckExisting();
+
         // Not using ConfirmDialogBuilder because I am not sure how to make it support variables or whatever they are named
         var dialog = new ConfirmDialog
         {
             Title = LocalizationManager.Instance.GetString("protocols-dialog-title"),
             DialogContent = LocalizationManager.Instance.GetString("protocols-dialog-content-action-question",
-                ("action", CheckExisting() ? LocalizationManager.Instance.GetString("protocols-dialog-action-register")
+                ("action", existing ? LocalizationManager.Instance.GetString("protocols-dialog-action-register")
                     : LocalizationManager.Instance.GetString("protocols-dialog-action-unregister"))),
             ConfirmButtonText = LocalizationManager.Instance.GetString("protocols-dialog-continue"),
             CancelButtonText = LocalizationManager.Instance.GetString("protocols-dialog-back"),
@@ -174,7 +176,7 @@ public abstract class Protocol
 
         if (question)
         {
-            var result = CheckExisting() ? await UnregisterProtocol() : await RegisterProtocol();
+            var result = existing ? await UnregisterProtocol() : await RegisterProtocol();
             await HandleResult(result, control);
         }
     }
