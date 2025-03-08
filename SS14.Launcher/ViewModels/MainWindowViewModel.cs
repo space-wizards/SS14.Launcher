@@ -284,7 +284,7 @@ public sealed class MainWindowViewModel : ViewModelBase, IErrorOverlayOwner
     public async Task OnWindowLoaded()
     {
     #if !DEBUG
-        await Protocol.ProtocolPopup(Control!, _cfg);
+        await Protocol.ProtocolSignupPopup(Control!, _cfg);
     #endif
     }
 }

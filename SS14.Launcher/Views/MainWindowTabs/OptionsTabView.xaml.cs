@@ -47,13 +47,20 @@ public partial class OptionsTabView : UserControl
 
     public async void OSProtocol(object? sender, RoutedEventArgs args)
     {
-        if (Protocol.CheckExisting())
+        try
         {
-            await Protocol.UnregisterProtocol();
+            if (Protocol.CheckExisting())
+            {
+                await Protocol.UnregisterProtocol();
+            }
+            else
+            {
+                await Protocol.RegisterProtocol();
+            }
         }
-        else
+        catch (Exception e)
         {
-            await Protocol.RegisterProtocol();
+            Log.Error(e, "Error while registering protocol");
         }
     }
 }

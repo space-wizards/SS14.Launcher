@@ -1,6 +1,4 @@
-﻿using System;
-using System.Reactive.Linq;
-using Avalonia.Controls;
+﻿using Avalonia.Controls;
 using Avalonia.Input;
 using ReactiveUI;
 
@@ -42,10 +40,5 @@ public partial class ConfirmDialog : Window
         }
 
         base.OnKeyDown(e);
-    }
-
-    internal static bool IsAddressValid(string address)
-    {
-        return !string.IsNullOrWhiteSpace(address) && UriHelper.TryParseSs14Uri(address, out _);
     }
 }

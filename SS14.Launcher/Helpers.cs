@@ -9,6 +9,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using Mono.Unix;
 using Serilog;
+using SS14.Launcher.Localization;
+using SS14.Launcher.Views;
 using TerraFX.Interop.Windows;
 using Win = TerraFX.Interop.Windows.Windows;
 
@@ -201,5 +203,32 @@ public static class Helpers
         {
             return Win.MessageBoxW(HWND.NULL, (ushort*)pText, (ushort*)pCaption, type);
         }
+    }
+
+    public static async Task<bool> ConfirmDialogBuilder(MainWindow control, string title, string dialogContent, string confirmButtonText, string cancelButtonText)
+    {
+        var dialog = new ConfirmDialog
+        {
+            Title = LocalizationManager.Instance.GetString(title),
+            DialogContent = LocalizationManager.Instance.GetString(dialogContent),
+            ConfirmButtonText = LocalizationManager.Instance.GetString(confirmButtonText),
+            CancelButtonText = LocalizationManager.Instance.GetString(cancelButtonText),
+        };
+
+        var answer = await dialog.ShowDialog<bool>(control);
+
+        return answer;
+    }
+
+    public static async Task OkDialogBuilder(MainWindow control, string title, string DialogContent, string ConfirmButtonText)
+    {
+        var dialog = new OkDialog()
+        {
+            Title = LocalizationManager.Instance.GetString(title),
+            DialogContent = LocalizationManager.Instance.GetString(DialogContent),
+            ButtonText = LocalizationManager.Instance.GetString(ConfirmButtonText),
+        };
+
+        await dialog.ShowDialog<bool>(control);
     }
 }

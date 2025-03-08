@@ -370,20 +370,27 @@ protocols-dialog-content =
 protocols-dialog-confirm = For sure!
 protocols-dialog-deny = No Thanks
 protocols-dialog-error-title = OS protocol error
-protocols-dialog-error-windows =
+protocols-dialog-error-windows-uac =
     It appears we were unable to register the launcher to Windows
     Do you have administrator rights to this computer? Or deny the admin prompt?
 
     Want to try again?
 protocols-dialog-error-macos-translocation =
+    It appears we were unable to register the launcher to MacOS
 
+    MacOS Gatekeeper sandboxing is currently active on the launcher, please move
+    the Space Station 14 Launcher into your Applications folder.
+protocols-dialog-error-linux-desktop-file-not-found =
+    It appears we were unable to register the launcher to Linux
+protocols-dialog-error-linux-xdg-mime =
+    It appears we were unable to register the launcher to Linux
 protocols-dialog-error-generic =
     It appears we were unable to register the launcher to your operating system
+    Either something went really wrong, or your OS is not supported
+    (Currently supported: Windows 10/11, MacOS, Linux)
+    If this continues, please contact our Discord, Github or forum to report
+    this Bug.
 
-        Want to try again?
-protocols-dialog-error-os-not-supported =
-    We do not support automatic protocol setup for your operating system.
-    Currently only Windows, MacOS and Linux are supported
-
-    If you know how to set it up, we suggest making a pull request adding your operating system!
+    Want to try again?
 protocols-dialog-error-again = Try again
+protocols-dialog-error-ok = Ok

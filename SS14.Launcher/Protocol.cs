@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.Win32;
 using Serilog;
-using SS14.Launcher.Localization;
 using SS14.Launcher.Models.Data;
 using SS14.Launcher.Views;
 
@@ -11,8 +10,6 @@ namespace SS14.Launcher;
 
 public abstract class Protocol
 {
-    private readonly DataManager _cfg;
-
     public static bool CheckExisting()
     {
         var result = false;
@@ -42,13 +39,13 @@ public abstract class Protocol
             proc.StartInfo.Arguments = "default x-scheme-handler/ss14;xdg-mime default x-scheme-handler/ss14";
             proc.Start();
             // https://stackoverflow.com/questions/206323/how-to-execute-command-line-in-c-get-std-out-results
-            string output = proc.StandardOutput.ReadToEnd();
+            var output = proc.StandardOutput.ReadToEnd();
             proc.WaitForExit();
         }
 
         return result;
     }
-    public static Task<bool> RegisterProtocol()
+    public static async Task<ProtocolsResultCode> RegisterProtocol()
     {
         // Windows registration
         if (OperatingSystem.IsWindows())
@@ -66,23 +63,19 @@ public abstract class Protocol
             {
                 // Do nothing, the user either declined UAC, they don't have administrator rights or something else went wrong.
                 Log.Warning("User declined UAC or doesn't have admin rights.");
-                return Task.FromResult(false);
+                return ProtocolsResultCode.ErrorWindowsUac;
             }
         }
         // macOS registration
         if (OperatingSystem.IsMacOS())
         {
-            // Yeah you cant get this to work on dev builds
-            #if !FULL_RELEASE
-            return Task.FromResult(false);
-            #endif
             var path = $"{AppDomain.CurrentDomain.BaseDirectory}";
 
             // User needs to move the app manually to get this sandbox restriction lifted. This can be done "automated" by making one of those installer dmg stuff
             if (path.Contains("AppTranslocation"))
             {
                 Log.Error("I have been put in apple jail (Gatekeeper path randomisation)... move me to your application folder");
-                return Task.FromResult(false);
+                return ProtocolsResultCode.ErrorMacOSTranslocation;
             }
 
             var newPath = string.Empty;
@@ -111,9 +104,9 @@ public abstract class Protocol
         }
 
         Log.Information("Successfully registered protocol");
-        return Task.FromResult(true);
+        return ProtocolsResultCode.Success;
     }
-    public static Task<bool> UnregisterProtocol()
+    public static async Task<ProtocolsResultCode> UnregisterProtocol()
     {
         // Windows unregistration
         if (OperatingSystem.IsWindows())
@@ -131,17 +124,13 @@ public abstract class Protocol
             {
                 // Do nothing, the user either declined UAC, they don't have administrator rights or something else went wrong.
                 Log.Warning("User declined UAC or doesn't have admin rights.");
-                return Task.FromResult(false);
+                return ProtocolsResultCode.ErrorWindowsUac;
             }
         }
         // macOS unregistration
         if (OperatingSystem.IsMacOS())
         {
             // This just... seems to do nothing. Its correct to my documentation...
-            #if !FULL_RELEASE
-            return Task.FromResult(false);
-            #endif
-            Log.Information("Unregistering protocol for macos...");
             var path = $"{AppDomain.CurrentDomain.BaseDirectory}";
 
             var newPath = string.Empty;
@@ -161,58 +150,61 @@ public abstract class Protocol
         {
             // todo ditto (2)
         }
-        Log.Information("Successfully unregistered protocol");
 
-        return Task.FromResult(true);
+        Log.Information("Successfully unregistered protocol");
+        return ProtocolsResultCode.Success;
     }
 
     // UI popup stuff
-    public static async Task ProtocolPopup(MainWindow control, DataManager cfg)
+    public static async Task ProtocolSignupPopup(MainWindow control, DataManager cfg)
     {
-        if (!IsCandidateForProtocols(cfg))
+        if (IsCandidateForProtocols(cfg))
             return;
 
-        var dialog = new ConfirmDialog
-        {
-            Title = LocalizationManager.Instance.GetString("protocols-dialog-title"),
-            DialogContent = LocalizationManager.Instance.GetString("protocols-dialog-content"),
-            ConfirmButtonText = LocalizationManager.Instance.GetString("protocols-dialog-confirm"),
-            CancelButtonText = LocalizationManager.Instance.GetString("protocols-dialog-deny"),
-        };
+        var answer = await Helpers.ConfirmDialogBuilder(control,
+            "protocols-dialog-title",
+            "protocols-dialog-content",
+            "protocols-dialog-confirm",
+            "protocols-dialog-deny");
 
-        var result = await dialog.ShowDialog<bool>(control);
-
-        if (result)
+        if (answer)
         {
-            await RegisterProtocol();
+            retryPoint:
+
+            switch (await RegisterProtocol())
+            {
+                case ProtocolsResultCode.Success:
+                    break;
+                case ProtocolsResultCode.ErrorWindowsUac:
+                    var retryUac = await Helpers.ConfirmDialogBuilder(control,
+                        "protocols-dialog-error-title",
+                        "protocols-dialog-error-windows-uac",
+                        "protocols-dialog-error-again",
+                        "protocols-dialog-deny");
+                    if (retryUac)
+                        goto retryPoint;
+                    break;
+                case ProtocolsResultCode.ErrorMacOSTranslocation:
+                    await Helpers.OkDialogBuilder(control,
+                        "protocols-dialog-error-title",
+                        "protocols-dialog-error-macos-translocation",
+                        "protocols-dialog-error-ok");
+                    break;
+                case ProtocolsResultCode.ErrorUnknown:
+                    var retryUnknown = await Helpers.ConfirmDialogBuilder(control,
+                        "protocols-dialog-error-title",
+                        "protocols-dialog-error-generic",
+                        "protocols-dialog-error-again",
+                        "protocols-dialog-deny");
+                    if (retryUnknown)
+                        goto retryPoint;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+        }
         }
 
-        // Myra got annoyed at the popup being disabled while she was developing it.
-        #if FULL_RELEASE
-        _cfg.SetCVar(CVars.HasSeenProtocolsDialog, true);
-        #endif
-    }
-
-    private static async Task ErrorPopup(MainWindow control)
-    {
-        string dialogContent;
-
-        dialogContent = LocalizationManager.Instance.GetString(OperatingSystem.IsWindows() ? "protocols-dialog-error-windows" : "protocols-dialog-error-generic");
-
-        var dialog = new ConfirmDialog
-        {
-            Title = LocalizationManager.Instance.GetString("protocols-dialog-error-title"),
-            DialogContent = dialogContent,
-            ConfirmButtonText = LocalizationManager.Instance.GetString("protocols-dialog-error-again"),
-            CancelButtonText = LocalizationManager.Instance.GetString("protocols-dialog-deny"),
-        };
-
-        var result = await dialog.ShowDialog<bool>(control);
-
-        if (result)
-        {
-            await RegisterProtocol();
-        }
+        cfg.SetCVar(CVars.HasSeenProtocolsDialog, true);
     }
 
     private static bool IsCandidateForProtocols(DataManager cfg)
@@ -223,16 +215,12 @@ public abstract class Protocol
 
         // It already exists. Either cause of a reset config file or already installed by steam.
         // Let's also set the cvar.
-        // todo remove
-#if FULL_RELEASE
         if (CheckExisting())
         {
             cfg.SetCVar(CVars.HasSeenProtocolsDialog, true);
 
-
             return false;
         }
-#endif
 
         // Check if the OS is compatible... im sorry freebsd users
         if (!OperatingSystem.IsWindows() && !OperatingSystem.IsMacOS() && !OperatingSystem.IsLinux())
@@ -240,5 +228,13 @@ public abstract class Protocol
 
         // We (hopefully) are ready!
         return true;
+    }
+
+    public enum ProtocolsResultCode : byte
+    {
+        Success =  0,
+        ErrorWindowsUac,
+        ErrorMacOSTranslocation,
+        ErrorUnknown,
     }
 }
