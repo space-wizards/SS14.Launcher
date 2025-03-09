@@ -394,11 +394,10 @@ protocols-dialog-error-macos-translocation =
     MacOS Gatekeeper sandboxing is currently active on the launcher, please move
     the Space Station 14 Launcher into your Applications folder.
 protocols-dialog-error-generic =
-    It appears we were unable to register the launcher to your operating system
-    look at the launcher log for further information.
+    It appears we were unable to register the launcher to your operating system.
 
     If this continues, please contact our Discord, Github or forum to report
-    this Bug.
+    this Bug. And provide a copy of your launcher log file.
 
     Want to try again?
 protocols-dialog-error-again = Try again
