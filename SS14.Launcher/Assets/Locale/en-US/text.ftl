@@ -371,6 +371,10 @@ protocols-dialog-content-success =
     The launcher has been successfully registered to your operating system!
 
     You can now use ss14(s):// links on web browsers and file extensions like .rtreplay
+protocols-dialog-content-update =
+    The launcher's special links/file extension registration seems to be out of date.
+
+    Want to update it?
 protocols-dialog-content-action-question =
     You are about to { $action } the operating system protocols for the Launcher
 

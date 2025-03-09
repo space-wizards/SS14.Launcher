@@ -11,16 +11,27 @@ namespace SS14.Launcher;
 
 public abstract class Protocol
 {
-    private static bool CheckExisting()
+    private static ProtocolsCheckResultCode CheckExisting()
     {
-        var result = false;
         if (OperatingSystem.IsWindows())
         {
             using var key1 = Registry.ClassesRoot.OpenSubKey("ss14s", false);
             using var key2 = Registry.ClassesRoot.OpenSubKey("ss14", false);
             using var key3 = Registry.ClassesRoot.OpenSubKey("RobustToolbox", false);
-            // no need to check the extension keys, they point to RobustToolbox
-            result = key1 != null && key2 != null && key3 != null;
+            using var key4 = Registry.ClassesRoot.OpenSubKey(".rtreplay", false);
+            using var key5 = Registry.ClassesRoot.OpenSubKey(".rtbundle", false);
+
+            if (key1 != null && key2 != null && key3 != null && key4 != null && key5 != null)
+            {
+                return ProtocolsCheckResultCode.Exists;
+            }
+
+            if (key1 == null && key2 == null && key3 == null && key4 == null && key5 == null)
+            {
+                return ProtocolsCheckResultCode.NonExistent;
+            }
+
+            return ProtocolsCheckResultCode.NeedsUpdate;
         }
 
         if (OperatingSystem.IsMacOS())
@@ -28,6 +39,7 @@ public abstract class Protocol
             // todo macos check existing protocol setup
             // I got no idea how to do this, lsregister does not report anything.
             // Lets just assume theres no record
+            return ProtocolsCheckResultCode.NonExistent;
         }
 
         if (OperatingSystem.IsLinux())
@@ -44,7 +56,7 @@ public abstract class Protocol
             proc.WaitForExit();
         }
 
-        return result;
+        return ProtocolsCheckResultCode.NonExistent;
     }
     public static async Task<ProtocolsResultCode> RegisterProtocol()
     {
@@ -187,7 +199,7 @@ public abstract class Protocol
     // UI popup stuff
     public static async Task OptionsManualPopup(MainWindow control)
     {
-        var existing = CheckExisting();
+        var existing = CheckExisting() != ProtocolsCheckResultCode.Exists;
 
         // Not using ConfirmDialogBuilder because I am not sure how to make it support variables or whatever they are named
         var dialog = new ConfirmDialog
@@ -211,7 +223,13 @@ public abstract class Protocol
 
     public static async Task ProtocolSignupPopup(MainWindow control, DataManager cfg)
     {
-        if (IsCandidateForProtocols(cfg))
+        if (CheckExisting() == ProtocolsCheckResultCode.NeedsUpdate)
+        {
+            await ProtocolUpdatePopup(control);
+            return;
+        }
+
+        if (!IsCandidateForProtocols(cfg))
             return;
 
         var answer = await Helpers.ConfirmDialogBuilder(control,
@@ -226,6 +244,20 @@ public abstract class Protocol
         }
 
         cfg.SetCVar(CVars.HasSeenProtocolsDialog, true);
+    }
+
+    private static async Task ProtocolUpdatePopup(MainWindow control)
+    {
+        var answer = await Helpers.ConfirmDialogBuilder(control,
+            "protocols-dialog-title",
+            "protocols-dialog-content-update",
+            "protocols-dialog-confirm",
+            "protocols-dialog-deny");
+
+        if (answer)
+        {
+            await HandleResult(await RegisterProtocol(), control);
+        }
     }
 
     private static async Task HandleResult(ProtocolsResultCode result, MainWindow control)
@@ -280,7 +312,7 @@ public abstract class Protocol
 
         // It already exists. Either cause of a reset config file or already installed by steam.
         // Let's also set the cvar.
-        if (CheckExisting())
+        if (CheckExisting() == ProtocolsCheckResultCode.Exists)
         {
             cfg.SetCVar(CVars.HasSeenProtocolsDialog, true);
 
@@ -300,6 +332,13 @@ public abstract class Protocol
         Success =  0,
         ErrorWindowsUac,
         ErrorMacOSTranslocation,
-        ErrorUnknown,
+        ErrorUnknown
+    }
+
+    public enum ProtocolsCheckResultCode : byte
+    {
+        Exists =  0,
+        NeedsUpdate,
+        NonExistent
     }
 }
