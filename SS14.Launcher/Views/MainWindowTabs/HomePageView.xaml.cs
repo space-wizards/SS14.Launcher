@@ -55,7 +55,7 @@ public partial class HomePageView : UserControl
                 new FilePickerFileType("Replay or content bundle files")
                 {
                     Patterns = ["*.zip", "*.rtbundle", "*.rtreplay"],
-                    MimeTypes = ["application/zip", "x-scheme-handler/ss14", "x-scheme-handler/ss14s"],
+                    MimeTypes = ["application/zip", "application/rtbundle", "application/rtreplay"],
                     // Retrived using "mdls -name kMDItemContentType file.zip/rtreplay/rtbundle"
                     // No I'm not tripping... THIS is apparently how macOS identifies our file extension. Check Avalonia docs.
                     AppleUniformTypeIdentifiers = ["public.zip-archive", "dyn.ah62d4rv4ge81e7dwqz2g22p3", "dyn.ah62d4rv4ge81e7dcsz1gk5df"]

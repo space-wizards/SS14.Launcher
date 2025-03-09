@@ -230,6 +230,9 @@ public abstract class Protocol
 
     private static async Task HandleResult(ProtocolsResultCode result, MainWindow control)
     {
+        // Lord, spare me for I have sinned.
+        // The goto is evil, yet the alternative is worse (in my opinion).
+        // Judge me not for the sin, but for the necessity. amen.
         retryPoint:
 
         switch (result)
