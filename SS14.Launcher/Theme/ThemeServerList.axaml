@@ -1,10 +1,102 @@
-<Styles xmlns="https://github.com/avaloniaui">
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:loc="clr-namespace:SS14.Launcher.Localization"
+        xmlns:views="using:SS14.Launcher.Views"
+        xmlns:mwt="using:SS14.Launcher.Views.MainWindowTabs">
   <Style Selector="ItemsControl.ServerList > ContentPresenter:nth-child(2n)">
     <Setter Property="Background">
       <SolidColorBrush Color="#262626" />
     </Setter>
   </Style>
-  <Style Selector=":is(Panel).ServerFilterGroup">
-    <Setter Property="Margin" Value="4" />
+
+  <Style Selector="Border.GridCell">
+    <Setter Property="BorderBrush">
+      <SolidColorBrush Color="{DynamicResource ThemeListSeparatorColor}" />
+    </Setter>
+    <Setter Property="BorderThickness" Value="0,0,2,0" />
+    <Setter Property="Padding" Value="10 0" />
+    <Style Selector="^:nth-last-child(1)">
+      <!-- Disable divider line for the last column -->
+      <Setter Property="BorderThickness" Value="0" />
+    </Style>
+    <Style Selector="^ TextBlock">
+      <Setter Property="TextAlignment" Value="Left" />
+      <Setter Property="HorizontalAlignment" Value="Left" />
+      <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+    <Style Selector="^ TextBlock.Center">
+      <Setter Property="TextAlignment" Value="Center" />
+      <Setter Property="HorizontalAlignment" Value="Center" />
+    </Style>
+    <Style Selector="^ TextBlock.Numeric">
+      <Setter Property="FontFamily" Value="Mono" />
+      <Setter Property="TextAlignment" Value="Right" />
+      <Setter Property="HorizontalAlignment" Value="Right" />
+
+      <!--
+      This is to offset a bug with monospace fonts being rendered slightly off-center vertically
+      https://github.com/AvaloniaUI/Avalonia/issues/10658 (Bug is present as of Feb '25)
+      -->
+      <Setter Property="Margin" Value="0 3 0 0" />
+    </Style>
+  </Style>
+
+  <Style Selector="mwt|ServerList">
+    <Setter Property="Template">
+      <ControlTemplate>
+        <DockPanel ZIndex="-1" Grid.IsSharedSizeScope="True">
+          <Grid DockPanel.Dock="Top" Margin="24 0 24 0" IsVisible="{TemplateBinding ShowHeader}">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="*" /> <!-- Server Name -->
+              <ColumnDefinition SharedSizeGroup="TimeCol" MinWidth="80" Width="Auto" />
+              <ColumnDefinition SharedSizeGroup="StatusCol" MinWidth="80" Width="Auto" />
+              <ColumnDefinition SharedSizeGroup="ConnectCol" Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <Border Grid.Column="0" Classes="GridCell">
+              <TextBlock Text="{loc:Loc tab-servers-table-name}" Classes="SubText" />
+            </Border>
+            <Border Grid.Column="1" Classes="GridCell">
+              <TextBlock Text="{loc:Loc tab-servers-table-round-time}" Classes="SubText Center" />
+            </Border>
+            <Border Grid.Column="2" Classes="GridCell">
+              <TextBlock Text="{loc:Loc tab-servers-table-players}" Classes="SubText Center" />
+            </Border>
+            <Border Grid.Column="3" Classes="GridCell">
+              <TextBlock Text="" Classes="SubText Center" />
+            </Border>
+          </Grid>
+
+          <Panel DockPanel.Dock="Top" Classes="ScrollViewerSep" IsVisible="{TemplateBinding ShowHeader}" />
+
+          <Panel>
+            <Panel.Background>
+              <SolidColorBrush Color="#1e1e22" />
+            </Panel.Background>
+            <ScrollViewer MinHeight="150" HorizontalScrollBarVisibility="Disabled"
+                          VerticalScrollBarVisibility="Visible">
+              <DockPanel LastChildFill="True">
+                <StackPanel DockPanel.Dock="Bottom" IsVisible="True">
+                  <ContentPresenter Content="{TemplateBinding Content}" HorizontalAlignment="Center" />
+                </StackPanel>
+
+                <Grid RowDefinitions="Auto,Auto,Auto">
+                  <ItemsControl Grid.Column="0" Grid.Row="0" ItemsSource="{TemplateBinding List}" Classes="ServerList" />
+                  <TextBlock Grid.Column="0" Grid.Row="1" IsVisible="{TemplateBinding ListText,Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+                             TextAlignment="Center"
+                             VerticalAlignment="Center"
+                             Text="{TemplateBinding ListText}" />
+                  <Viewbox Grid.Column="0" Grid.Row="2" IsVisible="{TemplateBinding SpinnerVisible}"
+                           Classes="DungSpinnerBox">
+                    <views:DungSpinner />
+                  </Viewbox>
+                </Grid>
+              </DockPanel>
+            </ScrollViewer>
+            <StackPanel Orientation="Vertical" VerticalAlignment="Center" />
+          </Panel>
+        </DockPanel>
+      </ControlTemplate>
+    </Setter>
   </Style>
 </Styles>
