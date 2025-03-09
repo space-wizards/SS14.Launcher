@@ -48,60 +48,75 @@ public abstract class Protocol
     }
     public static async Task<ProtocolsResultCode> RegisterProtocol()
     {
-        // Windows registration
-        if (OperatingSystem.IsWindows())
+        try
         {
-            try
+            // Windows registration
+            if (OperatingSystem.IsWindows())
             {
+                try
+                {
+                    var proc = new Process();
+                    proc.StartInfo.FileName = "Space Station 14 Launcher.exe";
+                    proc.StartInfo.Arguments = "--register-protocol";
+                    proc.StartInfo.UseShellExecute = true;
+                    proc.StartInfo.Verb = "runas";
+                    proc.Start();
+                    await proc.WaitForExitAsync();
+                }
+                catch (System.ComponentModel.Win32Exception)
+                {
+                    // Do nothing, the user either declined UAC, they don't have administrator rights or something else went wrong.
+                    Log.Warning("User declined UAC or doesn't have admin rights.");
+                    return ProtocolsResultCode.ErrorWindowsUac;
+                }
+            }
+
+            // macOS registration
+            if (OperatingSystem.IsMacOS())
+            {
+                var path = $"{AppDomain.CurrentDomain.BaseDirectory}";
+
+                // User needs to move the app manually to get this sandbox restriction lifted. This can be done "automated" by making one of those installer dmg stuff
+                if (path.Contains("AppTranslocation"))
+                {
+                    Log.Error(
+                        "I have been put in apple jail (Gatekeeper path randomisation)... move me to your application folder");
+                    return ProtocolsResultCode.ErrorMacOSTranslocation;
+                }
+
+                var newPath = string.Empty;
+                var appIndex = path.IndexOf(".app", StringComparison.Ordinal);
+                if (appIndex >= 0)
+                {
+                    newPath = path.Substring(0, appIndex + 4);
+                }
+
                 var proc = new Process();
-                proc.StartInfo.FileName = "Space Station 14 Launcher.exe";
-                proc.StartInfo.Arguments = "--register-protocol";
-                proc.StartInfo.UseShellExecute = true;
-                proc.StartInfo.Verb = "runas";
+                // Yes you have to manually go to this
+                proc.StartInfo.FileName =
+                    "/System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/LaunchServices.framework/Versions/A/Support/lsregister";
+                proc.StartInfo.Arguments = $"-R -f {newPath}";
+                proc.Start();
+                await proc.WaitForExitAsync();
+            }
+
+            // Linux registration
+            if (OperatingSystem.IsLinux())
+            {
+                var desktopfile = "";
+
+                // todo ditto (2)
+                var proc = new Process();
+                proc.StartInfo.FileName = "xdg-mime";
+                proc.StartInfo.Arguments =
+                    $"default {desktopfile} x-scheme-handler/ss14;xdg-mime default SS14.desktop x-scheme-handler/ss14s";
                 proc.Start();
             }
-            catch (System.ComponentModel.Win32Exception)
-            {
-                // Do nothing, the user either declined UAC, they don't have administrator rights or something else went wrong.
-                Log.Warning("User declined UAC or doesn't have admin rights.");
-                return ProtocolsResultCode.ErrorWindowsUac;
-            }
         }
-        // macOS registration
-        if (OperatingSystem.IsMacOS())
+        catch (Exception ex)
         {
-            var path = $"{AppDomain.CurrentDomain.BaseDirectory}";
-
-            // User needs to move the app manually to get this sandbox restriction lifted. This can be done "automated" by making one of those installer dmg stuff
-            if (path.Contains("AppTranslocation"))
-            {
-                Log.Error("I have been put in apple jail (Gatekeeper path randomisation)... move me to your application folder");
-                return ProtocolsResultCode.ErrorMacOSTranslocation;
-            }
-
-            var newPath = string.Empty;
-            var appIndex = path.IndexOf(".app", StringComparison.Ordinal);
-            if (appIndex >= 0)
-            {
-                newPath = path.Substring(0, appIndex + 4);
-            }
-
-            var proc = new Process();
-            // Yes you have to manually go to this
-            proc.StartInfo.FileName = "/System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/LaunchServices.framework/Versions/A/Support/lsregister";
-            proc.StartInfo.Arguments = $"-R -f {newPath}";
-            proc.Start();
-        }
-        // Linux registration
-        if (OperatingSystem.IsLinux())
-        {
-            var desktopfile = "";
-
-            // todo ditto (2)
-            var proc = new Process();
-            proc.StartInfo.FileName = "xdg-mime";
-            proc.StartInfo.Arguments = $"default {desktopfile} x-scheme-handler/ss14;xdg-mime default SS14.desktop x-scheme-handler/ss14s";
-            proc.Start();
+            Log.Error(ex, "Failed to register protocol, and we did not catch it");
+            return ProtocolsResultCode.ErrorUnknown;
         }
 
         Log.Information("Successfully registered protocol");
@@ -109,47 +124,60 @@ public abstract class Protocol
     }
     public static async Task<ProtocolsResultCode> UnregisterProtocol()
     {
-        // Windows unregistration
-        if (OperatingSystem.IsWindows())
+        try
         {
-            try
+            // Windows unregistration
+            if (OperatingSystem.IsWindows())
             {
+                try
+                {
+                    var proc = new Process();
+                    proc.StartInfo.FileName = "Space Station 14 Launcher.exe";
+                    proc.StartInfo.Arguments = "--unregister-protocol";
+                    proc.StartInfo.UseShellExecute = true;
+                    proc.StartInfo.Verb = "runas";
+                    proc.Start();
+                    await proc.WaitForExitAsync();
+                }
+                catch (System.ComponentModel.Win32Exception)
+                {
+                    // Do nothing, the user either declined UAC, they don't have administrator rights or something else went wrong.
+                    Log.Warning("User declined UAC or doesn't have admin rights.");
+                    return ProtocolsResultCode.ErrorWindowsUac;
+                }
+            }
+
+            // macOS unregistration
+            if (OperatingSystem.IsMacOS())
+            {
+                // This just... seems to do nothing. Its correct to my documentation...
+                var path = $"{AppDomain.CurrentDomain.BaseDirectory}";
+
+                var newPath = string.Empty;
+                var appIndex = path.IndexOf(".app", StringComparison.Ordinal);
+                if (appIndex >= 0)
+                {
+                    newPath = path.Substring(0, appIndex + 4);
+                }
+
                 var proc = new Process();
-                proc.StartInfo.FileName = "Space Station 14 Launcher.exe";
-                proc.StartInfo.Arguments = "--unregister-protocol";
-                proc.StartInfo.UseShellExecute = true;
-                proc.StartInfo.Verb = "runas";
+                proc.StartInfo.FileName =
+                    "/System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/LaunchServices.framework/Versions/A/Support/lsregister";
+                proc.StartInfo.Arguments = $"-R -f -u {newPath}";
                 proc.Start();
-            }
-            catch (System.ComponentModel.Win32Exception)
-            {
-                // Do nothing, the user either declined UAC, they don't have administrator rights or something else went wrong.
-                Log.Warning("User declined UAC or doesn't have admin rights.");
-                return ProtocolsResultCode.ErrorWindowsUac;
-            }
-        }
-        // macOS unregistration
-        if (OperatingSystem.IsMacOS())
-        {
-            // This just... seems to do nothing. Its correct to my documentation...
-            var path = $"{AppDomain.CurrentDomain.BaseDirectory}";
-
-            var newPath = string.Empty;
-            var appIndex = path.IndexOf(".app", StringComparison.Ordinal);
-            if (appIndex >= 0)
-            {
-                newPath = path.Substring(0, appIndex + 4);
+                await proc.WaitForExitAsync();
             }
 
-            var proc = new Process();
-            proc.StartInfo.FileName = "/System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/LaunchServices.framework/Versions/A/Support/lsregister";
-            proc.StartInfo.Arguments = $"-R -f -u {newPath}";
-            proc.Start();
+            // Linux unregistration
+            if (OperatingSystem.IsLinux())
+            {
+                // todo ditto (2)
+            }
         }
-        // Linux unregistration
-        if (OperatingSystem.IsLinux())
+        catch (Exception ex)
         {
-            // todo ditto (2)
+            Log.Error(ex, "Failed to unregister protocol, and we did not catch it");
+            return ProtocolsResultCode.ErrorUnknown;
         }
 
         Log.Information("Successfully unregistered protocol");

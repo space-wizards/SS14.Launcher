@@ -372,11 +372,11 @@ protocols-dialog-content-success =
 
     You can now use ss14(s):// links on web browsers and file extensions like .rtreplay
 protocols-dialog-content-action-question =
-    You are about to { $action } the operating system protocols from the Launcher
+    You are about to { $action } the operating system protocols for the Launcher
 
     Do you want to continue?
 protocols-dialog-action-register = Register
-protocols-dialog-action-unregister = =Unregister
+protocols-dialog-action-unregister = Unregister
 protocols-dialog-confirm = For sure!
 protocols-dialog-deny = No Thanks
 protocols-dialog-continue = Yes, please continue
@@ -393,14 +393,10 @@ protocols-dialog-error-macos-translocation =
 
     MacOS Gatekeeper sandboxing is currently active on the launcher, please move
     the Space Station 14 Launcher into your Applications folder.
-protocols-dialog-error-linux-desktop-file-not-found =
-    It appears we were unable to register the launcher to Linux
-protocols-dialog-error-linux-xdg-mime =
-    It appears we were unable to register the launcher to Linux
 protocols-dialog-error-generic =
     It appears we were unable to register the launcher to your operating system
-    Either something went really wrong, or your OS is not supported
-    (Currently supported: Windows 10/11, MacOS, Linux)
+    look at the launcher log for further information.
+
     If this continues, please contact our Discord, Github or forum to report
     this Bug.
 
