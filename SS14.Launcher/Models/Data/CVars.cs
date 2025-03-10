@@ -114,6 +114,16 @@ public static class CVars
     /// Language the user selected. Null means it should be automatically selected based on system language.
     /// </summary>
     public static readonly CVarDef<string?> Language = CVarDef.Create<string?>("Language", null);
+
+    /// <summary>
+    /// Weather the proxy is enabled for HappyEyeballsHttp connections (ie auth server/build server/hub connections, not game server connections)
+    /// </summary>
+    public static readonly CVarDef<bool> ProxyEnable = CVarDef.Create("ProxyEnable", false);
+
+    /// <summary>
+    /// Url for proxy connections.
+    /// </summary>
+    public static readonly CVarDef<string> ProxyURL = CVarDef.Create("ProxyURL", "");
 }
 
 /// <summary>

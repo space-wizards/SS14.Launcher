@@ -9,7 +9,6 @@ using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
 using Serilog;
-
 namespace SS14.Launcher;
 
 public static class HappyEyeballsHttp
@@ -39,8 +38,9 @@ public static class HappyEyeballsHttp
     // * Look I wanted to keep this simple OK?
     //   We don't do any fancy shit like statefulness or incremental sorting
     //   or incremental DNS updates who cares about that.
-    public static HttpClient CreateHttpClient(bool autoRedirect = true)
+    public static HttpClient CreateHttpClient(bool autoRedirect = true, string proxyUrl = "")
     {
+        // Log.Verbose("PROXY_URL: ", proxyUrl);
         var handler = new SocketsHttpHandler
         {
             ConnectCallback = OnConnect,
@@ -48,6 +48,20 @@ public static class HappyEyeballsHttp
             AllowAutoRedirect = autoRedirect,
             // PooledConnectionLifetime = TimeSpan.FromSeconds(1)
         };
+        if (!String.IsNullOrEmpty(proxyUrl)){ //Note: I'm VERY new to writing c#. This is heavily copied from koksnull's work in https://github.com/space-wizards/SS14.Launcher/pull/144 . I've just made some adjustments to make it work for the modern versions of .net 
+            //I'm unsure of how to go about this, but having some way to sanity check the proxy before activating it (i.e. a test ping) would be great.
+            Uri proxyURI = new Uri(proxyUrl.Trim('"'));
+            WebProxy clientProxy = new WebProxy(proxyUrl.Trim('"'));
+            if (!string.IsNullOrWhiteSpace(proxyURI.UserInfo)){
+                string[] credentials = proxyURI.UserInfo.Split(new[] { ':' });
+                if (credentials.Length > 1){
+                    NetworkCredential cred = new NetworkCredential(userName: credentials[0], password: credentials[1]);
+                    clientProxy.Credentials = cred;
+                }
+            }
+            handler.UseProxy = true;
+            handler.Proxy = clientProxy;
+        }
 
         return new HttpClient(handler);
     }
