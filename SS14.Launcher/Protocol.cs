@@ -216,8 +216,7 @@ public abstract class Protocol
 
         if (question)
         {
-            var result = existing ? await UnregisterProtocol() : await RegisterProtocol();
-            await HandleResult(result, control);
+            await HandleResult(control);
         }
     }
 
@@ -240,7 +239,7 @@ public abstract class Protocol
 
         if (answer)
         {
-            await HandleResult(await RegisterProtocol(), control);
+            await HandleResult(control);
         }
 
         cfg.SetCVar(CVars.HasSeenProtocolsDialog, true);
@@ -256,18 +255,20 @@ public abstract class Protocol
 
         if (answer)
         {
-            await HandleResult(await RegisterProtocol(), control);
+            await HandleResult(control);
         }
     }
 
-    private static async Task HandleResult(ProtocolsResultCode result, MainWindow control)
+    private static async Task HandleResult(MainWindow control)
     {
         // Lord, spare me for I have sinned.
         // The goto is evil, yet the alternative is worse (in my opinion).
         // Judge me not for the sin, but for the necessity. amen.
         retryPoint:
 
-        switch (result)
+        var action = CheckExisting() == ProtocolsCheckResultCode.Exists ? await UnregisterProtocol() : await RegisterProtocol();
+
+        switch (action)
         {
             case ProtocolsResultCode.Success:
                 await Helpers.OkDialogBuilder(control,
