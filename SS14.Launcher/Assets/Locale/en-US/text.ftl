@@ -28,8 +28,7 @@ connecting-status-update-error =
     - Try connecting to another game server to see if the problem persists.
     - Try disabling or enabling any connection tampering software such as VPN's
 
-    If you are still having issues, we suggest first contacting the server you are attempting to join
-    before asking for support on the Official Space Station 14 Discord or Forums.
+    If you are still having issues, we suggest first contacting the server you are attempting to join before asking for support on the Official Space Station 14 Discord or Forums.
 
     Technical error: { $err }
 connecting-status-updating = Updating: { $status }
