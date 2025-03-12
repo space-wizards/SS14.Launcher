@@ -339,7 +339,7 @@ tab-options-disable-signing-desc = { "[" }DEV ONLY] Disables verification of eng
 tab-options-hub-settings = Hub Settings
 tab-options-hub-settings-desc = Change what hub server or servers you would like to use to fetch the server list.
 tab-options-desc-incompatible = This option is incompatible with your platform and has been disabled.
-tab-options-desc-proxy-adress = Proxy information for connect to hub and auth center. (requires launcher restart)
+tab-options-desc-proxy-address = Proxy information for connecting to the server hub and authentication services. Supports http, https and socks5 proxies (requires launcher restart)
 tab-options-desc-proxy-enable = Enable Proxy
 tab-options-desc-proxy-tooltip = Supports http, https, and socks5 proxies. For socks5, replace https:// with socks5://
 ## For the language selection menu.
