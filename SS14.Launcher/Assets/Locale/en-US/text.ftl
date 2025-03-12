@@ -53,6 +53,12 @@ connecting-update-status-loading-into-db = Storing assets in database…
 connecting-update-status-loading-content-bundle = Loading content bundle…
 connecting-update-status-unknown = You shouldn't see this
 
+connecting-privacy-policy-text = This server requires that you accept its privacy policy before connecting.
+connecting-privacy-policy-text-version-changed = This server has updated its privacy policy since the last time you played. You must accept the new version before connecting.
+connecting-privacy-policy-view = View privacy policy
+connecting-privacy-policy-accept = Accept (continue)
+connecting-privacy-policy-decline = Decline (disconnect)
+
 ## Strings for the "direct connect" dialog window.
 
 direct-connect-title = Direct Connect…
@@ -224,6 +230,7 @@ filters = Filters ({ $filteredServers } / { $totalServers })
 tab-servers-search-watermark = Search For Servers…
 tab-servers-table-players = Players
 tab-servers-table-name = Server Name
+tab-servers-table-round-time = Time
 tab-servers-list-status-error = There was an error fetching the master server lists.
 tab-servers-list-status-partial-error = Failed to fetch some or all server lists. Ensure your hub configuration is correct.
 tab-servers-list-status-updating-master = Fetching master server list…
@@ -276,11 +283,16 @@ server-entry-player-count =
         [0] ∞
        *[1] { $max }
     }
+server-entry-round-time = { $hours ->
+ [0] { $mins }M
+*[1] { $hours }H { $mins }M
+}
 server-entry-fetching = Fetching…
 server-entry-description-offline = Unable to contact server
 server-entry-description-fetching = Fetching server status…
 server-entry-description-error = Error while fetching server description
 server-entry-description-none = No server description provided
+server-entry-status-lobby = Lobby
 server-fetched-from-hub = Fetched from { $hub }
 server-entry-raise = Raise to top
 

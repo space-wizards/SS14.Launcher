@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel;
 
 namespace SS14.Launcher.Models.ServerStatus;
@@ -25,4 +26,8 @@ public interface IServerStatusData : INotifyPropertyChanged
     int PlayerCount { get; set; }
 
     int SoftMaxPlayerCount { get; set; }
+
+    DateTime? RoundStartTime { get; set; }
+
+    GameRoundStatus RoundStatus { get; set; }
 }

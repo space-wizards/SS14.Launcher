@@ -424,7 +424,7 @@ tab-home-direct-connect = Verbind direct met server…
 # Strings for the "options" tab
 tab-options-clear-content = Wis geïnstalleerde serverinhoud
 # Strings for the "options" tab
-tab-options-compatibility-mode-desc = Dit gebruikt OpenGL ES 3 (via ANGLE indien nodig), wat minder kans heeft op driverbugs. Probeer dit als je grafische problemen of crashes hebt.
+tab-options-compatibility-mode-desc = Dit zorgt dat het spel een ander grafisch systeem gebruikt, wat minder kans heeft op driverbugs. Probeer dit als je grafische problemen of crashes hebt.
 # Strings for the "options" tab
 tab-options-verbose-launcher-logging-desc = Voor wanneer de ontwikkelaars *erg* verbaasd zijn met je probleem. (herstarten van launcher vereist)
 # Strings for the "Development" tab
@@ -526,3 +526,16 @@ language-selector-system-language = Systeemtaal ({ $languageName })
 # Strings for entries in the server list (including home page)
 server-entry-raise = Bovenop zetten
 login-login-show-password = Wachtwoord zichtbaar
+connecting-privacy-policy-text = Deze server vereist dat je hun privacybeleid accepteert voordat je connecteerd.
+connecting-privacy-policy-text-version-changed = Deze server heeft hun privacybeleid aangepast sinds de laatste keer dat je speelde. Je moet de nieuwe versie accepteren voordat je connecteerd.
+tab-options-desc-incompatible = Deze optie is werkt niet op jouw platform en is uitgeschakeld.
+connecting-privacy-policy-view = Bekijk privacybeleid
+connecting-privacy-policy-accept = Accepteer (doorgaan)
+connecting-privacy-policy-decline = Weigeren (verbreken)
+tab-servers-table-round-time = Tijd
+server-entry-round-time =
+    { $hours ->
+        [0] { $mins }M
+       *[1] { $hours }U { $mins }M
+    }
+server-entry-status-lobby = Lobby

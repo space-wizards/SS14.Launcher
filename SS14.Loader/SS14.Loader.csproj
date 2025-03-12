@@ -8,6 +8,13 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
+  <PropertyGroup Condition="$([MSBuild]::IsOSPlatform('FreeBSD'))">
+    <UseSystemSqlite>True</UseSystemSqlite>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(UseSystemSqlite)' == 'True'">
+    <DefineConstants>$(DefineConstants);USE_SYSTEM_SQLITE</DefineConstants>
+  </PropertyGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\Robust.LoaderApi\Robust.LoaderApi\Robust.LoaderApi.csproj" />
   </ItemGroup>
