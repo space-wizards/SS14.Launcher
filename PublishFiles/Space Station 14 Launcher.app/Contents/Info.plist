@@ -16,5 +16,37 @@
     -->
     <key>CFBundleIconFile</key>
     <string>ss14</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.spacestation14.launcher</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>com.spacestation14.launcher</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>ss14</string>
+				<string>ss14s</string>
+			</array>
+		</dict>
+	</array>
+	<key>CFBundleDocumentTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeExtensions</key>
+			<array>
+				<string>rtreplay</string>
+				<string>rtbundle</string>
+			</array>
+			<key>CFBundleTypeIconFile</key>
+			<string>ss14</string>
+			<key>LSHandlerRank</key>
+			<string>Owner</string>
+			<key>CFBundleTypeName</key>
+			<string>Robust Toolbox Bundle File</string>
+			<key>CFBundleTypeRole</key>
+			<string>Viewer</string>
+		</dict>
+	</array>
 </dict>
 </plist>
