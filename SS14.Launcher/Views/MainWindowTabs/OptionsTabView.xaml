@@ -66,11 +66,11 @@
                    Text="{loc:Loc tab-options-disable-signing-desc}"
                    Margin="8" />
         <Grid ColumnDefinitions="Auto,*">
-          <CheckBox VerticalAlignment="Center" Margin="4" IsChecked="{Binding ProxyEnable}">Enable proxy</CheckBox>
+          <CheckBox VerticalAlignment="Center" Margin="4" IsChecked="{Binding ProxyEnable}" Content="{loc:Loc tab-options-desc-proxy-enable}" />
           <TextBox Grid.Column="1" Watermark="http://example.com:80" Text="{Binding ProxyURL}" />
         </Grid>
         <TextBlock VerticalAlignment="Center" TextWrapping="Wrap"
-                  Text="Proxy information for connect to hub and auth center. (requires launcher restart)"
+                  Text="{loc:Loc tab-options-desc-proxy-adress}"
                   Margin="8" />
         <Button Click="OpenHubSettings" Content="{loc:Loc tab-options-hub-settings}" Margin="4" HorizontalAlignment="Left" />
         <TextBlock VerticalAlignment="Center" TextWrapping="Wrap"
