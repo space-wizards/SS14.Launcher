@@ -3,8 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:mainWindowTabs="clr-namespace:SS14.Launcher.ViewModels.MainWindowTabs"
-             xmlns:views="clr-namespace:SS14.Launcher.Views"
-             xmlns:mainWindowTabs1="clr-namespace:SS14.Launcher.Views.MainWindowTabs"
+             xmlns:mainWindowTabsViews="clr-namespace:SS14.Launcher.Views.MainWindowTabs"
              xmlns:loc="clr-namespace:SS14.Launcher.Localization"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SS14.Launcher.Views.MainWindowTabs.ServerListTabView">
@@ -12,8 +11,13 @@
     <mainWindowTabs:ServerListTabViewModel />
   </Design.DataContext>
 
-  <DockPanel LastChildFill="True">
+  <UserControl.Styles>
+    <Style Selector=":is(mainWindowTabsViews|ServerList).filtersClosed">
+      <Setter Property="Grid.RowSpan" Value="3"></Setter>
+    </Style>
+  </UserControl.Styles>
 
+  <DockPanel LastChildFill="True">
     <DockPanel DockPanel.Dock="Bottom" Margin="4 4 4 0">
       <Button DockPanel.Dock="Right" Content="{loc:Loc tab-servers-refresh}" Command="{Binding RefreshPressed}"
               Classes="OpenLeft" />
@@ -28,55 +32,31 @@
     <Panel DockPanel.Dock="Bottom" Classes="ScrollViewerSep" />
 
     <Grid>
+      <Grid.RowDefinitions>
+        <RowDefinition Height="*" MinHeight="180" /> <!-- Server List -->
+        <RowDefinition Height="4" /> <!-- Grabber -->
+        <RowDefinition MinHeight="150" /> <!-- Filters Pane -->
+      </Grid.RowDefinitions>
+
       <!-- Main server list table -->
-      <DockPanel ZIndex="-1" Grid.IsSharedSizeScope="True">
-        <Grid DockPanel.Dock="Top" Margin="24 0 24 0">
-          <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" /> <!-- Server Name -->
-            <ColumnDefinition SharedSizeGroup="TimeCol" MinWidth="80" Width="Auto" />
-            <ColumnDefinition SharedSizeGroup="StatusCol" MinWidth="80" Width="Auto" />
-            <ColumnDefinition SharedSizeGroup="ConnectCol" Width="Auto" />
-          </Grid.ColumnDefinitions>
+      <mainWindowTabsViews:ServerList Grid.Row="0" DockPanel.Dock="Top" List="{Binding SearchedServers}"
+                                      ListText="{Binding ListText}"
+                                      SpinnerVisible="{Binding SpinnerVisible}"
+                                      ShowHeader="True"
+                                      Classes.filtersClosed="{Binding !FiltersVisible}" />
 
-          <Border Grid.Column="0" Classes="GridCell">
-            <TextBlock Text="{loc:Loc tab-servers-table-name}" Classes="SubText" HorizontalAlignment="Left" />
-          </Border>
-          <Border Grid.Column="1" Classes="GridCell">
-            <TextBlock Text="{loc:Loc tab-servers-table-round-time}" Classes="SubText" />
-          </Border>
-          <Border Grid.Column="2" Classes="GridCell">
-            <TextBlock Text="{loc:Loc tab-servers-table-players}" Classes="SubText" />
-          </Border>
-          <Border Grid.Column="3" Classes="GridCell">
-            <TextBlock Text="" Classes="SubText" />
-          </Border>
-        </Grid>
-
-        <Panel DockPanel.Dock="Top" Classes="ScrollViewerSep" />
-
-        <Panel>
-          <Panel.Background>
-            <SolidColorBrush Color="#1e1e22" />
-          </Panel.Background>
-          <ScrollViewer MinHeight="150" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Visible">
-            <Grid RowDefinitions="Auto,Auto,Auto">
-              <ItemsControl Grid.Column="0" Grid.Row="0" ItemsSource="{Binding SearchedServers}" Classes="ServerList" />
-              <TextBlock Grid.Column="0" Grid.Row="1" IsVisible="{Binding ListTextVisible}" TextAlignment="Center"
-                         VerticalAlignment="Center"
-                         Text="{Binding ListText}" />
-              <Viewbox Grid.Column="0" Grid.Row="2" IsVisible="{Binding SpinnerVisible}" Classes="DungSpinnerBox">
-                <views:DungSpinner />
-              </Viewbox>
-            </Grid>
-          </ScrollViewer>
-          <StackPanel Orientation="Vertical" VerticalAlignment="Center" />
-        </Panel>
-      </DockPanel>
+      <GridSplitter Grid.Row="1" BorderThickness="0"
+                    HorizontalAlignment="Stretch"
+                    ResizeDirection="Rows"
+                    IsVisible="{Binding FiltersVisible}">
+      </GridSplitter>
 
       <!-- Filters dialog -->
-      <Border Height="175" VerticalAlignment="Bottom" IsVisible="{Binding FiltersVisible}" BoxShadow="0 -2 4 Black">
+      <Border Grid.Row="2" DockPanel.Dock="Bottom"
+              IsVisible="{Binding FiltersVisible}"
+              BoxShadow="0 -2 4 Black">
         <Panel Background="{DynamicResource ThemeBackgroundBrush}">
-          <mainWindowTabs1:ServerListFiltersView DataContext="{Binding Filters}" />
+          <mainWindowTabsViews:ServerListFiltersView DataContext="{Binding Filters}" />
         </Panel>
       </Border>
     </Grid>
