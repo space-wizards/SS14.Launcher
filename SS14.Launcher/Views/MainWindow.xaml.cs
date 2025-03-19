@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
@@ -32,10 +31,6 @@ public partial class MainWindow : Window
         _content = (MainWindowContent) Content!;
 
         ReloadTitle();
-
-#if DEBUG
-        this.AttachDevTools();
-#endif
     }
 
     public void ReloadContent()
