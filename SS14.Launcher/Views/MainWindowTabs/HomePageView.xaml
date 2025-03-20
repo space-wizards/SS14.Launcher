@@ -13,22 +13,22 @@
   </Design.DataContext>
 
   <DockPanel>
-    <!-- Account info -->
-
-    <!-- Favorites -->
+    <!-- Header controls -->
     <DockPanel DockPanel.Dock="Top" LastChildFill="False" Margin="4, 0, 4, 2">
       <TextBlock DockPanel.Dock="Left" Text="{loc:Loc tab-home-favorite-servers}" Classes="NanoHeadingMedium" />
-      <Button DockPanel.Dock="Right" Content="{loc:Loc tab-home-add-favorite}" Classes="OpenLeft"
+      <Button DockPanel.Dock="Right" Content="{loc:Loc tab-home-add-favorite}"
               Command="{Binding AddFavoritePressed}" />
-      <Button DockPanel.Dock="Right" Content="{loc:Loc tab-home-refresh}" Classes="OpenRight"
-              Command="{Binding RefreshPressed}" />
     </DockPanel>
 
-    <DockPanel DockPanel.Dock="Bottom" LastChildFill="False" Margin="0, 5, 5, 1">
-      <Button DockPanel.Dock="Right" HorizontalAlignment="Right" Classes="OpenLeft"
+    <!-- Footer controls -->
+    <DockPanel DockPanel.Dock="Bottom" LastChildFill="False" Margin="4 4 4 0" Height="32">
+      <Button DockPanel.Dock="Right" Content="{loc:Loc tab-home-refresh}"
+              Command="{Binding RefreshPressed}" />
+
+      <Button DockPanel.Dock="Left" Classes="OpenRight"
               Content="{loc:Loc tab-home-direct-connect}"
               Command="{Binding DirectConnectPressed}" />
-      <Button DockPanel.Dock="Right" HorizontalAlignment="Right" Classes="OpenRight"
+      <Button DockPanel.Dock="Left" Classes="OpenLeft"
               Content="{loc:Loc tab-home-run-content-bundle}"
               Click="OpenReplayClicked" />
     </DockPanel>
