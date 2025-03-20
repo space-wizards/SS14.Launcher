@@ -8,6 +8,7 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
+using HotAvalonia;
 using JetBrains.Annotations;
 using Serilog;
 using Splat;
@@ -47,6 +48,7 @@ public class App : Application
 
     public override void Initialize()
     {
+        this.EnableHotReload();
         AvaloniaXamlLoader.Load(this);
 
         LoadBaseAssets();

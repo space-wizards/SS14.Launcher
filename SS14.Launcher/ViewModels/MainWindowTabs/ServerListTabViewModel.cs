@@ -33,7 +33,6 @@ public class ServerListTabViewModel : MainWindowTabViewModel
         }
     }
 
-    public bool ListTextVisible => _serverListCache.Status != RefreshListStatus.Updated;
     public bool SpinnerVisible => _serverListCache.Status < RefreshListStatus.Updated;
 
     public string ListText
@@ -54,7 +53,6 @@ public class ServerListTabViewModel : MainWindowTabViewModel
                 case RefreshListStatus.Updated:
                 default:
                     if (SearchedServers.Count == 0 && _serverListCache.AllServers.Count != 0)
-                        // TODO: Actually make this show up or just remove it entirely
                         return _loc.GetString("tab-servers-list-status-none-filtered");
 
                     if (_serverListCache.AllServers.Count == 0)
@@ -85,11 +83,12 @@ public class ServerListTabViewModel : MainWindowTabViewModel
             {
                 case nameof(ServerListCache.Status):
                     this.RaisePropertyChanged(nameof(ListText));
-                    this.RaisePropertyChanged(nameof(ListTextVisible));
                     this.RaisePropertyChanged(nameof(SpinnerVisible));
                     break;
             }
         };
+
+        _loc.LanguageSwitched += () => Filters.UpdatePresentFilters(_serverListCache.AllServers);
     }
 
     private void FiltersOnFiltersUpdated()
@@ -136,6 +135,8 @@ public class ServerListTabViewModel : MainWindowTabViewModel
             var vm = new ServerEntryViewModel(_windowVm, server, _serverListCache, _windowVm.Cfg);
             SearchedServers.Add(vm);
         }
+
+        this.RaisePropertyChanged(nameof(ListText));
     }
 
     private bool DoesSearchMatch(ServerStatusData data)
