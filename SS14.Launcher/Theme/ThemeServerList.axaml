@@ -74,7 +74,7 @@
               <SolidColorBrush Color="#1e1e22" />
             </Panel.Background>
             <ScrollViewer MinHeight="150" HorizontalScrollBarVisibility="Disabled"
-                          VerticalScrollBarVisibility="Visible">
+                          VerticalScrollBarVisibility="Auto">
               <DockPanel LastChildFill="True">
                 <StackPanel DockPanel.Dock="Bottom" IsVisible="True">
                   <ContentPresenter Content="{TemplateBinding Content}" HorizontalAlignment="Center" />
