@@ -18,7 +18,7 @@
   </UserControl.Styles>
 
   <DockPanel LastChildFill="True">
-    <DockPanel DockPanel.Dock="Bottom" Margin="4 4 4 0">
+    <DockPanel DockPanel.Dock="Bottom" Margin="4 4 4 0" Height="32">
       <Button DockPanel.Dock="Right" Content="{loc:Loc tab-servers-refresh}" Command="{Binding RefreshPressed}"
               Classes="OpenLeft" />
       <ToggleButton DockPanel.Dock="Right" IsChecked="{Binding FiltersVisible}" Classes="OpenRight"
