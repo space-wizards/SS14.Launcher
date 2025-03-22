@@ -25,5 +25,10 @@
     <TextBlock VerticalAlignment="Center" TextWrapping="Wrap"
                Text="{loc:Loc tab-development-enable-engine-override-desc}"
                Margin="8" />
+
+    <Button Name="RegProtocols" Content="{loc:Loc tab-development-force-register-os-protocols}" DockPanel.Dock="Bottom"
+            HorizontalAlignment="Left" Click="RegisterProtocols" />
+    <Button Name="UnProtocols" Content="{loc:Loc tab-development-force-unregister-os-protocols}" DockPanel.Dock="Bottom"
+            HorizontalAlignment="Left" Click="UnregisterProtocols" />
   </StackPanel>
 </UserControl>
