@@ -322,7 +322,7 @@ tab-servers-table-players = Spelers
 # Strings for the "servers" tab
 tab-servers-table-name = Servernaam
 # Strings for the "servers" tab
-tab-servers-list-status-partial-error = Kan sommige of alle serverlijsten niet ophalen. Zorg dat je hubconfiguratie klopt.
+tab-servers-list-status-partial-error = Kan sommige serverlijsten niet ophalen. Zorg dat je hubconfiguratie klopt en probeer misschien te herladen.
 # Strings for the "servers" tab
 tab-servers-list-status-updating-master = Ophalen van hoofdserverlijst…
 # Strings for the "servers" tab
@@ -390,7 +390,7 @@ region-south-america-east = Zuid-Amerika Oost
 # Short region names for server tag filters (shown in filter check box)
 region-short-central-america = Centraal Amerika
 # Strings for the "servers" tab
-tab-servers-list-status-error = Er was een fout bij het ophalen van de hoofdserverlijsten.
+tab-servers-list-status-error = Er was een fout bij het ophalen van de hoofdserverlijsten. Probeer misschien te herladen?
 # Strings for the "servers" tab
 tab-servers-list-status-none = Er zijn geen publieke servers. Zorg dat je hubconfiguratie klopt.
 # Strings for the "register confirmation" view on login
