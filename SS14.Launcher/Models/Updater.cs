@@ -65,6 +65,8 @@ public sealed class Updater : ReactiveObject
     [Reactive] public (long downloaded, long total, ProgressUnit unit)? Progress { get; private set; }
     [Reactive] public long? Speed { get; private set; }
 
+    public string? ExceptionMessage;
+
     public async Task<ContentLaunchInfo?> RunUpdateForLaunchAsync(
         ServerBuildInformation buildInformation,
         CancellationToken cancel = default)
@@ -89,6 +91,7 @@ public sealed class Updater : ReactiveObject
         }
 
         _updating = true;
+        ExceptionMessage = null;
 
         try
         {
@@ -1444,8 +1447,6 @@ public sealed class Updater : ReactiveObject
         public string[] Modules = Array.Empty<string>();
         public bool MultiWindow = false;
     }
-
-    public string ExceptionMessage;
 
     public enum UpdateStatus
     {
