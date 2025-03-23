@@ -54,7 +54,10 @@ connecting-cancel = Cancelar
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-none = Iniciando conexão…
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-status-update-error = Houve um erro ao tentar baixar o conteúdo do servidor. Por favor, solicite ajuda no Discord se o problema persistir.
+connecting-status-update-error =
+    Houve um erro ao tentar baixar o conteúdo do servidor. Por favor, solicite ajuda no Discord se o problema persistir.
+
+    Error: { $err }
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-updating = Atualizando: { $status }
 # Strings for the "connecting" menu that appears when connecting to a server.
