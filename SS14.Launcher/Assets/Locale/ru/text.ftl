@@ -20,7 +20,10 @@ account-drop-down-log-out-of = Выйти из { $name }
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-title-connecting = Подключение…
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-status-update-error = Произошла ошибка во время загрузки серверного контента. Пожалуйста, обратитесь в Discord за помощью, если проблема не исчезнет.
+connecting-status-update-error =
+    Произошла ошибка во время загрузки серверного контента. Пожалуйста, обратитесь в Discord за помощью, если проблема не исчезнет.
+
+    Error: { $err }
 # Strings for the "hub settings" dialog window.
 hub-settings-explanation = Здесь вы можете добавлять дополнительные хабы для получения игровых серверов. Вы должны добавлять только хабы, которым вы доверяете, так как они могут подделывать игровые сервера других хабов. Порядок хабов важен. Если два хаба рекламируют сервер дважды, то приоритет будет иметь хаб с большим приоритетом (расположен выше в списке).
 # Long region names for server tag filters (shown in tooltip)
