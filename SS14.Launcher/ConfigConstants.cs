@@ -26,8 +26,10 @@ public static class ConfigConstants
     // Amount of time to wait to let a redialling client properly die
     public const int LauncherCommandsRedialWaitTimeout = 1000;
 
-    public static readonly string AuthUrl = "https://auth.spacestation14.com/";
-    public static readonly Uri[] DefaultHubUrls = { new("https://hub.spacestation14.com/") };
+    private static readonly UrlFallbackSetStats StatsHubInfra = new(2);
+
+    public static readonly UrlFallbackSet AuthUrl = new(["https://auth.spacestation14.com/", "https://auth.fallback.spacestation14.com/"], StatsHubInfra);
+    public static readonly UrlFallbackSet[] DefaultHubUrls = [new(["https://hub.spacestation14.com/", "https://hub.fallback.spacestation14.com/"], StatsHubInfra)];
     public const string DiscordUrl = "https://discord.ss14.io/";
     public const string AccountBaseUrl = "https://account.spacestation14.com/Identity/Account/";
     public const string AccountManagementUrl = $"{AccountBaseUrl}Manage";
@@ -64,6 +66,6 @@ public static class ConfigConstants
     {
         var envVarAuthUrl = Environment.GetEnvironmentVariable("SS14_LAUNCHER_OVERRIDE_AUTH");
         if (!string.IsNullOrEmpty(envVarAuthUrl))
-            AuthUrl = envVarAuthUrl;
+            AuthUrl = new UrlFallbackSet([envVarAuthUrl], AuthUrl.Stats);
     }
 }
