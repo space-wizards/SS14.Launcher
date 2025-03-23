@@ -39,7 +39,10 @@ connecting-cancel = Відмінити
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-none = Початок з'єднання…
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-status-update-error = Сталася помилка під час завантаження контенту сервера. Будь ласка, зверніться за підтримкою у Discord, якщо проблема не зникне.
+connecting-status-update-error =
+    Сталася помилка під час завантаження контенту сервера. Будь ласка, зверніться за підтримкою у Discord, якщо проблема не зникне.
+
+    Error: { $err }
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-updating = Оновлення: { $status }
 # Strings for the "connecting" menu that appears when connecting to a server.
