@@ -23,7 +23,15 @@ connecting-title-connecting = Connecting…
 connecting-title-content-bundle = Loading…
 connecting-cancel = Cancel
 connecting-status-none = Starting connection…
-connecting-status-update-error = There was an error while downloading server content. Please ask on Discord for support if the problem persists.
+connecting-status-update-error =
+    There was an error while downloading server content. If this persists try some of the following:
+    - Try connecting to another game server to see if the problem persists.
+    - Try disabling or enabling software such as VPNs, if you have any.
+
+    If you are still having issues, first try contacting the server you are attempting to join before asking for support on the Official Space Station 14 Discord or Forums.
+
+    Technical error: { $err }
+connecting-status-update-error-unknown = Unknown
 connecting-status-updating = Updating: { $status }
 connecting-status-connecting = Fetching connection info from server…
 connecting-status-connection-failed = Failed to connect to server!
