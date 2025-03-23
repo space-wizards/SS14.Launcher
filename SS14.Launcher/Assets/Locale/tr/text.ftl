@@ -25,7 +25,10 @@ connecting-title-content-bundle = Yükleniyor…
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-cancel = İptal
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-status-update-error = Sunucu içeriği indirilirken bir hata oluştu. Hata devam ederse Discord'dan yardım isteyiniz.
+connecting-status-update-error =
+    Sunucu içeriği indirilirken bir hata oluştu. Hata devam ederse Discord'dan yardım isteyiniz.
+
+    Error: { $err }
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-connection-failed = Sunucuya bağlanma başarısız!
 # Localization for the "add favorite server" dialog window
