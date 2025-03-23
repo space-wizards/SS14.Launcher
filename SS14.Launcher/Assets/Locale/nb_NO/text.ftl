@@ -14,7 +14,10 @@ connecting-status-starting-client = Starter klient…
 connecting-status-updating = Oppdatering: { $status }
 connecting-status-connection-failed = Kunne ikke koble til serveren!
 add-favorite-window-example-name = Tute Stasjon
-connecting-status-update-error = Det var en feil under nedlastingen av server innholdet. Vennligst spør på Discord om støtte om problemet vedvarer.
+connecting-status-update-error =
+    Det var en feil under nedlastingen av server innholdet. Vennligst spør på Discord om støtte om problemet vedvarer.
+
+    Error: { $err }
 connecting-cancel = Kansler
 connecting-privacy-policy-accept = Aksepter
 direct-connect-connect = Koble til
