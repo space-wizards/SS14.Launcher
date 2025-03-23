@@ -98,7 +98,14 @@ hub-settings-button-increase-priority-tooltip = Prioriteit verhogen
 # Strings for the drop-down window to manage your active account
 account-drop-down-add-account = Voeg account toe
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-status-update-error = Er was een fout tijdens het downloaden van serverinhoud. Vraag op Discord om ondersteuning als het probleem blijft bestaan.
+connecting-status-update-error =
+    Er was een fout tijdens het downloaden van serverinhoud. Als dit blijft gebeuren, probeer het volgende:
+    - Probeer met een andere server te connecteren om te zien of het probleem blijft gebeuren.
+    - Probeer software zoals VPNs aan of uit te zetten, als je er hebt.
+
+    Als je nog steeds problemen hebt, probeer eerst contact op te nemen met de server waarmee je wil connecteren, voordat je voor hulp vraagt op de Officiële Space Station 14 Discord of Forums.
+
+    Technische fout: { $err }
 # Strings for the "forgot password" view on login
 login-forgot-title = Wachtwoord vergeten?
 # Strings for the "forgot password" view on login
@@ -539,3 +546,4 @@ server-entry-round-time =
        *[1] { $hours }U { $mins }M
     }
 server-entry-status-lobby = Lobby
+connecting-status-update-error-unknown = Onbekend
