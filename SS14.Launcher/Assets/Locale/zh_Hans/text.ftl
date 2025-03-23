@@ -462,7 +462,10 @@ add-favorite-window-example-name = 嘀嘀空间站
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-title-connecting = 正在连接…
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-status-update-error = 下载服务器内容时出现错误。若此问题持续发生请在Discord上请求协助。
+connecting-status-update-error =
+    下载服务器内容时出现错误。若此问题持续发生请在Discord上请求协助。
+
+    Error: { $err }
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-connecting = 正在从服务器获取连接信息…
 # Strings for the "connecting" menu that appears when connecting to a server.
