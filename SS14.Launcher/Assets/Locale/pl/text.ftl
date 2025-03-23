@@ -15,7 +15,10 @@ add-favorite-window-address-invalid = Niepoprawny adres
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-none = Rozpoczynanie połączenia…
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-status-update-error = Wystąpił błąd przy pobieraniu danych z serwera. Proszę spytać się na Discordzie o pomoc jeśli problem się będzie powtarzał.
+connecting-status-update-error =
+    Wystąpił błąd przy pobieraniu danych z serwera. Proszę spytać się na Discordzie o pomoc jeśli problem się będzie powtarzał.
+
+    Error: { $err }
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-update-status-culling-content = Czyszczenie starych danych serwera…
 # Strings for the "connecting" menu that appears when connecting to a server.
