@@ -12,7 +12,7 @@ namespace SS14.Launcher.ViewModels;
 
 public class HubSettingsViewModel : ViewModelBase
 {
-    public Uri[] DefaultHubs => ConfigConstants.DefaultHubUrls;
+    public string[] DefaultHubs => ConfigConstants.DefaultHubUrls.Select(set => set.Urls[0]).ToArray();
     public ObservableCollection<HubViewModel> HubList { get; set; } = new();
 
     private readonly DataManager _dataManager = Locator.Current.GetRequiredService<DataManager>();
@@ -56,7 +56,6 @@ public class HubSettingsViewModel : ViewModelBase
     public List<string> GetDupes()
     {
         return DefaultHubs
-            .Select(h => h.AbsoluteUri)
             .Concat(HubList.Select(h => NormalizeHubUri(h.Address))).GroupBy(h => h)
             .Where(group => group.Count() > 1)
             .Select(x => x.Key)

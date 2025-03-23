@@ -74,12 +74,12 @@ public sealed class ServerListCache : ReactiveObject, IServerSource
             // Queue requests
             foreach (var hub in ConfigConstants.DefaultHubUrls)
             {
-                requests.Add((_hubApi.GetServers(hub, cancel), hub));
+                requests.Add((_hubApi.GetServers(hub, cancel), new Uri(hub.Urls[0])));
             }
 
             foreach (var hub in _dataManager.Hubs.OrderBy(h => h.Priority))
             {
-                requests.Add((_hubApi.GetServers(hub.Address, cancel), hub.Address));
+                requests.Add((_hubApi.GetServers(UrlFallbackSet.FromSingle(hub.Address), cancel), hub.Address));
             }
 
             // Await all requests
