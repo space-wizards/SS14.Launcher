@@ -531,4 +531,5 @@ main-window-out-of-date-download-manual = Pobierz (ręcznie)
 # Strings for the general main window layout of the launcher
 main-window-drag-drop-prompt = Upuść aby odtworzyć grę
 tab-options-desc-incompatible = Ta opcja nie jest dostępna na tej platformie i została zablokowana.
-connecting-status-update-error-unknown = Nieznane
+connecting-status-update-error-unknown = Nieznany
+server-entry-status-lobby = Menu
