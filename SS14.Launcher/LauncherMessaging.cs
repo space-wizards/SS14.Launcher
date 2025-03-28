@@ -81,7 +81,7 @@ public class LauncherMessaging
         catch (Exception)
         {
             // Ok, so we're server (we hope)
-            Console.WriteLine("We are primary launcher (or primary launcher is out for lunch)");
+            Console.WriteLine("We are the primary launcher (or primary launcher is out for lunch)");
         }
 
         // Try to create server
