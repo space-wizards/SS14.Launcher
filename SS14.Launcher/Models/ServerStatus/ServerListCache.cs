@@ -124,7 +124,7 @@ public sealed partial class ServerListCache : ObservableObject, IServerSource
                 return statusData;
             }));
 
-            if (_allServers.Count == 0)
+            if (AllServers.Count == 0)
                 // We did not get any servers
                 Status = RefreshListStatus.Error;
             else if (!allSucceeded)
