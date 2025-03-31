@@ -536,3 +536,11 @@ connecting-privacy-policy-text = Этот сервер требует чтобы
 connecting-privacy-policy-view = Посмотреть политику конфиденциальности
 connecting-privacy-policy-accept = Принять (продолжить)
 connecting-privacy-policy-decline = Отклонить (отключиться)
+server-entry-round-time =
+    { $hours ->
+        [0] { $mins }м
+       *[1] { $hours }ч { $mins }м
+    }
+tab-servers-table-round-time = Время
+connecting-status-update-error-unknown = Неизвестно
+server-entry-status-lobby = Лобби
