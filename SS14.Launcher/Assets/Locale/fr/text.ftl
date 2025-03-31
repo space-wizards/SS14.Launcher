@@ -178,7 +178,10 @@ add-favorite-window-address-invalid = Adresse invalide
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-connecting = Récupération des informations de connexion du serveur…
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-status-update-error = Il y a eu une erreur lors du téléchargement du contenu du serveur. Demandez de l'aide sur Discord si le problème persiste.
+connecting-status-update-error =
+    Il y a eu une erreur lors du téléchargement du contenu du serveur. Demandez de l'aide sur Discord si le problème persiste.
+
+    Error: { $err }
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-update-status-fetching-manifest = Récupération du manifeste du serveur…
 # Strings for the "connecting" menu that appears when connecting to a server.

@@ -15,7 +15,14 @@ add-favorite-window-address-invalid = Niepoprawny adres
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-none = Rozpoczynanie połączenia…
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-status-update-error = Wystąpił błąd przy pobieraniu danych z serwera. Proszę spytać się na Discordzie o pomoc jeśli problem się będzie powtarzał.
+connecting-status-update-error =
+    Wystąpił błąd przy pobieraniu danych z serwera. Spróbuj następujących rzeczy jeżeli występuje dalej:
+    - Spróbuj połączyć się z innym serwerem rzeby zobaczyć czy problem ustaje.
+    - Spróbuj wyłączyć lub włączyć programy takie jak VPN, jeżeli takie posiadasz.
+
+    Jeżeli błąd występuje dalej, najpierw spróbuj zkontaktować się z serwerem do którego probujesz dołączyć przed zapytaniem się o pomoc na Oficialnym Discordzie Space Station 14 lub na Forum.
+
+    Usterka techniczna: { $err }
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-update-status-culling-content = Czyszczenie starych danych serwera…
 # Strings for the "connecting" menu that appears when connecting to a server.
@@ -350,7 +357,7 @@ filters-player-count-hide-full-desc = Pełne serwery nie będą wyświetlane
 # Strings for the server filters menu
 filters-player-count-hide-full = Ukryj pełne
 # Strings for the "servers" tab
-tab-servers-list-status-error = Wystąpił błąd podczas pobierania list serwera głównego.
+tab-servers-list-status-error = Wystąpił błąd podczas pobierania list serwera głównego. Może spróbuj odświeżyć?
 # Strings for the server filters menu
 filters-player-count-maximum = Maksimum:
 # Strings for entries in the server list (including home page)
@@ -481,7 +488,7 @@ tab-options-log-client = Rejestruj klienta
 # Strings for the "news" tab
 tab-news-title = Aktualności
 # Strings for the "servers" tab
-tab-servers-list-status-partial-error = Nie udało się pobrać niektórych lub wszystkich list serwerów. Upewnij się, że konfiguracja list jest prawidłowa.
+tab-servers-list-status-partial-error = Nie udało się pobrać niektórych list serwerów. Upewnij się że konfiguracja list jest prawidłowa i spróbuj odświeżyć.
 # Strings for the "options" tab
 tab-options-flip = { "*" }obrót
 # Strings for the "Development" tab
@@ -528,3 +535,16 @@ main-window-out-of-date-download-manual = Pobierz (ręcznie)
 # Strings for the general main window layout of the launcher
 main-window-drag-drop-prompt = Upuść aby odtworzyć grę
 tab-options-desc-incompatible = Ta opcja nie jest dostępna na tej platformie i została zablokowana.
+connecting-status-update-error-unknown = Nieznany
+server-entry-status-lobby = Menu
+connecting-privacy-policy-text = Ten serwer wymaga zaakceptowania swojej polityki prywatności przed połączeniem.
+tab-servers-table-round-time = Czas
+server-entry-round-time =
+    { $hours ->
+        [0] { $mins }M
+       *[1] { $hours }G { $mins }M
+    }
+connecting-privacy-policy-text-version-changed = Ten serwer zaktualizował swoją politykę prywatności od twojej ostatniej rozgrywki. Musisz zaakceptować nową wersję przed połączeniem.
+connecting-privacy-policy-view = Pokaż politykę prywatności
+connecting-privacy-policy-accept = Zaakceptuj (kontynuuj)
+connecting-privacy-policy-decline = Odmów (odłącz)

@@ -15,13 +15,14 @@
     <!-- Loader -->
     <PackageVersion Include="Robust.Natives" Version="0.1.1"/>
     <!-- Launcher -->
-    <PackageVersion Include="Avalonia" Version="11.0.5"/>
-    <PackageVersion Include="Avalonia.Desktop" Version="11.0.5"/>
-    <PackageVersion Include="Avalonia.Diagnostics" Version="11.0.5"/>
-    <PackageVersion Include="Avalonia.Themes.Simple" Version="11.0.5"/>
+    <PackageVersion Include="Avalonia" Version="11.2.4"/>
+    <PackageVersion Include="Avalonia.Desktop" Version="11.2.4"/>
+    <PackageVersion Include="Avalonia.Diagnostics" Version="11.2.4"/>
+    <PackageVersion Include="Avalonia.Themes.Simple" Version="11.2.4"/>
+    <PackageVersion Include="Avalonia.Markup.Xaml.Loader" Version="11.2.4" />
     <PackageVersion Include="CodeHollow.FeedReader" Version="1.2.6"/>
     <PackageVersion Include="Dapper" Version="2.0.123"/>
-    <PackageVersion Include="DynamicData" Version="7.13.1"/>
+    <PackageVersion Include="DynamicData" Version="8.4.1"/>
     <PackageVersion Include="Microsoft.Toolkit.Mvvm" Version="7.1.2"/>
     <PackageVersion Include="Robust.Shared.AuthLib" Version="0.1.2"/>
     <PackageVersion Include="Serilog" Version="2.12.0"/>
@@ -40,5 +41,8 @@
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.5.0"/>
     <!-- Bootstrap -->
     <PackageVersion Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3"/>
+    <!-- Development -->
+    <PackageVersion Include="HotAvalonia" Version="2.1.0" />
+    <PackageVersion Include="HotAvalonia.Extensions" Version="2.1.0" PrivateAssets="All" />
   </ItemGroup>
 </Project>

@@ -246,7 +246,10 @@ region-short-oceania = オセアニア
 region-africa-north = 北アフリ
 region-short-asia-east = 東アジア
 filters = フィルター({ $filteredServers } / { $totalServers })
-connecting-status-update-error = サーバーコンテンツのダウンロード中にエラーが発生しました。問題が解決しない場合は、Discordでサポートを依頼してください。
+connecting-status-update-error =
+    サーバーコンテンツのダウンロード中にエラーが発生しました。問題が解決しない場合は、Discordでサポートを依頼してください。
+
+    Error: { $err }
 tab-servers-list-status-partial-error = サーバーリストの一部またはすべての取得に失敗しました。ハブの設定が正しいことを確認してください。
 tab-servers-list-status-none = パブリックサーバーはありません。ハブの設定が正しいことを確認してください。
 server-entry-connect = コネクト

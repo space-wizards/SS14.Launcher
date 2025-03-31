@@ -23,7 +23,15 @@ connecting-title-connecting = Connecting…
 connecting-title-content-bundle = Loading…
 connecting-cancel = Cancel
 connecting-status-none = Starting connection…
-connecting-status-update-error = There was an error while downloading server content. Please ask on Discord for support if the problem persists.
+connecting-status-update-error =
+    There was an error while downloading server content. If this persists try some of the following:
+    - Try connecting to another game server to see if the problem persists.
+    - Try disabling or enabling software such as VPNs, if you have any.
+
+    If you are still having issues, first try contacting the server you are attempting to join before asking for support on the Official Space Station 14 Discord or Forums.
+
+    Technical error: { $err }
+connecting-status-update-error-unknown = Unknown
 connecting-status-updating = Updating: { $status }
 connecting-status-connecting = Fetching connection info from server…
 connecting-status-connection-failed = Failed to connect to server!
@@ -222,8 +230,9 @@ filters = Filters ({ $filteredServers } / { $totalServers })
 tab-servers-search-watermark = Search For Servers…
 tab-servers-table-players = Players
 tab-servers-table-name = Server Name
-tab-servers-list-status-error = There was an error fetching the master server lists.
-tab-servers-list-status-partial-error = Failed to fetch some or all server lists. Ensure your hub configuration is correct.
+tab-servers-table-round-time = Time
+tab-servers-list-status-error = There was an error fetching the master server lists. Maybe try refreshing?
+tab-servers-list-status-partial-error = Failed to fetch some of the server lists. Ensure your hub configuration is correct and try refreshing.
 tab-servers-list-status-updating-master = Fetching master server list…
 tab-servers-list-status-none-filtered = No servers match your search or filter settings.
 tab-servers-list-status-none = There are no public servers. Ensure your hub configuration is correct.
@@ -274,11 +283,16 @@ server-entry-player-count =
         [0] ∞
        *[1] { $max }
     }
+server-entry-round-time = { $hours ->
+ [0] { $mins }M
+*[1] { $hours }H { $mins }M
+}
 server-entry-fetching = Fetching…
 server-entry-description-offline = Unable to contact server
 server-entry-description-fetching = Fetching server status…
 server-entry-description-error = Error while fetching server description
 server-entry-description-none = No server description provided
+server-entry-status-lobby = Lobby
 server-fetched-from-hub = Fetched from { $hub }
 server-entry-raise = Raise to top
 

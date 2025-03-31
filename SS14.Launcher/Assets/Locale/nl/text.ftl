@@ -35,7 +35,7 @@ direct-connect-address-invalid = Adres is ongeldig
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-connection-failed = Kan geen verbinding maken met de server!
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-status-starting-client = Starten van client…
+connecting-status-starting-client = Client aan het starten…
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-update-status-checking-client-update = Controleren op update van serverinhoud…
 # Strings for the "connecting" menu that appears when connecting to a server.
@@ -47,7 +47,7 @@ connecting-update-status-downloading-content = Downloaden van serverinhoud…
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-title-connecting = Bezig met verbinden…
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-status-none = Starten van verbinding…
+connecting-status-none = Verbinding aan het starten…
 # Strings for the drop-down window to manage your active account
 account-drop-down-log-out-of = Van { $name } uitloggen
 # Localization for the "add favorite server" dialog window
@@ -98,7 +98,14 @@ hub-settings-button-increase-priority-tooltip = Prioriteit verhogen
 # Strings for the drop-down window to manage your active account
 account-drop-down-add-account = Voeg account toe
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-status-update-error = Er was een fout tijdens het downloaden van serverinhoud. Vraag op Discord om ondersteuning als het probleem blijft bestaan.
+connecting-status-update-error =
+    Er was een fout tijdens het downloaden van serverinhoud. Als dit blijft gebeuren, probeer het volgende:
+    - Probeer met een andere server te connecteren om te zien of het probleem blijft gebeuren.
+    - Probeer software zoals VPNs aan of uit te zetten, als je er hebt.
+
+    Als je nog steeds problemen hebt, probeer eerst contact op te nemen met de server waarmee je wil connecteren, voordat je voor hulp vraagt op de Officiële Space Station 14 Discord of Forums.
+
+    Technische fout: { $err }
 # Strings for the "forgot password" view on login
 login-forgot-title = Wachtwoord vergeten?
 # Strings for the "forgot password" view on login
@@ -322,7 +329,7 @@ tab-servers-table-players = Spelers
 # Strings for the "servers" tab
 tab-servers-table-name = Servernaam
 # Strings for the "servers" tab
-tab-servers-list-status-partial-error = Kan sommige of alle serverlijsten niet ophalen. Zorg dat je hubconfiguratie klopt.
+tab-servers-list-status-partial-error = Kan sommige serverlijsten niet ophalen. Zorg dat je hubconfiguratie klopt en probeer misschien te herladen.
 # Strings for the "servers" tab
 tab-servers-list-status-updating-master = Ophalen van hoofdserverlijst…
 # Strings for the "servers" tab
@@ -390,7 +397,7 @@ region-south-america-east = Zuid-Amerika Oost
 # Short region names for server tag filters (shown in filter check box)
 region-short-central-america = Centraal Amerika
 # Strings for the "servers" tab
-tab-servers-list-status-error = Er was een fout bij het ophalen van de hoofdserverlijsten.
+tab-servers-list-status-error = Er was een fout bij het ophalen van de hoofdserverlijsten. Probeer misschien te herladen?
 # Strings for the "servers" tab
 tab-servers-list-status-none = Er zijn geen publieke servers. Zorg dat je hubconfiguratie klopt.
 # Strings for the "register confirmation" view on login
@@ -424,7 +431,7 @@ tab-home-direct-connect = Verbind direct met server…
 # Strings for the "options" tab
 tab-options-clear-content = Wis geïnstalleerde serverinhoud
 # Strings for the "options" tab
-tab-options-compatibility-mode-desc = Dit gebruikt OpenGL ES 3 (via ANGLE indien nodig), wat minder kans heeft op driverbugs. Probeer dit als je grafische problemen of crashes hebt.
+tab-options-compatibility-mode-desc = Dit zorgt dat het spel een ander grafisch systeem gebruikt, wat minder kans heeft op driverbugs. Probeer dit als je grafische problemen of crashes hebt.
 # Strings for the "options" tab
 tab-options-verbose-launcher-logging-desc = Voor wanneer de ontwikkelaars *erg* verbaasd zijn met je probleem. (herstarten van launcher vereist)
 # Strings for the "Development" tab
@@ -526,3 +533,17 @@ language-selector-system-language = Systeemtaal ({ $languageName })
 # Strings for entries in the server list (including home page)
 server-entry-raise = Bovenop zetten
 login-login-show-password = Wachtwoord zichtbaar
+connecting-privacy-policy-text = Deze server vereist dat je hun privacybeleid accepteert voordat je connecteerd.
+connecting-privacy-policy-text-version-changed = Deze server heeft hun privacybeleid aangepast sinds de laatste keer dat je speelde. Je moet de nieuwe versie accepteren voordat je connecteerd.
+tab-options-desc-incompatible = Deze optie is werkt niet op jouw platform en is uitgeschakeld.
+connecting-privacy-policy-view = Bekijk privacybeleid
+connecting-privacy-policy-accept = Accepteer (doorgaan)
+connecting-privacy-policy-decline = Weigeren (verbreken)
+tab-servers-table-round-time = Tijd
+server-entry-round-time =
+    { $hours ->
+        [0] { $mins }M
+       *[1] { $hours }U { $mins }M
+    }
+server-entry-status-lobby = Lobby
+connecting-status-update-error-unknown = Onbekend

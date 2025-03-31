@@ -182,7 +182,10 @@ login-forgot-button-submit = Absenden
 # Strings for the "forgot password" view on login
 login-forgot-success-message = Ein Wiederherstellungslink wurde zu deiner E-Mail-Adresse gesendet.
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-status-update-error = Ein Fehler ist aufgetreten beim runterladen der Spieldateien. Bitte frage nach Hilfe auf dem Discord wenn das Problem weiterhin besteht.
+connecting-status-update-error =
+    Ein Fehler ist aufgetreten beim runterladen der Spieldateien. Bitte frage nach Hilfe auf dem Discord wenn das Problem weiterhin besteht.
+
+    Error: { $err }
 # Strings for the general main window layout of the launcher
 main-window-busy-checking-update = Suche nach Updates…
 # Long region names for server tag filters (shown in tooltip)

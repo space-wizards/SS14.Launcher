@@ -1,6 +1,7 @@
 <Application xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:SS14.Launcher"
+             Name="Space Station 14 Launcher"
              x:Class="SS14.Launcher.App">
   <Application.DataTemplates>
     <local:ViewLocator />
@@ -26,5 +27,6 @@
     <StyleInclude Source="/Theme/ThemeCheckBox.axaml" />
     <StyleInclude Source="/Theme/ThemeIconLabel.xaml" />
     <StyleInclude Source="/Theme/ThemeRandomMessage.xaml" />
+    <StyleInclude Source="/Theme/ThemeTimerTextCell.xaml" />
   </Application.Styles>
 </Application>

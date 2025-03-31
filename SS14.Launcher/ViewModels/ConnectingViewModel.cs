@@ -151,7 +151,8 @@ public class ConnectingViewModel : ViewModelBase
         => _connector.Status switch
         {
             None => _loc.GetString("connecting-status-none") + _reasonSuffix,
-            UpdateError => _loc.GetString("connecting-status-update-error"),
+            UpdateError => _loc.GetString("connecting-status-update-error",
+                ("err", _updater.ExceptionMessage ?? _loc.GetString("connecting-status-update-error-unknown"))),
             Updating => _loc.GetString("connecting-status-updating", ("status", _loc.GetString(_updater.Status switch
             {
                 Updater.UpdateStatus.CheckingClientUpdate => "connecting-update-status-checking-client-update",

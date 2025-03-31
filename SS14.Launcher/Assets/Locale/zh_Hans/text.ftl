@@ -412,7 +412,7 @@ tab-options-account-settings = 账户设置
 # Strings for the "options" tab
 tab-options-compatibility-mode = 兼容模式
 # Strings for the "options" tab
-tab-options-compatibility-mode-desc = 这将会使用OpenGL ES 2（如需要时将通过ANGLE启用），这样会更少的受驱动故障影响。如果你碰到了图像方面的问题或崩溃可以试试这个。
+tab-options-compatibility-mode-desc = 这将强制游戏使用另一个不同的图像后端，并会减少驱动故障的影响。如果你碰到了图像方面的问题或崩溃可以尝试启用。
 # Strings for the "options" tab
 tab-options-log-client = 记录客户端
 # Strings for the "options" tab
@@ -462,7 +462,14 @@ add-favorite-window-example-name = 嘀嘀空间站
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-title-connecting = 正在连接…
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-status-update-error = 下载服务器内容时出现错误。若此问题持续发生请在Discord上请求协助。
+connecting-status-update-error =
+    下载服务器内容时出现错误。若此问题持续发生：
+    - 连接其它服务器来检查问题是否会重现。
+    - 如果有VPN和加速器之类的软件，可以试着禁用或启用。
+
+    如果你的问题仍然没有解决，请先试试与你尝试加入的服务器取得联系，然后再考虑前往官方Space Station 14的Discord或论坛取得帮助。
+
+    技术错误：{ $err }
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-connecting = 正在从服务器获取连接信息…
 # Strings for the "connecting" menu that appears when connecting to a server.
@@ -504,7 +511,7 @@ tab-servers-search-watermark = 搜索服务器…
 # Short region names for server tag filters (shown in filter check box)
 region-short-south-america-east = 南美东部
 # Strings for the "servers" tab
-tab-servers-list-status-partial-error = 获取部分或所有服务器列表时失败。请确保你的大厅配置是否正确。
+tab-servers-list-status-partial-error = 获取服务器列表时失败。请确保你的大厅配置是否正确并尝试刷新。
 # Strings for the server filters menu
 filters-player-count-hide-empty-desc = 没有玩家在线的服务器将不会显示
 # Strings for entries in the server list (including home page)
@@ -532,3 +539,11 @@ connecting-privacy-policy-view = 查看隐私条款
 connecting-privacy-policy-accept = 同意（继续）
 connecting-privacy-policy-decline = 拒绝（断开连接）
 login-login-show-password = 显示密码
+server-entry-round-time =
+    { $hours ->
+        [0] { $mins }分
+       *[1] { $hours }时 { $mins }分
+    }
+connecting-status-update-error-unknown = 未知
+tab-servers-table-round-time = 时间
+server-entry-status-lobby = 大厅

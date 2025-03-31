@@ -1,14 +1,24 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
+using HotAvalonia;
 using JetBrains.Annotations;
 using Serilog;
+using Splat;
+using SS14.Launcher.Localization;
+using SS14.Launcher.Models;
+using SS14.Launcher.Models.ContentManagement;
 using SS14.Launcher.Models.OverrideAssets;
+using SS14.Launcher.Utility;
+using SS14.Launcher.ViewModels;
+using SS14.Launcher.Views;
 
 namespace SS14.Launcher;
 
@@ -38,6 +48,7 @@ public class App : Application
 
     public override void Initialize()
     {
+        this.EnableHotReload();
         AvaloniaXamlLoader.Load(this);
 
         LoadBaseAssets();
@@ -99,5 +110,57 @@ public class App : Application
     {
         Bitmap,
         WindowIcon
+    }
+
+    // Called when Avalonia init is done
+    public override void OnFrameworkInitializationCompleted()
+    {
+        if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+        {
+            desktop.Startup += OnStartup;
+            desktop.Exit += OnExit;
+        }
+    }
+
+    private void OnStartup(object? s, ControlledApplicationLifetimeStartupEventArgs e)
+    {
+        var loc = Locator.Current.GetRequiredService<LocalizationManager>();
+        var msgr = Locator.Current.GetRequiredService<LauncherMessaging>();
+        var contentManager = Locator.Current.GetRequiredService<ContentManager>();
+        var overrideAssets = Locator.Current.GetRequiredService<OverrideAssetsManager>();
+        var launcherInfo = Locator.Current.GetRequiredService<LauncherInfoManager>();
+
+        loc.Initialize();
+        launcherInfo.Initialize();
+        contentManager.Initialize();
+        overrideAssets.Initialize();
+
+        var viewModel = new MainWindowViewModel();
+        var window = new MainWindow
+        {
+            DataContext = viewModel
+        };
+        viewModel.OnWindowInitialized();
+
+        loc.LanguageSwitched += () =>
+        {
+            window.ReloadContent();
+
+            // Reloading content isn't a smooth process anyway, so let's do some housekeeping while we're at it.
+            GC.Collect();
+        };
+
+        var lc = new LauncherCommands(viewModel);
+        lc.RunCommandTask();
+        Locator.CurrentMutable.RegisterConstant(lc);
+        msgr.StartServerTask(lc);
+
+        window.Show();
+    }
+
+    private void OnExit(object? sender, ControlledApplicationLifetimeExitEventArgs e)
+    {
+        var msgr = Locator.Current.GetRequiredService<LauncherMessaging>();
+        msgr.StopAndWait();
     }
 }

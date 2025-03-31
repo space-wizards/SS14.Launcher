@@ -64,6 +64,8 @@ public sealed partial class Updater : ObservableObject
     [ObservableProperty] private (long downloaded, long total, ProgressUnit unit)? _progress;
     [ObservableProperty] private long? _speed;
 
+    public string? ExceptionMessage;
+
     public async Task<ContentLaunchInfo?> RunUpdateForLaunchAsync(
         ServerBuildInformation buildInformation,
         CancellationToken cancel = default)
@@ -88,6 +90,7 @@ public sealed partial class Updater : ObservableObject
         }
 
         _updating = true;
+        ExceptionMessage = null;
 
         try
         {
@@ -102,6 +105,7 @@ public sealed partial class Updater : ObservableObject
         catch (Exception e)
         {
             Status = UpdateStatus.Error;
+            ExceptionMessage = e.Message;
             Log.Error(e, "Exception while trying to run updates");
         }
         finally

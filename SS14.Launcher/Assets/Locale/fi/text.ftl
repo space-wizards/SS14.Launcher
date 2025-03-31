@@ -412,7 +412,10 @@ tab-options-seasonal-branding = Kausibrändäys
 # For the language selection menu.
 language-selector-help-translate = Haluatko auttaa käännöstyössä? Sinä voit!
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-status-update-error = Virhe serverin sisältöä ladatessa. Ongelman jatkuessa pyydä tukea Discordista.
+connecting-status-update-error =
+    Virhe serverin sisältöä ladatessa. Ongelman jatkuessa pyydä tukea Discordista.
+
+    Error: { $err }
 # Strings for the "options" tab
 tab-options-log-launcher-desc = Salli tiedonkeruu launcherista. Hyödyllinen kehittäjille. (Vaatii uudelleenkäynnistyksen)
 # Strings for the "options" tab

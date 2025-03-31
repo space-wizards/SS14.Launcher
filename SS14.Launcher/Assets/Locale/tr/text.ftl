@@ -25,7 +25,10 @@ connecting-title-content-bundle = Yükleniyor…
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-cancel = İptal
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-status-update-error = Sunucu içeriği indirilirken bir hata oluştu. Hata devam ederse Discord'dan yardım isteyiniz.
+connecting-status-update-error =
+    Sunucu içeriği indirilirken bir hata oluştu. Hata devam ederse Discord'dan yardım isteyiniz.
+
+    Error: { $err }
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-connection-failed = Sunucuya bağlanma başarısız!
 # Localization for the "add favorite server" dialog window
@@ -533,3 +536,10 @@ connecting-privacy-policy-text = Bu sunucuya bağlanmadan önce gizlilik politik
 connecting-privacy-policy-text-version-changed = Bu sunucu son oynadığınızdan beri gizlilik politikasını güncelledi. Bağlanmadan önce yeni halini kabul etmelisiniz.
 connecting-privacy-policy-accept = Kabul et (devam et)
 connecting-privacy-policy-decline = Reddet (bağlantıyı kes)
+tab-servers-table-round-time = Zaman
+server-entry-round-time =
+    { $hours ->
+        [0] { $mins }M
+       *[1] { $hours }H { $mins }M
+    }
+server-entry-status-lobby = Lobi

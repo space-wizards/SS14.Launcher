@@ -4,9 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Net.Http.Headers;
 using System.Text;
-using System.Threading.Tasks;
 using Avalonia;
-using Avalonia.Controls;
 using Avalonia.Logging;
 using Avalonia.Media;
 using Microsoft.Win32;
@@ -23,8 +21,6 @@ using SS14.Launcher.Models.EngineManager;
 using SS14.Launcher.Models.Logins;
 using SS14.Launcher.Models.OverrideAssets;
 using SS14.Launcher.Utility;
-using SS14.Launcher.ViewModels;
-using SS14.Launcher.Views;
 using TerraFX.Interop.Windows;
 using LogEventLevel = Serilog.Events.LogEventLevel;
 
@@ -32,8 +28,6 @@ namespace SS14.Launcher;
 
 internal static class Program
 {
-    private static Task? _serverTask;
-
     // Initialization code. Don't use any Avalonia, third-party APIs or any
     // SynchronizationContext-reliant code before AppMain is called: things aren't initialized
     // yet and stuff might break.
@@ -124,20 +118,13 @@ internal static class Program
 
         try
         {
-            using (msgr.PipeServerSelfDestruct)
-            {
-                BuildAvaloniaApp(cfg).Start(AppMain, args);
-                msgr.PipeServerSelfDestruct.Cancel();
-            }
+            BuildAvaloniaApp(cfg).StartWithClassicDesktopLifetime(args);
         }
         finally
         {
             Log.CloseAndFlush();
             cfg.Close();
         }
-
-        // Wait for pipe server to shut down cleanly.
-        _serverTask?.Wait();
     }
 
     private static unsafe void CheckWindowsVersion()
@@ -256,45 +243,5 @@ internal static class Program
                 // Necessary workaround for #84 on Linux
                 DefaultFamilyName = "avares://SS14.Launcher/Assets/Fonts/noto_sans/*.ttf#Noto Sans"
             });
-    }
-
-    // Your application's entry point. Here you can initialize your MVVM framework, DI
-    // container, etc.
-    private static void AppMain(Application app, string[] args)
-    {
-        var loc = Locator.Current.GetRequiredService<LocalizationManager>();
-        var msgr = Locator.Current.GetRequiredService<LauncherMessaging>();
-        var contentManager = Locator.Current.GetRequiredService<ContentManager>();
-        var overrideAssets = Locator.Current.GetRequiredService<OverrideAssetsManager>();
-        var launcherInfo = Locator.Current.GetRequiredService<LauncherInfoManager>();
-
-        loc.Initialize();
-        launcherInfo.Initialize();
-        contentManager.Initialize();
-        overrideAssets.Initialize();
-
-        var viewModel = new MainWindowViewModel();
-        var window = new MainWindow
-        {
-            DataContext = viewModel
-        };
-        viewModel.OnWindowInitialized();
-
-        loc.LanguageSwitched += () =>
-        {
-            window.ReloadContent();
-
-            // Reloading content isn't a smooth process anyway, so let's do some housekeeping while we're at it.
-            GC.Collect();
-        };
-
-        var lc = new LauncherCommands(viewModel);
-        lc.RunCommandTask();
-        Locator.CurrentMutable.RegisterConstant(lc);
-        _serverTask = msgr.ServerTask(lc);
-
-        app.Run(window);
-
-        lc.Shutdown();
     }
 }

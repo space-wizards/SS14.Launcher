@@ -3,7 +3,10 @@ add-favorite-window-address-invalid = Aadress on vigane
 # Strings for the "hub settings" dialog window.
 hub-settings-button-remove-tooltip = Eemalda hub
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-status-update-error = Serveri sisu allalaadimisel tekkis viga. Palun küsige Discordis tuge, kui probleem püsib.
+connecting-status-update-error =
+    Serveri sisu allalaadimisel tekkis viga. Palun küsige Discordis tuge, kui probleem püsib.
+
+    Error: { $err }
 # Error messages for login
 login-error-account-account-locked = Konto on lukustatud. Palun võtke meiega ühendust, kui arvate, et tegemist on veaga.
 # Strings for 2FA login

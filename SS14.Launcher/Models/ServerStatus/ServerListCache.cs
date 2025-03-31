@@ -63,12 +63,12 @@ public sealed partial class ServerListCache : ObservableObject, IServerSource
             // Queue requests
             foreach (var hub in ConfigConstants.DefaultHubUrls)
             {
-                requests.Add((_hubApi.GetServers(hub, cancel), hub));
+                requests.Add((_hubApi.GetServers(hub, cancel), new Uri(hub.Urls[0])));
             }
 
             foreach (var hub in _dataManager.Hubs.OrderBy(h => h.Priority))
             {
-                requests.Add((_hubApi.GetServers(hub.Address, cancel), hub.Address));
+                requests.Add((_hubApi.GetServers(UrlFallbackSet.FromSingle(hub.Address), cancel), hub.Address));
             }
 
             // Await all requests
@@ -97,7 +97,6 @@ public sealed partial class ServerListCache : ObservableObject, IServerSource
                     else if (request.IsCanceled)
                     {
                         Log.Warning("Request to hub {HubAddress} failed: canceled", hub);
-
                     }
 
                     allSucceeded = false;
@@ -125,7 +124,14 @@ public sealed partial class ServerListCache : ObservableObject, IServerSource
                 return statusData;
             }));
 
-            Status = allSucceeded ? RefreshListStatus.Updated : RefreshListStatus.PartialError;
+            if (_allServers.Count == 0)
+                // We did not get any servers
+                Status = RefreshListStatus.Error;
+            else if (!allSucceeded)
+                // Some hubs succeeded and returned data
+                Status = RefreshListStatus.PartialError;
+            else
+                Status = RefreshListStatus.Updated;
         }
         catch (OperationCanceledException)
         {

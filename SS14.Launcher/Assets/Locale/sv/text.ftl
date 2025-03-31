@@ -96,7 +96,10 @@ connecting-cancel = Avbryt
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-none = Etablerar anslutning…
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-status-update-error = Ett fel uppstod vid nedladdning av serverinnehåll. Fråga gärna efter hjälp på Discord om problemet kvarstår.
+connecting-status-update-error =
+    Ett fel uppstod vid nedladdning av serverinnehåll. Fråga gärna efter hjälp på Discord om problemet kvarstår.
+
+    Error: { $err }
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-updating = Uppdaterar: { $status }
 # Strings for the "connecting" menu that appears when connecting to a server.

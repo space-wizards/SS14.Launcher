@@ -65,14 +65,6 @@
     <Setter Property="FontSize" Value="20" />
   </Style>
 
-  <Style Selector="Rectangle.VerticalSeparator">
-    <Setter Property="Fill">
-      <SolidColorBrush Color="{DynamicResource ThemeListSeparatorColor}" />
-    </Setter>
-    <Setter Property="Width" Value="2" />
-    <Setter Property="Margin" Value="0 4" />
-  </Style>
-
   <Style Selector="ScrollBar">
     <Setter Property="Margin" Value="4 0 0 0" />
   </Style>
