@@ -78,7 +78,30 @@ buildDotnetModule rec {
     "-nologo"
   ];
 
-  nativeBuildInputs = [ wrapGAppsHook iconConvTools copyDesktopItems ];
+  nativeBuildInputs = [
+    wrapGAppsHook
+    iconConvTools
+    copyDesktopItems
+  ];
+
+  LD_LIBRARY_PATH = lib.makeLibraryPath [
+    fontconfig
+    libX11
+    libICE
+    libSM
+    libXi
+    libXcursor
+    libXext
+    libXrandr
+
+    glfw
+    SDL2
+    glibc
+    libGL
+    openal
+    freetype
+    fluidsynth
+  ];
 
   runtimeDeps = [
     # Required by the game.
