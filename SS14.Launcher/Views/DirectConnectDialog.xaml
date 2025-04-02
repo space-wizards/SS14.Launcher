@@ -16,7 +16,7 @@
                Text="{loc:Loc direct-connect-text}" />
 
     <DockPanel DockPanel.Dock="Bottom">
-      <Button DockPanel.Dock="Right" Name="SubmitButton" Content="{loc:Loc direct-connect-connect}" />
+      <Button DockPanel.Dock="Right" Name="SubmitButton" Content="{loc:Loc direct-connect-connect}" IsDefault="True" Click="TrySubmit" />
       <TextBlock Name="InvalidLabel" Text="{loc:Loc direct-connect-address-invalid}" VerticalAlignment="Center" />
     </DockPanel>
 
