@@ -32,8 +32,8 @@
   gdk-pixbuf,
   soundfont-fluid,
 
-# Path to set ROBUST_SOUNDFONT_OVERRIDE to, essentially the default soundfont used.
-  soundfont-path ? "${soundfont-fluid}/share/soundfonts/FluidR3_GM2-2.sf2"
+  # Path to set ROBUST_SOUNDFONT_OVERRIDE to, essentially the default soundfont used.
+  soundfont-path ? "${soundfont-fluid}/share/soundfonts/FluidR3_GM2-2.sf2",
 }:
 let
   version = "0.31.0";
@@ -69,7 +69,12 @@ buildDotnetModule rec {
   };
 
   # SDK 8.0 required for Robust.LoaderApi
-  dotnet-sdk = with dotnetCorePackages; combinePackages [ sdk_9_0 sdk_8_0 ];
+  dotnet-sdk =
+    with dotnetCorePackages;
+    combinePackages [
+      sdk_9_0
+      sdk_8_0
+    ];
   dotnet-runtime = dotnetCorePackages.runtime_9_0;
 
   dotnetFlags = [
