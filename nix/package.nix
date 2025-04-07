@@ -1,42 +1,42 @@
-{ lib
-, buildDotnetModule
-, dotnetCorePackages
-, fetchFromGitHub
-, wrapGAppsHook
-, iconConvTools
-, copyDesktopItems
-, makeDesktopItem
-, libX11
-, libICE
-, libSM
-, libXi
-, libXcursor
-, libXext
-, libXrandr
-, fontconfig
-, glew
-, SDL2
-, glfw
-, glibc
-, libGL
-, freetype
-, openal
-, fluidsynth
-, gtk3
-, pango
-, atk
-, cairo
-, zlib
-, glib
-, gdk-pixbuf
-, soundfont-fluid
+{
+  lib,
+  buildDotnetModule,
+  dotnetCorePackages,
+  fetchFromGitHub,
+  wrapGAppsHook4,
+  iconConvTools,
+  copyDesktopItems,
+  makeDesktopItem,
+  libX11,
+  libICE,
+  libSM,
+  libXi,
+  libXcursor,
+  libXext,
+  libXrandr,
+  fontconfig,
+  glew,
+  SDL2,
+  glfw,
+  glibc,
+  libGL,
+  freetype,
+  openal,
+  fluidsynth,
+  gtk3,
+  pango,
+  atk,
+  cairo,
+  zlib,
+  glib,
+  gdk-pixbuf,
+  soundfont-fluid,
 
-# Path to set ROBUST_SOUNDFONT_OVERRIDE to, essentially the default soundfont used.
-, soundfont-path ? "${soundfont-fluid}/share/soundfonts/FluidR3_GM2-2.sf2"
-
+  # Path to set ROBUST_SOUNDFONT_OVERRIDE to, essentially the default soundfont used.
+  soundfont-path ? "${soundfont-fluid}/share/soundfonts/FluidR3_GM2-2.sf2",
 }:
 let
-  version = "0.30.2";
+  version = "0.31.0";
   pname = "space-station-14-launcher";
 in
 buildDotnetModule rec {
@@ -50,7 +50,7 @@ buildDotnetModule rec {
     owner = "space-wizards";
     repo = "SS14.Launcher";
     rev = "v${version}";
-    hash = "sha256-Rx39FuDPh5sGVjcKjCo4mTQ8Z/x9PD1CvBQh5ICES9Q=";
+    hash = "sha256-lEgJ+GdmiSQMl/l+CTBIUevMcJi+yVvFuS3buTNCYW4=";
     fetchSubmodules = true;
   };
 
@@ -69,7 +69,12 @@ buildDotnetModule rec {
   };
 
   # SDK 8.0 required for Robust.LoaderApi
-  dotnet-sdk = with dotnetCorePackages; combinePackages [ sdk_9_0 sdk_8_0 ];
+  dotnet-sdk =
+    with dotnetCorePackages;
+    combinePackages [
+      sdk_9_0
+      sdk_8_0
+    ];
   dotnet-runtime = dotnetCorePackages.runtime_9_0;
 
   dotnetFlags = [
@@ -79,7 +84,7 @@ buildDotnetModule rec {
   ];
 
   nativeBuildInputs = [
-    wrapGAppsHook
+    wrapGAppsHook4
     iconConvTools
     copyDesktopItems
   ];
@@ -172,7 +177,7 @@ buildDotnetModule rec {
     description = "Launcher for Space Station 14, a multiplayer game about paranoia and disaster";
     homepage = "https://spacestation14.io";
     license = licenses.mit;
-    maintainers = [ maintainers.zumorica ];
+    maintainers = [ ];
     platforms = [ "x86_64-linux" ];
     mainProgram = "SS14.Launcher";
   };
