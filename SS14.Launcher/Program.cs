@@ -213,7 +213,7 @@ internal static class Program
     {
         var locator = Locator.CurrentMutable;
 
-        var http = HappyEyeballsHttp.CreateHttpClient();
+        var http = (cfg.GetCVar(CVars.ProxyEnable)) ? HappyEyeballsHttp.CreateHttpClient(proxyUrl: cfg.GetCVar(CVars.ProxyURL)) : HappyEyeballsHttp.CreateHttpClient(); //Ternary for creating connection with or without proxy 
         http.DefaultRequestHeaders.UserAgent.Add(
             new ProductInfoHeaderValue(LauncherVersion.Name, LauncherVersion.Version?.ToString()));
         http.DefaultRequestHeaders.Add("SS14-Launcher-Fingerprint", cfg.Fingerprint.ToString());
