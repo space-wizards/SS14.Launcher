@@ -40,9 +40,13 @@ connecting-cancel = Відмінити
 connecting-status-none = Початок з'єднання…
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-update-error =
-    Сталася помилка під час завантаження контенту сервера. Будь ласка, зверніться за підтримкою у Discord, якщо проблема не зникне.
+    Сталася помилка під час завантаження контенту сервера. Якщо проблема не зникає, спробуйте наступне:
+    - Спробуйте підключитися до іншого сервера та перевірте чи проблема не зникає.
+    - Спробуйте викмнути або увімкнути такі програми як VPN, якщо вони у вас є.
 
-    Error: { $err }
+    Якщо у вас досі виникають проблеми, спершу спробуйте звязатися з сервером, до якого ви намагаєтеся під'єднатися, перш ніж звертатися за підтримкою на офіційному діскорді Space Station 14 або на форумах.
+
+    Помилка: { $err }
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-updating = Оновлення: { $status }
 # Strings for the "connecting" menu that appears when connecting to a server.
@@ -216,7 +220,7 @@ region-asia-north = Північна Азія
 # Short region names for server tag filters (shown in filter check box)
 region-short-south-america-south = Пд. Америка - Південь
 # Strings for the "servers" tab
-tab-servers-list-status-error = Виникла помилка при завантаженні головного списку серверів.
+tab-servers-list-status-error = Виникла помилка при отриманні списків головних серверів. Можливо, спробуйте оновити?
 # Long region names for server tag filters (shown in tooltip)
 region-the-moon = Місяць
 # Long region names for server tag filters (shown in tooltip)
@@ -366,7 +370,7 @@ tab-servers-table-players = Гравці
 # Strings for the "servers" tab
 tab-servers-table-name = Назва серверу
 # Strings for the "servers" tab
-tab-servers-list-status-partial-error = Не вдалося отримати деякі або всі списки серверів. Перевірте правильність конфігурації хабу.
+tab-servers-list-status-partial-error = Не вдалося отримати деякі списки серверів. Перевірте правильність конфігурації хабу та спробуйте оновити.
 # Strings for the "servers" tab
 tab-servers-list-status-updating-master = Отримання списку головних серверів…
 # Strings for the "servers" tab
