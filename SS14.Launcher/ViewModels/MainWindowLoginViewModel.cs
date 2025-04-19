@@ -1,4 +1,3 @@
-using ReactiveUI;
 using Splat;
 using SS14.Launcher.Api;
 using SS14.Launcher.Models.Data;
@@ -22,7 +21,13 @@ public class MainWindowLoginViewModel : ViewModelBase
         get => _screen;
         set
         {
-            this.RaiseAndSetIfChanged(ref _screen, value);
+            if (_screen == value)
+                return;
+
+            OnPropertyChanging();
+            _screen = value;
+            OnPropertyChanged();
+
             value.Activated();
         }
     }
@@ -47,11 +52,6 @@ public class MainWindowLoginViewModel : ViewModelBase
         Screen = new ExpiredLoginViewModel(this, _cfg, _authApi, _loginMgr, account);
     }
 
-    public void SwitchToRegister()
-    {
-        Screen = new RegisterViewModel(this, _cfg, _authApi, _loginMgr);
-    }
-
     public void SwitchToForgotPassword()
     {
         Screen = new ForgotPasswordViewModel(this, _authApi);
@@ -60,16 +60,6 @@ public class MainWindowLoginViewModel : ViewModelBase
     public void SwitchToAuthTfa(AuthApi.AuthenticateRequest request)
     {
         Screen = new AuthTfaViewModel(this, request, _loginMgr, _authApi, _cfg);
-    }
-
-    public void SwitchToResendConfirmation()
-    {
-        Screen = new ResendConfirmationViewModel(this, _authApi);
-    }
-
-    public void SwitchToRegisterNeedsConfirmation(string username, string password)
-    {
-        Screen = new RegisterNeedsConfirmationViewModel(this, _authApi, username, password, _loginMgr, _cfg);
     }
 
     public bool LogLauncher
