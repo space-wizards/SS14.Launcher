@@ -50,7 +50,7 @@ connecting-status-update-error =
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-updating = Оновлення: { $status }
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-status-connecting = Отримання інформації о з'єднанні з сервером…
+connecting-status-connecting = Отримання інформації про з'єднання з сервером…
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-connection-failed = Не вдалось приєднатись до серверу!
 # Strings for the "connecting" menu that appears when connecting to a server.
