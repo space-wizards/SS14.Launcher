@@ -15,9 +15,13 @@ connecting-status-updating = Oppdatering: { $status }
 connecting-status-connection-failed = Kunne ikke koble til serveren!
 add-favorite-window-example-name = Tute Stasjon
 connecting-status-update-error =
-    Det var en feil under nedlastingen av server innholdet. Vennligst spør på Discord om støtte om problemet vedvarer.
+    Det var en feil under nedlastingen av sørver innholdet. Hvis dette vedvarer prøv det følgende:
+    - Prøv å koble til en annen sørver, for å se om problemet fortsetter
+    -Prøv å skru av eller på programvare som for eksempelvis VPNer, Hvis du har det.
 
-    Error: { $err }
+    Hvis du fremdeles har problemer, prøv å kontakte sørveren som du prøver å bli med på før du spør etter help på den offisielle Space station 14 Discord eller forum.
+
+    Teknisk feil: { $err }
 connecting-cancel = Kansler
 connecting-privacy-policy-accept = Aksepter
 direct-connect-connect = Koble til
