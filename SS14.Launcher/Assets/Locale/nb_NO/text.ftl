@@ -271,3 +271,5 @@ tab-options-seasonal-branding-desc = Hva enn midlertidig relevante ikoner og log
 tab-options-desc-incompatible = Dette alternativet er inkompatibelt med plattformen din og har blitt deaktivert.
 language-selector-system-language = System språk ({ $languageName })
 login-error-account-unconfirmed = E-postadressen for denne kontoen må fortsatt bekreftes. Vennligst bekreft e-postadressen din før du prøver å logge inn
+tab-servers-table-round-time = Tid
+connecting-status-update-error-unknown = Ukjent
