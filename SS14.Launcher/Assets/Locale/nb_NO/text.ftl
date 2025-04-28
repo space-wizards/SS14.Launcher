@@ -9,7 +9,7 @@ account-drop-down-add-account = Legg til bruker
 add-favorite-window-address-invalid = Adresse er utilgjengelig
 connecting-title-connecting = Kobler til…
 connecting-status-none = Starter tilkobling…
-connecting-title-content-bundle = Lasting…
+connecting-title-content-bundle = Laster…
 connecting-status-starting-client = Starter klient…
 connecting-status-updating = Oppdatering: { $status }
 connecting-status-connection-failed = Kunne ikke koble til serveren!
@@ -22,7 +22,7 @@ connecting-status-update-error =
     Hvis du fremdeles har problemer, prøv å kontakte sørveren som du prøver å bli med på før du spør etter help på den offisielle Space station 14 Discord eller forum.
 
     Teknisk feil: { $err }
-connecting-cancel = Kansler
+connecting-cancel = Kanseller
 connecting-privacy-policy-accept = Aksepter
 direct-connect-connect = Koble til
 direct-connect-title = Direkte tilkobling…
@@ -277,3 +277,4 @@ language-selector-system-language = System språk ({ $languageName })
 login-error-account-unconfirmed = E-postadressen for denne kontoen må fortsatt bekreftes. Vennligst bekreft e-postadressen din før du prøver å logge inn
 tab-servers-table-round-time = Tid
 connecting-status-update-error-unknown = Ukjent
+server-entry-status-lobby = Lobby
