@@ -1,7 +1,7 @@
 # Localization for the "add favorite server" dialog window
 add-favorite-window-title = Додати Обраний Сервер
 # Strings for the drop-down window to manage your active account
-account-drop-down-none-selected = Обліковий запис не обрано
+account-drop-down-none-selected = Обліковий запис не вибрано
 # Strings for the drop-down window to manage your active account
 account-drop-down-not-logged-in = Ви не уввійшли
 # Strings for the drop-down window to manage your active account
@@ -50,7 +50,7 @@ connecting-status-update-error =
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-updating = Оновлення: { $status }
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-status-connecting = Отримання інформації про з'єднання з сервером…
+connecting-status-connecting = Отримання інформації про з'єднання з сервера…
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-connection-failed = Не вдалось приєднатись до серверу!
 # Strings for the "connecting" menu that appears when connecting to a server.
@@ -110,7 +110,7 @@ connecting-update-status-unknown = Ви не повинні цього бачи�
 # Strings for the "direct connect" dialog window.
 direct-connect-title = Пряме з'єднання…
 # Strings for the "direct connect" dialog window.
-direct-connect-text = Введіть адресу сервера для під'єднання:
+direct-connect-text = Введіть адресу сервера для підключення:
 # Strings for the "direct connect" dialog window.
 direct-connect-connect = Під'єднатися
 # Strings for the "direct connect" dialog window.
