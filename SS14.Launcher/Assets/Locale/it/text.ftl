@@ -82,3 +82,5 @@ hub-settings-button-add-tooltip = Aggiungi hub
 hub-settings-button-remove-tooltip = Rimuovi hub
 hub-settings-button-increase-priority-tooltip = Aumenta priorità
 hub-settings-button-decrease-priority-tooltip = Diminuisci priorità
+hub-settings-explanation = Qui puoi aggiungere hub extra da cui recuperare i server di gioco. Dovresti aggiungere solo hub di cui ti fidi, poiché possono 'spoofare' (imitare) server di gioco da altri hub. L'ordine degli hub è importante; se due hub pubblicizzano lo stesso server di gioco, l'hub con la priorità più alta (più in alto nella lista) avrà la precedenza.
+hub-settings-button-reset-tooltip = Ripristina le impostazioni predefinite
