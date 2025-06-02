@@ -1,9 +1,9 @@
 # Strings for the drop-down window to manage your active account
 account-drop-down-not-logged-in = Login non effettuato
 # Strings for the drop-down window to manage your active account
-account-drop-down-log-out = Log out
+account-drop-down-log-out = Disconnettiti
 # Strings for the drop-down window to manage your active account
-account-drop-down-log-out-of = Esci da { $name }
+account-drop-down-log-out-of = Disconnettiti da { $name }
 # Strings for the drop-down window to manage your active account
 account-drop-down-switch-account = Cambia account:
 # Strings for the drop-down window to manage your active account
@@ -71,3 +71,7 @@ connecting-privacy-policy-view = Mostra norme sulla privacy
 connecting-privacy-policy-text = Questo server richiede che tu accetti le sue norme sulla privacy prima di connetterti ad esso.
 connecting-privacy-policy-accept = Accetta (continua)
 connecting-privacy-policy-decline = Rifiuta (disconnettiti)
+direct-connect-connect = Connettiti
+direct-connect-address-invalid = Indirizzo non valido
+hub-settings-button-cancel = Cancella
+hub-settings-button-done = Fatto
