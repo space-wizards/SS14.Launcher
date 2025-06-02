@@ -252,3 +252,15 @@ server-entry-description-none = Nessuna descrizione del server fornita
 server-fetched-from-hub = Recuperato da { $hub }
 tab-development-title = { "[" }DEV]
 tab-development-title-override = { "[" }DEV (override attivo!!!)]
+server-entry-round-time =
+    { $hours ->
+        [0] { $mins }M
+       *[1] { $hours }O { $mins }M
+    }
+server-entry-fetching = Recupero…
+server-entry-description-offline = Impossibile contattare server
+server-entry-description-fetching = Recupero stato server…
+server-entry-description-error = Errore nel recupero della descrizione del server
+server-entry-status-lobby = Lobby
+server-entry-raise = Metti in cima
+tab-development-disable-signing = Disabilita controllo firma motore
