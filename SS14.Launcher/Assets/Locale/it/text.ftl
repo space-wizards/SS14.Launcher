@@ -241,7 +241,7 @@ filters-rp-medium-desc = Medio
 filters-rp-high = Alto
 filters-rp-high-desc = Alto
 server-entry-remove-favorite = Rimuovi dai preferiti
-tab-development-disable-signing-desc = { "[" }SOLO DEV] Disabilita la verifica delle firme del motore. NON ATTIVARE A MENO CHE TU NON SIA ESATTAMENTE CERTO DI SAPERE COSA STAI FACENDO.
+tab-development-disable-signing-desc = { "[" }SOLO DEV] Disabilita la verifica delle firme del motore. NON ATTIVARE A MENO CHE TU NON SAPPIA ESATTAMENTE COSA STAI FACENDO.
 server-entry-offline = OFFLINE
 server-entry-player-count =
     { $players } / { $max ->
@@ -268,3 +268,4 @@ tab-home-add-favorite = Aggiungi Preferito…
 tab-development-enable-engine-override = Abilita l'override del motore
 tab-home-title = Home
 tab-home-favorite-servers = Server Preferiti:
+tab-development-enable-engine-override-desc = Sovrascrivi il percorso da cui caricare gli zip del motore (release/ su RobustToolbox)
