@@ -75,3 +75,5 @@ direct-connect-connect = Connettiti
 direct-connect-address-invalid = Indirizzo non valido
 hub-settings-button-cancel = Cancella
 hub-settings-button-done = Fatto
+hub-settings-title = Impostazioni dell'Hub
+connecting-update-status-fetching-manifest = Recupero del manifesto del server…
