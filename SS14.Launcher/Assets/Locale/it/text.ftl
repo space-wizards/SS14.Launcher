@@ -304,3 +304,4 @@ tab-options-account-settings = Impostazioni Account
 tab-options-account-settings-desc = Puoi gestire le impostazioni del tuo account, come cambiare l'email o la password, tramite il nostro sito web.
 tab-options-compatibility-mode = Modalità di compatibilità
 language-selector-system-language = Lingua di sistema ({ $languageName })
+language-selector-language = { $languageName } ({ $englishName })
