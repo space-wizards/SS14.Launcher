@@ -1,5 +1,5 @@
 # Strings for the drop-down window to manage your active account
-account-drop-down-not-logged-in = Login non effettuato
+account-drop-down-not-logged-in = Accesso non effettuato
 # Strings for the drop-down window to manage your active account
 account-drop-down-log-out = Disconnettiti
 # Strings for the drop-down window to manage your active account
@@ -11,7 +11,7 @@ account-drop-down-select-account = Seleziona account:
 # Strings for the drop-down window to manage your active account
 account-drop-down-add-account = Aggiungi account
 # Localization for the "add favorite server" dialog window
-add-favorite-window-title = Aggiungi server preferito
+add-favorite-window-title = Aggiungi Server Preferito
 # Localization for the "add favorite server" dialog window
 add-favorite-window-address-invalid = Indirizzo non valido
 # Localization for the "add favorite server" dialog window
@@ -43,7 +43,7 @@ connecting-status-connecting = Recupero info connessione dal server…
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-connection-failed = Connessione al server fallita!
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-status-starting-client = Avvio del client…
+connecting-status-starting-client = Avvio il client…
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-not-a-content-bundle = Il file non è un pacchetto contenuti valido!
 # Strings for the drop-down window to manage your active account
@@ -55,7 +55,7 @@ connecting-update-status-loading-content-bundle = Caricamento del pacchetto cont
 connecting-update-status-unknown = Non dovresti vedere questo
 direct-connect-title = Connessione diretta…
 direct-connect-text = Inserisci indirizzo server a cui connetterti:
-connecting-status-updating = Aggiornamento: { $status }
+connecting-status-updating = Aggiorno: { $status }
 connecting-status-client-crashed = Il client sembra essere crashato durante l'avvio. Se questo persiste, chiedi supporto su Discord o GitHub.
 connecting-update-status-checking-client-update = Controllo aggiornamenti ai contenuti del server…
 connecting-update-status-downloading-engine = Scarico i contenuti del server…
@@ -66,9 +66,9 @@ connecting-update-status-culling-engine = Cancello i contenuti vecchi…
 connecting-update-status-culling-content = Cancello i contenuti del server vecchi…
 connecting-update-status-ready = Aggiornamento riuscito!
 connecting-update-status-checking-engine-modules = Controllo se ci sono dipendenze extra…
-connecting-privacy-policy-text-version-changed = Questo server ha aggiornato le sue norme sulla privacy dall'ultima volta che vi hai giocato. Devi accettare la nuova versione prima di connetterti ad esso.
+connecting-privacy-policy-text-version-changed = Questo server ha aggiornato le sue norme sulla privacy dall'ultima volta che vi hai giocato. Devi accettare la nuova versione prima di connetterti.
 connecting-privacy-policy-view = Mostra norme sulla privacy
-connecting-privacy-policy-text = Questo server richiede che tu accetti le sue norme sulla privacy prima di connetterti ad esso.
+connecting-privacy-policy-text = Questo server richiede che accetti le sue norme sulla privacy prima di connetterti.
 connecting-privacy-policy-accept = Accetta (continua)
 connecting-privacy-policy-decline = Rifiuta (disconnettiti)
 direct-connect-connect = Connettiti
@@ -76,14 +76,14 @@ direct-connect-address-invalid = Indirizzo non valido
 hub-settings-button-cancel = Annulla
 hub-settings-button-done = Fatto
 hub-settings-title = Impostazioni dell'Hub
-connecting-update-status-fetching-manifest = Recupero del manifesto del server…
+connecting-update-status-fetching-manifest = Recupero il manifesto del server…
 hub-settings-button-reset = Resetta
 hub-settings-button-add-tooltip = Aggiungi hub
 hub-settings-button-remove-tooltip = Rimuovi hub
 hub-settings-button-increase-priority-tooltip = Aumenta priorità
 hub-settings-button-decrease-priority-tooltip = Diminuisci priorità
 hub-settings-explanation = Qui puoi aggiungere hub aggiuntivi da cui recuperare i server di gioco. Dovresti aggiungere solo hub di cui ti fidi, poiché possono falsificare i dati dei server di gioco da altri hub. L'ordine degli hub è importante; se due hub pubblicizzano lo stesso server di gioco, l'hub con la priorità più alta (più in alto nella lista) avrà la precedenza.
-hub-settings-button-reset-tooltip = Ripristina le impostazioni predefinite
+hub-settings-button-reset-tooltip = Ripristina alle impostazioni predefinite
 hub-settings-heading-default = Predefinito
 hub-settings-heading-custom = Personalizzato
 hub-settings-warning-invalid = Hub non valido (non dimenticarti di http(s)://)
@@ -98,7 +98,24 @@ login-error-unknown = Errore sconosciuto
 login-2fa-title = Autenticazione a 2 fattori richiesta
 login-2fa-message = Inserisci il codice di autenticazione dalla tua app.
 login-2fa-button-recovery-code = Codice di recupero
-login-2fa-button-cancel = Cancella
+login-2fa-button-cancel = Annulla
 login-errors-button-ok = Ok
 login-2fa-input-watermark = Codice di autenticazione
 login-2fa-button-confirm = Conferma
+login-login-button-forgot = Hai dimenticato la tua password?
+login-login-button-resend = Ri-invia email per la conferma
+login-expired-title = Login scaduto
+login-expired-message =
+    La sessione di questo account è scaduta.
+    Ri-inserisci la password.
+login-expired-button-forgot-password = Dimenticato la tua password?
+login-expired-button-log-out = Disconnettiti
+login-expired-button-log-in = Accedi
+login-forgot-success-title = Email di reset inviata
+login-forgot-success-message = Un link di reset è stato inviato al tuo indirizzo email.
+login-login-busy-logging-in = Effettuo il log in…
+login-login-error-title = Impossibile effettuare il log in
+login-forgot-title = Password dimenticata?
+login-forgot-message = Se hai dimenticato la tua password, puoi inserire qui l'indirizzo email associato con il tuo account per ricevere un link per il reset.
+login-login-title = Log in
+login-login-button-log-in = Log in
