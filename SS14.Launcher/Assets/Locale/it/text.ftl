@@ -1,5 +1,5 @@
 # Strings for the drop-down window to manage your active account
-account-drop-down-not-logged-in = Non è stato effettuato il login
+account-drop-down-not-logged-in = Login non effettuato
 # Strings for the drop-down window to manage your active account
 account-drop-down-log-out = Log out
 # Strings for the drop-down window to manage your active account
@@ -9,11 +9,11 @@ account-drop-down-switch-account = Cambia account:
 # Strings for the drop-down window to manage your active account
 account-drop-down-select-account = Seleziona account:
 # Strings for the drop-down window to manage your active account
-account-drop-down-add-account = Aggiungi un account
+account-drop-down-add-account = Aggiungi account
 # Localization for the "add favorite server" dialog window
-add-favorite-window-title = Aggiungi un server preferito
+add-favorite-window-title = Aggiungi server preferito
 # Localization for the "add favorite server" dialog window
-add-favorite-window-address-invalid = L'Indirizzo non è valido
+add-favorite-window-address-invalid = Indirizzo non valido
 # Localization for the "add favorite server" dialog window
 add-favorite-window-label-name = Nome:
 # Localization for the "add favorite server" dialog window
@@ -24,20 +24,50 @@ add-favorite-window-example-name = Honk Station
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-title-connecting = Connessione…
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-title-content-bundle = In caricamento…
+connecting-title-content-bundle = Caricamento…
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-cancel = Annulla
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-none = Avvio della connessione…
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-status-update-error = Si è verificato un errore durante il download dei contenuti del server. Se il problema persiste, chiedi supporto su Discord.
+connecting-status-update-error =
+    Si è verificato un errore durante il download dei contenuti del server. Se questo persiste, prova le seguenti opzioni:
+    - Prova a connetterti a un server di gioco diverso per vedere se il problema persiste.
+    - Prova a disabilitare o abilitare software come VPN, se ne hai una.
+
+    Se stai ancora avendo problemi, prova a contattare il server a cui stai cercando di connetterti prima di chiedere supporto sul Discord o sui Forum Ufficiali di Space Station 14.
+
+    Errore tecnico: { $err }
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-status-connecting = Recupero delle informazioni sulla connessione dal server…
+connecting-status-connecting = Recupero info connessione dal server…
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-connection-failed = Connessione al server fallita!
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-starting-client = Avvio del client…
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-status-not-a-content-bundle = Il file non è un content bundle valido!
+connecting-status-not-a-content-bundle = Il file non è un pacchetto contenuti valido!
 # Strings for the drop-down window to manage your active account
 account-drop-down-none-selected = Nessun account selezionato
+connecting-update-status-downloading-engine-modules = Scarico le dipendenze extra…
+connecting-update-status-committing-download = Sincronizzo al disco…
+connecting-update-status-loading-into-db = Memorizzo gli asset nel database…
+connecting-update-status-loading-content-bundle = Caricamento del pacchetto contenuti…
+connecting-update-status-unknown = Non dovresti vedere questo
+direct-connect-title = Connessione diretta…
+direct-connect-text = Inserisci indirizzo server a cui connetterti:
+connecting-status-updating = Aggiornamento: { $status }
+connecting-status-client-crashed = Il client sembra essere crashato durante l'avvio. Se questo persiste, chiedi supporto su Discord o GitHub.
+connecting-update-status-checking-client-update = Controllo aggiornamenti ai contenuti del server…
+connecting-update-status-downloading-engine = Scarico i contenuti del server…
+connecting-update-status-downloading-content = Scarico i contenuti del server…
+connecting-status-update-error-unknown = Sconosciuto
+connecting-update-status-verifying = Verifico l'integrità del download…
+connecting-update-status-culling-engine = Cancello i contenuti vecchi…
+connecting-update-status-culling-content = Cancello i contenuti del server vecchi…
+connecting-update-status-ready = Aggiornamento riuscito!
+connecting-update-status-checking-engine-modules = Controllo se ci sono dipendenze extra…
+connecting-privacy-policy-text-version-changed = Questo server ha aggiornato le sue norme sulla privacy dall'ultima volta che vi hai giocato. Devi accettare la nuova versione prima di connetterti ad esso.
+connecting-privacy-policy-view = Mostra norme sulla privacy
+connecting-privacy-policy-text = Questo server richiede che tu accetti le sue norme sulla privacy prima di connetterti ad esso.
+connecting-privacy-policy-accept = Accetta (continua)
+connecting-privacy-policy-decline = Rifiuta (disconnettiti)
