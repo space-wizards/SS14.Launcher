@@ -264,3 +264,7 @@ server-entry-description-error = Errore nel recupero della descrizione del serve
 server-entry-status-lobby = Lobby
 server-entry-raise = Metti in cima
 tab-development-disable-signing = Disabilita controllo firma motore
+tab-home-add-favorite = Aggiungi Preferito…
+tab-development-enable-engine-override = Abilita l'override del motore
+tab-home-title = Home
+tab-home-favorite-servers = Server Preferiti:
