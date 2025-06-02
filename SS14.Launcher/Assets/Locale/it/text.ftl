@@ -128,3 +128,4 @@ login-expired-password-watermark = Password
 login-forgot-error = Errore
 login-login-username-watermark = Nome utente o email
 login-login-password-watermark = Password
+login-login-show-password = Mostra Password
