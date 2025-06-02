@@ -216,7 +216,7 @@ filters-player-count-hide-full-desc = I server pieni non verranno mostrati
 filters-player-count-minimum-desc = I server con meno giocatori di così non verranno mostrati
 filters-player-count-maximum-desc = I server con più giocatori di così non verranno mostrati
 server-entry-connect = Connettiti
-server-entry-add-favorite = Aggiungi preferito
+server-entry-add-favorite = Aggiungi ai preferiti
 filters-title = Filtri
 filters-title-language = Lingua
 filters-title-region = Regione
@@ -241,3 +241,14 @@ filters-rp-medium-desc = Medio
 filters-rp-high = Alto
 filters-rp-high-desc = Alto
 server-entry-remove-favorite = Rimuovi dai preferiti
+tab-development-disable-signing-desc = { "[" }SOLO DEV] Disabilita la verifica delle firme del motore. NON ATTIVARE A MENO CHE TU NON SIA ESATTAMENTE CERTO DI SAPERE COSA STAI FACENDO.
+server-entry-offline = OFFLINE
+server-entry-player-count =
+    { $players } / { $max ->
+        [0] ∞
+       *[1] { $max }
+    }
+server-entry-description-none = Nessuna descrizione del server fornita
+server-fetched-from-hub = Recuperato da { $hub }
+tab-development-title = { "[" }DEV]
+tab-development-title-override = { "[" }DEV (override attivo!!!)]
