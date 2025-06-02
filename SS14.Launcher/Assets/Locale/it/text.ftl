@@ -207,3 +207,5 @@ filters = Filtri ({ $filteredServers } / { $totalServers })
 tab-servers-search-watermark = Ricerco server…
 tab-servers-table-players = Giocatori
 tab-servers-list-status-error = Si è verificato un errore nel recupero delle liste principali dei server. Prova a ricaricare?
+tab-servers-list-status-none-filtered = Nessun server corrisponde alle tue impostazioni di ricerca o filtri.
+tab-servers-list-status-none = Non ci sono server pubblici. Assicurati che la configurazione del tuo hub sia corretta.
