@@ -292,3 +292,7 @@ tab-options-disable-signing = Disabilita controllo firma motore
 tab-options-hub-settings = Impostazioni degli hub
 tab-options-hub-settings-desc = Cambia quale o quali server hub vuoi usare per recuperare l'elenco dei server.
 language-selector-cancel = Annulla
+language-selector-label = Lingua
+tab-options-seasonal-branding-desc = Qualsiasi icona e logo temporaneamente rilevanti che possiamo ideare.
+language-selector-save = Salva
+language-selector-help-translate = Vuoi aiutare a tradurre? Puoi farlo!
