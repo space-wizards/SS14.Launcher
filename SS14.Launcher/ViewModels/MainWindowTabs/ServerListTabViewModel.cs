@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.Reactive.Linq;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Splat;
@@ -26,12 +27,10 @@ public class ServerListTabViewModel : MainWindowTabViewModel
     public string? SearchString
     {
         get => _searchString;
-        set
-        {
-            this.RaiseAndSetIfChanged(ref _searchString, value);
-            UpdateSearchedList();
-        }
+        set => this.RaiseAndSetIfChanged(ref _searchString, value);
     }
+
+    private const int throttleMs = 200;
 
     public bool SpinnerVisible => _serverListCache.Status < RefreshListStatus.Updated;
 
@@ -89,6 +88,11 @@ public class ServerListTabViewModel : MainWindowTabViewModel
         };
 
         _loc.LanguageSwitched += () => Filters.UpdatePresentFilters(_serverListCache.AllServers);
+
+        this.WhenAnyValue(x => x.SearchString)
+            .Throttle(TimeSpan.FromMilliseconds(throttleMs), RxApp.MainThreadScheduler)
+            .ObserveOn(RxApp.MainThreadScheduler)
+            .Subscribe(_ => UpdateSearchedList());
     }
 
     private void FiltersOnFiltersUpdated()
