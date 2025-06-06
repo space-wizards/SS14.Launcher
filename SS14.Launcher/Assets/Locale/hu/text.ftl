@@ -118,3 +118,4 @@ main-window-header-link-website = Weboldal
 main-window-out-of-date-desc =
     Ez az indító elavult.
     Kérlek töltsed le az új verziót a weboldalról.
+main-window-early-access-desc = A Space Station 14 még nagyon is alfa verziójú. Reméljük tetszik amit látsz, és talán maradni is fogsz egy darabig, de egyenlőre mérsékeld az elvárásaidat.
