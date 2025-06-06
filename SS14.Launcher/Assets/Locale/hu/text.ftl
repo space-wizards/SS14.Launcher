@@ -1,0 +1,15 @@
+account-drop-down-log-out-of = Kijelentkezés a(z) { $name } fiókból
+connecting-status-none = Kapcsolat létrehozása…
+account-drop-down-none-selected = Nincs kiválasztott fiók
+add-favorite-window-label-name = Név:
+account-drop-down-not-logged-in = Nincs bejelentkezve
+account-drop-down-log-out = Kijelentkezés
+account-drop-down-switch-account = Fiókváltás:
+account-drop-down-select-account = Válassz fiókot:
+account-drop-down-add-account = Fiók hozzáadása
+add-favorite-window-title = Kedvenc Szerver Hozzáadása
+add-favorite-window-address-invalid = Érvénytelen email cím
+add-favorite-window-label-address = Email cím:
+connecting-title-connecting = Csatlakozás…
+connecting-title-content-bundle = Betöltés…
+connecting-cancel = Mégse
