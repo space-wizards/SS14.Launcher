@@ -372,6 +372,7 @@ public class Connector : ReactiveObject
 
             // Pass build info to client. Initally added for replays, it is now used for connecting on modern robust CDN versions.
             // If engine_version or manifest_hash is null, the client WILL fail to connect.
+            // serverBuildInformation is only null in case of content bundles which shouldn't try to connect to live servers anyways
 
             BuildCVar("download_url", serverBuildInformation?.DownloadUrl);
             BuildCVar("manifest_url", serverBuildInformation?.ManifestUrl);
@@ -380,8 +381,6 @@ public class Connector : ReactiveObject
             BuildCVar("fork_id", serverBuildInformation?.ForkId);
             BuildCVar("hash", serverBuildInformation?.Hash);
             BuildCVar("manifest_hash", serverBuildInformation?.ManifestHash);
-            // This overrides the clients engine_version cvar which gets used in client replay recordings.
-            // the only case where serverBuildInformation is running replays, in which case this cvar is not used on the client.
             BuildCVar("engine_version", serverBuildInformation?.EngineVersion);
 
             void BuildCVar(string name, string? value)
