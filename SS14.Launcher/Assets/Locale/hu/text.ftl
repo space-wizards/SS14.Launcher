@@ -79,7 +79,7 @@ login-expired-button-log-in = Bejelentkezés
 login-expired-button-log-out = Kijelentkezés
 login-expired-button-forgot-password = Elfelejtetted a jelszavadat?
 login-forgot-title = Elfelejtetted a jelszavat?
-login-forgot-email-watermark = A te email címed
+login-forgot-email-watermark = Az email címed
 login-forgot-button-submit = Küldés
 login-forgot-button-back = Vissza a bejelentkezéshez
 login-forgot-busy-sending = Email küldése…
@@ -101,7 +101,7 @@ main-window-header-link-discord = Discord
 main-window-out-of-date = Elavult Launcher
 main-window-out-of-date-desc-steam =
     Ez a launcher elavult.
-    Kérlek engedd meg a Steam-nek a játék frissítését.
+    Kérlek, engedd meg a Steam-nek a játék frissítését.
 main-window-out-of-date-exit = Kilépés
 main-window-out-of-date-download-manual = Letöltés (manuális)
 main-window-early-access-title = Figyelem!
@@ -118,7 +118,7 @@ main-window-header-link-website = Weboldal
 main-window-out-of-date-desc =
     Ez a launcher elavult.
     Kérlek töltsed le az új verziót a weboldalról.
-main-window-early-access-desc = A Space Station 14 még nagyon is alfa verziójú. Reméljük tetszik amit látsz, és talán maradni is fogsz egy darabig, de egyenlőre mérsékeld az elvárásaidat.
+main-window-early-access-desc = A Space Station 14 még nagyon is alfa verziójú. Reméljük tetszik amit látsz, és talán maradni is fogsz egy darabig, de egyelőre mérsékeld az elvárásaidat.
 hub-settings-button-decrease-priority-tooltip = Prioritás csökkentése
 hub-settings-button-increase-priority-tooltip = Prioritás növelése
 main-window-early-access-accept = Értem!
@@ -144,7 +144,7 @@ region-north-america-west = Nyugat-Észak-Amerika
 region-oceania = Óceánia
 region-south-america-east = Kelet-Dél-Amerika
 region-south-america-south = Dél-Dél-Amerika
-region-south-america-west = Nyugat-Dél-Amerika
+region-south-america-west = Dél-Nyugat-Amerika
 region-short-africa-north = Észak-Afrika
 region-short-africa-south = Dél-Afrika
 region-short-asia-east = Kelet-Ázsia
@@ -209,7 +209,7 @@ tab-development-title = { "[" }DEV]
 tab-development-title-override = { "[" }DEV (felülírás aktív!!!)]
 tab-development-enable-engine-override = Játékmotor felülírás engedélyezése
 server-fetched-from-hub = Letöltve a(z) { $hub }-ból
-tab-home-add-favorite = Kedvenc Hozzásadása…
+tab-home-add-favorite = Kedvenc Hozzáadása…
 tab-home-refresh = Frissítés
 tab-home-direct-connect = Közvetlen Kapcsolódás A Szerverhez…
 tab-home-favorites-guide = Jelölj be szervereket kedvencnek az itteni könnyű elérésért
@@ -223,7 +223,7 @@ tab-options-verbose-launcher-logging-desc = Arra az esetre ha a fejlesztők *nag
 tab-options-seasonal-branding = Szezonális Téma
 tab-options-seasonal-branding-desc = Mindenféle ideiglenes ikon és logó amit csak kitalálunk.
 tab-options-disable-signing = A Játékmotor Aláírás Ellenőrzésének Kikapcsolása
-tab-options-disable-signing-desc = { "[" }DEV ONLY] Kikapcsolja a játékmotor aláirásának a hitelesítését. NE KAPCSOLJAD BE, HACSAK NEM TUDOD, PONTOSAN MIT CSINÁLSZ.
+tab-options-disable-signing-desc = { "[" }DEV ONLY] Kikapcsolja a játékmotor aláírásának a hitelesítését. NE KAPCSOLJAD BE, HACSAK NEM TUDOD, PONTOSAN MIT CSINÁLSZ.
 tab-options-desc-incompatible = Ez a beállítás nem kompatibilis a te platform-oddal és ki lett kapcsolva.
 language-selector-label = Nyelv
 language-selector-save = Mentés
@@ -234,7 +234,7 @@ region-north-america-central = Közép-Észak-Amerika
 filters-title-language = Nyelv
 filters-title-rp = Szerepjáték szintje
 server-entry-description-fetching = Szerver állapotának lekérése…
-tab-development-disable-signing-desc = { "[" }DEV ONLY] Kikapcsolja a motor állapotának ellenőrzését. NE KAPCSOLJAD BE, HACSAK NEM TUDOD PONTOSAN, MIT CSINÁLSZ.
+tab-development-disable-signing-desc = { "[" }DEV ONLY] Kikapcsolja a motor állapotának ellenőrzését. NE KAPCSOLD BE, HACSAK NEM TUDOD PONTOSAN, MIT CSINÁLSZ.
 server-entry-add-favorite = Kedvencekhez adás
 region-asia-east = Kelet-Ázsia
 region-short-antarctica = Antarktisz
@@ -246,4 +246,38 @@ server-entry-description-none = Nincs megadva szerverleírás
 tab-home-favorite-servers = Kedvenc Szerverek:
 tab-news-pulling-news = Hírek lekérése…
 tab-options-account-settings-desc = Itt kezelheted a fiókod beállításaidat, mint például az email címedet vagy a jelszavadat a weboldalunkon keresztül.
-tab-options-compatibility-mode-desc = Ez kényszeríti a játékot, hogy másik grafikai backend-et használjon, ami kisebb valószínűséggel szenved illesztőprogram-hibáktól. Próbáld ezt ha grafikai hibákat és összeomlásokat tapasztalsz.
+tab-options-compatibility-mode-desc = Ez kényszeríti a játékot, hogy másik grafikai 'backend'-et használjon, ami kisebb valószínűséggel szenved illesztőprogram-hibáktól. Próbáld ezt ha grafikai hibákat és összeomlásokat tapasztalsz.
+hub-settings-button-remove-tooltip = Hub (szerverközpont) eltávolítása
+hub-settings-button-add-tooltip = Hub (szerverközpont) hozzáadása
+hub-settings-warning-invalid = Érvénytelen hub (szerverközpont) (ne felejtsd el: http(s)://)
+hub-settings-warning-duplicate = Hub-ok (szerverközpontok) kettőzése
+login-log-launcher = Napló Launcher
+tab-servers-list-status-partial-error = Nem sikerült lekérni néhány szerverlistát. Győződj meg róla, hogy a hub (szerverköpont) konfigurációja helyes, és próbálj meg frissíteni.
+tab-servers-list-status-none = Nincsenek publikus szerverek. Győződj meg róla, hogy a hub (szerverközpont) konfigurációd helyes.
+filters-title-hub = Hub (szerverközpont)
+server-entry-player-count =
+    { $players } / { $max ->
+        [0] ∞
+       *[1] { $max }
+    }
+server-entry-round-time =
+    { $hours ->
+        [0] { $mins }M
+       *[1] { $hours }H { $mins }M
+    }
+server-entry-status-lobby = Előszoba
+tab-development-disable-signing = Motoraláírás-ellenőrzések letiltása
+tab-development-enable-engine-override-desc = A motor zipfájljainak betöltési útvonalának felülbírálása innen: (release/ a RobustToolbox-ban)
+tab-home-title = Otthon
+tab-home-go-to-servers-tab = Ugrás a szerverek lapra
+tab-options-flip = { "*" }megfordítás
+tab-options-open-log-directory = Naplókönyvtár megnyitása
+tab-options-compatibility-mode = Kompatibilitási mód
+tab-options-log-client = Naplózó Kliens
+tab-options-log-client-desc = Lehetővé teszi bármely játékkliens kimenetének naplózását. Hasznos a fejlesztők számára.
+tab-options-log-launcher = Napló launcher
+tab-options-log-launcher-desc = Engedélyezi a launcher naplózását. Hasznos a fejlesztők számára. (A launcher újraindítását igényli.)
+tab-options-verbose-launcher-logging = Részletes launcher naplózás
+tab-options-hub-settings = Hub (szerverközpont) Beállítások
+tab-options-hub-settings-desc = Változtasd meg, melyik hub (szerverközpont) szerveréből vagy szervereiből szeretnéd lekérni a szerverlistát.
+hub-settings-explanation = Itt további hub-okat (szerverközpontokat) tudsz hozzáadni, amikből a játékszervereket hív le. Csak azokat a hub-okat add hozzá, amikben megbízhatsz, mivel "hamisíthatják" más hub-ok játékszervereit. A hub-ok sorrendje számít; Ha két hub ugyanazt a játékszervert kínálja, akkor a magasabb prioritású (a listában előrébb álló) hub élvez elsőbbséget.
