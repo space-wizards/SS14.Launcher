@@ -65,7 +65,13 @@
         <TextBlock VerticalAlignment="Center" IsVisible="{Binding !HideDisableSigning}" TextWrapping="Wrap"
                    Text="{loc:Loc tab-options-disable-signing-desc}"
                    Margin="8" />
-
+        <Grid ColumnDefinitions="Auto,*">
+          <CheckBox VerticalAlignment="Center" Margin="4" IsChecked="{Binding ProxyEnable}" Content="{loc:Loc tab-options-desc-proxy-enable}" />
+          <TextBox Grid.Column="1" Watermark="http://optional-username:optional-password@example.com:80" Text="{Binding ProxyURL}" ToolTip.Tip="{loc:Loc tab-options-desc-proxy-tooltip}"/>
+        </Grid>
+        <TextBlock VerticalAlignment="Center" TextWrapping="Wrap"
+                  Text="{loc:Loc tab-options-desc-proxy-address}"
+                  Margin="8" />
         <Button Click="OpenHubSettings" Content="{loc:Loc tab-options-hub-settings}" Margin="4" HorizontalAlignment="Left" />
         <TextBlock VerticalAlignment="Center" TextWrapping="Wrap"
                    Text="{loc:Loc tab-options-hub-settings-desc}"
