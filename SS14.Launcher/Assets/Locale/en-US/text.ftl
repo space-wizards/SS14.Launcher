@@ -167,6 +167,14 @@ main-window-out-of-date-download-manual = Download (manual)
 main-window-early-access-title = Heads up!
 main-window-early-access-desc = Space Station 14 is still very much in alpha. We hope you like what you see, and maybe even stick around, but make sure to keep your expectations modest for the time being.
 main-window-early-access-accept = Got it!
+main-window-intel-degrade-title = Intel 13th/14th Generation CPU detected.
+main-window-intel-degrade-desc =
+    The Intel 13th/14th generation CPUs are known to silently degrade permenently and die due to a microcode bug by Intel. We sadly can't tell if you are currently affected by this bug, so this warning appears for all users with these CPUs.
+
+    We STRONGLY encourage you to update your motherboard's BIOS to the latest version to ensure prevention of further damage. If you are having stability issues/failing to start the game, downclock your CPU to get it stable again and use your warranty to ask about getting it replaced.
+
+    We are not responsible to help with any issues that may arise from affected processors unless you took the precautions and are sure your CPU is stable. This message will not appear again after you accept it.
+main-window-intel-degrade-accept = I understand and have taken the necessary precautions.
 main-window-drag-drop-prompt = Drop to run game
 main-window-busy-checking-update = Checking for launcher update…
 main-window-busy-checking-login-status = Refreshing login status…
