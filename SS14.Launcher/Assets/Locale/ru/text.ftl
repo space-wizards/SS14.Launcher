@@ -386,7 +386,7 @@ server-entry-add-favorite = Добавить в избранное
 # Strings for entries in the server list (including home page)
 server-entry-remove-favorite = Убрать из избранного
 # Strings for entries in the server list (including home page)
-server-entry-offline = НЕ В СЕТИ
+server-entry-offline = OFFLINE
 # Strings for entries in the server list (including home page)
 server-entry-fetching = Получение…
 # Strings for entries in the server list (including home page)
