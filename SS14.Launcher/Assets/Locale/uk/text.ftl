@@ -208,7 +208,7 @@ login-login-error-title = Не вдалося увійти
 # Strings for the general main window layout of the launcher
 main-window-title = Space Station 14 Launcher
 # Strings for the general main window layout of the launcher
-main-window-header-link-discord = Discord
+main-window-header-link-discord = Діскорд
 # Strings for the "hub settings" dialog window.
 hub-settings-explanation = Тут ви можете додати нові хаби, з яких ви будете отримувати ігрові сервери. Ви повинні додавати лише ті хаби, яким ви довіряєте, оскільки вони можуть «підміняти» ігрові сервери з інших хабів. Порядок хабів має значення; якщо два хаби мають один і той самий ігровий сервер, пріоритет матиме хаб з вищим пріоритетом (вищий у списку).
 # Strings for the "servers" tab
