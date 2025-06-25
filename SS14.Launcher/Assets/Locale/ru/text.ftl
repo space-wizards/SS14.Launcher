@@ -188,7 +188,7 @@ login-expired-button-log-in = Войти
 # Strings for the "login expired" view on login
 login-expired-button-log-out = Выйти
 # Strings for the "login expired" view on login
-login-expired-button-forgot-password = Забыли пароль?
+login-expired-button-forgot-password = Забыли ваш пароль?
 # Strings for the "forgot password" view on login
 login-forgot-title = Забыли пароль?
 # Strings for the "forgot password" view on login
