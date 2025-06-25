@@ -154,7 +154,7 @@ login-error-unknown = Невідома помилка
 # Error messages for login
 login-errors-button-ok = Ок
 # Strings for 2FA login
-login-2fa-title = Потрібна 2-факторна автентифікація
+login-2fa-title = Потрібна двофакторна автентифікація
 # Strings for 2FA login
 login-2fa-message = Будь ласка, введіть код автентифікації з вашого застосунку.
 # Strings for 2FA login
