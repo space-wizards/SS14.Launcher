@@ -88,7 +88,7 @@ login-2fa-input-watermark = Код автентифікації
 # Strings for the "forgot password" view on login
 login-forgot-message = Якщо ви забули свій пароль, ви можете ввести адресу електронної пошти, прив'язану до вашого облікового запису, тут, щоб отримати посилання для його відновлення.
 # Error messages for login
-login-error-account-unconfirmed = Адреса електронної пошти для цього облікового запису все ще потребує підтвердження. Будь ласка, підтвердіть свою адресу електронної пошти перед спробою входу
+login-error-account-unconfirmed = Адреса електронної пошти для цього акаунта все ще потребує підтвердження. Будь ласка, підтвердить свою адресу електронної пошти перед спробою входу
 # Strings for the "register confirmation" view on login
 login-confirmation-busy = Вхід…
 # Strings for the "login expired" view on login
