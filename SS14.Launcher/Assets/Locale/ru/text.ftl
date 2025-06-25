@@ -542,8 +542,8 @@ connecting-privacy-policy-accept = Принять (продолжить)
 connecting-privacy-policy-decline = Отклонить (отключиться)
 server-entry-round-time =
     { $hours ->
-        [0] { $mins }м
-       *[1] { $hours }ч { $mins }м
+        [0] { $mins }M
+       *[1] { $hours }H { $mins }M
     }
 tab-servers-table-round-time = Время
 connecting-status-update-error-unknown = Неизвестно
