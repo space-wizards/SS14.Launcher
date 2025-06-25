@@ -88,7 +88,7 @@ login-2fa-input-watermark = Код автентифікації
 # Strings for the "forgot password" view on login
 login-forgot-message = Якщо ви забули свій пароль, ви можете ввести адресу електронної пошти, прив'язану до вашого облікового запису, тут, щоб отримати посилання для його відновлення.
 # Error messages for login
-login-error-account-unconfirmed = Адреса електронної пошти для цього облікового запису все ще потребує підтвердження. Будь ласка, підтвердіть свою адресу електронної пошти перед спробою входу
+login-error-account-unconfirmed = Адреса електронної пошти для цього акаунта все ще потребує підтвердження. Будь ласка, підтвердіть свою адресу електронної пошти перед спробою входу
 # Strings for the "register confirmation" view on login
 login-confirmation-busy = Вхід…
 # Strings for the "login expired" view on login
@@ -208,7 +208,7 @@ login-login-error-title = Не вдалося увійти
 # Strings for the general main window layout of the launcher
 main-window-title = Space Station 14 Launcher
 # Strings for the general main window layout of the launcher
-main-window-header-link-discord = Діскорд
+main-window-header-link-discord = Discord
 # Strings for the "hub settings" dialog window.
 hub-settings-explanation = Тут ви можете додати нові хаби, з яких ви будете отримувати ігрові сервери. Ви повинні додавати лише ті хаби, яким ви довіряєте, оскільки вони можуть «підміняти» ігрові сервери з інших хабів. Порядок хабів має значення; якщо два хаби мають один і той самий ігровий сервер, пріоритет матиме хаб з вищим пріоритетом (вищий у списку).
 # Strings for the "servers" tab
