@@ -110,7 +110,7 @@ connecting-update-status-unknown = Ви не повинні цього бачи�
 # Strings for the "direct connect" dialog window.
 direct-connect-title = Пряме з'єднання…
 # Strings for the "direct connect" dialog window.
-direct-connect-text = Введіть адрес сервера для під'єднання:
+direct-connect-text = Введіть адресу сервера для підключення:
 # Strings for the "direct connect" dialog window.
 direct-connect-connect = Під'єднатися
 # Strings for the "direct connect" dialog window.
