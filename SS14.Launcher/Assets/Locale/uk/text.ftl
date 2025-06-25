@@ -533,7 +533,7 @@ tab-options-disable-signing = Вимкнути перевірки сигнату
 # Strings for the "options" tab
 tab-options-disable-signing-desc = { "[" }DEV ONLY] Вимикає перевірку сигнатур рушія. НЕ ВМИКАЙТЕ, ЯКЩО ВИ ТОЧНО НЕ ЗНАЄТЕ, ЩО РОБИТЕ.
 # Strings for the "login" view on login
-login-login-show-password = Показати пароль
+login-login-show-password = (Покажи пароль) (Показати пароль)
 tab-options-desc-incompatible = Ця опція несумісна з вашою платформою, тому її вимкнено.
 connecting-privacy-policy-text = Цей сервер вимагає щоб ви прийняли його політику конфіденційності перед підключенням.
 connecting-privacy-policy-text-version-changed = Цей сервер оновив свою політику конфіденційності з моменту вашої останньої гри. Ви повинні прийняти нову версію перед підключенням.
