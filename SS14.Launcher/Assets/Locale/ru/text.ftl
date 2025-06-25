@@ -415,7 +415,7 @@ tab-home-go-to-servers-tab = Перейти на вкладку серверов
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-none = Начало подключения…
 # Strings for the drop-down window to manage your active account
-account-drop-down-not-logged-in = Not logged in
+account-drop-down-not-logged-in = Вход не выполнен
 # For the language selection menu.
 # Used for contents of each language button.
 language-selector-language = { $languageName } ({ $englishName })
