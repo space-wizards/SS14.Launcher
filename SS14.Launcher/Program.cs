@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net.Http.Headers;
+using System.Runtime.InteropServices;
 using System.Text;
 using Avalonia;
 using Avalonia.Logging;
@@ -225,10 +226,11 @@ internal static class Program
         var launcherInfo = new LauncherInfoManager(http);
         var overrideAssets = new OverrideAssetsManager(cfg, http, launcherInfo);
         var loginManager = new LoginManager(cfg, authApi);
+        var engineManager = new EngineManagerDynamic();
 
         locator.RegisterConstant(loc);
         locator.RegisterConstant(new ContentManager());
-        locator.RegisterConstant<IEngineManager>(new EngineManagerDynamic());
+        locator.RegisterConstant<IEngineManager>(engineManager);
         locator.RegisterConstant(new Updater());
         locator.RegisterConstant(authApi);
         locator.RegisterConstant(hubApi);
@@ -236,6 +238,8 @@ internal static class Program
         locator.RegisterConstant(loginManager);
         locator.RegisterConstant(overrideAssets);
         locator.RegisterConstant(launcherInfo);
+
+        CheckLauncherArchitecture(cfg, engineManager);
 
         return AppBuilder.Configure(() => new App(overrideAssets))
             .UsePlatformDetect()
@@ -245,5 +249,22 @@ internal static class Program
                 DefaultFamilyName = "avares://SS14.Launcher/Assets/Fonts/noto_sans/*.ttf#Noto Sans"
             })
             .UseReactiveUI();
+    }
+
+    private static void CheckLauncherArchitecture(DataManager cfg, EngineManagerDynamic engineManager)
+    {
+        var curArchitecture = RuntimeInformation.ProcessArchitecture;
+        var previousArchitecture = (Architecture)cfg.GetCVar(CVars.CurrentArchitecture);
+        if (previousArchitecture == curArchitecture)
+            return;
+
+        Log.Information(
+            "CPU architecture has changed since last process run, clearing engine builds. Previously: {PreviousArchitecture}, now: {CurrentArchitecture}",
+            previousArchitecture,
+            curArchitecture);
+
+        engineManager.ClearAllEngines();
+        cfg.SetCVar(CVars.CurrentArchitecture, (int) curArchitecture);
+        cfg.CommitConfig();
     }
 }
