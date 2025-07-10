@@ -68,11 +68,11 @@ language-selector-cancel = Nuligi
 add-favorite-window-label-address = Adreso:
 region-europe-east = Eŭropo Orienta
 region-north-america-east = Nordameriko Orienta
-connecting-status-connecting = Legante konektajn informojn de la servilo…
+connecting-status-connecting = Leganta konektajn informojn de la servilo…
 add-favorite-window-address-invalid = Adreso estas malvalida
 connecting-status-starting-client = Lanĉanta kliento…
 connecting-status-not-a-content-bundle = Dosiero ne estas valida enhavopakaĵo!
-connecting-update-status-loading-content-bundle = Ŝarĝanta enhavopakaĵo…
+connecting-update-status-loading-content-bundle = Ŝarĝanta enhavopakaĵon…
 direct-connect-address-invalid = Malvalida adreso
 login-expired-button-log-in = Ensaluti
 login-login-title = Ensaluti
@@ -97,10 +97,10 @@ server-entry-player-count =
 login-expired-password-watermark = Pasvorto
 filters-player-count-minimum = Minimuma:
 server-entry-status-lobby = Vestiblo
-connecting-update-status-checking-client-update = Serĉante pri nova enhavo de la servilo…
-connecting-update-status-culling-engine = Forigante malnovan enhavon…
-connecting-update-status-culling-content = Forigante malnovan enhavon de serviloj…
-connecting-update-status-committing-download = Konservante al disko…
+connecting-update-status-checking-client-update = Serĉanta pri nova enhavo de la servilo…
+connecting-update-status-culling-engine = Foriganta malnovan enhavon…
+connecting-update-status-culling-content = Foriganta malnovan enhavon de serviloj…
+connecting-update-status-committing-download = Konservanta al disko…
 connecting-update-status-unknown = Vi ne devus ĉi tion
 direct-connect-connect = Konekti
 direct-connect-title = Rekta Konekti…
@@ -125,8 +125,8 @@ login-2fa-button-confirm = Konfirmi
 login-forgot-button-submit = Sendi
 login-expired-button-log-out = Elsaluti
 login-forgot-title = Forgesis pasvorton?
-login-forgot-success-title = Rekomenciga retpoŝto sendita
-login-forgot-busy-sending = Sendante retpoŝto…
+login-forgot-success-title = Restariga retpoŝto sendita
+login-forgot-busy-sending = Sendanta retpoŝto…
 login-expired-title = Ensaluto eksvalidiĝis
 login-error-invalid-credentials = Nevalidaj ensalutiloj
 login-forgot-email-watermark = Via retpoŝtadreso
@@ -138,7 +138,7 @@ login-login-busy-logging-in = Ensalutas…
 login-confirmation-busy = Ensalutas…
 main-window-header-link-discord = Discord
 main-window-early-access-title = Atentu!
-main-window-busy-checking-login-status = Aktualiganta ensaluta stato…
+main-window-busy-checking-login-status = Aktualiganta staton de ensaluto…
 main-window-error-unknown = Okazis nekonata eraro
 filters = Filtriloj ({ $filteredServers } / { $totalServers })
 tab-servers-table-name = Nomo de Servilo
@@ -167,7 +167,7 @@ filters-rp-medium-desc = Meza
 server-entry-offline = SENKONEKTA
 server-entry-remove-favorite = Forigi Favoraton
 server-entry-add-favorite = Aldoni Favoraton
-server-entry-fetching = Legante…
+server-entry-fetching = Leganta…
 tab-home-title = Hejmo
 tab-home-favorite-servers = Favorataj Serviloj:
 tab-home-add-favorite = Aldoni Favoraton…
@@ -185,3 +185,91 @@ language-selector-label = Lingvo
 language-selector-save = Konservi
 main-window-early-access-desc = Space Station 14 estas nepre ankoraŭ en alfa fazo. Ni esperas, ke vi ŝatos kion vi vidos, kaj eble restos ĉi tie, sed tenu viajn atendojn modestajn por nun.
 main-window-drag-drop-prompt = Metu por ekruli ludon
+main-window-out-of-date-desc =
+    Ĉi tiu lanĉilo estas eksdata.
+    Bonvolu elŝuti freŝan version de nia retejo.
+language-selector-language = { $languageName } ({ $englishName })
+server-entry-description-error = Eraro dum legado de priskribo de servilo
+connecting-status-update-error =
+    Estis eraro dum elŝutado de enhavo de la servilo. Se tio daŭras, provu jenon:
+    - Provu konektiĝi al alia ludservlio por vidi ĉu la atentindaĵo daŭras.
+    - Provu ŝalti aŭ malŝalti softvaron kiel VPNojn, se vi havas ajnan.
+
+    Se vi ankoraŭ havas problemojn, unue provu kontakti la administratojn de la servilo al kiu vi provas konekti, antaŭ ol peti asiston en la Oficiala Discord aŭ Oficiala Forumo de Space Station 14.
+
+    Teknika eraro: { $err }
+connecting-update-status-downloading-engine-modules = Elŝutanta ceteraj dependeĵoj…
+connecting-update-status-checking-engine-modules = Serĉanta pri ceteraj dependeĵoj…
+connecting-update-status-loading-into-db = Konservanta enhavon en la datumbazo…
+direct-connect-text = Entajpu adreson de servilon por konekti:
+hub-settings-warning-invalid = Malvalida servilejo (ne forgesu http(s)://)
+login-error-account-2fa-required = Du-faktora aŭtentigo necesas
+login-error-account-2fa-invalid = Ĉifro de du-faktora aŭtentigo estas malvalida
+login-2fa-title = Du-faktora aŭtentigo necesas
+login-2fa-input-watermark = Ĉifro de aŭtentigo
+login-2fa-button-recovery-code = Ĉifro de restaŭro
+login-expired-button-forgot-password = Forgesis vian pasvorton?
+login-forgot-button-back = Reiri al ensaluto
+login-2fa-message = Bonvolu entajpi la ĉifron de aŭtentigon el via aplikaĵo.
+login-expired-message =
+    La seanco por ĉi tiu konto eksvalidiĝis.
+    Bonvolu retajpu vian pasvorton.
+login-error-account-account-locked = Konto estas blokita. Bonvolu kontakti nin se vi opinias ke tio estas eraro.
+login-login-button-forgot = Forgesis vian pasvorton?
+login-forgot-success-message = Restariga ligilo estis sendita al via retpoŝtadreso.
+login-login-button-resend = Resendi retpoŝton de konfirmo
+login-confirmation-confirmation-title = Konfirmo de registrado
+login-confirmation-confirmation-message = Bonvolu kontroli vian retpoŝton por konfirmi vian konton. Post kiam vi estos konfirminta vian konton, alklaku la suban butonon por ensaluti.
+login-login-button-register = Ne havas konton? Registru!
+login-login-error-title = Ne eblas ensaluti
+login-confirmation-button-confirm = Mi konfirmis mia konton
+main-window-out-of-date = Lanĉilo estas eksdata
+main-window-out-of-date-desc-steam =
+    Ĉi tiu lanĉilo estas eksdata.
+    Bonvolu lasi Steam ĝisdati la ludon.
+main-window-out-of-date-download-manual = Elŝuti (mane)
+main-window-busy-checking-update = Serĉanta pri ĝisdatigo de lanĉilo…
+main-window-busy-checking-account-status = Kontrolanta staton de konto
+main-window-error-connecting-auth-server = Eraro dum konektado al servilon de aŭtentigo
+tab-servers-search-watermark = Serĉi Por Serviloj…
+tab-servers-list-status-updating-master = Leganta servilejojn…
+tab-servers-list-status-none-filtered = Neniuj serviloj kongruas kun viaj agordoj de serĉado aŭ filtrado.
+tab-servers-list-status-none = Ne estas publikaj serviloj. Certigu, ĉu viaj agordoj de servilejoj estas ĝustaj.
+tab-servers-list-status-error = Estis eraro dum legado de la servilejoj. Eble provu aktualigi?
+filters-player-count-hide-empty-desc = Servlioj sen ludantoj ne vidigos
+filters-player-count-hide-full-desc = Plenaj serviloj ne vidigos
+filters-player-count-minimum-desc = Serviloj kun malpliaj ludantoj ne vidigos
+filters-player-count-maximum-desc = Serviloj kun pliaj ludantoj ne vidigos
+server-entry-description-fetching = Leganta staton de servilo…
+server-entry-round-time =
+    { $hours ->
+        [0] { $mins }M
+       *[1] { $hours }H { $mins }M
+    }
+server-entry-description-offline = Ne eblas kontakti la servilon
+server-entry-raise = Levi al supro
+server-fetched-from-hub = Legita el { $hub }
+server-entry-description-none = Priskribo de servilo ne disponigita
+tab-development-enable-engine-override = Ebligi anstataŭa motoro
+tab-development-enable-engine-override-desc = Anstataŭa dosierujo por ŝargi zip-dosierojn de motoro el (release/ en RobustToolbox)
+tab-development-disable-signing = Malŝalti Kontrolsume Kontroli de Motoro
+tab-development-disable-signing-desc = { "[" }DEV NUR] Malŝaltas kontrolsuman kontrolon de motoroj. NE ŜALTU KROM SE VI SCIAS PRECIZE KION VI FARAS.
+tab-development-title = { "[" }DEV]
+tab-development-title-override = { "[" }DEV (anstataŭo ebligita!!!)]
+tab-options-verbose-launcher-logging = Ekstra Registrado de Lanĉilo
+tab-options-verbose-launcher-logging-desc = Por kiam la ellaboranto estas *tre* perpleksita pri via atentindaĵo. (postulus restartigi la lanĉilon)
+tab-options-log-launcher-desc = Ebligas registradon de la lanĉilo. Utila por ellaborantoj. (postulus restartigi la lanĉilon)
+tab-options-clear-engines = Forigi instalitajn motorojn
+tab-options-disable-signing = Malŝalti Kontrolsume Kontroli de Motoro
+tab-options-disable-signing-desc = { "[" }DEV NUR] Malŝaltas kontrolsuman kontrolon de motoroj. NE ŜALTU KROM SE VI SCIAS PRECIZE KION VI FARAS.
+tab-options-seasonal-branding-desc = Ajnajn tempe signifajn ikonojn kaj emblemojn, kiujn ni povos elpensi.
+tab-home-run-content-bundle = Ekruli enhavopakaĵon/ludregistraĵon
+tab-options-open-log-directory = Malfermi dosierujon de registrado
+tab-options-clear-content = Forigi instalitan enhavon de serviloj
+tab-home-direct-connect = Direkte Konekti Al Servilo…
+tab-home-go-to-servers-tab = Iri al la langeto de serviloj
+tab-home-favorites-guide = Marku servilojn kiel favoratojn por facile atingi ĉi tie
+tab-options-log-client-desc = Ebligas registradon de eligaĵo de la ludkliento. Utila por ellaborantoj.
+tab-options-desc-incompatible = Tiu ĉi opcio ne kongruas kun via platformo kaj estas malŝaltita.
+language-selector-help-translate = Volas helpi traduki? Vi povas!
+language-selector-system-language = Sistema lingvo ({ $languageName })
