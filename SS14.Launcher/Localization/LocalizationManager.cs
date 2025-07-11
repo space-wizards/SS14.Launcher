@@ -42,6 +42,7 @@ public sealed class LocalizationManager
         new LanguageInfo("it"),
         new LanguageInfo("nb-NO"),
         new LanguageInfo("hu"),
+        new LanguageInfo("eo"),
     ];
 
     private const string FallbackCulture = "en";
