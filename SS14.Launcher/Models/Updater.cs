@@ -65,7 +65,7 @@ public sealed class Updater : ReactiveObject
     [Reactive] public (long downloaded, long total, ProgressUnit unit)? Progress { get; private set; }
     [Reactive] public long? Speed { get; private set; }
 
-    public string? ExceptionMessage;
+    public Exception? UpdateException;
 
     public async Task<ContentLaunchInfo?> RunUpdateForLaunchAsync(
         ServerBuildInformation buildInformation,
@@ -91,7 +91,7 @@ public sealed class Updater : ReactiveObject
         }
 
         _updating = true;
-        ExceptionMessage = null;
+        UpdateException = null;
 
         try
         {
@@ -106,7 +106,7 @@ public sealed class Updater : ReactiveObject
         catch (Exception e)
         {
             Status = UpdateStatus.Error;
-            ExceptionMessage = e.Message;
+            UpdateException = e;
             Log.Error(e, "Exception while trying to run updates");
         }
         finally
