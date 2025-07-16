@@ -67,7 +67,7 @@ public sealed partial class DungSpinner : UserControl
     {
         base.Render(context);
 
-        Console.WriteLine($"RENDER: {IsEffectivelyVisible}");
+        // Console.WriteLine($"RENDER: {IsEffectivelyVisible}");
 
         var centerX = Bounds.Width / 2;
         var centerY = Bounds.Height / 2;
