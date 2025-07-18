@@ -499,7 +499,7 @@ language-selector-save = Сохранить
 # "Cancel" button.
 language-selector-cancel = Отмена
 # For the language selection menu.
-language-selector-help-translate = Хотите помочь с переводом? Вы можете!
+language-selector-help-translate = Хотите помочь с переводом? Вперёд!
 # For the language selection menu.
 language-selector-system-language = Язык системы ({ $languageName })
 # Strings for the "options" tab
