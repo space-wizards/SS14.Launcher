@@ -511,7 +511,7 @@ language-selector-label = Мова
 # "Save" button.
 language-selector-save = Зберегти
 # For the language selection menu.
-language-selector-help-translate = Хочете допомогти з перекладом? Ви можете це зробити!
+language-selector-help-translate = Хочете допомогти з перекладом? Вперед!
 # For the language selection menu.
 language-selector-system-language = Мова системи ({ $languageName })
 # Strings for entries in the server list (including home page)
