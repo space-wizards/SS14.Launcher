@@ -240,7 +240,7 @@ filters-player-count-hide-empty-desc = Servlioj sen ludantoj ne vidigos
 filters-player-count-hide-full-desc = Plenaj serviloj ne vidigos
 filters-player-count-minimum-desc = Serviloj kun malpliaj ludantoj ne vidigos
 filters-player-count-maximum-desc = Serviloj kun pliaj ludantoj ne vidigos
-server-entry-description-fetching = Leganta staton de servilo…
+server-entry-description-fetching = Leganta staton de la servilo…
 server-entry-round-time =
     { $hours ->
         [0] { $mins }M
