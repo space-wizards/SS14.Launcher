@@ -24,7 +24,6 @@ using Serilog;
 using SharpZstd.Interop;
 using SpaceWizards.Sodium;
 using Splat;
-using SQLitePCL;
 using SS14.Launcher.Models.ContentManagement;
 using SS14.Launcher.Models.Data;
 using SS14.Launcher.Models.EngineManager;
@@ -220,6 +219,7 @@ public sealed class Updater : ReactiveObject
                         },
                         con,
                         moduleManifest,
+                        new TransactedDownloadState(),
                         cancel
                     );
 
@@ -330,6 +330,12 @@ public sealed class Updater : ReactiveObject
 
         Status = UpdateStatus.CullingContent;
 
+        var anythingRemoved = false;
+
+        //
+        // Cull old content versions.
+        //
+
         // We keep at most MaxVersionsToKeep TOTAL.
         // We keep at most MaxForkVersionsToKeep of a specific ForkID.
         // Old builds get culled first.
@@ -356,12 +362,32 @@ public sealed class Updater : ReactiveObject
             {
                 Log.Debug("Culling version {ForkId}/{ForkVersion}", version.ForkId, version.ForkVersion);
                 con.Execute("DELETE FROM ContentVersion WHERE Id = @Id", new { version.Id });
+                anythingRemoved = true;
             }
         }
 
-        if (totalCount != versions.Length)
+        //
+        // Cull old interrupted downloads.
+        //
+
+        var interruptedKeepHours = _cfg.GetCVar(CVars.InterruptibleDownloadKeepHours);
+        var affected = con.Execute(
+            "DELETE FROM InterruptedDownload WHERE Added < @Threshold",
+            new { Threshold = DateTime.UtcNow - TimeSpan.FromHours(interruptedKeepHours) });
+
+        if (affected > 0)
         {
-            var rows = con.Execute("DELETE FROM Content WHERE Id NOT IN (SELECT ContentId FROM ContentManifest)");
+            Log.Debug("Deleted {DeletedCount} old interrupted downloads", affected);
+            anythingRemoved = true;
+        }
+
+        if (anythingRemoved)
+        {
+            var rows = con.Execute("""
+                DELETE FROM Content
+                WHERE Id NOT IN (SELECT ContentId FROM ContentManifest)
+                    AND Id NOT IN (SELECT ContentId FROM InterruptedDownloadContent)
+                """);
             Log.Debug("Culled {RowsCulled} orphaned content blobs", rows);
         }
 
@@ -437,6 +463,7 @@ public sealed class Updater : ReactiveObject
         ServerBuildInformation buildInfo,
         SqliteConnection con,
         Lazy<Task<EngineModuleManifest>> moduleManifest,
+        TransactedDownloadState state,
         CancellationToken cancel)
     {
         // Check if we already have this version KNOWN GOOD installed in the content DB.
@@ -446,7 +473,7 @@ public sealed class Updater : ReactiveObject
         var engineVersion = buildInfo.EngineVersion;
         if (existingVersion == null)
         {
-            versionId = await DownloadNewVersion(buildInfo, con, moduleManifest, cancel, engineVersion);
+            versionId = await DownloadNewVersion(buildInfo, con, moduleManifest, state, cancel, engineVersion);
         }
         else
         {
@@ -467,11 +494,66 @@ public sealed class Updater : ReactiveObject
         // ReSharper disable once UseAwaitUsing
         using var transaction = con.BeginTransaction();
 
-        var versionId = await TouchOrDownloadContentUpdate(buildInfo, con, moduleManifest, cancel);
+        var transactedState = new TransactedDownloadState();
+
+        long versionId;
+        try
+        {
+            versionId = await TouchOrDownloadContentUpdate(buildInfo, con, moduleManifest, transactedState, cancel);
+        }
+        // Avoid catching SQLite exceptions.
+        // Those probably indicate it's unsafe for us to go any further so avoid making anything worse.
+        catch (Exception e) when (e is not SqliteException)
+        {
+            if (transactedState.DownloadedContentEntries.Count == 0)
+            {
+                // Nothing was downloaded. No point saving anything, just go on as normal.
+                throw;
+            }
+
+            Status = UpdateStatus.CommittingDownload;
+
+            Log.Error(
+                "Exception occured while downloading, saving {InterruptedCount} blobs as interrupted",
+                transactedState.DownloadedContentEntries.Count);
+
+            SaveInterruptedDownload(con, transactedState);
+            ClearIncompleteTransactedState(con, transactedState);
+
+            transaction.Commit();
+
+            throw;
+        }
 
         transaction.Commit();
 
         return versionId;
+    }
+
+    private static void SaveInterruptedDownload(SqliteConnection con, TransactedDownloadState state)
+    {
+        var interruptedId = con.ExecuteScalar<long>("""
+            INSERT INTO InterruptedDownload (Added)
+            VALUES (datetime('now'))
+            RETURNING Id
+            """);
+
+        foreach (var contentId in state.DownloadedContentEntries)
+        {
+            con.Execute("""
+                INSERT INTO InterruptedDownloadContent(InterruptedDownloadId, ContentId)
+                VALUES (@DownloadId, @ContentId)
+                """,
+                new { DownloadId = interruptedId, ContentId = contentId });
+        }
+    }
+
+    private static void ClearIncompleteTransactedState(SqliteConnection con, TransactedDownloadState state)
+    {
+        if (state.MadeContentVersion is { } contentVersion)
+        {
+            con.Execute("DELETE FROM ContentVersion WHERE Id = @Id", new { Id = contentVersion });
+        }
     }
 
     [SuppressMessage("ReSharper", "MethodHasAsyncOverload")]
@@ -604,6 +686,7 @@ public sealed class Updater : ReactiveObject
         ServerBuildInformation buildInfo,
         SqliteConnection con,
         Lazy<Task<EngineModuleManifest>> moduleManifest,
+        TransactedDownloadState state,
         CancellationToken cancel,
         string engineVersion)
     {
@@ -619,13 +702,16 @@ public sealed class Updater : ReactiveObject
                 buildInfo.Version
             });
 
+        // Store the created version ID so we can manually delete it later if necessary.
+        state.MadeContentVersion = versionId;
+
         // TODO: Download URL
         byte[] manifestHash;
         if (!string.IsNullOrEmpty(buildInfo.ManifestUrl)
             && !string.IsNullOrEmpty(buildInfo.ManifestDownloadUrl)
             && !string.IsNullOrEmpty(buildInfo.ManifestHash))
         {
-            manifestHash = await DownloadNewVersionManifest(buildInfo, con, versionId, cancel);
+            manifestHash = await DownloadNewVersionManifest(buildInfo, con, versionId, state, cancel);
         }
         else if (buildInfo.DownloadUrl != null)
         {
@@ -702,6 +788,7 @@ public sealed class Updater : ReactiveObject
         ServerBuildInformation buildInfo,
         SqliteConnection con,
         long versionId,
+        TransactedDownloadState state,
         CancellationToken cancel)
     {
         var swZstd = new Stopwatch();
@@ -712,7 +799,8 @@ public sealed class Updater : ReactiveObject
 
         Status = UpdateStatus.FetchingClientManifest;
 
-        var (toDownload, manifestHash) = await IngestContentManifest(buildInfo, con, versionId, swSqlite, cancel);
+        var fetchedManifest = await FetchContentManifest(buildInfo, cancel);
+        var toDownload = CalculateFilesToDownload(fetchedManifest, con, swSqlite);
 
         Progress = null;
         Status = UpdateStatus.DownloadingClientUpdate;
@@ -729,7 +817,9 @@ public sealed class Updater : ReactiveObject
             await DownloadMissingContent(
                 buildInfo,
                 con,
+                fetchedManifest,
                 toDownload,
+                state,
                 swSqlite,
                 swZstd,
                 swBlake,
@@ -741,19 +831,18 @@ public sealed class Updater : ReactiveObject
             swSqlite.ElapsedMilliseconds,
             swBlake.ElapsedMilliseconds);
 
+        FillContentManifest(con, versionId, fetchedManifest);
+
 #if DEBUG
         var testHash = GenerateContentManifestHash(con, versionId);
-        Debug.Assert(testHash.AsSpan().SequenceEqual(manifestHash));
+        Debug.Assert(testHash.AsSpan().SequenceEqual(fetchedManifest.ManifestHash));
 #endif
 
-        return manifestHash;
+        return fetchedManifest.ManifestHash;
     }
 
-    private async Task<(List<(long rowid, int index)> toDownload, byte[] manifestHash)> IngestContentManifest(
+    private async Task<FetchedContentManifestData> FetchContentManifest(
         ServerBuildInformation buildInfo,
-        SqliteConnection con,
-        long versionId,
-        Stopwatch swSqlite,
         CancellationToken cancel)
     {
         Log.Debug("Downloading content manifest from {ContentManifestUrl}", buildInfo.ManifestUrl);
@@ -773,99 +862,27 @@ public sealed class Updater : ReactiveObject
 
         using var sr = new StreamReader(manifest);
 
-        if (await sr.ReadLineAsync() != "Robust Content Manifest 1")
+        if (await sr.ReadLineAsync(cancel) != "Robust Content Manifest 1")
             throw new UpdateException("Unknown manifest header!");
 
-        var toDownload = new List<(long rowid, int index)>();
+        Log.Debug("Parsing manifest...");
 
-        Log.Debug("Parsing manifest into database...");
+        var entries = new List<ContentManifestEntry>();
 
-        // Prepare SQLite queries.
-
-        var err = sqlite3_prepare_v2(
-            con.Handle,
-            "SELECT Id FROM Content WHERE Hash = ?",
-            out var stmtFindContentRow);
-        CheckErr(err);
-
-        using var _ = stmtFindContentRow;
-
-        err = sqlite3_prepare_v2(
-            con.Handle,
-            "INSERT INTO Content (Hash, Size, Compression, Data) VALUES (@Hash, 0, 0, zeroblob(0)) RETURNING Id",
-            out var stmtContentPlaceholder);
-        CheckErr(err);
-
-        using var a = stmtContentPlaceholder;
-
-        err = sqlite3_prepare_v2(
-            con.Handle,
-            "INSERT INTO ContentManifest(VersionId, Path, ContentId) VALUES (@VersionId, @Path, @ContentId)",
-            out var stmtInsertManifest);
-        CheckErr(err);
-
-        // VersionId does not change, bind it early.
-        CheckErr(sqlite3_bind_int64(stmtInsertManifest, 1, versionId));
-
-        using var b = stmtInsertManifest;
-
-        var lineIndex = 0;
-        while (await sr.ReadLineAsync() is { } manifestLine)
+        while (await sr.ReadLineAsync(cancel) is { } manifestLine)
         {
-            cancel.ThrowIfCancellationRequested();
-
             var sep = manifestLine.IndexOf(' ');
             var hash = Convert.FromHexString(manifestLine.AsSpan(0, sep));
             var filename = manifestLine.AsMemory(sep + 1);
 
-            // Look up if we have an existing blob by that hash.
-
-            swSqlite.Start();
-            err = sqlite3_bind_blob(stmtFindContentRow, 1, hash);
-            SqliteException.ThrowExceptionForRC(err, con.Handle);
-
-            err = sqlite3_step(stmtFindContentRow);
-            SqliteException.ThrowExceptionForRC(err, con.Handle);
-
-            long row;
-            if (err == SQLITE_DONE)
+            entries.Add(new ContentManifestEntry
             {
-                CheckErr(sqlite3_reset(stmtFindContentRow));
-
-                // Insert placeholder
-                // INSERT INTO Content (Hash, Size, Compression, Data) VALUES (@Hash, 0, 0, zeroblob(0)) RETURNING Id
-
-                CheckErr(sqlite3_bind_blob(stmtContentPlaceholder, 1, hash)); // @Hash
-                CheckErr(sqlite3_step(stmtContentPlaceholder));
-
-                row = sqlite3_column_int64(stmtContentPlaceholder, 0);
-                CheckErr(sqlite3_reset(stmtContentPlaceholder));
-
-                toDownload.Add((row, lineIndex));
-            }
-            else
-            {
-                Debug.Assert(err == SQLITE_ROW);
-
-                row = sqlite3_column_int64(stmtFindContentRow, 0);
-
-                err = sqlite3_reset(stmtFindContentRow);
-                SqliteException.ThrowExceptionForRC(err, con.Handle);
-            }
-
-            // INSERT INTO ContentManifest(VersionId, Path, ContentId) VALUES (@VersionId, @Path, @ContentId)
-            // @VersionId is bound at statement creation.
-            CheckErr(sqlite3_bind_text16(stmtInsertManifest, 2, filename.Span)); // @Path
-            CheckErr(sqlite3_bind_int64(stmtInsertManifest, 3, row)); // @ContentId
-
-            CheckErr(sqlite3_step(stmtInsertManifest));
-            CheckErr(sqlite3_reset(stmtInsertManifest));
-            swSqlite.Stop();
-
-            lineIndex += 1;
+                Hash = hash,
+                Path = filename.ToString(),
+            });
         }
 
-        Log.Debug("Total of {ManifestEntriesCount} manifest entries", lineIndex);
+        Log.Debug("Total of {ManifestEntriesCount} manifest entries", entries.Count);
 
         var manifestHash = manifest.Finish();
         if (Convert.ToHexString(manifestHash) != buildInfo.ManifestHash)
@@ -873,15 +890,61 @@ public sealed class Updater : ReactiveObject
 
         Log.Debug("Successfully validated manifest hash");
 
-        return (toDownload, manifestHash);
+        return new FetchedContentManifestData
+        {
+            ManifestHash = manifestHash,
+            Entries = entries,
+        };
+    }
 
-        void CheckErr(int err) => SqliteException.ThrowExceptionForRC(err, con.Handle);
+    private static List<int> CalculateFilesToDownload(
+        FetchedContentManifestData manifestData,
+        SqliteConnection con,
+        Stopwatch swSqlite)
+    {
+        Debug.Assert(con.Handle != null);
+        var db = con.Handle;
+
+        swSqlite.Start();
+
+        var toDownload = new List<int>();
+        var queuedHashes = new HashSet<HashKey>();
+
+        using var stmtFindContentRow = db.Prepare("SELECT Id FROM Content WHERE Hash = ?");
+
+        for (var i = 0; i < manifestData.Entries.Count; i++)
+        {
+            var entry = manifestData.Entries[i];
+            var key = new HashKey(entry.Hash);
+
+            if (queuedHashes.Contains(key))
+                continue;
+
+            stmtFindContentRow.BindBlob(db, 1, entry.Hash);
+            var stepResult = stmtFindContentRow.Step(db);
+
+            stmtFindContentRow.Reset(db);
+
+            if (stepResult == SQLITE_DONE)
+            {
+                // Does not exist in DB. We need to download it.
+                toDownload.Add(i);
+                // A blob can appear multiple times in the manifest. Avoid downloading it twice.
+                queuedHashes.Add(key);
+            }
+        }
+
+        swSqlite.Stop();
+
+        return toDownload;
     }
 
     private async Task DownloadMissingContent(
         ServerBuildInformation buildInfo,
         SqliteConnection con,
-        List<(long rowid, int index)> toDownload,
+        FetchedContentManifestData manifestData,
+        List<int> toDownload,
+        TransactedDownloadState state,
         Stopwatch swSqlite,
         Stopwatch swZstd,
         Stopwatch swBlake,
@@ -895,7 +958,7 @@ public sealed class Updater : ReactiveObject
         // Write request body.
         var requestBody = new byte[toDownload.Count * 4];
         var reqI = 0;
-        foreach (var (_, idx) in toDownload)
+        foreach (var idx in toDownload)
         {
             BinaryPrimitives.WriteInt32LittleEndian(requestBody.AsSpan(reqI, 4), idx);
             reqI += 4;
@@ -923,7 +986,10 @@ public sealed class Updater : ReactiveObject
         var bandwidthStream = new BandwidthStream(stream);
         stream = bandwidthStream;
         if (response.Content.Headers.ContentEncoding.Contains("zstd"))
+        {
+            Log.Debug("Stream compression is active");
             stream = new ZStdDecompressStream(stream);
+        }
 
         await using var streamDispose = stream;
 
@@ -944,22 +1010,17 @@ public sealed class Updater : ReactiveObject
         // <int32> compressed length
         var fileHeader = new byte[preCompressed ? 8 : 4];
 
+        var db = con.Handle;
+        Debug.Assert(db != null);
+
         SqliteBlobStream? blob = null;
-        sqlite3_stmt? stmtFindContentHash = null;
-        sqlite3_stmt? stmtUpdateContent = null;
         try
         {
-            var err = sqlite3_prepare_v2(
-                con.Handle,
-                "SELECT Hash FROM Content WHERE Id = ?",
-                out stmtFindContentHash);
-            SqliteException.ThrowExceptionForRC(err, con.Handle);
-
-            err = sqlite3_prepare_v2(
-                con.Handle,
-                "UPDATE Content SET Size = @Size, Data = zeroblob(@DataSize), Compression = @Compression WHERE Id = @Id",
-                out stmtUpdateContent);
-            SqliteException.ThrowExceptionForRC(err, con.Handle);
+            using var stmtInsertContent = db.Prepare("""
+                INSERT INTO Content (Hash, Size, Compression, Data)
+                VALUES (@Hash, @Size, @Compression, zeroblob(@DataSize))
+                RETURNING Id
+                """);
 
             // Buffer for storing compressed ZStd data.
             var compressBuffer = new byte[1024];
@@ -969,11 +1030,12 @@ public sealed class Updater : ReactiveObject
 
             var hash = new byte[256 / 8];
 
-            var i = 0;
-            foreach (var (rowId, _) in toDownload)
+            for (var i = 0; i < toDownload.Count; i++)
             {
                 // Simple loop stuff.
                 cancel.ThrowIfCancellationRequested();
+
+                var manifestEntry = manifestData.Entries[toDownload[i]];
 
                 Progress = (i, toDownload.Count, ProgressUnit.None);
                 Speed = bandwidthStream.CalcCurrentAvg();
@@ -1031,19 +1093,17 @@ public sealed class Updater : ReactiveObject
                 CryptoGenericHashBlake2B.Hash(hash, data.Span, ReadOnlySpan<byte>.Empty);
                 swBlake.Stop();
 
-                // Double check hash!
-                swSqlite.Start();
+                /*
+                Log.Verbose(
+                    "[{Index}] {FileName}: {Size} ({Hash})",
+                    toDownload[i],
+                    manifestEntry.Path,
+                    data.Span.Length,
+                    Convert.ToHexString(hash));
+                */
 
-                CheckErr(sqlite3_bind_int64(stmtFindContentHash, 1, rowId));
-
-                CheckErr(sqlite3_step(stmtFindContentHash));
-
-                if (!sqlite3_column_blob(stmtFindContentHash, 0).SequenceEqual(hash))
+                if (!manifestEntry.Hash.AsSpan().SequenceEqual(hash))
                     throw new UpdateException("Hash mismatch while downloading!");
-
-                CheckErr(sqlite3_reset(stmtFindContentHash));
-
-                swSqlite.Stop();
 
                 if (!preCompressed)
                 {
@@ -1067,16 +1127,16 @@ public sealed class Updater : ReactiveObject
 
                 swSqlite.Start();
 
-                // UPDATE Content SET Size = @Size, Data = zeroblob(@DataSize), Compression = @Compression WHERE Id = @Id
+                stmtInsertContent.BindBlob(db, 1, manifestEntry.Hash); // @Hash
+                stmtInsertContent.BindInt(db, 2, length); // @Size
+                stmtInsertContent.BindInt(db, 3, (int)compression); // @Compression
+                stmtInsertContent.BindInt(db, 4, writeData.Length); // @DataSize
 
-                CheckErr(sqlite3_bind_int(stmtUpdateContent, 1, length)); // @Size
-                CheckErr(sqlite3_bind_int(stmtUpdateContent, 2, writeData.Length)); // @DataSize
-                CheckErr(sqlite3_bind_int(stmtUpdateContent, 3, (int)compression)); // @Compression
-                CheckErr(sqlite3_bind_int64(stmtUpdateContent, 4, rowId)); // @Id
+                stmtInsertContent.Step(db);
 
-                CheckErr(sqlite3_step(stmtUpdateContent));
+                var rowId = sqlite3_column_int64(stmtInsertContent, 0);
 
-                CheckErr(sqlite3_reset(stmtUpdateContent));
+                stmtInsertContent.Reset(db);
 
                 if (blob == null)
                     blob = SqliteBlobStream.Open(con.Handle!, "main", "Content", "Data", rowId, true);
@@ -1086,8 +1146,9 @@ public sealed class Updater : ReactiveObject
                 blob.Write(writeData.Span);
                 swSqlite.Stop();
 
+                state.DownloadedContentEntries.Add(rowId);
+
                 // Log.Debug("Data size: {DataSize}, Size: {UncompressedLen}", writeData.Length, uncompressedLen);
-                i += 1;
             }
         }
         finally
@@ -1095,14 +1156,10 @@ public sealed class Updater : ReactiveObject
             blob?.Dispose();
             decompressContext?.Dispose();
             compressContext?.Dispose();
-            stmtFindContentHash?.Dispose();
-            stmtUpdateContent?.Dispose();
         }
 
         Progress = null;
         Speed = null;
-
-        void CheckErr(int err) => SqliteException.ThrowExceptionForRC(err, con.Handle);
     }
 
     private static void EnsureBuffer(ref byte[] buf, int needsFit)
@@ -1144,6 +1201,41 @@ public sealed class Updater : ReactiveObject
         if (min > ManifestDownloadProtocolVersion || max < ManifestDownloadProtocolVersion)
         {
             throw new UpdateException("No supported protocol version for download server.");
+        }
+    }
+
+    private static void FillContentManifest(
+        SqliteConnection connection,
+        long versionId,
+        FetchedContentManifestData manifestData)
+    {
+        var db = connection.Handle;
+        Debug.Assert(db != null);
+
+        using var stmtFindContent = db.Prepare("SELECT Id FROM Content WHERE Hash = ?");
+        using var stmtInsertContentManifest =
+            db.Prepare("INSERT INTO ContentManifest (VersionId, Path, ContentId) VALUES (?, ?, ?)");
+
+        stmtInsertContentManifest.BindInt64(db, 1, versionId);
+
+        foreach (var entry in manifestData.Entries)
+        {
+            stmtFindContent.BindBlob(db, 1, entry.Hash);
+
+            var result = stmtFindContent.Step(db);
+            if (result == SQLITE_DONE)
+            {
+                // Shouldn't be possible, we should have all blobs we need!
+                throw new UnreachableException("Missing content blob during manifest fill!");
+            }
+
+            var contentId = sqlite3_column_int64(stmtFindContent, 0);
+            stmtFindContent.Reset(db);
+
+            stmtInsertContentManifest.BindString(db, 2, entry.Path);
+            stmtInsertContentManifest.BindInt64(db, 3, contentId);
+            stmtInsertContentManifest.Step(db);
+            stmtInsertContentManifest.Reset(db);
         }
     }
 
@@ -1482,5 +1574,23 @@ public sealed class Updater : ReactiveObject
         /// This means each file has a compression header, and the launcher should not attempt to compress files itself.
         /// </summary>
         PreCompressed = 1 << 0
+    }
+
+    private sealed class TransactedDownloadState
+    {
+        public readonly List<long> DownloadedContentEntries = [];
+        public long? MadeContentVersion;
+    }
+
+    private sealed class FetchedContentManifestData
+    {
+        public required byte[] ManifestHash;
+        public required List<ContentManifestEntry> Entries;
+    }
+
+    private struct ContentManifestEntry
+    {
+        public required string Path;
+        public required byte[] Hash;
     }
 }
