@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
@@ -44,6 +43,24 @@ public class App : Application
     public App(OverrideAssetsManager overrideAssets)
     {
         _overrideAssets = overrideAssets;
+
+        if (Current?.TryGetFeature<IActivatableLifetime>(out var lifetime) == true)
+        {
+            lifetime.Activated += OnOSXUrlsOpened;
+        }
+    }
+
+    private void OnOSXUrlsOpened(object? sender, ActivatedEventArgs e)
+    {
+        // I think this only works on macOS anyway? Well I will leave this here just so I don't surprise myself later.
+        if (!OperatingSystem.IsMacOS())
+            return;
+
+        var args = Environment.GetCommandLineArgs();
+        if (args.Length > 1)
+        {
+            Program.ParseCommandLineArgs(args[1..], new LauncherMessaging());
+        }
     }
 
     public override void Initialize()
@@ -150,7 +167,7 @@ public class App : Application
             GC.Collect();
         };
 
-        var lc = new LauncherCommands(viewModel);
+        var lc = new LauncherCommands(viewModel, window.StorageProvider);
         lc.RunCommandTask();
         Locator.CurrentMutable.RegisterConstant(lc);
         msgr.StartServerTask(lc);
