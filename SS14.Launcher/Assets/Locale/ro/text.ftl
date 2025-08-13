@@ -1,0 +1,15 @@
+account-drop-down-log-out = deconectat
+account-drop-down-switch-account = Schimbati contul:
+account-drop-down-add-account = Adaugați cont
+add-favorite-window-title = Adaugă Serverul Favorit
+add-favorite-window-address-invalid = Adresa este invalidă
+add-favorite-window-example-name = Stația Honk
+connecting-title-content-bundle = Se incarcă…
+connecting-cancel = Anulează
+account-drop-down-none-selected = Niciun cont selectat
+account-drop-down-not-logged-in = Nu sunteți logat
+account-drop-down-log-out-of = Deconectat din { $name }
+account-drop-down-select-account = Cont selectat:
+add-favorite-window-label-name = Nume:
+add-favorite-window-label-address = Adresă:
+connecting-title-connecting = Se conectează…
