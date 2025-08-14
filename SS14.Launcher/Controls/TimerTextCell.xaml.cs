@@ -88,7 +88,7 @@ public class TimerTextCell : TemplatedControl
     private string GetTimeStringSince(DateTime dateTime)
     {
         var ts = DateTime.UtcNow.Subtract(dateTime);
-        return _loc.GetString("server-entry-round-time", ("hours", ts.Hours),
+        return _loc.GetString("server-entry-round-time", ("hours", Math.Floor(ts.TotalHours)),
             ("mins", ts.Minutes.ToString().PadLeft(2, '0')));
     }
 }
