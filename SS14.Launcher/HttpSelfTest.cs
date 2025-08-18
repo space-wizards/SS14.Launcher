@@ -80,7 +80,7 @@ internal static class HttpSelfTest
 
     private static async Task TestHappyEyeballsHttp(int id, string url)
     {
-        using var client = HappyEyeballsHttp.CreateHttpClient(false);
+        using var client = HappyEyeballsHttp.CreateHttpClient(false); //Note: It may be worth refactoring this to also allow the http checks to be done via proxy. Afaik it doesn't cause issues, and would require giving it a ref to DataManager but it could certainly be done.
 
         using var resp = await client.GetAsync(url);
 
