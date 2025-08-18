@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
+    <mime-type type="application/rtbundle">
+        <comment>Robust Toolbox Game Bundle</comment>
+        <glob pattern="*.rtbundle"/>
+    </mime-type>
+    <mime-type type="application/rtreplay">
+        <comment>Robust Toolbox Replay</comment>
+        <glob pattern="*.rtreplay"/>
+    </mime-type>
+</mime-info>
+    <!--
+    mkdir -p ~/.local/share/mime && cp ./ss14-mime.type.xml ~/.local/share/mime && update-mime-database ~/.local/share/mime
+    cp ~/.local/share/applications/SS14.desktop && update-desktop-database ~/.local/share/applications
+    -->

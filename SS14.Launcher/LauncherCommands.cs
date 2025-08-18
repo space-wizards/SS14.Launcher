@@ -2,6 +2,7 @@ using System;
 using System.Text;
 using System.Threading.Channels;
 using System.Threading.Tasks;
+using Avalonia.Platform.Storage;
 using Avalonia.Threading;
 using Serilog;
 using Splat;
@@ -18,13 +19,15 @@ public class LauncherCommands
     private MainWindowViewModel _windowVm;
     private LoginManager _loginMgr;
     private LauncherMessaging _msgr;
+    private readonly IStorageProvider _storageProvider;
     public readonly Channel<string> CommandChannel;
 
-    public LauncherCommands(MainWindowViewModel windowVm)
+    public LauncherCommands(MainWindowViewModel windowVm, IStorageProvider provider)
     {
         _windowVm = windowVm;
         _loginMgr = Locator.Current.GetRequiredService<LoginManager>();
         _msgr = Locator.Current.GetRequiredService<LauncherMessaging>();
+        _storageProvider = provider;
 
         CommandChannel = Channel.CreateUnbounded<string>();
     }
@@ -157,6 +160,16 @@ public class LauncherCommands
             // Used by the "pass URI as argument" logic, doesn't need to bother with safety measures
             await Connect(cmd.Substring(1));
         }
+        else if (cmd.StartsWith("b"))
+        {
+            // Content bundle file
+            var uri = new Uri(cmd.Substring(1));
+            var thingy = await _storageProvider.TryGetFileFromPathAsync(uri);
+            if (thingy != null)
+                await Task.Run(() => ConnectingViewModel.StartContentBundle(_windowVm, thingy));
+            else
+                Log.Error("File does not exist. Aborting");
+        }
         else
         {
             Log.Error($"Unhandled launcher command: {cmd}");
@@ -169,5 +182,6 @@ public class LauncherCommands
     public const string RedialWaitCommand = ":RedialWait";
     public const string BlankReasonCommand = "r";
     public static string ConstructConnectCommand(Uri uri) => "c" + uri.ToString();
+    public static string ConstructContentBundleCommand(string fileName) => "b" + fileName;
 }
 

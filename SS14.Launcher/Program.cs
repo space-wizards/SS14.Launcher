@@ -46,40 +46,7 @@ internal static class Program
         var msgr = new LauncherMessaging();
         Locator.CurrentMutable.RegisterConstant(msgr);
 
-        // Parse arguments as early as possible for launcher messaging reasons.
-        string[] commands = { LauncherCommands.PingCommand };
-        var commandSendAnyway = false;
-        if (args.Length == 1)
-        {
-            // Check if this is a valid Uri, since that indicates re-invocation.
-            if (Uri.TryCreate(args[0], UriKind.Absolute, out var result))
-            {
-                commands = new string[]
-                    { LauncherCommands.BlankReasonCommand, LauncherCommands.ConstructConnectCommand(result) };
-                // This ensures we queue up the connection even if we're starting the launcher now.
-                commandSendAnyway = true;
-            }
-        }
-        else if (args.Length >= 2)
-        {
-            if (args[0] == "--commands")
-            {
-                // Trying to send an arbitrary series of commands.
-                // This is how the Loader is expected to communicate (and start the launcher if necessary).
-                // Note that there are special "untrusted text" versions of the commands that should be used.
-                commands = new string[args.Length - 1];
-                for (var i = 0; i < commands.Length; i++)
-                    commands[i] = args[i + 1];
-                commandSendAnyway = true;
-            }
-        }
-
-        // Note: This MUST occur before we do certain actions like:
-        // + Open the launcher log file (and therefore wipe a user's existing launcher log)
-        // + Initialize Avalonia (and therefore waste whatever time it takes to do that)
-        // Therefore any messages you receive at this point will be Console.WriteLine-only!
-        if (msgr.SendCommandsOrClaim(commands, commandSendAnyway))
-            return;
+        ParseCommandLineArgs(args, msgr);
 
         var logCfg = new LoggerConfiguration()
             .MinimumLevel.Debug()
@@ -129,7 +96,52 @@ internal static class Program
         }
     }
 
-    private static unsafe void CheckWindowsVersion()
+    public static void ParseCommandLineArgs(string[] args, LauncherMessaging msgr)
+    {
+        // Parse arguments as early as possible for launcher messaging reasons.
+        string[] commands = { LauncherCommands.PingCommand };
+        var commandSendAnyway = false;
+        if (args.Length == 1)
+        {
+            // Handle files being opened with the launcher.
+            if (args.Any(arg => arg.StartsWith("file://") || arg.EndsWith(".rtbundle") || arg.EndsWith(".rtreplay")))
+            {
+                commands = [LauncherCommands.BlankReasonCommand, LauncherCommands.ConstructContentBundleCommand(args[0])
+                ];
+                commandSendAnyway = true;
+            }
+
+            // Check if this is a valid Uri, since that indicates re-invocation.
+            else if (Uri.TryCreate(args[0], UriKind.Absolute, out var result))
+            {
+                commands = [LauncherCommands.BlankReasonCommand, LauncherCommands.ConstructConnectCommand(result)];
+                // This ensures we queue up the connection even if we're starting the launcher now.
+                commandSendAnyway = true;
+            }
+        }
+        else if (args.Length >= 2)
+        {
+            if (args[0] == "--commands")
+            {
+                // Trying to send an arbitrary series of commands.
+                // This is how the Loader is expected to communicate (and start the launcher if necessary).
+                // Note that there are special "untrusted text" versions of the commands that should be used.
+                commands = new string[args.Length - 1];
+                for (var i = 0; i < commands.Length; i++)
+                    commands[i] = args[i + 1];
+                commandSendAnyway = true;
+            }
+        }
+
+        // Note: This MUST occur before we do certain actions like:
+        // + Open the launcher log file (and therefore wipe a user's existing launcher log)
+        // + Initialize Avalonia (and therefore waste whatever time it takes to do that)
+        // Therefore any messages you receive at this point will be Console.WriteLine-only!
+        if (msgr.SendCommandsOrClaim(commands, commandSendAnyway))
+            return;
+    }
+
+    private static void CheckWindowsVersion()
     {
         // 14393 is Windows 10 version 1607, minimum we currently support.
         if (!OperatingSystem.IsWindows() || Environment.OSVersion.Version.Build >= 14393)
@@ -154,7 +166,7 @@ internal static class Program
         Helpers.MessageBoxHelper(text, caption, type);
     }
 
-    private static unsafe void CheckBadAntivirus()
+    private static void CheckBadAntivirus()
     {
         // Avast Free Antivirus breaks the game due to their AMSI integration crashing the process. Awesome!
         // Oh hey back here again, turns out AVG is just the same product as Avast with different paint.

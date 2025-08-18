@@ -27,10 +27,14 @@ public partial class MainWindow : Window
         AddHandler(DragDrop.DragLeaveEvent, DragLeave);
         AddHandler(DragDrop.DragOverEvent, DragOver);
         AddHandler(DragDrop.DropEvent, Drop);
-
-        _content = (MainWindowContent) Content!;
-
+        AddHandler(LoadedEvent, Load);
+    }
+    private async void Load(object? sender, RoutedEventArgs e)
+    {
         ReloadTitle();
+
+        await _viewModel!.OnWindowLoaded();
+        _content = (MainWindowContent) Content!;
     }
 
     public void ReloadContent()

@@ -117,6 +117,11 @@ public static class CVars
     public static readonly CVarDef<bool> WineWarningShown = CVarDef.Create("WineWarningShown", false);
 
     /// <summary>
+    /// Has the user been shown the protocols alert?
+    /// </summary>
+    public static readonly CVarDef<bool> HasSeenProtocolsDialog = CVarDef.Create("HasSeenProtocolsDialog", false);
+
+    /// <summary>
     /// Language the user selected. Null means it should be automatically selected based on system language.
     /// </summary>
     public static readonly CVarDef<string?> Language = CVarDef.Create<string?>("Language", null);
