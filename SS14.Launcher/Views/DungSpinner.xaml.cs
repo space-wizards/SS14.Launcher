@@ -1,11 +1,19 @@
 using System;
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Markup.Xaml;
+using Avalonia.Controls.Metadata;
 using Avalonia.Media;
 
 namespace SS14.Launcher.Views;
 
+/// <summary>
+/// Animated spinner doodad
+/// </summary>
+/// <remarks>
+/// Because of limitations in Avalonia, all usage sites MUST set IsVisible to false when the control is not visible.
+/// Otherwise, there will be significant idle resource usage in the launcher.
+/// </remarks>
+[PseudoClasses("active")]
 public sealed partial class DungSpinner : UserControl
 {
     public static readonly StyledProperty<double> AnimationProgressProperty =
@@ -24,6 +32,8 @@ public sealed partial class DungSpinner : UserControl
     public DungSpinner()
     {
         InitializeComponent();
+
+        UpdatePseudoClass();
     }
 
     public double AnimationProgress
@@ -38,9 +48,26 @@ public sealed partial class DungSpinner : UserControl
         set => SetValue(FillProperty, value);
     }
 
+    protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+    {
+        base.OnPropertyChanged(change);
+
+        if (change.Property == IsVisibleProperty)
+        {
+            UpdatePseudoClass();
+        }
+    }
+
+    private void UpdatePseudoClass()
+    {
+        PseudoClasses.Set(":active", IsVisible);
+    }
+
     public override void Render(DrawingContext context)
     {
         base.Render(context);
+
+        // Console.WriteLine($"RENDER: {IsEffectivelyVisible}");
 
         var centerX = Bounds.Width / 2;
         var centerY = Bounds.Height / 2;
