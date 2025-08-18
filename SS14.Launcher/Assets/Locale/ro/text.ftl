@@ -1,15 +1,15 @@
 account-drop-down-log-out = deconectat
-account-drop-down-switch-account = Schimbati contul:
-account-drop-down-add-account = Adaugați cont
+account-drop-down-switch-account = Schimbă contul:
+account-drop-down-add-account = Adaugă cont
 add-favorite-window-title = Adaugă Serverul Favorit
 add-favorite-window-address-invalid = Adresa este invalidă
 add-favorite-window-example-name = Stația Honk
-connecting-title-content-bundle = Se incarcă…
+connecting-title-content-bundle = Se încarcă…
 connecting-cancel = Anulează
 account-drop-down-none-selected = Niciun cont selectat
-account-drop-down-not-logged-in = Nu sunteți logat
-account-drop-down-log-out-of = Deconectat din { $name }
-account-drop-down-select-account = Cont selectat:
+account-drop-down-not-logged-in = Nu ești autentificat
+account-drop-down-log-out-of = Deconectează-te din { $name }
+account-drop-down-select-account = Selectează cont:
 add-favorite-window-label-name = Nume:
 add-favorite-window-label-address = Adresă:
 connecting-title-connecting = Se conectează…
@@ -222,7 +222,7 @@ region-asia-north = Asia de Nord
 region-india = India
 region-the-moon = De pe Lună
 region-south-america-east = America de Sud, Est
-tab-servers-list-status-error = A apărut o eroare la preluarea listelor de servere principale. Poate încercați să actualizați pagina?
+tab-servers-list-status-error = A apărut o eroare la preluarea listelor de servere principale. Poate încearcă să actualizezi pagina?
 region-asia-south-east = Asia de Sud-Est
 tab-development-title = { "[" }DEV]
 main-window-busy-checking-update = Se verifică dacă sunt actualizări pentru lansator…
@@ -259,3 +259,27 @@ tab-options-open-log-directory = Deschideți directorul de jurnal
 tab-options-account-settings-desc = Îți poți gestiona setările pentru contul tău, ca și schimbarea e-mailului sau a parolei, prin site-ul nostru web.
 tab-options-compatibility-mode-desc = Acest lucru obligă jocul să utilizeze un backend grafic diferit, care e mai puțin dispus să sufere de erori de drivere. Încearcă asta daca Întâmpini probleme de grafică sau crash-uri.
 hub-settings-explanation = Aici puteți adăuga hub-uri suplimentare de unde puteți prelua servere de joc. Tu ar trebui să adaugi doar hub-uri în care ai încredere, deoarece ei pot "imita" servere de joc de la alte hub-uri. Ordinea hub-urile contează; dacă două hub-uri fac publicitate la aceleași server de joc hub-ul cu cea mai mare prioritate (mai mare in lista) o sa ia prioritatea.
+tab-options-log-launcher-desc = Activează jurnalizarea lansatorului. Folositor pentru developeri. (necesită să dai restart la lansator)
+tab-options-verbose-launcher-logging = Jurnalizarea lansatorului Verbose
+tab-options-verbose-launcher-logging-desc = Pentru atunci când developerii sunt *foarte* blocați cu problema ta. (este nevoie să dai restart la lansator)
+tab-options-seasonal-branding = Marcă Sezonieră
+tab-options-seasonal-branding-desc = Oricare pictogramă temporară relevantă si logouri cu care mai venim in minte.
+tab-options-disable-signing = Dezactivează Verificările de Semnătură ale Motorului
+tab-options-disable-signing-desc = { "[" }DEV ONLY] Dezactivează verificarea de semnături ale motorului. NU ACTIVA DOAR DACA ȘTI EXACT CEEA CE FACI.
+tab-options-hub-settings = Setări Hub
+tab-options-hub-settings-desc = Schimbă ce server sau servere hub ai vrea să folosești ca să preia lista de servere.
+tab-options-desc-incompatible = Această opțiune este incompatibilă cu platforma ta și a fost deactivată.
+language-selector-label = Limbă
+language-selector-save = Salvează
+language-selector-cancel = Renunță
+language-selector-help-translate = Vrei să ajuți să traduci? Poți să o faci!
+server-entry-player-count =
+    { $players } / { $max ->
+        [0] ∞
+       *[1] { $max }
+    }
+server-entry-round-time =
+    { $hours ->
+        [0] { $mins }M
+       *[1] { $hours }H { $mins }M
+    }
