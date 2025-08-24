@@ -548,3 +548,5 @@ server-entry-round-time =
 tab-servers-table-round-time = Время
 connecting-status-update-error-unknown = Неизвестно
 server-entry-status-lobby = Лобби
+connecting-status-update-error-no-engine-for-platform = Эта игра использует более старую версию, которая не поддерживается вашей текущей платформой. Попробуйте другой сервер или подключитесь позже.
+connecting-status-update-error-no-module-for-platform = Эта игра требует дополнительного функционала, который пока что не поддерживается вашей текущей платформой. Попробуйте другой сервер или подключитесь позже.
