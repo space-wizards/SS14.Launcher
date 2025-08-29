@@ -528,3 +528,6 @@ language-selector-system-language = System-Sprache ({ $languageName })
 # For the language selection menu.
 # Used for contents of each language button.
 language-selector-language = { $languageName } ({ $englishName })
+connecting-privacy-policy-text = Dieser Server erfordert vor dem Beitritt das Akzeptieren der Datenschutzerklärung.
+connecting-privacy-policy-text-version-changed = Dieser Server hat seit deiner letzten Spielsitzung die Datenschutzerklärung geändert. Du musst die neue Version akzeptieren, bevor du dich mit dem Server verbindest.
+connecting-privacy-policy-view = Datenschutzerklärung ansehen
