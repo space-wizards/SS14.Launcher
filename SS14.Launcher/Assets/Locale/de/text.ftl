@@ -196,7 +196,7 @@ filters = Filter ({ $filteredServers } / { $totalServers })
 region-the-moon = Der Mond
 # Strings for the general main window layout of the launcher
 main-window-out-of-date-desc-steam =
-    Der Launcher ist veraltet.
+    Der Launcher ist nicht mehr aktuell.
     Bitte erlaube Steam das Spiel zu aktualisieren.
 # Strings for the general main window layout of the launcher
 main-window-out-of-date-exit = Verlassen
@@ -213,11 +213,11 @@ main-window-drag-drop-prompt = Loslassen um Spiel zu starten
 # Strings for the general main window layout of the launcher
 main-window-header-link-website = Webseite
 # Strings for the general main window layout of the launcher
-main-window-out-of-date = Launcher ist veraltet
+main-window-out-of-date = Launcher ist nicht mehr aktuell
 # Strings for the general main window layout of the launcher
 main-window-out-of-date-desc =
-    Der Launcher ist veraltet.
-    Bitte lade die neuste Version von unserer Webseite runter.
+    Der Launcher ist nicht mehr aktuell.
+    Bitte lade die neuste Version von unserer Webseite.
 # Strings for the general main window layout of the launcher
 main-window-busy-checking-login-status = Aktualisiere Login-Status…
 # Strings for the general main window layout of the launcher
