@@ -150,7 +150,7 @@ login-login-button-forgot = Passwort vergessen?
 # Strings for the "login" view on login
 login-login-button-resend = Bestätigungsemail erneut senden
 # Strings for the "login" view on login
-login-login-button-register = Noch kein Konto? Registriere jetzt!
+login-login-button-register = Noch kein Konto? Registriere dich jetzt!
 # Strings for the "login" view on login
 login-login-busy-logging-in = Anmelden…
 # Strings for the "login" view on login
@@ -180,7 +180,7 @@ login-forgot-message = Falls du dein Passwort vergessen hast, kannst du hier die
 # Strings for the "forgot password" view on login
 login-forgot-button-submit = Absenden
 # Strings for the "forgot password" view on login
-login-forgot-success-message = Ein Wiederherstellungslink wurde zu deiner E-Mail-Adresse gesendet.
+login-forgot-success-message = Ein Wiederherstellungslink wurde an deine E-Mail-Adresse gesendet.
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-update-error =
     Ein Fehler ist aufgetreten beim runterladen der Spieldateien. Bitte frage nach Hilfe auf dem Discord wenn das Problem weiterhin besteht.
