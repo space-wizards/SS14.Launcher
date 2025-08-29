@@ -227,7 +227,7 @@ main-window-error-connecting-auth-server = Fehler beim Verbinden mit dem Authent
 # Strings for the general main window layout of the launcher
 main-window-error-unknown = Unbekannter Fehler aufgetreten
 # Long region names for server tag filters (shown in tooltip)
-region-africa-central = Zentralafrika
+region-africa-central = Afrika Mitte
 # Long region names for server tag filters (shown in tooltip)
 region-africa-north = Nordafrika
 # Long region names for server tag filters (shown in tooltip)
@@ -415,7 +415,7 @@ tab-development-disable-signing = Engine-Signaturprüfungen deaktivieren
 # These aren't shown to users so they're not very important
 tab-development-enable-engine-override = Engine-Override aktivieren
 # Strings for the "home" tab
-tab-home-title = Home
+tab-home-title = Startseite
 # Strings for the "home" tab
 tab-home-favorite-servers = Favoriten:
 # Strings for the "home" tab
@@ -535,3 +535,9 @@ connecting-status-update-error-unknown = Unbekannt
 connecting-privacy-policy-accept = Annehmen (fortfahren)
 connecting-privacy-policy-decline = Ablehnen (Verbindung trennen)
 login-login-show-password = Passwort anzeigen
+server-entry-round-time =
+    { $hours ->
+        [0] { $mins } Min
+       *[1] { $hours } Std { $mins } Min
+    }
+tab-servers-table-round-time = Zeit
