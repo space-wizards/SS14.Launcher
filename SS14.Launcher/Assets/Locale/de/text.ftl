@@ -533,3 +533,4 @@ connecting-privacy-policy-text-version-changed = Dieser Server hat seit deiner l
 connecting-privacy-policy-view = Datenschutzerklärung ansehen
 connecting-status-update-error-unknown = Unbekannt
 connecting-privacy-policy-accept = Annehmen (fortfahren)
+connecting-privacy-policy-decline = Ablehnen (Verbindung trennen)
