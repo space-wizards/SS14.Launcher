@@ -126,7 +126,7 @@ login-expired-button-log-out = Abmelden
 # Strings for the "login expired" view on login
 login-expired-button-forgot-password = Passwort vergessen?
 # Strings for the "forgot password" view on login
-login-forgot-title = Password vergessen?
+login-forgot-title = Passwort vergessen?
 # Strings for the "forgot password" view on login
 login-forgot-email-watermark = Deine E-Mail-Adresse
 # Strings for the "forgot password" view on login
@@ -176,7 +176,7 @@ login-expired-message =
     Die Sitzung für dieses Konto ist abgelaufen.
     Bitte gebe dein Password erneut ein.
 # Strings for the "forgot password" view on login
-login-forgot-message = Falls du dein Password vergessen hast, kannst du hier die E-Mail-Adresse verbunden mit deinem Konto eingeben, um ein Wiederherstellungslink zu erhalten.
+login-forgot-message = Falls du dein Passwort vergessen hast, kannst du hier die E-Mail-Adresse eingeben die mit deinem Konto verbunden ist, um einen Wiederherstellungslink zu erhalten.
 # Strings for the "forgot password" view on login
 login-forgot-button-submit = Absenden
 # Strings for the "forgot password" view on login
