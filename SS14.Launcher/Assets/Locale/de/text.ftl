@@ -150,7 +150,7 @@ login-login-button-forgot = Passwort vergessen?
 # Strings for the "login" view on login
 login-login-button-resend = Bestätigungsemail erneut senden
 # Strings for the "login" view on login
-login-login-button-register = Noch kein Konto? Registriere dich jetzt!
+login-login-button-register = Noch kein Konto? Registrieren!
 # Strings for the "login" view on login
 login-login-busy-logging-in = Anmelden…
 # Strings for the "login" view on login
