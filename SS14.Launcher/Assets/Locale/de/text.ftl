@@ -176,7 +176,7 @@ login-expired-message =
     Die Sitzung für dieses Konto ist abgelaufen.
     Bitte gebe dein Password erneut ein.
 # Strings for the "forgot password" view on login
-login-forgot-message = Falls du dein Passwort vergessen hast, kannst du hier die E-Mail-Adresse eingeben die mit deinem Konto verbunden ist, um einen Wiederherstellungslink zu erhalten.
+login-forgot-message = Falls du dein Passwort vergessen hast, kannst du hier die E-Mail-Adresse eingeben, die mit deinem Konto verbunden ist, um einen Wiederherstellungslink zu erhalten.
 # Strings for the "forgot password" view on login
 login-forgot-button-submit = Absenden
 # Strings for the "forgot password" view on login
