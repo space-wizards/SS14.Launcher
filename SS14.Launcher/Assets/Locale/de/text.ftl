@@ -227,7 +227,7 @@ main-window-error-connecting-auth-server = Fehler beim Verbinden mit dem Authent
 # Strings for the general main window layout of the launcher
 main-window-error-unknown = Unbekannter Fehler aufgetreten
 # Long region names for server tag filters (shown in tooltip)
-region-africa-central = Afrika Zentral
+region-africa-central = Zentralafrika
 # Long region names for server tag filters (shown in tooltip)
 region-africa-north = Nordafrika
 # Long region names for server tag filters (shown in tooltip)
