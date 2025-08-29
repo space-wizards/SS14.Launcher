@@ -534,3 +534,4 @@ connecting-privacy-policy-view = Datenschutzerklärung ansehen
 connecting-status-update-error-unknown = Unbekannt
 connecting-privacy-policy-accept = Annehmen (fortfahren)
 connecting-privacy-policy-decline = Ablehnen (Verbindung trennen)
+login-login-show-password = Passwort anzeigen
