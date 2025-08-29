@@ -541,3 +541,4 @@ server-entry-round-time =
        *[1] { $hours } Std { $mins } Min
     }
 tab-servers-table-round-time = Zeit
+tab-options-desc-incompatible = Diese Option ist mit deiner Plattform nicht kompatibel und wurde deaktiviert.
