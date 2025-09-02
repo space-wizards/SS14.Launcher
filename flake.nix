@@ -1,7 +1,7 @@
 {
   description = "Flake providing a package for the Space Station 14 Launcher.";
 
-  inputs.nixpkgs.url = "github:NixOS/nixpkgs/release-24.11";
+  inputs.nixpkgs.url = "github:NixOS/nixpkgs/release-25.05";
   inputs.flake-compat = {
     url = "github:edolstra/flake-compat";
     flake = false;
