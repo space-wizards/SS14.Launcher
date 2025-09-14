@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
+using Avalonia.Threading;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Splat;
 using SS14.Launcher.Localization;
@@ -19,6 +20,7 @@ public partial class ServerListTabViewModel : MainWindowTabViewModel
     public ObservableList<ServerEntryViewModel> SearchedServers { get; } = [];
 
     private string? _searchString;
+    private readonly DispatcherTimer _searchThrottle = new() { Interval = TimeSpan.FromMilliseconds(200) };
 
     public override string Name => _loc.GetString("tab-servers-title");
 
@@ -34,7 +36,9 @@ public partial class ServerListTabViewModel : MainWindowTabViewModel
             _searchString = value;
             OnPropertyChanged();
 
-            UpdateSearchedList();
+            // Search string was changed, stop a potential old throttle timer and restart it
+            _searchThrottle.Stop();
+            _searchThrottle.Start();
         }
     }
 
@@ -91,6 +95,13 @@ public partial class ServerListTabViewModel : MainWindowTabViewModel
                     OnPropertyChanged(nameof(SpinnerVisible));
                     break;
             }
+        };
+
+        _searchThrottle.Tick += (_, _) =>
+        {
+            // Interval since last search string change has passed, stop the timer and update the list
+            _searchThrottle.Stop();
+            UpdateSearchedList();
         };
 
         _loc.LanguageSwitched += () => Filters.UpdatePresentFilters(_serverListCache.AllServers);

@@ -88,7 +88,8 @@
                              Text="{TemplateBinding ListText}" />
                   <Viewbox Grid.Column="0" Grid.Row="2" IsVisible="{TemplateBinding SpinnerVisible}"
                            Classes="DungSpinnerBox">
-                    <views:DungSpinner />
+                    <!-- Explicitly setting visible to block animations -->
+                    <views:DungSpinner IsVisible="{TemplateBinding SpinnerVisible}" />
                   </Viewbox>
                 </Grid>
               </DockPanel>

@@ -9,16 +9,20 @@ account-drop-down-add-account = Legg til bruker
 add-favorite-window-address-invalid = Adresse er utilgjengelig
 connecting-title-connecting = Kobler til…
 connecting-status-none = Starter tilkobling…
-connecting-title-content-bundle = Lasting…
+connecting-title-content-bundle = Laster inn…
 connecting-status-starting-client = Starter klient…
 connecting-status-updating = Oppdatering: { $status }
 connecting-status-connection-failed = Kunne ikke koble til serveren!
 add-favorite-window-example-name = Tute Stasjon
 connecting-status-update-error =
-    Det var en feil under nedlastingen av server innholdet. Vennligst spør på Discord om støtte om problemet vedvarer.
+    Det var en feil under nedlastingen av sørver innholdet. Hvis dette vedvarer prøv det følgende:
+    - Prøv å koble til en annen sørver, for å se om problemet fortsetter
+    -Prøv å skru av eller på programvare som for eksempelvis VPNer, Hvis du har det.
 
-    Error: { $err }
-connecting-cancel = Kansler
+    Hvis du fremdeles har problemer, prøv å kontakte sørveren som du prøver å bli med på før du spør etter help på den offisielle Space station 14 Discord eller forum.
+
+    Teknisk feil: { $err }
+connecting-cancel = Avbryt
 connecting-privacy-policy-accept = Aksepter
 direct-connect-connect = Koble til
 direct-connect-title = Direkte tilkobling…
@@ -140,7 +144,7 @@ tab-servers-title = Servere
 tab-servers-search-watermark = Søker etter servere…
 tab-servers-table-players = Spillere
 tab-servers-table-name = Server Navn
-tab-servers-list-status-error = Det oppstod en feil ved henting av hovedserverlistene.
+tab-servers-list-status-error = Det oppstod en feil ved henting av hovedsørverlistene. Kanskje du bør prøve å oppdatere siden?
 tab-servers-list-status-updating-master = Henter hovedserverliste…
 tab-servers-list-status-none-filtered = Ingen servere samsvarer med søket eller filterinnstillingene dine.
 tab-servers-list-status-none = Det finnes ingen offentlige servere. Sørg for at hub-konfigurasjonen din er riktig.
@@ -249,7 +253,7 @@ login-expired-message =
 hub-settings-explanation = Her kan du legge til ekstra huber for å hente spillservere fra. Du bør bare legge til huber du stoler på, da de kan "forfalske" spillservere fra andre huber. Rekkefølgen på navene er viktig; hvis to huber annonserer den samme spillserveren, vil navet med høyere prioritet (øverst på listen) ha forrang.
 login-forgot-message = Hvis du har glemt passordet ditt, kan du skrive inn e-postadressen knyttet til kontoen din her for å motta en tilbakestillingslenke.
 region-short-africa-north = Nord-Afrika
-tab-servers-list-status-partial-error = Kunne ikke hente noen eller alle serverlister. Sørg for at hub-konfigurasjonen din er riktig.
+tab-servers-list-status-partial-error = Klarte ikke hente inn noen av sørverlistene. Sørg for at hub innstillingene dine er riktig og prøve å oppdatere siden?.
 filters-title-rp = Rollespill nivå
 filters-player-count-maximum-desc = Severe med flere spillere vil ikke vises
 login-forgot-error = Feil
@@ -271,3 +275,6 @@ tab-options-seasonal-branding-desc = Hva enn midlertidig relevante ikoner og log
 tab-options-desc-incompatible = Dette alternativet er inkompatibelt med plattformen din og har blitt deaktivert.
 language-selector-system-language = System språk ({ $languageName })
 login-error-account-unconfirmed = E-postadressen for denne kontoen må fortsatt bekreftes. Vennligst bekreft e-postadressen din før du prøver å logge inn
+tab-servers-table-round-time = Tid
+connecting-status-update-error-unknown = Ukjent
+server-entry-status-lobby = Lobby
