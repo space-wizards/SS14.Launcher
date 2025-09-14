@@ -283,3 +283,5 @@ tab-servers-list-status-partial-error = Malsukcesis legi iujn el la servilejojn.
 tab-options-compatibility-mode-desc = Ĉi tiu devigos la ludon uzi alian grafikan subsistemon, kiu malpli probable kaŭzos cimojn de pelilo. Provu ĉi tion se vi spertas grafikajn problemojn aŭ kraŝadojn.
 tab-options-account-settings-desc = Vi povas manaĝi vian agordojn de via konto, ekzemple aliigi retpoŝtadreson aŭ pasvorton, per nia paĝaro.
 tab-options-hub-settings-desc = Agordi kiujn servilejojn vi volas uzi por legi la liston de serviloj.
+connecting-status-update-error-no-engine-for-platform = Ĉi tiu ludo uzas malnovan version, kiu ne subtenas vian kurantan platformon. Bonvolu provi alian servilon, aŭ alifoje reprovu.
+connecting-status-update-error-no-module-for-platform = Ĉi tiu ludo bezonas aldonan funkciecon, kiun via kuranta platformo ne subtenas. Bonvolu provi alian servilon, aŭ alifoje reprovu.

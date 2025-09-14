@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using JetBrains.Annotations;
 using SS14.Launcher.Utility;
 
@@ -119,6 +120,16 @@ public static class CVars
     /// Language the user selected. Null means it should be automatically selected based on system language.
     /// </summary>
     public static readonly CVarDef<string?> Language = CVarDef.Create<string?>("Language", null);
+
+    /// <summary>
+    /// The CPU architecture this launcher was last run with.
+    /// </summary>
+    /// <remarks>
+    /// Used to delete engine builds of other architectures on startup.
+    /// Defaults to x64 so that people upgrading to a proper ARM64 launcher on e.g. Apple Silicon
+    /// properly get their existing installations cleared.
+    /// </remarks>
+    public static readonly CVarDef<int> CurrentArchitecture = CVarDef.Create("CurrentArchitecture", (int) Architecture.X64);
 }
 
 /// <summary>

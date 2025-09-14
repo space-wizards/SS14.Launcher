@@ -7,7 +7,8 @@
         <SolidColorBrush Color="#e23229" />
       </Setter.Value>
     </Setter>
-
+  </Style>
+  <Style Selector="views|DungSpinner:active">
     <Style.Animations>
       <Animation Duration="0:0:1.5" IterationCount="INFINITE">
         <KeyFrame Cue="0%">

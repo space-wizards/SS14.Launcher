@@ -72,8 +72,11 @@
     <PackageReference Include="TerraFX.Interop.Windows" />
     <PackageReference Include="NSec.Cryptography" />
     <PackageReference Include="Mono.Posix.NETStandard" />
-    <PackageReference Include="SharpZstd.Interop" />
+    <PackageReference Include="SharpZstd.Interop" ExcludeAssets="native" />
+    <PackageReference Include="Robust.Natives.Zstd" />
     <PackageReference Include="SpaceWizards.Sodium" />
+    <!-- Add libsodium to control version, SpaceWizards.Sodium's dependency is behind -->
+    <PackageReference Include="libsodium" />
     <PackageReference Include="JetBrains.Annotations" />
     <PackageReference Include="Microsoft.NET.ILLink.Tasks" />
     <PackageReference Include="System.Net.Http.WinHttpHandler" />

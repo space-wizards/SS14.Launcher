@@ -543,3 +543,5 @@ server-entry-round-time = { $hours }时 { $mins }分
 connecting-status-update-error-unknown = 未知
 tab-servers-table-round-time = 时间
 server-entry-status-lobby = 大厅
+connecting-status-update-error-no-engine-for-platform = 本游戏正在使用较老的版本，并且不支持你当前的平台。请尝试连接至其它服务器，或稍后再试。
+connecting-status-update-error-no-module-for-platform = 本游戏要求支持额外功能，并且不支持你当前的平台。请尝试连接至其它服务器，或稍后再试。

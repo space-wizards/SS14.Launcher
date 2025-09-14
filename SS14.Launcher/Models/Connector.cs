@@ -690,10 +690,15 @@ public class Connector : ReactiveObject
         }
         else
         {
+#if RELEASE
+            const string buildConfiguration = "Release";
+#else
+            const string buildConfiguration = "Debug";
+#endif
             basePath = Path.GetFullPath(Path.Combine(
                 LauncherPaths.DirLauncherInstall,
                 "..", "..", "..", "..",
-                "SS14.Loader", "bin", "Debug", "net9.0"));
+                "SS14.Loader", "bin", buildConfiguration, "net9.0"));
         }
 
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux) || RuntimeInformation.IsOSPlatform(OSPlatform.FreeBSD))
