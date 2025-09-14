@@ -12,6 +12,8 @@
             ItemsSource="{Binding List, RelativeSource={RelativeSource AncestorType=UserControl}}"
             IsReadOnly="True"
             RowDetailsVisibilityMode="VisibleWhenSelected"
+            HeadersVisibility="All"
+            HorizontalScrollBarVisibility="Disabled"
             CanUserReorderColumns="True"
             SelectionMode="Single"
             RowHeight="30"
