@@ -240,7 +240,7 @@ filters-player-count-hide-empty-desc = Servlioj sen ludantoj ne vidigos
 filters-player-count-hide-full-desc = Plenaj serviloj ne vidigos
 filters-player-count-minimum-desc = Serviloj kun malpliaj ludantoj ne vidigos
 filters-player-count-maximum-desc = Serviloj kun pliaj ludantoj ne vidigos
-server-entry-description-fetching = Leganta staton de servilo…
+server-entry-description-fetching = Leganta staton de la servilo…
 server-entry-round-time =
     { $hours ->
         [0] { $mins }M
@@ -270,7 +270,7 @@ tab-home-direct-connect = Direkte Konekti Al Servilo…
 tab-home-go-to-servers-tab = Iri al la langeto de serviloj
 tab-home-favorites-guide = Marku servilojn kiel favoratojn por facile atingi ĉi tie
 tab-options-log-client-desc = Ebligas registradon de eligaĵo de la ludkliento. Utila por ellaborantoj.
-tab-options-desc-incompatible = Tiu ĉi opcio ne kongruas kun via platformo kaj estas malŝaltita.
+tab-options-desc-incompatible = Ĉi tiu opcio ne kongruas kun via platformo kaj estas malŝaltita.
 language-selector-help-translate = Volas helpi traduki? Vi povas!
 language-selector-system-language = Sistema lingvo ({ $languageName })
 connecting-status-client-crashed = Kliento verŝajne kraŝis dum lanĉado. Se tio daŭras, bonvolu peti asiston en Discord aŭ GitHub.
