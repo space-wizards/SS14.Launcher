@@ -1,11 +1,6 @@
-using System;
 using System.Collections;
 using Avalonia;
-using System.Collections.ObjectModel;
-using System.Linq;
 using Avalonia.Controls;
-using Avalonia.Controls.Presenters;
-using Avalonia.LogicalTree;
 using SS14.Launcher.ViewModels.MainWindowTabs;
 
 namespace SS14.Launcher.Views.MainWindowTabs;
@@ -16,20 +11,7 @@ public sealed partial class ServerList : UserControl
     {
         InitializeComponent();
 
-        MyDataGrid.PointerReleased += (sender, args) =>
-        {
-            if (sender is not DataGrid)
-            {
-                Console.WriteLine(sender);
-                MyDataGrid.SelectedItem = null;
-            }
-            else
-            {
-                Console.WriteLine(sender);
-            }
-        };
-
-        MyDataGrid.SelectionChanged += (_, args) =>
+        ServerGrid.SelectionChanged += (_, args) =>
         {
             foreach (ServerEntryViewModel rem in args.RemovedItems)
             {
@@ -97,7 +79,7 @@ public sealed partial class ServerList : UserControl
 
     public IEnumerable List
     {
-        get => MyDataGrid.ItemsSource;
-        set => MyDataGrid.ItemsSource = value;
+        get => ServerGrid.ItemsSource;
+        set => ServerGrid.ItemsSource = value;
     }
 }

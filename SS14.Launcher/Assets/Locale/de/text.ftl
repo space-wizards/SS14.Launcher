@@ -417,7 +417,7 @@ tab-development-enable-engine-override = Engine-Override aktivieren
 # Strings for the "home" tab
 tab-home-title = Home
 # Strings for the "home" tab
-tab-home-favorite-servers = Favoriten:
+tab-home-favorite-servers = Favoriten
 # Strings for the "home" tab
 tab-home-add-favorite = Favorit hinzufügen…
 # Strings for the "home" tab

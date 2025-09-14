@@ -447,7 +447,7 @@ tab-development-title = { "[" }DEV]
 # Strings for the "home" tab
 tab-home-title = Головна
 # Strings for the "home" tab
-tab-home-favorite-servers = Обрані сервери:
+tab-home-favorite-servers = Обрані сервери
 # Strings for the "home" tab
 tab-home-add-favorite = Додати в обрані…
 # Strings for the "home" tab
@@ -536,11 +536,7 @@ connecting-privacy-policy-text-version-changed = Цей сервер онови�
 connecting-privacy-policy-view = Переглянути політику конфіденційності
 connecting-privacy-policy-accept = Прийняти (продовжити)
 connecting-privacy-policy-decline = Відхилити (відключитися)
-server-entry-round-time =
-    { $hours ->
-        [0] { $mins }хв
-       *[1] { $hours }г { $mins }хв
-    }
+server-entry-round-time = { $hours }г { $mins }хв
 tab-servers-table-round-time = Час
 server-entry-status-lobby = Лоббі
 connecting-status-update-error-unknown = Невідомо

@@ -296,7 +296,7 @@ tab-development-title = { "[" }DEV]
 # Strings for the "home" tab
 tab-home-title = Ev
 # Strings for the "home" tab
-tab-home-favorite-servers = Favori sunucular:
+tab-home-favorite-servers = Favori sunucular
 # Strings for the "home" tab
 tab-home-refresh = Yenile
 # Strings for the "home" tab
@@ -537,9 +537,5 @@ connecting-privacy-policy-text-version-changed = Bu sunucu son oynadığınızda
 connecting-privacy-policy-accept = Kabul et (devam et)
 connecting-privacy-policy-decline = Reddet (bağlantıyı kes)
 tab-servers-table-round-time = Zaman
-server-entry-round-time =
-    { $hours ->
-        [0] { $mins }M
-       *[1] { $hours }H { $mins }M
-    }
+server-entry-round-time = { $hours }h { $mins }m
 server-entry-status-lobby = Lobi

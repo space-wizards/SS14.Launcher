@@ -45,7 +45,7 @@ login-errors-button-ok = Οκ
 # Strings for the "login expired" view on login
 login-expired-button-forgot-password = Ξέχασες τον κωδικό σου;
 # Strings for the "home" tab
-tab-home-favorite-servers = Αγαπημένοι διακομιστές:
+tab-home-favorite-servers = Αγαπημένοι διακομιστές
 # Localization for the "add favorite server" dialog window
 # 'Example' name shown as a watermark in the name input box
 add-favorite-window-example-name = Διαστημικός Σταθμός Χονκ
@@ -542,8 +542,4 @@ connecting-privacy-policy-decline = Δεν αποδέχομαι (αποσύνδ�
 tab-servers-table-round-time = Χρόνος
 server-entry-status-lobby = Λόμπι
 connecting-status-update-error-unknown = Άγνωστο
-server-entry-round-time =
-    { $hours ->
-        [0] { $mins }M
-       *[1] { $hours }H { $mins }M
-    }
+server-entry-round-time = { $hours }h { $mins }m

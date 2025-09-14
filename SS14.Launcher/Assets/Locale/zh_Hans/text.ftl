@@ -378,7 +378,7 @@ tab-development-enable-engine-override = 启用引擎覆盖
 # Strings for the "home" tab
 tab-home-title = 首页
 # Strings for the "home" tab
-tab-home-favorite-servers = 收藏服务器：
+tab-home-favorite-servers = 收藏服务器
 # Strings for the "home" tab
 tab-home-add-favorite = 添加到收藏…
 # Strings for the "home" tab
@@ -539,11 +539,7 @@ connecting-privacy-policy-view = 查看隐私条款
 connecting-privacy-policy-accept = 同意（继续）
 connecting-privacy-policy-decline = 拒绝（断开连接）
 login-login-show-password = 显示密码
-server-entry-round-time =
-    { $hours ->
-        [0] { $mins }分
-       *[1] { $hours }时 { $mins }分
-    }
+server-entry-round-time = { $hours }时 { $mins }分
 connecting-status-update-error-unknown = 未知
 tab-servers-table-round-time = 时间
 server-entry-status-lobby = 大厅

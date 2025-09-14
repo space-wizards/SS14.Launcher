@@ -283,10 +283,7 @@ server-entry-player-count =
         [0] ∞
        *[1] { $max }
     }
-server-entry-round-time = { $hours ->
- [0] { $mins }M
-*[1] { $hours }H { $mins }M
-}
+server-entry-round-time = { $hours }h { $mins }m
 server-entry-fetching = Fetching…
 server-entry-description-offline = Unable to contact server
 server-entry-description-fetching = Fetching server status…
@@ -309,7 +306,7 @@ tab-development-enable-engine-override-desc = Override path to load engine zips 
 ## Strings for the "home" tab
 
 tab-home-title = Home
-tab-home-favorite-servers = Favorite Servers:
+tab-home-favorite-servers = Favorite Servers
 tab-home-add-favorite = Add Favorite…
 tab-home-refresh = Refresh
 tab-home-direct-connect = Direct Connect To Server…

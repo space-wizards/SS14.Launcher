@@ -4,12 +4,12 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:SS14.Launcher.ViewModels.MainWindowTabs"
              xmlns:views="clr-namespace:SS14.Launcher.Views.MainWindowTabs"
+             xmlns:loc="clr-namespace:SS14.Launcher.Localization"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SS14.Launcher.Views.MainWindowTabs.ServerList">
 
-  <DataGrid Name="MyDataGrid"
+  <DataGrid Name="ServerGrid"
             ItemsSource="{Binding List, RelativeSource={RelativeSource AncestorType=UserControl}}"
-            HeadersVisibility="All"
             IsReadOnly="True"
             RowDetailsVisibilityMode="VisibleWhenSelected"
             CanUserReorderColumns="True"
@@ -26,34 +26,27 @@
                               Width="80">
         <DataGridTemplateColumn.CellTemplate>
           <DataTemplate DataType="vm:ServerEntryViewModel">
-            <!-- <Border Classes="GridCell" IsVisible="{Binding HaveData}"> -->
-            <!--   <Panel> -->
-            <!--     <controls:TimerTextCell Value="{Binding RoundStartTime}" -->
-            <!--                             IsVisible="{Binding RoundStatusString, Converter={x:Static StringConverters.IsNullOrEmpty}}" /> -->
-            <!--     <TextBlock Text="{Binding RoundStatusString}" -->
-            <!--                Classes="Center" -->
-            <!--                HorizontalAlignment="Right" -->
-            <!--                IsVisible="{Binding RoundStatusString, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" /> -->
-            <!--   </Panel> -->
-            <!-- </Border> -->
-            <TextBlock Text="blaaa" />
+            <TextBlock Text="{Binding RoundStatusString}"
+                       HorizontalAlignment="Right" />
           </DataTemplate>
         </DataGridTemplateColumn.CellTemplate>
       </DataGridTemplateColumn>
-      <DataGridTextColumn x:DataType="vm:ServerEntryViewModel"
-                          Header="Players"
-                          Binding="{Binding PlayerCountString}"
-                          Width="80" />
       <DataGridTemplateColumn x:DataType="vm:ServerEntryViewModel"
-                              Width="Auto">
+                              Header="Players"
+                              Width="80">
         <DataGridTemplateColumn.CellTemplate>
           <DataTemplate DataType="vm:ServerEntryViewModel">
-            <!-- <Border Classes="GridCell"> -->
-            <!-- <Button IsEnabled="True" DockPanel.Dock="Right" -->
-            <!--         Content="Connnect!!" -->
-            <!--         Command="{Binding ConnectPressed}" /> -->
-            <!-- </Border> -->
-            <TextBlock Text="blaaa" />
+            <TextBlock Text="{Binding PlayerCountString}"
+                       HorizontalAlignment="Center" />
+          </DataTemplate>
+        </DataGridTemplateColumn.CellTemplate>
+      </DataGridTemplateColumn>
+      <DataGridTemplateColumn x:DataType="vm:ServerEntryViewModel" Width="Auto">
+        <DataGridTemplateColumn.CellTemplate>
+          <DataTemplate DataType="vm:ServerEntryViewModel">
+            <Button DockPanel.Dock="Right"
+                    Content="{loc:Loc server-entry-connect}"
+                    Command="{Binding ConnectPressed}" />
           </DataTemplate>
         </DataGridTemplateColumn.CellTemplate>
       </DataGridTemplateColumn>

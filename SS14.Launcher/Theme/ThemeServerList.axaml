@@ -1,26 +1,10 @@
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:loc="clr-namespace:SS14.Launcher.Localization"
-        xmlns:views="using:SS14.Launcher.Views"
-        xmlns:mwt="using:SS14.Launcher.Views.MainWindowTabs"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:models="clr-namespace:SS14.Launcher.Models"
-        xmlns:vm="clr-namespace:SS14.Launcher.ViewModels.MainWindowTabs"
-        xmlns:controls="clr-namespace:SS14.Launcher.Controls"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450">
-  <!-- <Styles.Resources> -->
-  <!--   <ControlTheme x:Key="{x:Type DataGridColumnHeader}" -->
-  <!--                 TargetType="DataGridColumnHeader" -->
-  <!--                 BasedOn="{StaticResource {x:Type DataGridColumnHeader}}"> -->
-  <!--     <Style Selector="^ /template/ Border#HeaderBorder"> -->
-  <!--       <Setter Property="BorderThickness" Value="10" /> -->
-  <!--       <Setter Property="BorderBrush" Value="Aqua" /> -->
-  <!--     </Style> -->
-  <!--   </ControlTheme> -->
-  <!-- </Styles.Resources> -->
 
-  <Style Selector="DataGrid#MyDataGrid">
+  <Style Selector="DataGrid#ServerGrid">
     <Setter Property="Background" Value="#1e1e22" />
 
     <Style Selector="^ DataGridRow">
@@ -60,15 +44,6 @@
       <Setter Property="TextAlignment" Value="Left" />
       <Setter Property="HorizontalAlignment" Value="Left" />
       <Setter Property="VerticalAlignment" Value="Center" />
-    </Style>
-    <Style Selector="^ TextBlock.Center">
-      <Setter Property="TextAlignment" Value="Center" />
-      <Setter Property="HorizontalAlignment" Value="Center" />
-    </Style>
-    <Style Selector="^ TextBlock.Numeric">
-      <Setter Property="FontFamily" Value="Mono" />
-      <Setter Property="TextAlignment" Value="Right" />
-      <Setter Property="HorizontalAlignment" Value="Right" />
     </Style>
   </Style>
 
