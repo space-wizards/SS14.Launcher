@@ -258,7 +258,7 @@ server-entry-round-time =
        *[1] { $hours }O { $mins }M
     }
 server-entry-fetching = Recupero…
-server-entry-description-offline = Impossibile contattare server
+server-entry-description-offline = Impossibile contattare il server
 server-entry-description-fetching = Recupero stato server…
 server-entry-description-error = Errore nel recupero della descrizione del server
 server-entry-status-lobby = Lobby
