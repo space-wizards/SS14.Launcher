@@ -26,9 +26,13 @@ connecting-title-content-bundle = Yükleniyor…
 connecting-cancel = İptal
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-update-error =
-    Sunucu içeriği indirilirken bir hata oluştu. Hata devam ederse Discord'dan yardım isteyiniz.
+    Sunucu içeriklerini indirirken bir hata oldu. Eğer hata devam ederse aşağıdakileri deneyiniz:
+    - Başka bir sunucuya bağlanarak sıkıntının devam edip etmediğini kontrol ediniz.
+    - VPN gibi yazılımlarınız varsa onları kapatmayı veya açmayı deneyiniz.
 
-    Error: { $err }
+    Eğer hala sıkıntı yaşıyorsanız, Space Station 14 Discord veya Forumlara sormadan önce bağlanmaya çalıştığınız sunucuyla iletişime geçiniz.
+
+    Teknik hata: { $err }
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-connection-failed = Sunucuya bağlanma başarısız!
 # Localization for the "add favorite server" dialog window
@@ -428,9 +432,9 @@ region-south-america-south = Güney Amerika-Güney
 # Long region names for server tag filters (shown in tooltip)
 region-south-america-west = Güney Amerika-Batı
 # Strings for the "servers" tab
-tab-servers-list-status-error = Master sunucu listeleri getirilirken bir hata oluştu.
+tab-servers-list-status-error = Master sunucu listeleri getirilirken bir hata oluştu. Yenilemeyi deneyiniz?
 # Strings for the "servers" tab
-tab-servers-list-status-partial-error = Tüm sunucu listelerini getirilemedi. Sunucu merkezi konfigürasyonunuzun doğru olduğunu kontrol edin.
+tab-servers-list-status-partial-error = Bazı sunucu listeleri getirilemedi. Sunucu merkezi konfigürasyonunuzun doğru olduğunu kontrol edin ve yenilemeyi deneyiniz.
 # Strings for the "servers" tab
 tab-servers-list-status-none-filtered = Hiçbir sunucu aramalarınıza ve filtre ayarlarınıza uymuyor.
 # Strings for the "servers" tab
@@ -539,3 +543,4 @@ connecting-privacy-policy-decline = Reddet (bağlantıyı kes)
 tab-servers-table-round-time = Zaman
 server-entry-round-time = { $hours }h { $mins }m
 server-entry-status-lobby = Lobi
+connecting-status-update-error-unknown = Bilinmeyen

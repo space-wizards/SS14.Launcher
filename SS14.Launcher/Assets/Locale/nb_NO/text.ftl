@@ -9,16 +9,20 @@ account-drop-down-add-account = Legg til bruker
 add-favorite-window-address-invalid = Adresse er utilgjengelig
 connecting-title-connecting = Kobler til…
 connecting-status-none = Starter tilkobling…
-connecting-title-content-bundle = Lasting…
+connecting-title-content-bundle = Laster inn…
 connecting-status-starting-client = Starter klient…
 connecting-status-updating = Oppdatering: { $status }
 connecting-status-connection-failed = Kunne ikke koble til serveren!
 add-favorite-window-example-name = Tute Stasjon
 connecting-status-update-error =
-    Det var en feil under nedlastingen av server innholdet. Vennligst spør på Discord om støtte om problemet vedvarer.
+    Det var en feil under nedlastingen av sørver innholdet. Hvis dette vedvarer prøv det følgende:
+    - Prøv å koble til en annen sørver, for å se om problemet fortsetter
+    -Prøv å skru av eller på programvare som for eksempelvis VPNer, Hvis du har det.
 
-    Error: { $err }
-connecting-cancel = Kansler
+    Hvis du fremdeles har problemer, prøv å kontakte sørveren som du prøver å bli med på før du spør etter help på den offisielle Space station 14 Discord eller forum.
+
+    Teknisk feil: { $err }
+connecting-cancel = Avbryt
 connecting-privacy-policy-accept = Aksepter
 direct-connect-connect = Koble til
 direct-connect-title = Direkte tilkobling…
@@ -271,3 +275,6 @@ tab-options-seasonal-branding-desc = Hva enn midlertidig relevante ikoner og log
 tab-options-desc-incompatible = Dette alternativet er inkompatibelt med plattformen din og har blitt deaktivert.
 language-selector-system-language = System språk ({ $languageName })
 login-error-account-unconfirmed = E-postadressen for denne kontoen må fortsatt bekreftes. Vennligst bekreft e-postadressen din før du prøver å logge inn
+tab-servers-table-round-time = Tid
+connecting-status-update-error-unknown = Ukjent
+server-entry-status-lobby = Lobby

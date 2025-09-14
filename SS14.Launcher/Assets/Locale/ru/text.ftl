@@ -21,9 +21,13 @@ account-drop-down-log-out-of = Выйти из { $name }
 connecting-title-connecting = Подключение…
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-update-error =
-    Произошла ошибка во время загрузки серверного контента. Пожалуйста, обратитесь в Discord за помощью, если проблема не исчезнет.
+    Произошла ошибка во время загрузки серверного контента. Если проблема не исчезает, попробуйте следующее:
+    - Попробуйте подключиться к другому серверу и проверьте, сохраняется ли проблема.
+    - Попробуйте выключить или включить программы по типу VPN, если они у вас есть.
 
-    Error: { $err }
+    Если у вас все еще возникают проблемы, сначала попробуйте связаться с сервером, к которому вы пытаетесь присоединиться, прежде чем просить поддержки в официальном Discord Space Station 14 или на форумах.
+
+    Ошибка: { $err }
 # Strings for the "hub settings" dialog window.
 hub-settings-explanation = Здесь вы можете добавлять дополнительные хабы для получения игровых серверов. Вы должны добавлять только хабы, которым вы доверяете, так как они могут подделывать игровые сервера других хабов. Порядок хабов важен. Если два хаба рекламируют сервер дважды, то приоритет будет иметь хаб с большим приоритетом (расположен выше в списке).
 # Long region names for server tag filters (shown in tooltip)
@@ -37,7 +41,7 @@ login-confirmation-confirmation-message = Пожалуйста, проверьт
 # Long region names for server tag filters (shown in tooltip)
 region-central-america = Центральная Америка
 # Strings for the "servers" tab
-tab-servers-list-status-partial-error = Не удалось получить некоторые или все списки серверов. Убедитесь в правильности вашей настройки хабов.
+tab-servers-list-status-partial-error = Не удалось получить некоторые списки серверов. Убедитесь в правильности вашей настройки хабов и попробуйте обновить.
 # Strings for the "servers" tab
 tab-servers-list-status-updating-master = Получение главного списка серверов…
 # Strings for the server filters menu
@@ -55,7 +59,7 @@ region-north-america-east = Северная Америка - Восток
 # Strings for the "servers" tab
 filters = Фильтры ({ $filteredServers } / { $totalServers })
 # Strings for the "servers" tab
-tab-servers-list-status-error = Произошла ошибка во время получения списка главных серверов.
+tab-servers-list-status-error = Возникла ошибка при получении списков главных серверов. Может быть, попробуйте обновить?
 # Strings for the server filters menu
 filters-title-rp = Уровень отыгрыша
 # Strings for the server filters menu
@@ -220,7 +224,7 @@ login-login-busy-logging-in = Вход…
 # Strings for the "login" view on login
 login-login-error-title = Не удалось войти
 # Strings for the general main window layout of the launcher
-main-window-title = Space Station 14 Launcher
+main-window-title = Лаунчер Space Station 14
 # Strings for the general main window layout of the launcher
 main-window-header-link-website = Веб-сайт
 # Strings for the general main window layout of the launcher
@@ -532,7 +536,7 @@ tab-options-seasonal-branding = Сезонное оформление
 server-entry-raise = Поднять на самый верх
 tab-options-desc-incompatible = Эта опция несовместима с вашей платформой, поэтому она отключена.
 connecting-privacy-policy-text-version-changed = Этот сервер обновил политику конфиденциальности с момента вашей последней игры. Вы должны принять новую версию перед подключением.
-connecting-privacy-policy-text = Этот сервер требует чтобы вы приняли его политику конфиденциальности перед подключением.
+connecting-privacy-policy-text = Перед подключением к этому серверу вам необходимо принять его политику конфиденциальности.
 connecting-privacy-policy-view = Посмотреть политику конфиденциальности
 connecting-privacy-policy-accept = Принять (продолжить)
 connecting-privacy-policy-decline = Отклонить (отключиться)
