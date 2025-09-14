@@ -14,7 +14,7 @@
 
   <DockPanel>
     <!-- Header controls -->
-    <DockPanel DockPanel.Dock="Top" LastChildFill="False" Margin="4, 0, 4, 2">
+    <DockPanel DockPanel.Dock="Top" LastChildFill="False" Margin="4, 4, 4, 2">
       <TextBlock DockPanel.Dock="Left" Text="{loc:Loc tab-home-favorite-servers}" Classes="NanoHeadingMedium" />
       <Button DockPanel.Dock="Right" Content="{loc:Loc tab-home-add-favorite}"
               Command="{Binding AddFavoritePressed}" />
@@ -36,10 +36,13 @@
     <Panel DockPanel.Dock="Bottom" Classes="ScrollViewerSep" />
     <Panel DockPanel.Dock="Top" Classes="ScrollViewerSep" />
     <Panel>
-      <mwt:ServerList List="{Binding Favorites}" IsVisible="{Binding !FavoritesEmpty}">
+      <DockPanel>
         <Button Content="{loc:Loc tab-home-go-to-servers-tab}"
+                MaxHeight="50"
+                DockPanel.Dock="Bottom"
                 Command="{Binding MainWindowViewModel.SelectTabServers}" />
-      </mwt:ServerList>
+        <mwt:ServerList List="{Binding Favorites}" IsVisible="{Binding !FavoritesEmpty}" />
+      </DockPanel>
 
       <StackPanel IsVisible="{Binding FavoritesEmpty}"
                   Orientation="Vertical" VerticalAlignment="Center">

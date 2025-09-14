@@ -4,7 +4,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:views="clr-namespace:SS14.Launcher.Views"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-        MinWidth="800" MinHeight="500"
+        MinWidth="1" MinHeight="500"
         Width="650" Height="400"
         x:Class="SS14.Launcher.Views.MainWindow"
         Icon="{DynamicResource WindowIcon}"

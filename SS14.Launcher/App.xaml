@@ -23,10 +23,11 @@
     <StyleInclude Source="/Theme/ThemeWindow.xaml" />
     <!-- I'm too lazy to fix the styling on those text boxes so this is staying commented out for now. -->
     <!--<StyleInclude Source="/Theme/ThemeTextBox.xaml"/>-->
-    <StyleInclude Source="/Theme/ThemeServerList.axaml" />
     <StyleInclude Source="/Theme/ThemeCheckBox.axaml" />
     <StyleInclude Source="/Theme/ThemeIconLabel.xaml" />
     <StyleInclude Source="/Theme/ThemeRandomMessage.xaml" />
     <StyleInclude Source="/Theme/ThemeTimerTextCell.xaml" />
+    <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Simple.xaml" />
+    <StyleInclude Source="/Theme/ThemeServerList.axaml" />
   </Application.Styles>
 </Application>

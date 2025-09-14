@@ -27,6 +27,8 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
         _windowVm = windowVm;
         _cacheData = cacheData;
         _serverSource = serverSource;
+
+        _cacheData.PropertyChanged += OnCacheDataOnPropertyChanged;
     }
 
     public ServerEntryViewModel(
@@ -38,6 +40,8 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
         : this(windowVm, cacheData, serverSource, cfg)
     {
         Favorite = favorite;
+
+        _cacheData.PropertyChanged += OnCacheDataOnPropertyChanged;
     }
 
     public ServerEntryViewModel(

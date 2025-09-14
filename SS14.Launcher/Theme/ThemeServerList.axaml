@@ -2,23 +2,60 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:loc="clr-namespace:SS14.Launcher.Localization"
         xmlns:views="using:SS14.Launcher.Views"
-        xmlns:mwt="using:SS14.Launcher.Views.MainWindowTabs">
-  <Style Selector="ItemsControl.ServerList > ContentPresenter:nth-child(2n)">
-    <Setter Property="Background">
-      <SolidColorBrush Color="#262626" />
-    </Setter>
+        xmlns:mwt="using:SS14.Launcher.Views.MainWindowTabs"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:models="clr-namespace:SS14.Launcher.Models"
+        xmlns:vm="clr-namespace:SS14.Launcher.ViewModels.MainWindowTabs"
+        xmlns:controls="clr-namespace:SS14.Launcher.Controls"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450">
+  <!-- <Styles.Resources> -->
+  <!--   <ControlTheme x:Key="{x:Type DataGridColumnHeader}" -->
+  <!--                 TargetType="DataGridColumnHeader" -->
+  <!--                 BasedOn="{StaticResource {x:Type DataGridColumnHeader}}"> -->
+  <!--     <Style Selector="^ /template/ Border#HeaderBorder"> -->
+  <!--       <Setter Property="BorderThickness" Value="10" /> -->
+  <!--       <Setter Property="BorderBrush" Value="Aqua" /> -->
+  <!--     </Style> -->
+  <!--   </ControlTheme> -->
+  <!-- </Styles.Resources> -->
+
+  <Style Selector="DataGrid#MyDataGrid">
+    <Setter Property="Background" Value="#1e1e22" />
+
+    <Style Selector="^ DataGridRow">
+      <Style Selector="^:nth-child(2n)">
+        <Setter Property="Background" Value="#262626" />
+      </Style>
+
+      <Style Selector="^:nth-child(2n + 1)">
+        <Setter Property="Background" Value="#1e1e22" />
+      </Style>
+
+      <Style Selector="^ /template/ Rectangle#BackgroundRectangle">
+        <Setter Property="IsVisible" Value="False" />
+        <Setter Property="Fill" Value="#ffffff" />
+      </Style>
+
+      <Style Selector="^:pointerover /template/ Rectangle#BackgroundRectangle">
+        <Setter Property="IsVisible" Value="True" />
+        <Setter Property="Opacity" Value="0.1" />
+      </Style>
+
+      <Style Selector="^:selected /template/ Rectangle#BackgroundRectangle">
+        <Setter Property="IsVisible" Value="False" />
+      </Style>
+    </Style>
+
+    <Style Selector="^ DataGridColumnHeader">
+      <Setter Property="Background" Value="#25252A" />
+      <Setter Property="Foreground" Value="#AAAAAA" />
+      <Setter Property="BorderThickness" Value="0 0 0 1" />
+      <Setter Property="BorderBrush" Value="#333333" />
+    </Style>
   </Style>
 
-  <Style Selector="Border.GridCell">
-    <Setter Property="BorderBrush">
-      <SolidColorBrush Color="{DynamicResource ThemeListSeparatorColor}" />
-    </Setter>
-    <Setter Property="BorderThickness" Value="0,0,2,0" />
-    <Setter Property="Padding" Value="10 0" />
-    <Style Selector="^:nth-last-child(1)">
-      <!-- Disable divider line for the last column -->
-      <Setter Property="BorderThickness" Value="0" />
-    </Style>
+  <Style Selector="DataGridCell">
     <Style Selector="^ TextBlock">
       <Setter Property="TextAlignment" Value="Left" />
       <Setter Property="HorizontalAlignment" Value="Left" />
@@ -32,71 +69,7 @@
       <Setter Property="FontFamily" Value="Mono" />
       <Setter Property="TextAlignment" Value="Right" />
       <Setter Property="HorizontalAlignment" Value="Right" />
-
-      <!--
-      This is to offset a bug with monospace fonts being rendered slightly off-center vertically
-      https://github.com/AvaloniaUI/Avalonia/issues/10658 (Bug is present as of Feb '25)
-      -->
-      <Setter Property="Margin" Value="0 3 0 0" />
     </Style>
   </Style>
 
-  <Style Selector="mwt|ServerList">
-    <Setter Property="Template">
-      <ControlTemplate>
-        <DockPanel ZIndex="-1" Grid.IsSharedSizeScope="True">
-          <Grid DockPanel.Dock="Top" Margin="24 0 24 0" IsVisible="{TemplateBinding ShowHeader}">
-            <Grid.ColumnDefinitions>
-              <ColumnDefinition Width="*" /> <!-- Server Name -->
-              <ColumnDefinition SharedSizeGroup="TimeCol" MinWidth="80" Width="Auto" />
-              <ColumnDefinition SharedSizeGroup="StatusCol" MinWidth="80" Width="Auto" />
-              <ColumnDefinition SharedSizeGroup="ConnectCol" Width="Auto" />
-            </Grid.ColumnDefinitions>
-
-            <Border Grid.Column="0" Classes="GridCell">
-              <TextBlock Text="{loc:Loc tab-servers-table-name}" Classes="SubText" />
-            </Border>
-            <Border Grid.Column="1" Classes="GridCell">
-              <TextBlock Text="{loc:Loc tab-servers-table-round-time}" Classes="SubText Center" />
-            </Border>
-            <Border Grid.Column="2" Classes="GridCell">
-              <TextBlock Text="{loc:Loc tab-servers-table-players}" Classes="SubText Center" />
-            </Border>
-            <Border Grid.Column="3" Classes="GridCell">
-              <TextBlock Text="" Classes="SubText Center" />
-            </Border>
-          </Grid>
-
-          <Panel DockPanel.Dock="Top" Classes="ScrollViewerSep" IsVisible="{TemplateBinding ShowHeader}" />
-
-          <Panel>
-            <Panel.Background>
-              <SolidColorBrush Color="#1e1e22" />
-            </Panel.Background>
-            <ScrollViewer MinHeight="150" HorizontalScrollBarVisibility="Disabled"
-                          VerticalScrollBarVisibility="Auto">
-              <DockPanel LastChildFill="True">
-                <StackPanel DockPanel.Dock="Bottom" IsVisible="True">
-                  <ContentPresenter Content="{TemplateBinding Content}" HorizontalAlignment="Center" />
-                </StackPanel>
-
-                <Grid RowDefinitions="Auto,Auto,Auto">
-                  <ItemsControl Grid.Column="0" Grid.Row="0" ItemsSource="{TemplateBinding List}" Classes="ServerList" />
-                  <TextBlock Grid.Column="0" Grid.Row="1" IsVisible="{TemplateBinding ListText,Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
-                             TextAlignment="Center"
-                             VerticalAlignment="Center"
-                             Text="{TemplateBinding ListText}" />
-                  <Viewbox Grid.Column="0" Grid.Row="2" IsVisible="{TemplateBinding SpinnerVisible}"
-                           Classes="DungSpinnerBox">
-                    <views:DungSpinner />
-                  </Viewbox>
-                </Grid>
-              </DockPanel>
-            </ScrollViewer>
-            <StackPanel Orientation="Vertical" VerticalAlignment="Center" />
-          </Panel>
-        </DockPanel>
-      </ControlTemplate>
-    </Setter>
-  </Style>
 </Styles>
