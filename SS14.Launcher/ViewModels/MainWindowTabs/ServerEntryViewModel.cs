@@ -126,7 +126,7 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
                 case GameRoundStatus.InRound when RoundStartTime is { } start:
                 {
                     var ts = DateTime.UtcNow.Subtract(start);
-                    return _loc.GetString("server-entry-round-time", ("hours", ts.Hours),
+                    return _loc.GetString("server-entry-round-time", ("hours", Math.Floor(ts.TotalHours)),
                         ("mins", ts.Minutes.ToString().PadLeft(2, '0')));
                 }
                 default:
