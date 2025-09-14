@@ -48,17 +48,18 @@ public sealed class RowSideAlignedPanel : Panel
             // They both fit on one row, easy.
             left.Arrange(new Rect(0, 0, leftSize.Width, finalSize.Height));
             right.Arrange(new Rect(finalSize.Width - rightSize.Width, 0, rightSize.Width, finalSize.Height));
+
+            return finalSize;
         }
         else
         {
             // They don't fit on the same row, make two rows.
             left.Arrange(new Rect(0, 0, leftSize.Width, leftSize.Height));
 
-            var rect = new Rect(finalSize.Width - rightSize.Width, leftSize.Height, rightSize.Width,
-                Math.Max(finalSize.Height - leftSize.Height, 0));
-            right.Arrange(rect);
-        }
+            right.Arrange(new Rect(finalSize.Width - rightSize.Width, leftSize.Height, rightSize.Width,
+                Math.Max(finalSize.Height - leftSize.Height, 0)));
 
-        return finalSize;
+            return finalSize;
+        }
     }
 }

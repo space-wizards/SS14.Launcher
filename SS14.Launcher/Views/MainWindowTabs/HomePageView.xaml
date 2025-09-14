@@ -14,7 +14,7 @@
 
   <DockPanel>
     <!-- Header controls -->
-    <DockPanel DockPanel.Dock="Top" LastChildFill="False" Margin="4, 4, 4, 2">
+    <DockPanel DockPanel.Dock="Top" LastChildFill="False" Margin="4 4 4 2">
       <TextBlock DockPanel.Dock="Left" Text="{loc:Loc tab-home-favorite-servers}" Classes="NanoHeadingMedium" />
       <Button DockPanel.Dock="Right" Content="{loc:Loc tab-home-add-favorite}"
               Command="{Binding AddFavoritePressed}" />

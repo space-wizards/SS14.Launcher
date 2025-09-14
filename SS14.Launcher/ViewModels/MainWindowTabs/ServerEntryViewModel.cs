@@ -21,7 +21,7 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
     private string _fallbackName = string.Empty;
     private bool _isExpanded;
 
-    private readonly DispatcherTimer _timer = new() { Interval = TimeSpan.FromSeconds(15) };
+    private readonly DispatcherTimer _refreshRoundStartTimer = new() { Interval = TimeSpan.FromSeconds(15) };
 
     public ServerEntryViewModel(MainWindowViewModel windowVm, ServerStatusData cacheData, IServerSource serverSource,
         DataManager cfg)
@@ -33,8 +33,8 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
 
         _cacheData.PropertyChanged += OnCacheDataOnPropertyChanged;
 
-        _timer.Start();
-        _timer.Tick += (_, _) => OnPropertyChanged(nameof(RoundStatusString));
+        _refreshRoundStartTimer.Start();
+        _refreshRoundStartTimer.Tick += (_, _) => OnPropertyChanged(nameof(RoundStatusString));
     }
 
     public ServerEntryViewModel(
@@ -58,11 +58,6 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
         : this(windowVm, ssdfb.Data, serverSource, cfg)
     {
         FallbackName = ssdfb.FallbackName ?? "";
-    }
-
-    public void Tick()
-    {
-        OnPropertyChanged(nameof(RoundStartTime));
     }
 
     public void ConnectPressed()
@@ -134,7 +129,6 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
                     return _loc.GetString("server-entry-round-time", ("hours", ts.Hours),
                         ("mins", ts.Minutes.ToString().PadLeft(2, '0')));
                 }
-                case GameRoundStatus.Unknown:
                 default:
                     return "";
             }

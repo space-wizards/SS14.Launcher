@@ -14,11 +14,6 @@ public sealed class LocExtension
 
     public object ProvideValue(IServiceProvider services)
     {
-        if (Key == "server-entry-connect")
-        {
-            return "Connect!";
-        }
-
         var locMgr = Locator.Current.GetService<LocalizationManager>()!;
         return locMgr.GetString(Key);
     }
