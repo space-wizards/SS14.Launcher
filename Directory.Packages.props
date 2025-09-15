@@ -20,7 +20,6 @@
     <PackageVersion Include="Avalonia.Desktop" Version="11.2.4"/>
     <PackageVersion Include="Avalonia.Diagnostics" Version="11.2.4"/>
     <PackageVersion Include="Avalonia.Themes.Simple" Version="11.2.4"/>
-    <PackageVersion Include="Avalonia.Markup.Xaml.Loader" Version="11.2.4" />
     <PackageVersion Include="CodeHollow.FeedReader" Version="1.2.6"/>
     <PackageVersion Include="Dapper" Version="2.0.123"/>
     <PackageVersion Include="DynamicData" Version="8.4.1"/>
@@ -44,7 +43,6 @@
     <!-- Bootstrap -->
     <PackageVersion Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3"/>
     <!-- Development -->
-    <PackageVersion Include="HotAvalonia" Version="2.1.0" />
-    <PackageVersion Include="HotAvalonia.Extensions" Version="2.1.0" PrivateAssets="All" />
+    <PackageVersion Include="HotAvalonia" Version="3.0.0" />
   </ItemGroup>
 </Project>
