@@ -74,8 +74,7 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
 
     public string Name => Favorite?.Name ?? _cacheData.Name ?? _fallbackName;
 
-    public string FavoriteButtonText
-        => IsFavorite
+    public string FavoriteButtonText => IsFavorite
             ? _loc.GetString("server-entry-remove-favorite")
             : _loc.GetString("server-entry-add-favorite");
 
