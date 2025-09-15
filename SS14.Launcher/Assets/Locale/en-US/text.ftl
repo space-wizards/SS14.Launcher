@@ -278,7 +278,7 @@ filters-rp-high-desc = High
 
 server-entry-connect = Connect
 server-entry-add-favorite = Add Favorite
-server-entry-remove-favorite = Remove Favorite
+server-entry-remove-favorite = Unfavorite
 server-entry-offline = OFFLINE
 server-entry-player-count =
     { $players } / { $max ->

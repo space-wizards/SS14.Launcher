@@ -31,7 +31,7 @@
           </Border>
 
           <Border Grid.Column="1" Classes="GridCell" Grid.ColumnSpan="2"
-              IsVisible="{Binding !HaveData}">
+            IsVisible="{Binding !HaveData}">
             <TextBlock Text="{Binding ServerStatusString}" TextAlignment="Left" Classes="Center" />
           </Border>
 
