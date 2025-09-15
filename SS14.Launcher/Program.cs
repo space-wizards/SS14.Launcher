@@ -114,7 +114,7 @@ internal static class Program
         Logger.Sink = new AvaloniaSeriLogger(new LoggerConfiguration()
             .MinimumLevel.Is(LogEventLevel.Warning)
             .Enrich.FromLogContext()
-            .WriteTo.Console(outputTemplate: "[{Area}] {Message} ({SourceType} #{SourceHash})\n")
+            .WriteTo.Console(outputTemplate: "[{Area} {Level:u3}] {Message} ({SourceType} #{SourceHash})\n")
             .CreateLogger());
 #endif
 
