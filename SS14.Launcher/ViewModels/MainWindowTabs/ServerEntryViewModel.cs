@@ -102,15 +102,15 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
     }
 
     // Give a ratio for servers with a defined player count, or just a current number for those without.
-    public string PlayerCountString
-        => _loc.GetString("server-entry-player-count",
+    public string PlayerCountString =>
+        _loc.GetString("server-entry-player-count",
             ("players", _cacheData.PlayerCount), ("max", _cacheData.SoftMaxPlayerCount));
 
 
     public DateTime? RoundStartTime => _cacheData.RoundStartTime;
 
-    public string RoundStatusString
-        => _cacheData.RoundStatus == GameRoundStatus.InLobby
+    public string RoundStatusString =>
+        _cacheData.RoundStatus == GameRoundStatus.InLobby
             ? _loc.GetString("server-entry-status-lobby")
             : "";
 
