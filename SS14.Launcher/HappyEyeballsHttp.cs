@@ -119,7 +119,15 @@ public static class HappyEyeballsHttp
         }
         catch (Exception e)
         {
-            Log.Verbose(e, "Happy Eyeballs to {Address} [{Index}] failed", address, index);
+            // If IPv6 is unreachable, don't print entire stacktrace.
+            var exceptionToLog = e;
+            if (e is SocketException { SocketErrorCode: SocketError.NetworkUnreachable }
+                && address.AddressFamily == AddressFamily.InterNetworkV6)
+            {
+                exceptionToLog = null;
+            }
+
+            Log.Verbose(exceptionToLog, "Happy Eyeballs to {Address} [{Index}] failed", address, index);
             socket.Dispose();
             throw;
         }
