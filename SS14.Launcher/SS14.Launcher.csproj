@@ -19,17 +19,6 @@
     <DefineConstants>$(DefineConstants);USE_SYSTEM_SQLITE</DefineConstants>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
-    <!-- If you're a .vbproj user, replace ';' with ',' -->
-    <DefineConstants>$(DefineConstants);ENABLE_XAML_HOT_RELOAD</DefineConstants>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Condition="$(DefineConstants.Contains(ENABLE_XAML_HOT_RELOAD))" Include="Avalonia.Markup.Xaml.Loader" />
-    <PackageReference Condition="$(DefineConstants.Contains(ENABLE_XAML_HOT_RELOAD))" Include="HotAvalonia" />
-    <PackageReference Include="HotAvalonia.Extensions" PrivateAssets="All" />
-  </ItemGroup>
-
   <ItemGroup>
     <Compile Update="**\*.xaml.cs">
       <DependentUpon>%(Filename)</DependentUpon>
@@ -53,6 +42,7 @@
     <PackageReference Include="Avalonia.Desktop" />
     <PackageReference Include="Avalonia.ReactiveUI" />
     <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" />
+    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="HotAvalonia" PrivateAssets="All" />
     <PackageReference Include="Avalonia.Themes.Simple" />
     <PackageReference Include="CodeHollow.FeedReader" />
     <PackageReference Include="Dapper" />
