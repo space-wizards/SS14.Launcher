@@ -65,15 +65,14 @@
     <Setter Property="FontSize" Value="20" />
   </Style>
 
-  <Style Selector="Rectangle.VerticalSeparator">
-    <Setter Property="Fill">
-      <SolidColorBrush Color="{DynamicResource ThemeListSeparatorColor}" />
-    </Setter>
-    <Setter Property="Width" Value="2" />
-    <Setter Property="Margin" Value="0 4" />
-  </Style>
-
   <Style Selector="ScrollBar">
     <Setter Property="Margin" Value="4 0 0 0" />
+  </Style>
+
+  <Style Selector=":is(Control).MainWindowHeader">
+    <Setter Property="Margin" Value="4, 8, 0, 0" />
+  </Style>
+  <Style Selector=".WindowsTitlebarColorActive :is(Control).MainWindowHeader">
+    <Setter Property="Margin" Value="4, 0, 0, 0" />
   </Style>
 </Styles>

@@ -1,5 +1,9 @@
 # SS14.Launcher
 
+<a href="https://weblate.spacestation14.com/engage/space-station-14-launcher/">
+<img src="https://weblate.spacestation14.com/widget/space-station-14-launcher/main/svg-badge.svg" alt="Translation status" />
+</a>
+
 This is the launcher you should be using to connect to SS14 servers. Server browser, content downloads, account management. It's got it all!
 
 # Development

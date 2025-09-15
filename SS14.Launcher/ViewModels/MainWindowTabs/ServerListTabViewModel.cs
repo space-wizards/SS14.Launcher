@@ -2,9 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.Reactive.Linq;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Splat;
+using SS14.Launcher.Localization;
 using SS14.Launcher.Models.ServerStatus;
 using SS14.Launcher.Utility;
 
@@ -12,6 +14,7 @@ namespace SS14.Launcher.ViewModels.MainWindowTabs;
 
 public class ServerListTabViewModel : MainWindowTabViewModel
 {
+    private readonly LocalizationManager _loc = LocalizationManager.Instance;
     private readonly MainWindowViewModel _windowVm;
     private readonly ServerListCache _serverListCache;
 
@@ -19,19 +22,16 @@ public class ServerListTabViewModel : MainWindowTabViewModel
 
     private string? _searchString;
 
-    public override string Name => "Servers";
+    public override string Name => _loc.GetString("tab-servers-title");
 
     public string? SearchString
     {
         get => _searchString;
-        set
-        {
-            this.RaiseAndSetIfChanged(ref _searchString, value);
-            UpdateSearchedList();
-        }
+        set => this.RaiseAndSetIfChanged(ref _searchString, value);
     }
 
-    public bool ListTextVisible => _serverListCache.Status != RefreshListStatus.Updated;
+    private const int throttleMs = 200;
+
     public bool SpinnerVisible => _serverListCache.Status < RefreshListStatus.Updated;
 
     public string ListText
@@ -42,23 +42,20 @@ public class ServerListTabViewModel : MainWindowTabViewModel
             switch (status)
             {
                 case RefreshListStatus.Error:
-                    return "There was an error fetching the master server lists.";
+                    return _loc.GetString("tab-servers-list-status-error");
                 case RefreshListStatus.PartialError:
-                    return "Failed to fetch some or all server lists. Ensure your hub configuration is correct.";
+                    return _loc.GetString("tab-servers-list-status-partial-error");
                 case RefreshListStatus.UpdatingMaster:
-                    return "Fetching master server list...";
-                case RefreshListStatus.Updating:
-                    return "Discovering servers...";
+                    return _loc.GetString("tab-servers-list-status-updating-master");
                 case RefreshListStatus.NotUpdated:
                     return "";
                 case RefreshListStatus.Updated:
                 default:
                     if (SearchedServers.Count == 0 && _serverListCache.AllServers.Count != 0)
-                        // TODO: Actually make this show up or just remove it entirely
-                        return "No servers match your search or filter settings.";
+                        return _loc.GetString("tab-servers-list-status-none-filtered");
 
                     if (_serverListCache.AllServers.Count == 0)
-                        return "There are no public servers. Ensure your hub configuration is correct.";
+                        return _loc.GetString("tab-servers-list-status-none");
 
                     return "";
             }
@@ -71,7 +68,7 @@ public class ServerListTabViewModel : MainWindowTabViewModel
 
     public ServerListTabViewModel(MainWindowViewModel windowVm)
     {
-        Filters = new ServerListFiltersViewModel(windowVm.Cfg);
+        Filters = new ServerListFiltersViewModel(windowVm.Cfg, _loc);
         Filters.FiltersUpdated += FiltersOnFiltersUpdated;
 
         _windowVm = windowVm;
@@ -85,11 +82,17 @@ public class ServerListTabViewModel : MainWindowTabViewModel
             {
                 case nameof(ServerListCache.Status):
                     this.RaisePropertyChanged(nameof(ListText));
-                    this.RaisePropertyChanged(nameof(ListTextVisible));
                     this.RaisePropertyChanged(nameof(SpinnerVisible));
                     break;
             }
         };
+
+        _loc.LanguageSwitched += () => Filters.UpdatePresentFilters(_serverListCache.AllServers);
+
+        this.WhenAnyValue(x => x.SearchString)
+            .Throttle(TimeSpan.FromMilliseconds(throttleMs), RxApp.MainThreadScheduler)
+            .ObserveOn(RxApp.MainThreadScheduler)
+            .Subscribe(_ => UpdateSearchedList());
     }
 
     private void FiltersOnFiltersUpdated()
@@ -136,6 +139,8 @@ public class ServerListTabViewModel : MainWindowTabViewModel
             var vm = new ServerEntryViewModel(_windowVm, server, _serverListCache, _windowVm.Cfg);
             SearchedServers.Add(vm);
         }
+
+        this.RaisePropertyChanged(nameof(ListText));
     }
 
     private bool DoesSearchMatch(ServerStatusData data)

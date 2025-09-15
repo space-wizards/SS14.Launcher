@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using Serilog;
 using SS14.Launcher.Models;
 using SS14.Launcher.Models.Data;
+using SS14.Launcher.Utility;
 
 namespace SS14.Launcher.Api;
 
@@ -66,6 +67,7 @@ public sealed class AuthApi
         catch (HttpRequestException httpE)
         {
             Log.Error(httpE, "HttpRequestException in AuthenticateAsync");
+            HttpSelfTest.StartSelfTest();
             return new AuthenticateResult(
                 new[] { $"Connection error to authentication server: {httpE.Message}" },
                 AuthenticateDenyResponseCode.UnknownError);
@@ -108,6 +110,7 @@ public sealed class AuthApi
         catch (HttpRequestException httpE)
         {
             Log.Error(httpE, "HttpRequestException in RegisterAsync");
+            HttpSelfTest.StartSelfTest();
             return new RegisterResult(new[] { $"Connection error to authentication server: {httpE.Message}" });
         }
     }
@@ -163,6 +166,7 @@ public sealed class AuthApi
         catch (HttpRequestException httpE)
         {
             Log.Error(httpE, "HttpRequestException in ResendConfirmationAsync");
+            HttpSelfTest.StartSelfTest();
             return new[] { $"Connection error to authentication server: {httpE.Message}" };
         }
     }
@@ -204,6 +208,7 @@ public sealed class AuthApi
         catch (HttpRequestException httpE)
         {
             Log.Error(httpE, "HttpRequestException in ResendConfirmationAsync");
+            HttpSelfTest.StartSelfTest();
             throw new AuthApiException("HttpRequestException thrown", httpE);
         }
         catch (JsonException jsonE)
@@ -236,6 +241,7 @@ public sealed class AuthApi
         {
             // Does it make sense to just... swallow this exception? The token will stay "active" until it expires.
             Log.Error(httpE, "HttpRequestException in LogoutTokenAsync");
+            HttpSelfTest.StartSelfTest();
         }
     }
 
@@ -252,9 +258,12 @@ public sealed class AuthApi
         {
             var authUrl = ConfigConstants.AuthUrl + "api/auth/ping";
 
-            using var requestMessage = new HttpRequestMessage(HttpMethod.Get, authUrl);
-            requestMessage.Headers.Authorization = new AuthenticationHeaderValue("SS14Auth", token);
-            using var resp = await _httpClient.SendAsync(requestMessage);
+            using var resp = await authUrl.SendAsync(_httpClient, url =>
+            {
+                var requestMessage = new HttpRequestMessage(HttpMethod.Get, url);
+                requestMessage.Headers.Authorization = new AuthenticationHeaderValue("SS14Auth", token);
+                return requestMessage;
+            });
 
             if (resp.IsSuccessStatusCode)
             {
@@ -275,6 +284,7 @@ public sealed class AuthApi
         {
             // Does it make sense to just... swallow this exception? The token will stay "active" until it expires.
             Log.Error(httpE, "HttpRequestException in CheckTokenAsync");
+            HttpSelfTest.StartSelfTest();
             throw new AuthApiException("HttpRequestException thrown", httpE);
         }
     }

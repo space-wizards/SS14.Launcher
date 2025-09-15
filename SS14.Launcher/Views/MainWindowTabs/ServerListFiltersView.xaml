@@ -4,11 +4,18 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:mainWindowTabs="clr-namespace:SS14.Launcher.ViewModels.MainWindowTabs"
              xmlns:mwtv="clr-namespace:SS14.Launcher.Views.MainWindowTabs"
+             xmlns:loc="clr-namespace:SS14.Launcher.Localization"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SS14.Launcher.Views.MainWindowTabs.ServerListFiltersView">
   <Design.DataContext>
     <mainWindowTabs:ServerListFiltersViewModel />
   </Design.DataContext>
+
+  <UserControl.Styles>
+    <Style Selector=":is(Panel).ServerFilterGroup">
+      <Setter Property="Margin" Value="4" />
+    </Style>
+  </UserControl.Styles>
 
   <UserControl.Resources>
     <ItemsPanelTemplate x:Key="PanelTemplate">
@@ -23,27 +30,27 @@
   </UserControl.Resources>
 
   <DockPanel>
-    <TextBlock DockPanel.Dock="Top" Text="Filters" Classes="SubText" Margin="4 4 4 8" />
+    <TextBlock DockPanel.Dock="Top" Text="{loc:Loc filters-title}" Classes="SubText" Margin="4 4 4 8" />
 
     <ScrollViewer>
       <StackPanel Orientation="Vertical">
         <DockPanel Classes="ServerFilterGroup">
-          <TextBlock MinWidth="150" DockPanel.Dock="Left" Classes="SubText" Text="Language" />
+          <TextBlock MinWidth="150" DockPanel.Dock="Left" Classes="SubText" Text="{loc:Loc filters-title-language}" />
           <ItemsControl ItemsSource="{Binding FiltersLanguage}"
                         ItemsPanel="{StaticResource PanelTemplate}" ItemTemplate="{StaticResource FilterTemplate}"/>
         </DockPanel>
         <DockPanel Classes="ServerFilterGroup">
-          <TextBlock MinWidth="150" DockPanel.Dock="Left" Classes="SubText" Text="Region" />
+          <TextBlock MinWidth="150" DockPanel.Dock="Left" Classes="SubText" Text="{loc:Loc filters-title-region}" />
           <ItemsControl ItemsSource="{Binding FiltersRegion}"
                         ItemsPanel="{StaticResource PanelTemplate}" ItemTemplate="{StaticResource FilterTemplate}"/>
         </DockPanel>
         <DockPanel Classes="ServerFilterGroup">
-          <TextBlock MinWidth="150" DockPanel.Dock="Left" Classes="SubText" Text="Role-play level" />
+          <TextBlock MinWidth="150" DockPanel.Dock="Left" Classes="SubText" Text="{loc:Loc filters-title-rp}" />
           <ItemsControl ItemsSource="{Binding FiltersRolePlay}"
                         ItemsPanel="{StaticResource PanelTemplate}" ItemTemplate="{StaticResource FilterTemplate}"/>
         </DockPanel>
         <DockPanel Classes="ServerFilterGroup">
-          <TextBlock MinWidth="150" DockPanel.Dock="Left" Classes="SubText" Text="Player count" />
+          <TextBlock MinWidth="150" DockPanel.Dock="Left" Classes="SubText" Text="{loc:Loc filters-title-player-count}" />
           <WrapPanel>
             <mwtv:ServerFilterCounterView DataContext="{Binding FilterPlayerCountMinimum}" />
             <mwtv:ServerFilterCounterView DataContext="{Binding FilterPlayerCountMaximum}" />
@@ -52,13 +59,13 @@
           </WrapPanel>
         </DockPanel>
         <DockPanel Classes="ServerFilterGroup">
-          <TextBlock MinWidth="150" DockPanel.Dock="Left" VerticalAlignment="Center" Classes="SubText" Text="18+" />
+          <TextBlock MinWidth="150" DockPanel.Dock="Left" VerticalAlignment="Center" Classes="SubText" Text="{loc:Loc filters-title-18}" />
           <ItemsControl ItemsSource="{Binding FiltersEighteenPlus}"
                         ItemsPanel="{StaticResource PanelTemplate}" ItemTemplate="{StaticResource FilterTemplate}"/>
         </DockPanel>
 
         <DockPanel Classes="ServerFilterGroup">
-          <TextBlock MinWidth="150" DockPanel.Dock="Left" Classes="SubText" Text="Hub" />
+          <TextBlock MinWidth="150" DockPanel.Dock="Left" Classes="SubText" Text="{loc:Loc filters-title-hub}" />
           <ItemsControl ItemsSource="{Binding FiltersHub}"
                         ItemsPanel="{StaticResource PanelTemplate}" ItemTemplate="{StaticResource WideFilterTemplate}">
           </ItemsControl>

@@ -8,6 +8,13 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
+  <PropertyGroup Condition="$([MSBuild]::IsOSPlatform('FreeBSD'))">
+    <UseSystemSqlite>True</UseSystemSqlite>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(UseSystemSqlite)' == 'True'">
+    <DefineConstants>$(DefineConstants);USE_SYSTEM_SQLITE</DefineConstants>
+  </PropertyGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\Robust.LoaderApi\Robust.LoaderApi\Robust.LoaderApi.csproj" />
   </ItemGroup>
@@ -25,8 +32,11 @@
     <PackageReference Include="SQLitePCLRaw.provider.sqlite3" Condition="'$(UseSystemSqlite)' == 'True'" />
     <PackageReference Include="SQLitePCLRaw.bundle_e_sqlite3" Condition="'$(UseSystemSqlite)' != 'True'" />
     <PackageReference Include="NSec.Cryptography" />
+    <!-- Add libsodium to control version, SpaceWizards.Sodium's dependency is behind -->
+    <PackageReference Include="libsodium" />
     <PackageReference Include="Robust.Natives" />
-    <PackageReference Include="SharpZstd.Interop" />
+    <PackageReference Include="Robust.Natives.Zstd" />
+    <PackageReference Include="SharpZstd.Interop" ExcludeAssets="native" />
     <PackageReference Include="Microsoft.NET.ILLink.Tasks" />
   </ItemGroup>
 

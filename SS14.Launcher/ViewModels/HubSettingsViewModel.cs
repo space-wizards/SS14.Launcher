@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using DynamicData;
 using Splat;
@@ -11,7 +12,7 @@ namespace SS14.Launcher.ViewModels;
 
 public class HubSettingsViewModel : ViewModelBase
 {
-    public Uri[] DefaultHubs => ConfigConstants.DefaultHubUrls;
+    public string[] DefaultHubs => ConfigConstants.DefaultHubUrls.Select(set => set.Urls[0]).ToArray();
     public ObservableCollection<HubViewModel> HubList { get; set; } = new();
 
     private readonly DataManager _dataManager = Locator.Current.GetRequiredService<DataManager>();
@@ -55,14 +56,13 @@ public class HubSettingsViewModel : ViewModelBase
     public List<string> GetDupes()
     {
         return DefaultHubs
-            .Select(h => h.AbsoluteUri)
             .Concat(HubList.Select(h => NormalizeHubUri(h.Address))).GroupBy(h => h)
             .Where(group => group.Count() > 1)
             .Select(x => x.Key)
             .ToList();
     }
 
-    public static bool IsValidHubUri(string url)
+    public static bool IsValidHubUri(string? url)
     {
         return Uri.TryCreate(url, UriKind.Absolute, out var uri)
                && (uri.Scheme == Uri.UriSchemeHttp || uri.Scheme == Uri.UriSchemeHttps)
@@ -70,7 +70,8 @@ public class HubSettingsViewModel : ViewModelBase
                && string.IsNullOrEmpty(uri.Query);
     }
 
-    public static string NormalizeHubUri(string address)
+    [return: NotNullIfNotNull(nameof(address))]
+    public static string? NormalizeHubUri(string? address)
     {
         if (!Uri.TryCreate(address, UriKind.Absolute, out var uri))
             return address;

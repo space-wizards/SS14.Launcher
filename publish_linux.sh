@@ -17,8 +17,8 @@ mkdir -p bin/publish/Linux/bin/loader
 mkdir -p bin/publish/Linux/dotnet
 
 cp PublishFiles/SS14.Launcher PublishFiles/SS14.desktop bin/publish/Linux/
-cp SS14.Launcher/bin/Release/net8.0/linux-x64/publish/* bin/publish/Linux/bin/
-cp SS14.Loader/bin/Release/net8.0/linux-x64/publish/* bin/publish/Linux/bin/loader
+cp SS14.Launcher/bin/Release/net9.0/linux-x64/publish/* bin/publish/Linux/bin/
+cp SS14.Loader/bin/Release/net9.0/linux-x64/publish/* bin/publish/Linux/bin/loader
 cp -r Dependencies/dotnet/linux/* bin/publish/Linux/dotnet/
 
 cd bin/publish/Linux

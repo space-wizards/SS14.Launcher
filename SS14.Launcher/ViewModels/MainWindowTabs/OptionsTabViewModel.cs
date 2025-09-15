@@ -1,5 +1,7 @@
+using System;
 using System.Diagnostics;
 using Splat;
+using SS14.Launcher.Localization;
 using SS14.Launcher.Models.ContentManagement;
 using SS14.Launcher.Models.Data;
 using SS14.Launcher.Models.EngineManager;
@@ -13,12 +15,17 @@ public class OptionsTabViewModel : MainWindowTabViewModel
     private readonly IEngineManager _engineManager;
     private readonly ContentManager _contentManager;
 
+    public LanguageSelectorViewModel Language { get; } = new();
+
     public OptionsTabViewModel()
     {
         Cfg = Locator.Current.GetRequiredService<DataManager>();
         _engineManager = Locator.Current.GetRequiredService<IEngineManager>();
         _contentManager = Locator.Current.GetRequiredService<ContentManager>();
+
+        DisableIncompatibleMacOS = OperatingSystem.IsMacOS();
     }
+    public bool DisableIncompatibleMacOS { get; }
 
 #if RELEASE
         public bool HideDisableSigning => true;
@@ -26,7 +33,7 @@ public class OptionsTabViewModel : MainWindowTabViewModel
     public bool HideDisableSigning => false;
 #endif
 
-    public override string Name => "Options";
+    public override string Name => LocalizationManager.Instance.GetString("tab-options-title");
 
     public bool CompatMode
     {
@@ -34,16 +41,6 @@ public class OptionsTabViewModel : MainWindowTabViewModel
         set
         {
             Cfg.SetCVar(CVars.CompatMode, value);
-            Cfg.CommitConfig();
-        }
-    }
-
-    public bool DynamicPgo
-    {
-        get => Cfg.GetCVar(CVars.DynamicPgo);
-        set
-        {
-            Cfg.SetCVar(CVars.DynamicPgo, value);
             Cfg.CommitConfig();
         }
     }

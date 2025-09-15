@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using CodeHollow.FeedReader;
 using ReactiveUI;
+using SS14.Launcher.Localization;
 
 namespace SS14.Launcher.ViewModels.MainWindowTabs;
 
 public class NewsTabViewModel : MainWindowTabViewModel
 {
-    private const string FeedUrl = "https://spacestation14.io/post/index.xml";
-
     private bool _startedPullingNews;
     private bool _newsPulled;
 
@@ -44,7 +43,7 @@ public class NewsTabViewModel : MainWindowTabViewModel
         }
 
         _startedPullingNews = true;
-        var feed = await FeedReader.ReadAsync(FeedUrl);
+        var feed = await FeedReader.ReadAsync(ConfigConstants.NewsFeedUrl);
 
         foreach (var feedItem in feed.Items)
         {
@@ -56,5 +55,5 @@ public class NewsTabViewModel : MainWindowTabViewModel
 
     public ObservableCollection<NewsEntryViewModel> NewsEntries { get; }
 
-    public override string Name => "News";
+    public override string Name => LocalizationManager.Instance.GetString("tab-news-title");
 }

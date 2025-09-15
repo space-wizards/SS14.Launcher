@@ -3,7 +3,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:mainWindowTabs="clr-namespace:SS14.Launcher.ViewModels.MainWindowTabs"
+             xmlns:loc="clr-namespace:SS14.Launcher.Localization"
              xmlns:views="clr-namespace:SS14.Launcher.Views"
+             xmlns:mwt="clr-namespace:SS14.Launcher.Views.MainWindowTabs"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SS14.Launcher.Views.MainWindowTabs.HomePageView">
   <Design.DataContext>
@@ -11,56 +13,45 @@
   </Design.DataContext>
 
   <DockPanel>
-    <!-- Account info -->
-
-
-    <!-- Favorites -->
+    <!-- Header controls -->
     <DockPanel DockPanel.Dock="Top" LastChildFill="False" Margin="4, 0, 4, 2">
-      <TextBlock DockPanel.Dock="Left" Text="Favorite Servers" Classes="NanoHeadingMedium" />
-      <Button DockPanel.Dock="Right" Classes="OpenLeft" Command="{Binding AddFavoritePressed}">
+      <TextBlock DockPanel.Dock="Left" Text="{loc:Loc tab-home-favorite-servers}" Classes="NanoHeadingMedium" />
+      <Button DockPanel.Dock="Right" Classes="OpenLeft" Command="{Binding AddFavoritePressed}"
+              ToolTip.Tip="{loc:Loc tab-home-add-favorite}">
         <views:IconLabel Icon="{DynamicResource ButtonIcon-plus}" Height="20" Width="20" />
-        <ToolTip.Tip>Add favorite server</ToolTip.Tip>
       </Button>
-      <Button DockPanel.Dock="Right" Classes="OpenRight" Command="{Binding RefreshPressed}">
+      <Button DockPanel.Dock="Right" Classes="OpenRight" Command="{Binding RefreshPressed}"
+              ToolTip.Tip="{loc:Loc tab-home-refresh}">
         <views:IconLabel Icon="{DynamicResource ButtonIcon-refresh}" Height="20" Width="20" />
-        <ToolTip.Tip>Refresh</ToolTip.Tip>
       </Button>
     </DockPanel>
 
-    <DockPanel DockPanel.Dock="Bottom" LastChildFill="False" Margin="0, 5, 5, 1">
-      <Button DockPanel.Dock="Right" HorizontalAlignment="Right"  Classes="OpenLeft"
-              Content="Direct connect to server"
+    <!-- Footer controls -->
+    <DockPanel DockPanel.Dock="Bottom" LastChildFill="False" Margin="4 4 4 0" Height="32">
+      <Button DockPanel.Dock="Left" Classes="OpenRight"
+              Content="{loc:Loc tab-home-direct-connect}"
               Command="{Binding DirectConnectPressed}" />
-      <Button DockPanel.Dock="Right" HorizontalAlignment="Right" Classes="OpenRight"
-              Content="Run content bundle/replay"
+      <Button DockPanel.Dock="Left" Classes="OpenLeft"
+              Content="{loc:Loc tab-home-run-content-bundle}"
               Click="OpenReplayClicked" />
     </DockPanel>
 
     <Panel DockPanel.Dock="Bottom" Classes="ScrollViewerSep" />
     <Panel DockPanel.Dock="Top" Classes="ScrollViewerSep" />
     <Panel>
-      <Panel.Background>
-        <SolidColorBrush Color="#1e1e22" />
-      </Panel.Background>
-      <ScrollViewer MinHeight="150" HorizontalScrollBarVisibility="Disabled">
-        <Panel>
-          <DockPanel IsVisible="{Binding !FavoritesEmpty}" LastChildFill="True">
-            <StackPanel DockPanel.Dock="Bottom" IsVisible="True">
-            <Button Content="Go to the servers tab" Command="{Binding MainWindowViewModel.SelectTabServers}"
-                    HorizontalAlignment="Center" />
-            </StackPanel>
-            <ItemsControl ItemsSource="{Binding Favorites}"
-                          Classes="ServerList" />
-          </DockPanel>
-          <StackPanel IsVisible="{Binding FavoritesEmpty}"
-                      Orientation="Vertical" VerticalAlignment="Center">
-            <TextBlock Text="Mark servers as favorite for easy access here" HorizontalAlignment="Center"
-                       Margin="0 0 0 10" />
-            <Button Content="Go to the servers tab" Command="{Binding MainWindowViewModel.SelectTabServers}"
-                    HorizontalAlignment="Center" />
-          </StackPanel>
-        </Panel>
-      </ScrollViewer>
+      <mwt:ServerList List="{Binding Favorites}" IsVisible="{Binding !FavoritesEmpty}">
+        <Button Content="{loc:Loc tab-home-go-to-servers-tab}"
+                Command="{Binding MainWindowViewModel.SelectTabServers}" />
+      </mwt:ServerList>
+
+      <StackPanel IsVisible="{Binding FavoritesEmpty}"
+                  Orientation="Vertical" VerticalAlignment="Center">
+        <TextBlock Text="{loc:Loc tab-home-favorites-guide}" HorizontalAlignment="Center"
+                   Margin="0 0 0 10" />
+        <Button Content="{loc:Loc tab-home-go-to-servers-tab}"
+                Command="{Binding MainWindowViewModel.SelectTabServers}"
+                HorizontalAlignment="Center" />
+      </StackPanel>
     </Panel>
   </DockPanel>
 </UserControl>

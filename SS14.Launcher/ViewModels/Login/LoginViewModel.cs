@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using SS14.Launcher.Api;
+using SS14.Launcher.Localization;
 using SS14.Launcher.Models.Data;
 using SS14.Launcher.Models.Logins;
 
@@ -13,16 +14,18 @@ public class LoginViewModel : BaseLoginViewModel
     private readonly AuthApi _authApi;
     private readonly LoginManager _loginMgr;
     private readonly DataManager _dataManager;
+    private readonly LocalizationManager _loc = LocalizationManager.Instance;
 
     [Reactive] public string EditingUsername { get; set; } = "";
     [Reactive] public string EditingPassword { get; set; } = "";
 
     [Reactive] public bool IsInputValid { get; private set; }
+    [Reactive] public bool IsPasswordVisible { get; set; }
 
     public LoginViewModel(MainWindowLoginViewModel parentVm, AuthApi authApi,
         LoginManager loginMgr, DataManager dataManager) : base(parentVm)
     {
-        BusyText = "Logging in...";
+        BusyText = _loc.GetString("login-login-busy-logging-in");
         _authApi = authApi;
         _loginMgr = loginMgr;
         _dataManager = dataManager;
@@ -62,6 +65,7 @@ public class LoginViewModel : BaseLoginViewModel
         AuthApi authApi)
         where T : BaseLoginViewModel, IErrorOverlayOwner
     {
+        var loc = LocalizationManager.Instance;
         if (resp.IsSuccess)
         {
             var loginInfo = resp.LoginInfo;
@@ -93,7 +97,7 @@ public class LoginViewModel : BaseLoginViewModel
         }
 
         var errors = AuthErrorsOverlayViewModel.AuthCodeToErrors(resp.Errors, resp.Code);
-        vm.OverlayControl = new AuthErrorsOverlayViewModel(vm, "Unable to log in", errors);
+        vm.OverlayControl = new AuthErrorsOverlayViewModel(vm, loc.GetString("login-login-error-title"), errors);
         return false;
     }
 

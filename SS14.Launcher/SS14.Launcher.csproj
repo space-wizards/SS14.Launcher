@@ -18,6 +18,18 @@
   <PropertyGroup Condition="'$(UseSystemSqlite)' == 'True'">
     <DefineConstants>$(DefineConstants);USE_SYSTEM_SQLITE</DefineConstants>
   </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+    <!-- If you're a .vbproj user, replace ';' with ',' -->
+    <DefineConstants>$(DefineConstants);ENABLE_XAML_HOT_RELOAD</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Condition="$(DefineConstants.Contains(ENABLE_XAML_HOT_RELOAD))" Include="Avalonia.Markup.Xaml.Loader" />
+    <PackageReference Condition="$(DefineConstants.Contains(ENABLE_XAML_HOT_RELOAD))" Include="HotAvalonia" />
+    <PackageReference Include="HotAvalonia.Extensions" PrivateAssets="All" />
+  </ItemGroup>
+
   <ItemGroup>
     <Compile Update="**\*.xaml.cs">
       <DependentUpon>%(Filename)</DependentUpon>
@@ -59,10 +71,15 @@
     <PackageReference Include="TerraFX.Interop.Windows" />
     <PackageReference Include="NSec.Cryptography" />
     <PackageReference Include="Mono.Posix.NETStandard" />
-    <PackageReference Include="SharpZstd.Interop" />
+    <PackageReference Include="SharpZstd.Interop" ExcludeAssets="native" />
+    <PackageReference Include="Robust.Natives.Zstd" />
     <PackageReference Include="SpaceWizards.Sodium" />
+    <!-- Add libsodium to control version, SpaceWizards.Sodium's dependency is behind -->
+    <PackageReference Include="libsodium" />
     <PackageReference Include="JetBrains.Annotations" />
     <PackageReference Include="Microsoft.NET.ILLink.Tasks" />
+    <PackageReference Include="System.Net.Http.WinHttpHandler" />
+    <PackageReference Include="Linguini.Bundle" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Utility\runtime.json" />

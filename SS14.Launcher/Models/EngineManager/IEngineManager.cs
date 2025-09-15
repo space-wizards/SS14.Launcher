@@ -19,8 +19,7 @@ public interface IEngineManager
 
     Task<EngineModuleManifest> GetEngineModuleManifest(CancellationToken cancel = default);
 
-    /// <returns>True if something new had to be installed.</returns>
-    Task<bool> DownloadEngineIfNecessary(
+    Task<EngineInstallationResult> DownloadEngineIfNecessary(
         string engineVersion,
         Helpers.DownloadProgressCallback? progress = null,
         CancellationToken cancel = default);
@@ -56,6 +55,8 @@ public interface IEngineManager
         return selectedVersion.Key;
     }
 }
+
+public record struct EngineInstallationResult(string Version, bool Changed);
 
 public sealed record EngineModuleManifest(
     Dictionary<string, EngineModuleData> Modules

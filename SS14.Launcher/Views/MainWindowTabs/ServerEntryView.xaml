@@ -4,7 +4,9 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:mainWindowTabs="clr-namespace:SS14.Launcher.ViewModels.MainWindowTabs"
              xmlns:models="clr-namespace:SS14.Launcher.Models"
+             xmlns:controls="clr-namespace:SS14.Launcher.Controls"
              xmlns:views="clr-namespace:SS14.Launcher.Views"
+             xmlns:loc="clr-namespace:SS14.Launcher.Localization"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SS14.Launcher.Views.MainWindowTabs.ServerEntryView">
   <Design.DataContext>
@@ -14,16 +16,46 @@
   <Panel>
     <Expander Name="Expando" Classes="NoPad" IsExpanded="{Binding IsExpanded}">
       <Expander.Header>
-        <DockPanel>
-          <Button IsEnabled="{Binding IsOnline}" DockPanel.Dock="Right" Content="Connect"
-                  Command="{Binding ConnectPressed}" />
-          <TextBlock DockPanel.Dock="Right" VerticalAlignment="Center"
-                     TextAlignment="Center" Text="{Binding ServerStatusString}"
-                     MinWidth="80"
-                     Margin="10, 0" />
-          <Rectangle DockPanel.Dock="Right" Classes="VerticalSeparator" />
-          <TextBlock VerticalAlignment="Center" Text="{Binding Name}" TextTrimming="CharacterEllipsis"/>
-        </DockPanel>
+        <Grid>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" /> <!-- Server Name -->
+            <ColumnDefinition SharedSizeGroup="TimeCol" MinWidth="80" Width="Auto" />
+            <ColumnDefinition SharedSizeGroup="StatusCol" MinWidth="80" Width="Auto" />
+            <ColumnDefinition SharedSizeGroup="ConnectCol" Width="Auto" />
+          </Grid.ColumnDefinitions>
+
+          <Border Grid.Column="0" Classes="GridCell">
+            <TextBlock VerticalAlignment="Center"
+                       Text="{Binding Name}" TextTrimming="CharacterEllipsis"
+                       HorizontalAlignment="Left" />
+          </Border>
+
+          <Border Grid.Column="1" Classes="GridCell" Grid.ColumnSpan="2"
+                  IsVisible="{Binding !HaveData}">
+            <TextBlock Text="{Binding ServerStatusString}" TextAlignment="Left" Classes="Center" />
+          </Border>
+
+          <Border Grid.Column="1" Classes="GridCell" IsVisible="{Binding HaveData}">
+            <Panel>
+              <controls:TimerTextCell Value="{Binding RoundStartTime}"
+                                      IsVisible="{Binding RoundStatusString,Converter={x:Static StringConverters.IsNullOrEmpty}}" />
+              <TextBlock Text="{Binding RoundStatusString}"
+                         Classes="Center"
+                         HorizontalAlignment="Right"
+                         IsVisible="{Binding RoundStatusString,Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
+            </Panel>
+          </Border>
+
+          <Border Grid.Column="2" Classes="GridCell" IsVisible="{Binding HaveData}">
+            <TextBlock DockPanel.Dock="Right" Classes="Numeric" Text="{Binding PlayerCountString}" />
+          </Border>
+
+          <Border Grid.Column="3" Classes="GridCell">
+            <Button IsEnabled="{Binding IsOnline}" DockPanel.Dock="Right"
+                    Content="{loc:Loc server-entry-connect}"
+                    Command="{Binding ConnectPressed}" />
+          </Border>
+        </Grid>
       </Expander.Header>
       <DockPanel Margin="4">
         <TextBlock DockPanel.Dock="Top"
@@ -41,7 +73,8 @@
         <Control DockPanel.Dock="Top" Height="8" />
 
         <views:RowSideAlignedPanel>
-          <ItemsControl VerticalAlignment="Bottom" ItemsSource="{Binding CacheData.Links}" Name="Links">
+          <ItemsControl VerticalAlignment="Bottom" ItemsSource="{Binding CacheData.Links}"
+                        Name="Links">
             <ItemsControl.ItemsPanel>
               <ItemsPanelTemplate>
                 <WrapPanel Orientation="Horizontal" />
@@ -68,7 +101,7 @@
             <!-- Raise to top button. -->
             <Button IsVisible="{Binding ViewedInFavoritesPane}"
                     Classes="OpenLeft"
-                    Content="Raise to top"
+                    Content="{loc:Loc server-entry-raise}"
                     Command="{Binding FavoriteRaiseButtonPressed}" />
           </DockPanel>
         </views:RowSideAlignedPanel>

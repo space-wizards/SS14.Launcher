@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using JetBrains.Annotations;
 using SS14.Launcher.Utility;
 
@@ -19,11 +20,6 @@ public static class CVars
     /// that are less likely to immediately crash on buggy drivers.
     /// </summary>
     public static readonly CVarDef<bool> CompatMode = CVarDef.Create("CompatMode", false);
-
-    /// <summary>
-    /// Run client with dynamic PGO.
-    /// </summary>
-    public static readonly CVarDef<bool> DynamicPgo = CVarDef.Create("DynamicPgo", true);
 
     /// <summary>
     /// On first launch, the launcher tells you that SS14 is EARLY ACCESS.
@@ -93,6 +89,11 @@ public static class CVars
     /// </summary>
     public static readonly CVarDef<int> MaxForkVersionsToKeep = CVarDef.Create("MaxForkVersionsToKeep", 3);
 
+     /// <summary>
+    /// If a download gets interrupted, keep the files for a week.
+    /// </summary>
+    public static readonly CVarDef<int> InterruptibleDownloadKeepHours = CVarDef.Create("InterruptibleDownloadKeepHours", 7 * 24);
+
     /// <summary>
     /// Whether to display override assets (trans rights).
     /// </summary>
@@ -109,6 +110,26 @@ public static class CVars
     /// </summary>
     /// <seealso cref="ServerFilter.PlayerCountMax"/>
     public static readonly CVarDef<int> FilterPlayerCountMaxValue = CVarDef.Create("FilterPlayerCountMaxValue", 0);
+
+    /// <summary>
+    /// Stores whether the user has seen the Wine warning.
+    /// </summary>
+    public static readonly CVarDef<bool> WineWarningShown = CVarDef.Create("WineWarningShown", false);
+
+    /// <summary>
+    /// Language the user selected. Null means it should be automatically selected based on system language.
+    /// </summary>
+    public static readonly CVarDef<string?> Language = CVarDef.Create<string?>("Language", null);
+
+    /// <summary>
+    /// The CPU architecture this launcher was last run with.
+    /// </summary>
+    /// <remarks>
+    /// Used to delete engine builds of other architectures on startup.
+    /// Defaults to x64 so that people upgrading to a proper ARM64 launcher on e.g. Apple Silicon
+    /// properly get their existing installations cleared.
+    /// </remarks>
+    public static readonly CVarDef<int> CurrentArchitecture = CVarDef.Create("CurrentArchitecture", (int) Architecture.X64);
 }
 
 /// <summary>
@@ -132,7 +153,6 @@ public abstract class CVarDef
     public static CVarDef<T> Create<T>(
         string name,
         T defaultValue)
-        where T : notnull
     {
         return new CVarDef<T>(name, defaultValue);
     }

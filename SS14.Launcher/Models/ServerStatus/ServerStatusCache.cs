@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
+using System.Net.Sockets;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
@@ -103,7 +104,8 @@ public sealed class ServerStatusCache : IServerSource
 
                 cancel.ThrowIfCancellationRequested();
             }
-            catch (Exception e) when (e is JsonException or HttpRequestException or InvalidDataException)
+            catch (Exception e) when (e is JsonException or HttpRequestException or InvalidDataException or IOException
+                                          or SocketException)
             {
                 data.Status = ServerStatusCode.Offline;
                 return;
@@ -123,6 +125,25 @@ public sealed class ServerStatusCache : IServerSource
         data.Name = status.Name;
         data.PlayerCount = status.PlayerCount;
         data.SoftMaxPlayerCount = status.SoftMaxPlayerCount;
+
+        switch (status.RunLevel)
+        {
+            case ServerApi.GameRunLevel.InRound:
+                data.RoundStatus = GameRoundStatus.InRound;
+                break;
+            case ServerApi.GameRunLevel.PostRound:
+            case ServerApi.GameRunLevel.PreRoundLobby:
+                data.RoundStatus = GameRoundStatus.InLobby;
+                break;
+            default:
+                data.RoundStatus = GameRoundStatus.Unknown;
+                break;
+        }
+
+        if (status.RoundStartTime != null)
+        {
+            data.RoundStartTime = DateTime.Parse(status.RoundStartTime, null, System.Globalization.DateTimeStyles.RoundtripKind);
+        }
 
         var baseTags = status.Tags ?? Array.Empty<string>();
         var inferredTags = ServerTagInfer.InferTags(status);
@@ -212,8 +233,9 @@ public sealed class ServerStatusCache : IServerSource
     {
         UpdateInfoForCore(statusData, async cancel =>
         {
-            var statusAddr = UriHelper.GetServerInfoAddress(statusData.Address);
-            return await _http.GetFromJsonAsync<ServerInfo>(statusAddr, cancel);
+            var uriBuilder = new UriBuilder(UriHelper.GetServerInfoAddress(statusData.Address));
+            uriBuilder.Query = "?can_skip_build=1";
+            return await _http.GetFromJsonAsync<ServerInfo>(uriBuilder.ToString(), cancel);
         });
     }
 

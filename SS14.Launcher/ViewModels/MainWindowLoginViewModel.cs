@@ -15,6 +15,8 @@ public class MainWindowLoginViewModel : ViewModelBase
     private readonly LoginManager _loginMgr;
     private BaseLoginViewModel _screen;
 
+    public LanguageSelectorViewModel LanguageSelector { get; } = new();
+
     public BaseLoginViewModel Screen
     {
         get => _screen;
@@ -34,8 +36,6 @@ public class MainWindowLoginViewModel : ViewModelBase
         _screen = default!;
         SwitchToLogin();
     }
-
-    public string Version => $"v{LauncherVersion.Version}";
 
     public void SwitchToLogin()
     {
