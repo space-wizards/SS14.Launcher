@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:mainWindowTabs="clr-namespace:SS14.Launcher.ViewModels.MainWindowTabs"
              xmlns:loc="clr-namespace:SS14.Launcher.Localization"
-             xmlns:views="clr-namespace:SS14.Launcher.Views"
+             xmlns:v="clr-namespace:SS14.Launcher.Views"
              xmlns:mwt="clr-namespace:SS14.Launcher.Views.MainWindowTabs"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SS14.Launcher.Views.MainWindowTabs.HomePageView">
@@ -18,11 +18,11 @@
       <TextBlock DockPanel.Dock="Left" Text="{loc:Loc tab-home-favorite-servers}" Classes="NanoHeadingMedium" />
       <Button DockPanel.Dock="Right" Classes="OpenLeft" Command="{Binding AddFavoritePressed}"
               ToolTip.Tip="{loc:Loc tab-home-add-favorite}">
-        <views:IconLabel Icon="{DynamicResource ButtonIcon-plus}" Height="20" Width="20" />
+        <v:IconLabel Icon="{DynamicResource ButtonIcon-plus}" Height="20" Width="20" />
       </Button>
       <Button DockPanel.Dock="Right" Classes="OpenRight" Command="{Binding RefreshPressed}"
               ToolTip.Tip="{loc:Loc tab-home-refresh}">
-        <views:IconLabel Icon="{DynamicResource ButtonIcon-refresh}" Height="20" Width="20" />
+        <v:IconLabel Icon="{DynamicResource ButtonIcon-refresh}" Height="20" Width="20" />
       </Button>
     </DockPanel>
 
