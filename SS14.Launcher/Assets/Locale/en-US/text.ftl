@@ -277,7 +277,7 @@ filters-rp-high-desc = High
 ## Strings for entries in the server list (including home page)
 
 server-entry-connect = Connect
-server-entry-add-favorite = Add Favorite
+server-entry-add-favorite = Favorite
 server-entry-remove-favorite = Unfavorite
 server-entry-offline = OFFLINE
 server-entry-player-count =
