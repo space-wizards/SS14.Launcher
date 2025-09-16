@@ -451,9 +451,6 @@ public class Connector : ReactiveObject
 
         EnvVar("SS14_LAUNCHER_PATH", Process.GetCurrentProcess().MainModule!.FileName);
 
-        // Enable client logging.
-        var manualPipeLogging = true;
-
         if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
         {
             EnvVar("SS14_LOG_CLIENT", LauncherPaths.PathClientMacLog);
@@ -488,7 +485,7 @@ public class Connector : ReactiveObject
 
         var process = Process.Start(startInfo);
 
-        if (manualPipeLogging && process != null)
+        if (process != null)
         {
             Log.Debug("Setting up manual-pipe logging for new client with PID {pid}.", process.Id);
 
