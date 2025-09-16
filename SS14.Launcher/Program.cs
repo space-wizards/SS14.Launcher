@@ -108,7 +108,7 @@ internal static class Program
         Log.Logger = new LoggerConfiguration()
             .MinimumLevel.Is(cfg.GetCVar(CVars.LogLauncherVerbose) ? LogEventLevel.Verbose : LogEventLevel.Debug)
             .WriteTo.Console(theme: AnsiConsoleTheme.Sixteen)
-            .WriteTo.File(LauncherPaths.PathLauncherLog, rollingInterval: RollingInterval.Day, retainedFileCountLimit: 1)
+            .WriteTo.File(LauncherPaths.PathLauncherLog, rollingInterval: RollingInterval.Day, retainedFileCountLimit: 7, fileSizeLimitBytes: 100L * 1024 * 1024)
             .CreateLogger();
 
         LauncherDiagnostics.LogDiagnostics();
