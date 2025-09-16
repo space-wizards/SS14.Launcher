@@ -19,7 +19,8 @@
 
       <views:LanguageSelector DockPanel.Dock="Left" VerticalAlignment="Center" Margin="4" DataContext="{Binding LanguageSelector}" />
 
-      <CheckBox DockPanel.Dock="Left" VerticalAlignment="Center" Margin="4" IsChecked="{Binding LogLauncher}" Content="{loc:Loc login-log-launcher}" />
+      <Button Content="{loc:Loc tab-options-open-log-directory}" DockPanel.Dock="Left" HorizontalAlignment="Left"
+              Command="{Binding OpenLogDirectory}" Margin="4" />
     </DockPanel>
     <Panel Background="{DynamicResource ThemeStripebackEdgeBrush}" MinHeight="2" DockPanel.Dock="Bottom" />
 
