@@ -520,20 +520,13 @@ public partial class Connector : ObservableObject
 
         EnvVar("SS14_LAUNCHER_PATH", Process.GetCurrentProcess().MainModule!.FileName);
 
-        // ReSharper disable once ReplaceWithSingleAssignment.False
-        var manualPipeLogging = false;
-        if (_cfg.GetCVar(CVars.LogClient))
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
         {
-            manualPipeLogging = true;
-
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
-            {
-                EnvVar("SS14_LOG_CLIENT", LauncherPaths.PathClientMacLog);
-            }
-
-            startInfo.RedirectStandardOutput = true;
-            startInfo.RedirectStandardError = true;
+            EnvVar("SS14_LOG_CLIENT", LauncherPaths.PathClientMacLog);
         }
+
+        startInfo.RedirectStandardOutput = true;
+        startInfo.RedirectStandardError = true;
 
         // Performance tweaks
         EnvVar("DOTNET_TieredPGO", "1");
@@ -561,7 +554,7 @@ public partial class Connector : ObservableObject
 
         var process = Process.Start(startInfo);
 
-        if (manualPipeLogging && process != null)
+        if (process != null)
         {
             Log.Debug("Setting up manual-pipe logging for new client with PID {pid}.", process.Id);
 

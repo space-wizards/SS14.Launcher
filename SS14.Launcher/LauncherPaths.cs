@@ -14,7 +14,7 @@ public static class LauncherPaths
     public static readonly string EngineModulesDirName = "modules";
     public static readonly string ServerContentDirName = "server content";
     public static readonly string LogsDirName = "logs";
-    public static readonly string LauncherLogName = "launcher.log";
+    public static readonly string LauncherLogName = "launcher-.log"; // Serilog will append yyyyMMdd to the filename
     public static readonly string ClientMacLogName = "client.mac.log";
     public static readonly string ClientStdoutLogName = "client.stdout.log";
     public static readonly string ClientStderrLogName = "client.stderr.log";

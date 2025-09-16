@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Splat;
 using SS14.Launcher.Api;
 using SS14.Launcher.Models.Data;
@@ -62,14 +63,12 @@ public class MainWindowLoginViewModel : ViewModelBase
         Screen = new AuthTfaViewModel(this, request, _loginMgr, _authApi, _cfg);
     }
 
-    public bool LogLauncher
+    public void OpenLogDirectory()
     {
-        // This not a clean solution, replace it with something better.
-        get => _cfg.GetCVar(CVars.LogLauncher);
-        set
+        Process.Start(new ProcessStartInfo
         {
-            _cfg.SetCVar(CVars.LogLauncher, value);
-            _cfg.CommitConfig();
-        }
+            UseShellExecute = true,
+            FileName = LauncherPaths.DirLogs
+        });
     }
 }
