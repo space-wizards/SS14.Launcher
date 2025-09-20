@@ -455,7 +455,7 @@ server-entry-player-count =
 # Strings for the "home" tab
 tab-home-title = Página Inicial
 # Strings for the "home" tab
-tab-home-favorite-servers = Servidores Favoritos:
+tab-home-favorite-servers = Servidores Favoritos
 # Strings for the "home" tab
 tab-home-add-favorite = Adicionar Favorito…
 # Strings for the "home" tab

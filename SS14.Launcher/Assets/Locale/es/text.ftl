@@ -454,7 +454,7 @@ tab-development-enable-engine-override-desc = Sobrescribir ruta para cargar zips
 # Strings for the "home" tab
 tab-home-title = Inicio
 # Strings for the "home" tab
-tab-home-favorite-servers = Servidores Favoritos:
+tab-home-favorite-servers = Servidores Favoritos
 # Strings for the "home" tab
 tab-home-add-favorite = Añadir favorito…
 # Strings for the "home" tab

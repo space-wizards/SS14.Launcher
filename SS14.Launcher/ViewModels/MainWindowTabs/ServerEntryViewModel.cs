@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel;
+using Avalonia.Threading;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Messaging;
 using SS14.Launcher.Localization;
@@ -20,6 +21,8 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
     private string _fallbackName = string.Empty;
     private bool _isExpanded;
 
+    private readonly DispatcherTimer _refreshRoundStartTimer = new() { Interval = TimeSpan.FromSeconds(15) };
+
     public ServerEntryViewModel(MainWindowViewModel windowVm, ServerStatusData cacheData, IServerSource serverSource,
         DataManager cfg)
     {
@@ -27,6 +30,11 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
         _windowVm = windowVm;
         _cacheData = cacheData;
         _serverSource = serverSource;
+
+        _cacheData.PropertyChanged += OnCacheDataOnPropertyChanged;
+
+        _refreshRoundStartTimer.Start();
+        _refreshRoundStartTimer.Tick += (_, _) => OnPropertyChanged(nameof(RoundStatusString));
     }
 
     public ServerEntryViewModel(
@@ -38,6 +46,8 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
         : this(windowVm, cacheData, serverSource, cfg)
     {
         Favorite = favorite;
+
+        _cacheData.PropertyChanged += OnCacheDataOnPropertyChanged;
     }
 
     public ServerEntryViewModel(
@@ -48,11 +58,6 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
         : this(windowVm, ssdfb.Data, serverSource, cfg)
     {
         FallbackName = ssdfb.FallbackName ?? "";
-    }
-
-    public void Tick()
-    {
-        OnPropertyChanged(nameof(RoundStartTime));
     }
 
     public void ConnectPressed()
@@ -104,15 +109,31 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
     // Give a ratio for servers with a defined player count, or just a current number for those without.
     public string PlayerCountString =>
         _loc.GetString("server-entry-player-count",
-            ("players", _cacheData.PlayerCount), ("max", _cacheData.SoftMaxPlayerCount));
+            ("players", _cacheData.PlayerCount.ToString().PadLeft(3)),
+            ("max", _cacheData.SoftMaxPlayerCount.ToString().PadRight(3)));
 
 
     public DateTime? RoundStartTime => _cacheData.RoundStartTime;
 
-    public string RoundStatusString =>
-        _cacheData.RoundStatus == GameRoundStatus.InLobby
-            ? _loc.GetString("server-entry-status-lobby")
-            : "";
+    public string RoundStatusString
+    {
+        get
+        {
+            switch (_cacheData.RoundStatus)
+            {
+                case GameRoundStatus.InLobby:
+                    return _loc.GetString("server-entry-status-lobby");
+                case GameRoundStatus.InRound when RoundStartTime is { } start:
+                {
+                    var ts = DateTime.UtcNow.Subtract(start);
+                    return _loc.GetString("server-entry-round-time", ("hours", Math.Floor(ts.TotalHours)),
+                        ("mins", ts.Minutes.ToString().PadLeft(2, '0')));
+                }
+                default:
+                    return "";
+            }
+        }
+    }
 
     public string Description
     {
@@ -238,6 +259,7 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
 
             case nameof(IServerStatusData.RoundStartTime):
                 OnPropertyChanged(nameof(RoundStartTime));
+                OnPropertyChanged(nameof(RoundStatusString));
                 break;
 
             case nameof(IServerStatusData.RoundStatus):
