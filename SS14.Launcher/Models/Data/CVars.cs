@@ -29,6 +29,20 @@ public static class CVars
         = CVarDef.Create("HasDismissedEarlyAccessWarning", false);
 
     /// <summary>
+    /// Used to warn users about the degradation of the Intel 13th and 14th generation CPUs
+    /// This has proven multiple times to cause issues with game startup due to some memory access issue after enough degradation.
+    /// <see href="https://www.reddit.com/r/intel/comments/1egthzw/megathread_for_intel_core_13th_14th_gen_cpu/"/>
+    /// </summary>
+    public static readonly CVarDef<bool> HasDismissedIntelDegradation
+        = CVarDef.Create("HasDismissedIntelDegradation", false);
+
+    /// <summary>
+    /// Used to warn Apple Silicon users who are running the game under Rosetta 2 when they could be running the native build.
+    /// </summary>
+    public static readonly CVarDef<bool> HasDismissedRosettaWarning
+        = CVarDef.Create("HasDismissedRosettaWarning", false);
+
+    /// <summary>
     /// Disable checking engine build signatures when launching game.
     /// Only enable if you know what you're doing.
     /// </summary>
