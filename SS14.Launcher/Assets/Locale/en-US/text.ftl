@@ -177,6 +177,14 @@ main-window-intel-degrade-desc =
 
     We are not responsible to help with any issues that may arise from affected processors unless you took the precautions and are sure your CPU is stable. This message will not appear again after you accept it.
 main-window-intel-degrade-accept = I understand and have taken the necessary precautions.
+main-window-rosetta-title = You are running the game using Rosetta 2!
+main-window-rosetta-desc =
+    You seem to be on an Apple Silicon Mac and are running the game using Rosetta 2. You may enjoy better performance and battery life by running the game natively.
+
+    To do this, right click the launcher in Finder, select "Get Info" and uncheck "Open using Rosetta". After that, restart the launcher.
+
+    If you are intentionally running the game using Rosetta 2, you can dismiss this message and it will not appear again. Although if you are doing this in an attempt to fix a problem, please make a bug report.
+main-window-rosetta-accept = Continue
 main-window-drag-drop-prompt = Drop to run game
 main-window-busy-checking-update = Checking for launcher update…
 main-window-busy-checking-login-status = Refreshing login status…

@@ -37,6 +37,12 @@ public static class CVars
         = CVarDef.Create("HasDismissedIntelDegradation", false);
 
     /// <summary>
+    /// Used to warn Apple Silicon users who are running the game under Rosetta 2 when they could be running the native build.
+    /// </summary>
+    public static readonly CVarDef<bool> HasDismissedRosettaWarning
+        = CVarDef.Create("HasDismissedRosettaWarning", false);
+
+    /// <summary>
     /// Disable checking engine build signatures when launching game.
     /// Only enable if you know what you're doing.
     /// </summary>

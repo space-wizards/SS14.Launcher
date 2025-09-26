@@ -137,6 +137,7 @@ public sealed class MainWindowViewModel : ViewModelBase, IErrorOverlayOwner
 
     public ICVarEntry<bool> HasDismissedEarlyAccessWarning => Cfg.GetCVarEntry(CVars.HasDismissedEarlyAccessWarning);
     public bool ShouldShowIntelDegradationWarning => IsVulnerableToIntelDegradation(_cfg);
+    public bool ShouldShowRosettaWarning => IsAppleSiliconInRosetta(_cfg);
 
     public string Version => $"v{LauncherVersion.Version}";
 
@@ -214,6 +215,13 @@ public sealed class MainWindowViewModel : ViewModelBase, IErrorOverlayOwner
         Cfg.SetCVar(CVars.HasDismissedIntelDegradation, true);
         Cfg.CommitConfig();
         this.RaisePropertyChanged(nameof(ShouldShowIntelDegradationWarning));
+    }
+
+    public void DismissAppleSiliconRosettaPressed()
+    {
+        Cfg.SetCVar(CVars.HasDismissedRosettaWarning, true);
+        Cfg.CommitConfig();
+        this.RaisePropertyChanged(nameof(ShouldShowRosettaWarning));
     }
 
     public void SelectTabServers()
@@ -297,8 +305,7 @@ public sealed class MainWindowViewModel : ViewModelBase, IErrorOverlayOwner
         //Todo for "Myra got tired of warning 13th/14th gen owners that their cpu is cooked"
         //   - Button to continue should be disabled for like 15s with a nice timer on the button preferably... if the giant WARNING message was not enough to get people to not spam OK
 
-        // var processor = LauncherDiagnostics.GetProcessorModel();
-        var processor = "4x Intel(R) Core(TM) i7-14000K CPU @ 3.20GHz";
+        var processor = LauncherDiagnostics.GetProcessorModel();
 
         // No Intel processor, or already dismissed the warning.
         if (!processor.Contains("Intel") || cfg.GetCVar(CVars.HasDismissedIntelDegradation))
@@ -313,5 +320,12 @@ public sealed class MainWindowViewModel : ViewModelBase, IErrorOverlayOwner
         var excludedSuffixes = new[] { "HX", "H", "P", "U" };
 
         return affectedGenerations.Any(match.Value.Contains) && !excludedSuffixes.Any(match.Value.EndsWith);
+    }
+
+    private static bool IsAppleSiliconInRosetta(DataManager cfg)
+    {
+        var processor = LauncherDiagnostics.GetProcessorModel();
+
+        return processor.Contains("VirtualApple") || cfg.GetCVar(CVars.HasDismissedIntelDegradation);
     }
 }
