@@ -302,9 +302,6 @@ public sealed class MainWindowViewModel : ViewModelBase, IErrorOverlayOwner
 
     private static bool IsVulnerableToIntelDegradation(DataManager cfg)
     {
-        //Todo for "Myra got tired of warning 13th/14th gen owners that their cpu is cooked"
-        //   - Button to continue should be disabled for like 15s with a nice timer on the button preferably... if the giant WARNING message was not enough to get people to not spam OK
-
         var processor = LauncherDiagnostics.GetProcessorModel();
 
         // No Intel processor, or already dismissed the warning.
