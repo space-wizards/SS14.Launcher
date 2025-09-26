@@ -11,4 +11,7 @@ ARCH=$(uname -m)
 
 export DOTNET_ROOT="$(pwd)/../Resources/$ARCH/dotnet"
 
-exec ../Resources/$ARCH/bin/SS14.Launcher "$@" > "$HOME/Library/Application Support/Space Station 14/launcher.log"
+# Why do we invoke dotnet with the dll, instead of the apphost?
+# Because for some reason, the ARM64 apphost is broken when published by GitHub Actions.
+# Idk dude. This works.
+exec "$DOTNET_ROOT/dotnet" ../Resources/$ARCH/bin/SS14.Launcher.dll "$@" > "$HOME/Library/Application Support/Space Station 14/launcher.log"
