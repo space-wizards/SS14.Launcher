@@ -324,8 +324,11 @@ public sealed class MainWindowViewModel : ViewModelBase, IErrorOverlayOwner
 
     private static bool IsAppleSiliconInRosetta(DataManager cfg)
     {
+        if (!OperatingSystem.IsMacOS())
+            return false;
+
         var processor = LauncherDiagnostics.GetProcessorModel();
 
-        return processor.Contains("VirtualApple") || cfg.GetCVar(CVars.HasDismissedIntelDegradation);
+        return processor.Contains("VirtualApple") || cfg.GetCVar(CVars.HasDismissedRosettaWarning);
     }
 }
