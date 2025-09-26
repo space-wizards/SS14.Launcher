@@ -53,7 +53,7 @@ connecting-update-status-loading-content-bundle = Načítání obsahového balí
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-update-status-unknown = Tohle byste neměli vidět
 # Strings for the "direct connect" dialog window.
-direct-connect-title = Přímé připojení…
+direct-connect-title = Přímé Připojení
 # Strings for the "direct connect" dialog window.
 direct-connect-connect = Připojit
 # Strings for the "direct connect" dialog window.
