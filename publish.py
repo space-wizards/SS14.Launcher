@@ -6,7 +6,7 @@ import subprocess
 import shutil
 import glob
 
-from download_net_runtime import update_netcore_runtime, PLATFORM_WINDOWS, PLATFORM_WINDOWS_ARM64
+from download_net_runtime import update_netcore_runtime, PLATFORM_WINDOWS, PLATFORM_WINDOWS_ARM64, PLATFORM_MACOS, PLATFORM_MACOS_ARM64
 from exe_set_subsystem import set_subsystem
 
 TFM = "net9.0"
@@ -86,7 +86,32 @@ def publish_linux():
 
 
 def publish_osx():
-    pass
+    update_netcore_runtime([PLATFORM_MACOS, PLATFORM_MACOS_ARM64])
+
+    shutil.rmtree("bin/publish/macOS", ignore_errors=True)
+
+    for path in glob.glob("**/bin"):
+        shutil.rmtree(path)
+
+    os.makedirs("bin/publish/macOS", exist_ok=True)
+    shutil.copytree("PublishFiles/Space Station 14 Launcher.app", "bin/publish/macOS/Space Station 14 Launcher.app")
+
+    res_root = "bin/publish/macOS/Space Station 14 Launcher.app/Contents/Resources"
+
+    loader_res_root = f"{res_root}/Space Station 14.app/Contents/Resources"
+
+    for arch in ["x64", "arm64"]:
+        full_arch_name = "x86_64" if arch == "x64" else arch
+        dotnet_publish("SS14.Launcher/SS14.Launcher.csproj", f"osx-{arch}", False, "/p:FullRelease=True", "/p:RobustILLink=true")
+        dotnet_publish("SS14.Loader/SS14.Loader.csproj", f"osx-{arch}", False, "/p:FullRelease=True", "/p:RobustILLink=true")
+
+        shutil.copytree(f"SS14.Launcher/bin/Release/{TFM}/osx-{arch}/publish", f"{res_root}/{full_arch_name}/bin", dirs_exist_ok=True)
+        shutil.copytree(f"SS14.Loader/bin/Release/{TFM}/osx-{arch}/publish", f"{loader_res_root}/{full_arch_name}/bin", dirs_exist_ok=True)
+
+    shutil.copytree("Dependencies/dotnet/mac", f"{res_root}/x86_64/dotnet")
+    shutil.copytree("Dependencies/dotnet/mac-arm64", f"{res_root}/arm64/dotnet")
+
+    shutil.make_archive("SS14.Launcher_macOS", "zip", "bin/publish/macOS/")
 
 def run(*args: str):
     subprocess.run(args, shell=False, check=True)

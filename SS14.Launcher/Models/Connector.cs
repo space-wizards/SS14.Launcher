@@ -681,7 +681,11 @@ public partial class Connector : ReactiveObject
 
         if (release)
         {
-            basePath = Path.Combine(LauncherPaths.DirLauncherInstall, "loader");
+            basePath = LauncherPaths.DirLauncherInstall;
+            if (OperatingSystem.IsMacOS())
+                basePath = Path.Combine(basePath, "..", "..");
+            else
+                basePath = Path.Combine(basePath, "loader");
         }
         else
         {
@@ -716,7 +720,7 @@ public partial class Connector : ReactiveObject
         {
             if (release)
             {
-                var appPath = Path.Combine(basePath, "Space Station 14.app");
+                var appPath = Path.GetFullPath(Path.Combine(basePath, "Space Station 14.app"));
                 Log.Debug("Using app bundle: {appPath}", appPath);
 
                 Log.Debug("Clearing quarantine on loader.");
@@ -739,10 +743,12 @@ public partial class Connector : ReactiveObject
 
                 await xattr.WaitForExitAsync();
 
+                var arch = RuntimeInformation.ProcessArchitecture == Architecture.Arm64 ? "arm64" : "x86_64";
+
                 return new ProcessStartInfo
                 {
                     FileName = "open",
-                    ArgumentList = {appPath, "--args"},
+                    ArgumentList = {appPath, "--arch", arch, "--args"},
                 };
             }
             else
