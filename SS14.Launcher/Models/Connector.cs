@@ -307,6 +307,8 @@ public partial class Connector : ObservableObject
 
         try
         {
+            var compatMode = (_cfg.GetCVar(CVars.CompatMode) && !OperatingSystem.IsMacOS()) || CheckForceCompatMode();
+
             var args = new List<string>
             {
                 // Pass username to launched client.
@@ -314,7 +316,7 @@ public partial class Connector : ObservableObject
                 "--username", _loginManager.ActiveAccount?.Username ?? ConfigConstants.FallbackUsername,
 
                 // GLES2 forcing or using default fallback
-                "--cvar", $"display.compat={_cfg.GetCVar(CVars.CompatMode) && !OperatingSystem.IsMacOS()}",
+                "--cvar", $"display.compat={compatMode}",
 
                 // Tell game we are launcher
                 "--cvar", "launch.launcher=true"

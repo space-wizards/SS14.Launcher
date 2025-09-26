@@ -7,14 +7,14 @@
     <PublishAot>true</PublishAot>
     <TargetName>Space Station 14 Launcher</TargetName>
     <ApplicationIcon>../SS14.Launcher/Assets/icon.ico</ApplicationIcon>
-    <LangVersion>11</LangVersion>
+    <LangVersion>12</LangVersion>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 
     <!-- Make AOT small -->
     <OptimizationPreference>Size</OptimizationPreference>
     <StackTraceSupport>false</StackTraceSupport>
     <InvariantGlobalization>true</InvariantGlobalization>
     <UseSystemResourceKeys>true</UseSystemResourceKeys>
-    <IlcDisableReflection>true</IlcDisableReflection>
   </PropertyGroup>
 
   <ItemGroup>

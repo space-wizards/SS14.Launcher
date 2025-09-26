@@ -9,15 +9,21 @@ import shutil
 from typing import List, Optional
 
 PLATFORM_WINDOWS = "windows"
+PLATFORM_WINDOWS_ARM64 = "windows-arm64"
 PLATFORM_LINUX = "linux"
+PLATFORM_LINUX_ARM64 = "linux-arm64"
 PLATFORM_MACOS = "mac"
+PLATFORM_MACOS_ARM64 = "mac-arm64"
 
-DOTNET_RUNTIME_VERSION = "9.0.0"
+DOTNET_RUNTIME_VERSION = "9.0.9"
 
 DOTNET_RUNTIME_DOWNLOADS = {
-    PLATFORM_LINUX: "https://download.visualstudio.microsoft.com/download/pr/282bb881-c2ae-4250-b814-b362745073bd/6e15021d23f704c0d457c820a69a3de6/dotnet-runtime-9.0.0-linux-x64.tar.gz",
-    PLATFORM_WINDOWS: "https://download.visualstudio.microsoft.com/download/pr/fed1ee33-4574-4d89-85b5-3b8d7762b56a/432725cb9d6d235424768defea5ce6ee/dotnet-runtime-9.0.0-win-x64.zip",
-    PLATFORM_MACOS: "https://download.visualstudio.microsoft.com/download/pr/4be484a1-a095-48cf-8407-cae1d3dcc944/9f373dc1d85022e004df3ac1071ace59/dotnet-runtime-9.0.0-osx-x64.tar.gz"
+    PLATFORM_LINUX: "https://builds.dotnet.microsoft.com/dotnet/Runtime/9.0.9/dotnet-runtime-9.0.9-linux-x64.tar.gz",
+    PLATFORM_LINUX_ARM64: "https://builds.dotnet.microsoft.com/dotnet/Runtime/9.0.9/dotnet-runtime-9.0.9-linux-arm64.tar.gz",
+    PLATFORM_WINDOWS: "https://builds.dotnet.microsoft.com/dotnet/Runtime/9.0.9/dotnet-runtime-9.0.9-win-x64.zip",
+    PLATFORM_WINDOWS_ARM64: "https://builds.dotnet.microsoft.com/dotnet/Runtime/9.0.9/dotnet-runtime-9.0.9-win-arm64.zip",
+    PLATFORM_MACOS: "https://builds.dotnet.microsoft.com/dotnet/Runtime/9.0.9/dotnet-runtime-9.0.9-osx-x64.tar.gz",
+    PLATFORM_MACOS_ARM64: "https://builds.dotnet.microsoft.com/dotnet/Runtime/9.0.9/dotnet-runtime-9.0.9-osx-arm64.tar.gz"
 }
 
 p = os.path.join
