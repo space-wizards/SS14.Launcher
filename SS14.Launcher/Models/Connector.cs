@@ -27,7 +27,7 @@ namespace SS14.Launcher.Models;
 /// Responsible for actually launching the game.
 /// Either by connecting to a game server, or by launching a local content bundle.
 /// </summary>
-public class Connector : ReactiveObject
+public partial class Connector : ReactiveObject
 {
     private readonly Updater _updater;
     private readonly DataManager _cfg;
@@ -334,6 +334,8 @@ public class Connector : ReactiveObject
 
         try
         {
+            var compatMode = (_cfg.GetCVar(CVars.CompatMode) && !OperatingSystem.IsMacOS()) || CheckForceCompatMode();
+
             var args = new List<string>
             {
                 // Pass username to launched client.
@@ -341,7 +343,7 @@ public class Connector : ReactiveObject
                 "--username", _loginManager.ActiveAccount?.Username ?? ConfigConstants.FallbackUsername,
 
                 // GLES2 forcing or using default fallback
-                "--cvar", $"display.compat={_cfg.GetCVar(CVars.CompatMode) && !OperatingSystem.IsMacOS()}",
+                "--cvar", $"display.compat={compatMode}",
 
                 // Tell game we are launcher
                 "--cvar", "launch.launcher=true"
