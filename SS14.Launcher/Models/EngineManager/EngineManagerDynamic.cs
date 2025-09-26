@@ -108,7 +108,7 @@ public sealed partial class EngineManagerDynamic : IEngineManager
         var bestRid = RidUtility.FindBestRid(foundVersion.Info.Platforms.Keys);
         if (bestRid == null)
         {
-            throw new UpdateException("No engine version available for our platform!");
+            throw new NoEngineForPlatformException("No engine version available for our platform!");
         }
 
         Log.Debug("Selecting RID {rid}", bestRid);
@@ -164,6 +164,9 @@ public sealed partial class EngineManagerDynamic : IEngineManager
 
         var versionData = manifest.Modules[moduleName].Versions[moduleVersion];
 
+        if (versionData.Insecure)
+            throw new UpdateException("Selected module version is insecure!");
+
         Log.Debug("Selected module {ModuleName} {ModuleVersion}", moduleName, moduleVersion);
 
         var alreadyInstalled = _cfg.EngineModules.Any(m => m.Name == moduleName && m.Version == moduleVersion);
@@ -178,7 +181,7 @@ public sealed partial class EngineManagerDynamic : IEngineManager
 
         var bestRid = RidUtility.FindBestRid(versionData.Platforms.Keys);
         if (bestRid == null)
-            throw new UpdateException("No module version available for our platform!");
+            throw new NoModuleForPlatformException("No module version available for our platform!");
 
         Log.Debug("Selecting RID {Rid}", bestRid);
 

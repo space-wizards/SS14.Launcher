@@ -88,7 +88,7 @@ login-2fa-input-watermark = Код автентифікації
 # Strings for the "forgot password" view on login
 login-forgot-message = Якщо ви забули свій пароль, ви можете ввести адресу електронної пошти, прив'язану до вашого облікового запису, тут, щоб отримати посилання для його відновлення.
 # Error messages for login
-login-error-account-unconfirmed = Адреса електронної пошти для цього облікового запису все ще потребує підтвердження. Будь ласка, підтвердіть свою адресу електронної пошти перед спробою входу
+login-error-account-unconfirmed = Адреса електронної пошти для цього акаунта все ще потребує підтвердження. Будь ласка, підтвердіть свою адресу електронної пошти перед спробою входу
 # Strings for the "register confirmation" view on login
 login-confirmation-busy = Вхід…
 # Strings for the "login expired" view on login
@@ -511,7 +511,7 @@ language-selector-label = Мова
 # "Save" button.
 language-selector-save = Зберегти
 # For the language selection menu.
-language-selector-help-translate = Хочете допомогти з перекладом? Ви можете це зробити!
+language-selector-help-translate = Хочете допомогти з перекладом? Вперед!
 # For the language selection menu.
 language-selector-system-language = Мова системи ({ $languageName })
 # Strings for entries in the server list (including home page)
@@ -548,3 +548,5 @@ server-entry-round-time =
 tab-servers-table-round-time = Час
 server-entry-status-lobby = Лоббі
 connecting-status-update-error-unknown = Невідомо
+connecting-status-update-error-no-module-for-platform = Ця гра потребує додаткового функціоналу, який поки що не підтримується вашою поточною платформою. Спробуйте інший сервер або підключіться пізніше.
+connecting-status-update-error-no-engine-for-platform = Ця гра використовує старішу версію, яка не підтримується вашою поточною платформою. Спробуйте інший сервер або підключіться пізніше.

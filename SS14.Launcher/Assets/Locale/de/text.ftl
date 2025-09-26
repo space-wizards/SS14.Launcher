@@ -126,7 +126,7 @@ login-expired-button-log-out = Abmelden
 # Strings for the "login expired" view on login
 login-expired-button-forgot-password = Passwort vergessen?
 # Strings for the "forgot password" view on login
-login-forgot-title = Password vergessen?
+login-forgot-title = Passwort vergessen?
 # Strings for the "forgot password" view on login
 login-forgot-email-watermark = Deine E-Mail-Adresse
 # Strings for the "forgot password" view on login
@@ -150,7 +150,7 @@ login-login-button-forgot = Passwort vergessen?
 # Strings for the "login" view on login
 login-login-button-resend = Bestätigungsemail erneut senden
 # Strings for the "login" view on login
-login-login-button-register = Noch kein Konto? Registriere jetzt!
+login-login-button-register = Noch kein Konto? Registrieren!
 # Strings for the "login" view on login
 login-login-busy-logging-in = Anmelden…
 # Strings for the "login" view on login
@@ -176,11 +176,11 @@ login-expired-message =
     Die Sitzung für dieses Konto ist abgelaufen.
     Bitte gebe dein Password erneut ein.
 # Strings for the "forgot password" view on login
-login-forgot-message = Falls du dein Password vergessen hast, kannst du hier die E-Mail-Adresse verbunden mit deinem Konto eingeben, um ein Wiederherstellungslink zu erhalten.
+login-forgot-message = Falls du dein Passwort vergessen hast, kannst du hier die E-Mail-Adresse eingeben, die mit deinem Konto verbunden ist, um einen Wiederherstellungslink zu erhalten.
 # Strings for the "forgot password" view on login
 login-forgot-button-submit = Absenden
 # Strings for the "forgot password" view on login
-login-forgot-success-message = Ein Wiederherstellungslink wurde zu deiner E-Mail-Adresse gesendet.
+login-forgot-success-message = Ein Wiederherstellungslink wurde an deine E-Mail-Adresse gesendet.
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-update-error =
     Ein Fehler ist aufgetreten beim runterladen der Spieldateien. Bitte frage nach Hilfe auf dem Discord wenn das Problem weiterhin besteht.
@@ -196,7 +196,7 @@ filters = Filter ({ $filteredServers } / { $totalServers })
 region-the-moon = Der Mond
 # Strings for the general main window layout of the launcher
 main-window-out-of-date-desc-steam =
-    Der Launcher ist veraltet.
+    Der Launcher ist nicht mehr aktuell.
     Bitte erlaube Steam das Spiel zu aktualisieren.
 # Strings for the general main window layout of the launcher
 main-window-out-of-date-exit = Verlassen
@@ -213,11 +213,11 @@ main-window-drag-drop-prompt = Loslassen um Spiel zu starten
 # Strings for the general main window layout of the launcher
 main-window-header-link-website = Webseite
 # Strings for the general main window layout of the launcher
-main-window-out-of-date = Launcher ist veraltet
+main-window-out-of-date = Launcher ist nicht mehr aktuell
 # Strings for the general main window layout of the launcher
 main-window-out-of-date-desc =
-    Der Launcher ist veraltet.
-    Bitte lade die neuste Version von unserer Webseite runter.
+    Der Launcher ist nicht mehr aktuell.
+    Bitte lade die neuste Version von unserer Webseite.
 # Strings for the general main window layout of the launcher
 main-window-busy-checking-login-status = Aktualisiere Login-Status…
 # Strings for the general main window layout of the launcher
@@ -227,7 +227,7 @@ main-window-error-connecting-auth-server = Fehler beim Verbinden mit dem Authent
 # Strings for the general main window layout of the launcher
 main-window-error-unknown = Unbekannter Fehler aufgetreten
 # Long region names for server tag filters (shown in tooltip)
-region-africa-central = Afrika Zentral
+region-africa-central = Afrika Mitte
 # Long region names for server tag filters (shown in tooltip)
 region-africa-north = Nordafrika
 # Long region names for server tag filters (shown in tooltip)
@@ -415,7 +415,7 @@ tab-development-disable-signing = Engine-Signaturprüfungen deaktivieren
 # These aren't shown to users so they're not very important
 tab-development-enable-engine-override = Engine-Override aktivieren
 # Strings for the "home" tab
-tab-home-title = Home
+tab-home-title = Startseite
 # Strings for the "home" tab
 tab-home-favorite-servers = Favoriten:
 # Strings for the "home" tab
@@ -528,3 +528,17 @@ language-selector-system-language = System-Sprache ({ $languageName })
 # For the language selection menu.
 # Used for contents of each language button.
 language-selector-language = { $languageName } ({ $englishName })
+connecting-privacy-policy-text = Dieser Server erfordert vor dem Beitritt das Akzeptieren der Datenschutzerklärung.
+connecting-privacy-policy-text-version-changed = Dieser Server hat seit deiner letzten Spielsitzung die Datenschutzerklärung geändert. Du musst die neue Version akzeptieren, bevor du dich mit dem Server verbindest.
+connecting-privacy-policy-view = Datenschutzerklärung ansehen
+connecting-status-update-error-unknown = Unbekannt
+connecting-privacy-policy-accept = Annehmen (fortfahren)
+connecting-privacy-policy-decline = Ablehnen (Verbindung trennen)
+login-login-show-password = Passwort anzeigen
+server-entry-round-time =
+    { $hours ->
+        [0] { $mins } Min
+       *[1] { $hours } Std { $mins } Min
+    }
+tab-servers-table-round-time = Zeit
+tab-options-desc-incompatible = Diese Option ist mit deiner Plattform nicht kompatibel und wurde deaktiviert.

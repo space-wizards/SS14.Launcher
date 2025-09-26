@@ -27,7 +27,7 @@ namespace SS14.Launcher.Models;
 /// Responsible for actually launching the game.
 /// Either by connecting to a game server, or by launching a local content bundle.
 /// </summary>
-public class Connector : ReactiveObject
+public partial class Connector : ReactiveObject
 {
     private readonly Updater _updater;
     private readonly DataManager _cfg;
@@ -334,6 +334,8 @@ public class Connector : ReactiveObject
 
         try
         {
+            var compatMode = (_cfg.GetCVar(CVars.CompatMode) && !OperatingSystem.IsMacOS()) || CheckForceCompatMode();
+
             var args = new List<string>
             {
                 // Pass username to launched client.
@@ -341,7 +343,7 @@ public class Connector : ReactiveObject
                 "--username", _loginManager.ActiveAccount?.Username ?? ConfigConstants.FallbackUsername,
 
                 // GLES2 forcing or using default fallback
-                "--cvar", $"display.compat={_cfg.GetCVar(CVars.CompatMode) && !OperatingSystem.IsMacOS()}",
+                "--cvar", $"display.compat={compatMode}",
 
                 // Tell game we are launcher
                 "--cvar", "launch.launcher=true"
@@ -547,20 +549,13 @@ public class Connector : ReactiveObject
 
         EnvVar("SS14_LAUNCHER_PATH", Process.GetCurrentProcess().MainModule!.FileName);
 
-        // ReSharper disable once ReplaceWithSingleAssignment.False
-        var manualPipeLogging = false;
-        if (_cfg.GetCVar(CVars.LogClient))
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
         {
-            manualPipeLogging = true;
-
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
-            {
-                EnvVar("SS14_LOG_CLIENT", LauncherPaths.PathClientMacLog);
-            }
-
-            startInfo.RedirectStandardOutput = true;
-            startInfo.RedirectStandardError = true;
+            EnvVar("SS14_LOG_CLIENT", LauncherPaths.PathClientMacLog);
         }
+
+        startInfo.RedirectStandardOutput = true;
+        startInfo.RedirectStandardError = true;
 
         // Performance tweaks
         EnvVar("DOTNET_TieredPGO", "1");
@@ -588,7 +583,7 @@ public class Connector : ReactiveObject
 
         var process = Process.Start(startInfo);
 
-        if (manualPipeLogging && process != null)
+        if (process != null)
         {
             Log.Debug("Setting up manual-pipe logging for new client with PID {pid}.", process.Id);
 
@@ -686,14 +681,23 @@ public class Connector : ReactiveObject
 
         if (release)
         {
-            basePath = Path.Combine(LauncherPaths.DirLauncherInstall, "loader");
+            basePath = LauncherPaths.DirLauncherInstall;
+            if (OperatingSystem.IsMacOS())
+                basePath = Path.Combine(basePath, "..", "..");
+            else
+                basePath = Path.Combine(basePath, "loader");
         }
         else
         {
+#if RELEASE
+            const string buildConfiguration = "Release";
+#else
+            const string buildConfiguration = "Debug";
+#endif
             basePath = Path.GetFullPath(Path.Combine(
                 LauncherPaths.DirLauncherInstall,
                 "..", "..", "..", "..",
-                "SS14.Loader", "bin", "Debug", "net9.0"));
+                "SS14.Loader", "bin", buildConfiguration, "net9.0"));
         }
 
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux) || RuntimeInformation.IsOSPlatform(OSPlatform.FreeBSD))
@@ -716,7 +720,7 @@ public class Connector : ReactiveObject
         {
             if (release)
             {
-                var appPath = Path.Combine(basePath, "Space Station 14.app");
+                var appPath = Path.GetFullPath(Path.Combine(basePath, "Space Station 14.app"));
                 Log.Debug("Using app bundle: {appPath}", appPath);
 
                 Log.Debug("Clearing quarantine on loader.");
@@ -739,10 +743,12 @@ public class Connector : ReactiveObject
 
                 await xattr.WaitForExitAsync();
 
+                var arch = RuntimeInformation.ProcessArchitecture == Architecture.Arm64 ? "arm64" : "x86_64";
+
                 return new ProcessStartInfo
                 {
                     FileName = "open",
-                    ArgumentList = {appPath, "--args"},
+                    ArgumentList = {appPath, "--arch", arch, "--args"},
                 };
             }
             else

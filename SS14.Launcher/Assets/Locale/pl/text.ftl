@@ -548,3 +548,5 @@ connecting-privacy-policy-text-version-changed = Ten serwer zaktualizował swoj�
 connecting-privacy-policy-view = Pokaż politykę prywatności
 connecting-privacy-policy-accept = Zaakceptuj (kontynuuj)
 connecting-privacy-policy-decline = Odmów (odłącz)
+connecting-status-update-error-no-engine-for-platform = Ta gra używa starszej wersji, która nie wspira twojej platformy. Spróbuj ponownie później lub połącz się z innym serwerem.
+connecting-status-update-error-no-module-for-platform = Ta gra wymaga dodatkowej funkcjonalności, która nie jest wspierana na twojej platformie. Spróbuj ponownie później lub połącz się z innym serwerem.

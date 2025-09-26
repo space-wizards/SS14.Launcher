@@ -2,8 +2,7 @@
   <Import Project="../Launcher.props" />
 
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <!--<OutputType Condition="'$(Configuration)' == 'Release'">WinExe</OutputType>-->
+    <OutputType>WinExe</OutputType>
     <Nullable>enable</Nullable>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
@@ -32,8 +31,11 @@
     <PackageReference Include="SQLitePCLRaw.provider.sqlite3" Condition="'$(UseSystemSqlite)' == 'True'" />
     <PackageReference Include="SQLitePCLRaw.bundle_e_sqlite3" Condition="'$(UseSystemSqlite)' != 'True'" />
     <PackageReference Include="NSec.Cryptography" />
+    <!-- Add libsodium to control version, SpaceWizards.Sodium's dependency is behind -->
+    <PackageReference Include="libsodium" />
     <PackageReference Include="Robust.Natives" />
-    <PackageReference Include="SharpZstd.Interop" />
+    <PackageReference Include="Robust.Natives.Zstd" />
+    <PackageReference Include="SharpZstd.Interop" ExcludeAssets="native" />
     <PackageReference Include="Microsoft.NET.ILLink.Tasks" />
   </ItemGroup>
 

@@ -29,8 +29,9 @@ ProjectSection(SolutionItems) = preProject
 	publish.sh = publish.sh
 	publish_linux.sh = publish_linux.sh
 	publish_osx.sh = publish_osx.sh
-	publish_windows.sh = publish_windows.sh
 	download_net_runtime.py = download_net_runtime.py
+	exe_set_subsystem.py = exe_set_subsystem.py
+	publish.py = publish.py
 EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SS14.Loader", "SS14.Loader\SS14.Loader.csproj", "{4480C40E-ABCE-4012-8481-021A9ACCF9BB}"

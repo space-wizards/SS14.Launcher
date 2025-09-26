@@ -43,6 +43,7 @@ public sealed class ContentManager
                 using var con = GetSqliteConnection();
 
                 using var transact = con.BeginTransaction();
+                con.Execute("DELETE FROM InterruptedDownload");
                 con.Execute("DELETE FROM ContentVersion");
                 con.Execute("DELETE FROM Content");
                 transact.Commit();

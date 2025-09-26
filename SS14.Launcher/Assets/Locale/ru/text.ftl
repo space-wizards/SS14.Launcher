@@ -415,7 +415,7 @@ tab-home-go-to-servers-tab = Перейти на вкладку серверов
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-none = Начало подключения…
 # Strings for the drop-down window to manage your active account
-account-drop-down-not-logged-in = Не выполнен вход
+account-drop-down-not-logged-in = Вход не выполнен
 # For the language selection menu.
 # Used for contents of each language button.
 language-selector-language = { $languageName } ({ $englishName })
@@ -499,7 +499,7 @@ language-selector-save = Сохранить
 # "Cancel" button.
 language-selector-cancel = Отмена
 # For the language selection menu.
-language-selector-help-translate = Хотите помочь с переводом? Вы можете!
+language-selector-help-translate = Хотите помочь с переводом? Вперёд!
 # For the language selection menu.
 language-selector-system-language = Язык системы ({ $languageName })
 # Strings for the "options" tab
@@ -548,3 +548,5 @@ server-entry-round-time =
 tab-servers-table-round-time = Время
 connecting-status-update-error-unknown = Неизвестно
 server-entry-status-lobby = Лобби
+connecting-status-update-error-no-engine-for-platform = Эта игра использует более старую версию, которая не поддерживается вашей текущей платформой. Попробуйте другой сервер или подключитесь позже.
+connecting-status-update-error-no-module-for-platform = Эта игра требует дополнительного функционала, который пока что не поддерживается вашей текущей платформой. Попробуйте другой сервер или подключитесь позже.

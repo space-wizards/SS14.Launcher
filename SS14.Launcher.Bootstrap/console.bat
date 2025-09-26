@@ -1,5 +1,3 @@
-SET DOTNET_ROOT "%CD%\dotnet"
-
-dotnet\dotnet.exe bin\SS14.Launcher.dll
+"Space Station 14 Launcher.exe" --debug
 
 PAUSE

@@ -7,6 +7,8 @@ cd "$BASEDIR"
 
 mkdir -p "$HOME/Library/Application Support/Space Station 14"
 
-export DOTNET_ROOT="$(pwd)/../Resources/dotnet"
+ARCH=$(uname -m)
 
-exec ../Resources/bin/SS14.Launcher "$@" > "$HOME/Library/Application Support/Space Station 14/launcher.log"
+export DOTNET_ROOT="$(pwd)/../Resources/$ARCH/dotnet"
+
+exec ../Resources/$ARCH/bin/SS14.Launcher "$@" > "$HOME/Library/Application Support/Space Station 14/launcher.log"

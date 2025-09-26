@@ -41,16 +41,6 @@
                    Text="{loc:Loc tab-options-desc-incompatible}"
                    Margin="8" />
 
-        <CheckBox VerticalAlignment="Center" Margin="4" IsChecked="{Binding LogClient}" Content="{loc:Loc tab-options-log-client}" />
-        <TextBlock VerticalAlignment="Center" TextWrapping="Wrap"
-                   Text="{loc:Loc tab-options-log-client-desc}"
-                   Margin="8" />
-
-        <CheckBox VerticalAlignment="Center" Margin="4" IsChecked="{Binding LogLauncher}" Content="{loc:Loc tab-options-log-launcher}" />
-        <TextBlock VerticalAlignment="Center" TextWrapping="Wrap"
-                   Text="{loc:Loc tab-options-log-launcher-desc}"
-                   Margin="8" />
-
         <CheckBox VerticalAlignment="Center" Margin="4" IsChecked="{Binding LogLauncherVerbose}" Content="{loc:Loc tab-options-verbose-launcher-logging}" />
         <TextBlock VerticalAlignment="Center" TextWrapping="Wrap"
                    Text="{loc:Loc tab-options-verbose-launcher-logging-desc}"

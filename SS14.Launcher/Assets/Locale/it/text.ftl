@@ -258,7 +258,7 @@ server-entry-round-time =
        *[1] { $hours }O { $mins }M
     }
 server-entry-fetching = Recupero…
-server-entry-description-offline = Impossibile contattare server
+server-entry-description-offline = Impossibile contattare il server
 server-entry-description-fetching = Recupero stato server…
 server-entry-description-error = Errore nel recupero della descrizione del server
 server-entry-status-lobby = Lobby
@@ -305,3 +305,5 @@ tab-options-account-settings-desc = Puoi gestire le impostazioni del tuo account
 tab-options-compatibility-mode = Modalità di compatibilità
 language-selector-system-language = Lingua di sistema ({ $languageName })
 language-selector-language = { $languageName } ({ $englishName })
+connecting-status-update-error-no-engine-for-platform = Questo gioco sta usando una versione vecchia che non supporta la tua piattaforma attuale. Prova un altro server o riprova più tardi.
+connecting-status-update-error-no-module-for-platform = Questo gioco richiede funzionalità aggiuntive che non sono ancora supportate sulla tua piattaforma attuale. Prova un altro server o riprova più tardi.

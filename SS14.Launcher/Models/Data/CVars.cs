@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using JetBrains.Annotations;
 using SS14.Launcher.Utility;
 
@@ -60,16 +61,6 @@ public static class CVars
     public static readonly CVarDef<string> EngineOverridePath = CVarDef.Create("EngineOverridePath", "");
 
     /// <summary>
-    /// Enable logging of launched client instances to file.
-    /// </summary>
-    public static readonly CVarDef<bool> LogClient = CVarDef.Create("LogClient", false);
-
-    /// <summary>
-    /// Enable logging of launched client instances to file.
-    /// </summary>
-    public static readonly CVarDef<bool> LogLauncher = CVarDef.Create("LogLauncher", false);
-
-    /// <summary>
     /// Verbose logging of launcher logs.
     /// </summary>
     public static readonly CVarDef<bool> LogLauncherVerbose = CVarDef.Create("LogLauncherVerbose", false);
@@ -95,6 +86,11 @@ public static class CVars
     /// Maximum amount of versions to keep of a specific fork ID.
     /// </summary>
     public static readonly CVarDef<int> MaxForkVersionsToKeep = CVarDef.Create("MaxForkVersionsToKeep", 3);
+
+     /// <summary>
+    /// If a download gets interrupted, keep the files for a week.
+    /// </summary>
+    public static readonly CVarDef<int> InterruptibleDownloadKeepHours = CVarDef.Create("InterruptibleDownloadKeepHours", 7 * 24);
 
     /// <summary>
     /// Whether to display override assets (trans rights).
@@ -122,6 +118,16 @@ public static class CVars
     /// Language the user selected. Null means it should be automatically selected based on system language.
     /// </summary>
     public static readonly CVarDef<string?> Language = CVarDef.Create<string?>("Language", null);
+
+    /// <summary>
+    /// The CPU architecture this launcher was last run with.
+    /// </summary>
+    /// <remarks>
+    /// Used to delete engine builds of other architectures on startup.
+    /// Defaults to x64 so that people upgrading to a proper ARM64 launcher on e.g. Apple Silicon
+    /// properly get their existing installations cleared.
+    /// </remarks>
+    public static readonly CVarDef<int> CurrentArchitecture = CVarDef.Create("CurrentArchitecture", (int) Architecture.X64);
 }
 
 /// <summary>

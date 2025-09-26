@@ -283,3 +283,5 @@ tab-options-hub-settings-desc = Változtasd meg, melyik hub (szerverközpont) sz
 hub-settings-explanation = Itt további hub-okat (szerverközpontokat) tudsz hozzáadni, amikből a játékszervereket hív le. Csak azokat a hub-okat add hozzá, amikben megbízhatsz, mivel "hamisíthatják" más hub-ok játékszervereit. A hub-ok sorrendje számít; ha két hub ugyanazt a játékszervert kínálja, akkor a magasabb prioritású (a listában előrébb álló) hub élvez elsőbbséget.
 main-window-drag-drop-prompt = Húzd ide a játékot (fájl) az indításhoz
 tab-home-run-content-bundle = Tartalomcsomag vagy visszajátszás indítása
+connecting-status-update-error-no-engine-for-platform = A játék egy régebbi verziót használ ami nem támogatja a jelenlegi platformodat. Kérlek próbálj egy másik szervert vagy próbáld újra később.
+connecting-status-update-error-no-module-for-platform = A játék további funkciókat igényel, amelyeket a jelenlegi platformod még nem támogat. Kérlek próbálj egy másik szervert vagy próbáld újra később.
