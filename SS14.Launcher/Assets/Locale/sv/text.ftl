@@ -437,7 +437,7 @@ tab-development-title-override = { "[" }DEV (override aktiv!!!)]
 # These aren't shown to users so they're not very important
 tab-development-enable-engine-override = Aktivera spelmotor-override
 # Strings for the "home" tab
-tab-home-favorite-servers = Favoritservrar:
+tab-home-favorite-servers = Favoritservrar
 # Strings for the "home" tab
 tab-home-add-favorite = Lägg till favorit…
 # Strings for the "home" tab

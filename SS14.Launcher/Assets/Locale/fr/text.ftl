@@ -380,7 +380,7 @@ tab-options-account-settings = Paramètres du compte
 # Strings for the "options" tab
 tab-options-account-settings-desc = Vous pouvez gérer les paramètres de votre compte, tels que la modification de votre adresse mail ou de votre mot de passe, via notre site internet.
 # Strings for the "home" tab
-tab-home-favorite-servers = Serveurs Favoris:
+tab-home-favorite-servers = Serveurs Favoris
 # Strings for the "options" tab
 tab-options-log-launcher-desc = Active l'historique d'activité du launcher. Utile pour les développeurs. (nécessite de redémarrer le launcher)
 # Strings for the "news" tab
