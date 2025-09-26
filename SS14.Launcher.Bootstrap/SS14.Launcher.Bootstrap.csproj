@@ -10,8 +10,6 @@
     <LangVersion>12</LangVersion>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 
-    <DefineConstants>$(DefineConstants);ARM64_SUPPORT</DefineConstants>
-
     <!-- Make AOT small -->
     <OptimizationPreference>Size</OptimizationPreference>
     <StackTraceSupport>false</StackTraceSupport>

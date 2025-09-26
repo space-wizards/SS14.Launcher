@@ -17,12 +17,11 @@ namespace SS14.Launcher.Bootstrap
             Debug.Assert(ourDir != null);
 
             var architecture = "x64";
-#if ARM64_SUPPORT
-            if (RuntimeInformation.OSArchitecture == Architecture.Arm64)
+            if (RuntimeInformation.OSArchitecture == Architecture.Arm64
+                && Directory.Exists(Path.Combine(ourDir, "dotnet_arm64")))
             {
                 architecture = "arm64";
             }
-#endif
 
             var dotnetDir = Path.Combine(ourDir, $"dotnet_{architecture}");
             var exeDir = Path.Combine(ourDir, $"bin_{architecture}");
