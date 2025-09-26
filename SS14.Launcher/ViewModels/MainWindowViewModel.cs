@@ -329,6 +329,6 @@ public sealed class MainWindowViewModel : ViewModelBase, IErrorOverlayOwner
 
         var processor = LauncherDiagnostics.GetProcessorModel();
 
-        return processor.Contains("VirtualApple") || cfg.GetCVar(CVars.HasDismissedRosettaWarning);
+        return processor.Contains("VirtualApple") && !cfg.GetCVar(CVars.HasDismissedRosettaWarning);
     }
 }
