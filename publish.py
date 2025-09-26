@@ -45,7 +45,8 @@ def publish_windows(x64_only: bool):
 
     dotnet_publish("SS14.Launcher/SS14.Launcher.csproj", "win-x64", False, "/p:FullRelease=True", "/p:RobustILLink=true")
     dotnet_publish("SS14.Loader/SS14.Loader.csproj", "win-x64", False, "/p:FullRelease=True", "/p:RobustILLink=true")
-    dotnet_publish("SS14.Launcher.Bootstrap/SS14.Launcher.Bootstrap.csproj", "win-x64", True, "/p:FullRelease=True", "/p:RobustILLink=true")
+    if os.name == 'nt':
+        dotnet_publish("SS14.Launcher.Bootstrap/SS14.Launcher.Bootstrap.csproj", "win-x64", True, "/p:FullRelease=True", "/p:RobustILLink=true")
 
     safe_set_subsystem(f"SS14.Launcher/bin/Release/{TFM}/win-x64/publish/SS14.Launcher.exe")
     safe_set_subsystem(f"SS14.Loader/bin/Release/{TFM}/win-x64/publish/SS14.Loader.exe")
