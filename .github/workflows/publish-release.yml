@@ -6,8 +6,32 @@ on:
     - 'v*'
 
 jobs:
+  build-windows-bootstrap:
+    runs-on: windows-2022
+
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: false
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 9.0.x
+
+    - name: Publish bootstrap
+      working-directory: SS14.Launcher.Bootstrap
+      run: dotnet publish -r win-x64
+
+    - uses: actions/upload-artifact@v4
+      with:
+        name: "bootstrap"
+        retention-days: 1
+        path: "SS14.Launcher.Bootstrap/bin/Release/net9.0-windows/win-x64/publish/Space Station 14 Launcher.exe"
+
   build:
     runs-on: ubuntu-latest
+    needs: build-windows-bootstrap
 
     steps:
     - name: Checkout code
@@ -20,8 +44,16 @@ jobs:
       with:
         dotnet-version: 9.0.x
 
-    - name: Create build
-      run: ./publish.sh
+    - name: Create build (macOS & Linux)
+      run: ./publish.py osx linux
+
+    - name: Download Windows Bootstrap
+      uses: actions/download-artifact@v5
+      with:
+        name: "bootstrap"
+
+    - name: Create build (macOS & Linux)
+      run: ./publish.py windows --x64-only
 
     - name: Create Release
       id: create_release
