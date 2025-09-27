@@ -1,4 +1,10 @@
-#!/bin/sh
+#!/usr/bin/env bash
 cd "$(dirname "$(readlink -f "$0")")"
-export DOTNET_ROOT="$(pwd)/dotnet"
-exec ./bin/SS14.Launcher "$@"
+
+SUFFIX="_x64"
+if [[ $(uname -m) = "aarch64" ]] && [[ -d "bin_arm64" ]]; then
+    SUFFIX="_arm64"
+fi
+
+export DOTNET_ROOT="$(pwd)/dotnet$SUFFIX"
+exec ./bin$SUFFIX/SS14.Launcher "$@"
