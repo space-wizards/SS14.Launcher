@@ -283,3 +283,6 @@ server-entry-round-time =
         [0] { $mins }M
        *[1] { $hours }T { $mins }M
     }
+main-window-intel-degrade-title = Intel 13./14. generasjons CPU oppdaget.
+connecting-status-update-error-no-engine-for-platform = Spillet bruker en gammel versjon som ikke støtter din nåværende plattform. Vennligst prøv en annen sørver eller prøv igjen senere.
+connecting-status-update-error-no-module-for-platform = Spillet krever en ekstra funksjon som ikke ennå er støtter av din nåværende plattform. Vennligst prøv en annen sørver eller prøv igjen senere.
