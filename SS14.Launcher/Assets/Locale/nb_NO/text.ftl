@@ -278,3 +278,8 @@ login-error-account-unconfirmed = E-postadressen for denne kontoen må fortsatt 
 tab-servers-table-round-time = Tid
 connecting-status-update-error-unknown = Ukjent
 server-entry-status-lobby = Lobby
+server-entry-round-time =
+    { $hours ->
+        [0] { $mins }M
+       *[1] { $hours }T { $mins }M
+    }
