@@ -204,14 +204,14 @@ public sealed partial class MainWindowViewModel : ViewModelBase, IErrorOverlayOw
     {
         Cfg.SetCVar(CVars.HasDismissedIntelDegradation, true);
         Cfg.CommitConfig();
-        this.RaisePropertyChanged(nameof(ShouldShowIntelDegradationWarning));
+        OnPropertyChanged(nameof(ShouldShowIntelDegradationWarning));
     }
 
     public void DismissAppleSiliconRosettaPressed()
     {
         Cfg.SetCVar(CVars.HasDismissedRosettaWarning, true);
         Cfg.CommitConfig();
-        this.RaisePropertyChanged(nameof(ShouldShowRosettaWarning));
+        OnPropertyChanged(nameof(ShouldShowRosettaWarning));
     }
 
     public void SelectTabServers()
