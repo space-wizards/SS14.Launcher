@@ -307,3 +307,19 @@ language-selector-system-language = Lingua di sistema ({ $languageName })
 language-selector-language = { $languageName } ({ $englishName })
 connecting-status-update-error-no-engine-for-platform = Questo gioco sta usando una versione vecchia che non supporta la tua piattaforma attuale. Prova un altro server o riprova più tardi.
 connecting-status-update-error-no-module-for-platform = Questo gioco richiede funzionalità aggiuntive che non sono ancora supportate sulla tua piattaforma attuale. Prova un altro server o riprova più tardi.
+main-window-intel-degrade-desc =
+    Le CPU Intel di 13ᵃ/14ᵃ generazione sono note per deteriorarsi silenziosamente e permanentemente ed eventualmente smettere di funzionare per via di un bug del microcode di Intel. Purtroppo non riusciamo a determinare chi è affetto da questo bug, quindi questo avviso appare per tutti gli utenti con quelle CPU.
+
+    Ti consigliamo FORTEMENTE di aggiornare il BIOS della tua scheda madre all'ultima versione per assicurare che non vengano causati ulteriori danni. Se stai avendo problemi di stabilità/non riesci ad avviare il gioco, downclocka la tua CPU finchè non torna ad essere stabile e usa la tua garanzia per chiederne una sostituzione.
+
+    Non abbiamo la responsabilità di aiutarti con qualsiasi problema che potrebbe insorgere dai processori affetti se non hai preso le precauzioni e non sei sicuro che la tua CPU sia stabile. Questo messaggio non apparirà di nuovo una volta che lo avrai accettato.
+main-window-rosetta-desc =
+    Sembra che tu sia su un Mac Apple Silicon e stai eseguendo il gioco con Rosetta 2. Potresti avere migliori performance e maggiore durata della batteria eseguendo il gioco nativamente.
+
+    Per farlo, fai tasto destro sul launcher su Finder, seleziona "Ottieni informazioni" e togli la spunta a "Apri con Rosetta". Dopodichè, riavvia il launcher.
+
+    Se stai intenzionalmente eseguendo il gioco usando Rosetta 2, puoi chiudere questo messaggio e non apparirà di nuovo. Però, se lo stai facendo per cercare di risolvere un problema, per piacere apri un bug report.
+main-window-intel-degrade-title = CPU Intel di 13ᵃ/14ᵃ Generazione rilevata.
+main-window-intel-degrade-accept = Ho capito e ho preso le precauzioni necessarie.
+main-window-rosetta-title = Stai eseguendo il gioco usando Rosetta 2!
+main-window-rosetta-accept = Continua
