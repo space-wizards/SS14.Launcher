@@ -179,12 +179,13 @@ add-favorite-window-address-invalid = Adresse invalide
 connecting-status-connecting = Récupération des informations de connexion du serveur…
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-update-error =
-    Il y a eu une erreur lors du téléchargement du contenu du serveur. Si le problème persiste, essayez les solutions suivantes:
+    Il y a eu une erreur lors du téléchargement du contenu du serveur. Si le problème persiste, essayez les solutions suivantes :
     - Essayez de vous connecter à un autre serveur pour vérifier si le problème persiste.
     - Essayez de désactivez votre VPN si vous en avez un.
 
     Si le problème persiste, contactez d'abord le serveur sur lequel vous essayez de vous connecter avant de demander de l'aide sur le serveur Discord Officiel de Space Station 14 ou leurs Forums.
-    Error: { $err }
+
+    Error : { $err }
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-update-status-fetching-manifest = Récupération du manifeste du serveur…
 # Strings for the "connecting" menu that appears when connecting to a server.
@@ -228,7 +229,7 @@ tab-servers-search-watermark = Recherche de serveurs…
 # Strings for the "servers" tab
 tab-servers-table-players = Joueurs
 # Strings for the "servers" tab
-tab-servers-list-status-error = Une erreur s'est produite lors de la récupération des listes du serveur principal. Essayez d’actualiser ?
+tab-servers-list-status-error = Une erreur s'est produite lors de la récupération des listes du serveur principal. Essayez d’actualiser.
 # Strings for the "servers" tab
 tab-servers-list-status-updating-master = Récupération de la liste du serveur maître…
 # Strings for the "servers" tab
