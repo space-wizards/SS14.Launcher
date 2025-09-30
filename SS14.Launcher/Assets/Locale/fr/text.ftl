@@ -235,7 +235,7 @@ tab-servers-list-status-updating-master = Récupération de la liste du serveur 
 # Strings for the "servers" tab
 tab-servers-table-name = Nom du Serveur
 # Strings for the "servers" tab
-tab-servers-list-status-partial-error = Échec lors de la récupération de certaines listes de serveurs. Assurez-vous que la configuration de vos hubs est correcte puis essayez d'actualiser.
+tab-servers-list-status-partial-error = Échec de la récupération d'une partie des listes de serveurs. Assurez-vous que la configuration de votre hub est correcte et essayez de rafraîchir.
 # Strings for the "servers" tab
 filters = Filtres ({ $filteredServers } / { $totalServers })
 # Strings for the "servers" tab
