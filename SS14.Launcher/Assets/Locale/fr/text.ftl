@@ -228,7 +228,7 @@ tab-servers-search-watermark = Recherche de serveurs…
 # Strings for the "servers" tab
 tab-servers-table-players = Joueurs
 # Strings for the "servers" tab
-tab-servers-list-status-error = Une erreur s'est produite lors de la récupération des listes du serveur principal.
+tab-servers-list-status-error = Une erreur s'est produite lors de la récupération des listes du serveur principal. Essayez d’actualiser ?
 # Strings for the "servers" tab
 tab-servers-list-status-updating-master = Récupération de la liste du serveur maître…
 # Strings for the "servers" tab
@@ -551,3 +551,10 @@ main-window-rosetta-title = Vous exécutez le jeu avec Rosetta 2 !
 main-window-rosetta-accept = Continuer
 connecting-status-update-error-no-engine-for-platform = Ce jeu utilise une version plus ancienne qui n’est pas compatible avec votre plateforme actuelle. Veuillez essayer un autre serveur ou réessayer plus tard.
 connecting-status-update-error-no-module-for-platform = Ce jeu nécessite des fonctionnalités supplémentaires qui ne sont pas prises en charge par votre platforme actuelle. Veuillez essayer un autre serveur ou réessayer plus tard.
+connecting-status-update-error-unknown = Inconnu
+tab-servers-table-round-time = Temps
+connecting-privacy-policy-text = Ce serveur exige que vous acceptiez sa politique de confidentialité avant de vous connecter.
+connecting-privacy-policy-text-version-changed = Ce serveur a mis à jour sa politique de confidentialité depuis votre dernière partie. Vous devez accepter la nouvelle version avant de vous connecter.
+connecting-privacy-policy-view = Voir la politique de confidentialité
+connecting-privacy-policy-accept = Accepter (continuer)
+connecting-privacy-policy-decline = Refuser (déconnexion)
