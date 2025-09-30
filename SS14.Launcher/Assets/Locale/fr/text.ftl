@@ -235,7 +235,7 @@ tab-servers-list-status-updating-master = Récupération de la liste du serveur 
 # Strings for the "servers" tab
 tab-servers-table-name = Nom du Serveur
 # Strings for the "servers" tab
-tab-servers-list-status-partial-error = Échec de la récupération de certaines ou de toutes les listes de serveurs. Assurez-vous que la configuration de vos hubs est correcte.
+tab-servers-list-status-partial-error = Échec lors de la récupération de certaines listes de serveurs. Assurez-vous que la configuration de vos hubs est correcte puis essayez d'actualiser.
 # Strings for the "servers" tab
 filters = Filtres ({ $filteredServers } / { $totalServers })
 # Strings for the "servers" tab
@@ -559,3 +559,9 @@ connecting-privacy-policy-text-version-changed = Ce serveur a mis à jour sa pol
 connecting-privacy-policy-view = Voir la politique de confidentialité
 connecting-privacy-policy-accept = Accepter (continuer)
 connecting-privacy-policy-decline = Refuser (déconnexion)
+server-entry-round-time =
+    { $hours ->
+        [0] { $mins }min
+       *[1] { $hours }h { $mins }min
+    }
+server-entry-status-lobby = Salon
