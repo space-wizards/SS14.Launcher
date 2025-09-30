@@ -179,8 +179,11 @@ add-favorite-window-address-invalid = Adresse invalide
 connecting-status-connecting = Récupération des informations de connexion du serveur…
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-update-error =
-    Il y a eu une erreur lors du téléchargement du contenu du serveur. Demandez de l'aide sur Discord si le problème persiste.
+    Il y a eu une erreur lors du téléchargement du contenu du serveur. Si le problème persiste, essayez les solutions suivantes:
+    - Essayez de vous connecter à un autre serveur pour vérifier si le problème persiste.
+    - Essayez de désactivez votre VPN si vous en avez un.
 
+    Si le problème persiste, contactez d'abord le serveur sur lequel vous essayez de vous connecter avant de demander de l'aide sur le serveur Discord Officiel de Space Station 14 ou leurs Forums.
     Error: { $err }
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-update-status-fetching-manifest = Récupération du manifeste du serveur…
@@ -530,3 +533,21 @@ tab-home-add-favorite = Ajouter aux Favoris…
 tab-options-flip = { "*" }retourner
 login-login-show-password = Afficher le mot de passe
 tab-options-desc-incompatible = Cette option a été désactivée parce qu'elle est incompatible avec votre platforme.
+main-window-rosetta-desc =
+    Il semble que vous utilisiez un Mac Apple Silicon et que vous exécutiez le jeu avec Rosetta 2. Vous pourriez bénéficier de meilleures performances et d’une autonomie accrue en lançant le jeu en mode natif.
+
+    Pour ce faire, faites un clic droit sur le lanceur dans Finder, sélectionnez « Lire les informations » (Get Info) et décochez « Ouvrir avec Rosetta ». Redémarrez ensuite le lanceur de jeu.
+
+    Si vous exécutez intentionnellement le jeu avec Rosetta 2, vous pouvez ignorer ce message et il ne réapparaîtra plus. Toutefois, si vous tentez de résoudre un problème, merci de le signaler via un rapport de bug.
+main-window-intel-degrade-desc =
+    Les processeurs Intel de 13e/14e génération sont connus pour se dégrader progressivement, voire tomber en panne, en raison d’un bug de microcode d’Intel. Nous ne pouvons malheureusement pas déterminer si votre processeur est actuellement affecté par ce bug ; cet avertissement s’affiche donc pour tous les utilisateurs de ces processeurs.
+
+    Nous vous encourageons vivement à mettre à jour le BIOS de votre carte mère vers la dernière version afin de prévenir tout dommage supplémentaire. Si vous rencontrez des problèmes de stabilité ou si vous ne parvenez pas à lancer le jeu, réduisez la fréquence (downclock) de votre processeur pour le stabiliser et utilisez votre garantie afin d’en demander le remplacement.
+
+    Nous déclinons toute responsabilité concernant les problèmes pouvant survenir avec les processeurs affectés, sauf si vous avez pris les précautions nécessaires et êtes certain que votre processeur est stable. Ce message ne réapparaîtra plus une fois que vous l’aurez accepté.
+main-window-intel-degrade-title = Processeur Intel de 13e/14e génération détecté.
+main-window-intel-degrade-accept = Je comprends et j'ai pris les précautions nécessaires.
+main-window-rosetta-title = Vous exécutez le jeu avec Rosetta 2 !
+main-window-rosetta-accept = Continuer
+connecting-status-update-error-no-engine-for-platform = Ce jeu utilise une version plus ancienne qui n’est pas compatible avec votre plateforme actuelle. Veuillez essayer un autre serveur ou réessayer plus tard.
+connecting-status-update-error-no-module-for-platform = Ce jeu nécessite des fonctionnalités supplémentaires qui ne sont pas prises en charge par votre platforme actuelle. Veuillez essayer un autre serveur ou réessayer plus tard.
