@@ -11,9 +11,9 @@
     <PackageVersion Include="SharpZstd.Interop" Version="1.5.2-beta2"/>
     <PackageVersion Include="JetBrains.Annotations" Version="2023.2.0-eap3" />
     <PackageVersion Include="Microsoft.NET.ILLink.Tasks" Version="8.0.0" />
-    <PackageVersion Include="Robust.Natives.Zstd" Version="0.1.0-zstd1.5.7"/>
+    <PackageVersion Include="Robust.Natives.Zstd" Version="0.1.1-zstd1.5.7"/>
     <!-- Loader -->
-    <PackageVersion Include="Robust.Natives" Version="0.2.1"/>
+    <PackageVersion Include="Robust.Natives" Version="0.2.2"/>
     <!-- Launcher -->
     <PackageVersion Include="Avalonia" Version="11.2.4"/>
     <PackageVersion Include="Avalonia.Desktop" Version="11.2.4"/>
