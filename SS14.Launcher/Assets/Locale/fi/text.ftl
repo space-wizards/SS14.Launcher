@@ -326,7 +326,7 @@ server-entry-fetching = Noudetaan…
 # Strings for the "home" tab
 tab-home-title = Koti
 # Strings for the "home" tab
-tab-home-favorite-servers = Suosikkipalvelimet:
+tab-home-favorite-servers = Suosikkipalvelimet
 # Strings for the "home" tab
 tab-home-add-favorite = Lisää suosikki…
 # Strings for the "home" tab

@@ -388,7 +388,7 @@ tab-development-enable-engine-override = Luba engine override
 # Strings for the "home" tab
 tab-home-title = Avaleht
 # Strings for the "home" tab
-tab-home-favorite-servers = Lemmikserverid:
+tab-home-favorite-servers = Lemmikserverid
 # Strings for the "home" tab
 tab-home-add-favorite = Lisa Lemmik…
 # Strings for the "home" tab

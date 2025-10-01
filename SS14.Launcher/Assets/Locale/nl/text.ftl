@@ -464,7 +464,7 @@ tab-home-favorites-guide = Markeer servers als favoriet om ze hier snel te berei
 # Strings for the "news" tab
 tab-news-title = Nieuws
 # Strings for the "home" tab
-tab-home-favorite-servers = Favoriete servers:
+tab-home-favorite-servers = Favoriete servers
 # Strings for the "home" tab
 tab-home-add-favorite = Voeg favoriet toe…
 # Strings for the "home" tab
@@ -540,10 +540,6 @@ connecting-privacy-policy-view = Bekijk privacybeleid
 connecting-privacy-policy-accept = Accepteer (doorgaan)
 connecting-privacy-policy-decline = Weigeren (verbreken)
 tab-servers-table-round-time = Tijd
-server-entry-round-time =
-    { $hours ->
-        [0] { $mins }M
-       *[1] { $hours }U { $mins }M
-    }
+server-entry-round-time = { $hours }u { $mins }m
 server-entry-status-lobby = Lobby
 connecting-status-update-error-unknown = Onbekend
