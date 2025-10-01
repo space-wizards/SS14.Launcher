@@ -164,6 +164,9 @@ public sealed partial class EngineManagerDynamic : IEngineManager
 
         var versionData = manifest.Modules[moduleName].Versions[moduleVersion];
 
+        if (versionData.Insecure)
+            throw new UpdateException("Selected module version is insecure!");
+
         Log.Debug("Selected module {ModuleName} {ModuleVersion}", moduleName, moduleVersion);
 
         var alreadyInstalled = _cfg.EngineModules.Any(m => m.Name == moduleName && m.Version == moduleVersion);

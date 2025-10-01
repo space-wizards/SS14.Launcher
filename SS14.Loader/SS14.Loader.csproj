@@ -2,8 +2,7 @@
   <Import Project="../Launcher.props" />
 
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <!--<OutputType Condition="'$(Configuration)' == 'Release'">WinExe</OutputType>-->
+    <OutputType>WinExe</OutputType>
     <Nullable>enable</Nullable>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>

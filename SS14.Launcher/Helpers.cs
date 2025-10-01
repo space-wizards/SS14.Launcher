@@ -162,7 +162,7 @@ public static class Helpers
         fixed (char* pPath = path)
         {
             var handle = Win.CreateFileW(
-                (ushort*)pPath,
+                pPath,
                 Win.GENERIC_ALL,
                 FILE.FILE_SHARE_READ,
                 null,
@@ -199,7 +199,7 @@ public static class Helpers
         fixed (char* pText = text)
         fixed (char* pCaption = caption)
         {
-            return Win.MessageBoxW(HWND.NULL, (ushort*)pText, (ushort*)pCaption, type);
+            return Win.MessageBoxW(HWND.NULL, pText, pCaption, type);
         }
     }
 }

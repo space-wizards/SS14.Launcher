@@ -285,3 +285,19 @@ tab-options-account-settings-desc = Vi povas manaĝi vian agordojn de via konto,
 tab-options-hub-settings-desc = Agordi kiujn servilejojn vi volas uzi por legi la liston de serviloj.
 connecting-status-update-error-no-engine-for-platform = Ĉi tiu ludo uzas malnovan version, kiu ne subtenas vian kurantan platformon. Bonvolu provi alian servilon, aŭ alifoje reprovu.
 connecting-status-update-error-no-module-for-platform = Ĉi tiu ludo bezonas aldonan funkciecon, kiun via kuranta platformo ne subtenas. Bonvolu provi alian servilon, aŭ alifoje reprovu.
+main-window-rosetta-desc =
+    Vi ŝajnas uzi Apple Silicon Mac, kaj vi rulas la ludon kun Rosetta 2. Vi eble spertus pli bonan rendimenton kaj baterian vivdaŭron per rulu la ludon operaciume.
+
+    Por fari tiun, dekstre alklaku la lanĉilon en Finder, elektu "Get Info" kaj malelektu "Open using Rosetta". Poste, restartigu la lanĉilon.
+
+    Ĉu vi intence rulas la ludon kun Rosetta 2, vi povas fermi ĉi tiun mesaĝon, kaj ĝi ne aperos denove. Tamen, ĉu vi faras tiun provcele fliki atentindaĵon, bonvole sendu cimraporton.
+main-window-intel-degrade-desc =
+    La Intel-procesoroj de la 13a kaj 14a generacioj estas konataj degeneri silente kaj permanente, pro mikrokoda cimo en Intel-procesoroj. Bedaŭrinde, ni ne povas detekti, ĉu vi nun estas trafata de ĉi tiu cimo, tial ĉi tiu averto aperas por ĉiuj uzantoj kun ĉi tiuj procesoroj.
+
+    Ni FORTE instigas vin, aktualigu vian ĉeftabulon al la aktuala versio, por certigi la preventon de plua damaĝo. Ĉu vi spertus atentinaĵojn, aŭ nefarus lanĉi la ludo, reduktu la taktofrekvencon de via procesoro por reatingi stabiligecon, kaj uzu vian garantion por peti pri anstataŭigo.
+
+    Ni ne respondecas por ajnaj atentinaĵoj, kiuj povas eliriĝi pro affekciataj procesoroj, krom se vi antaŭzorgis kaj vi certigas ke vian procesoron estas stabila. Ĉi tiu averto ne aperos denove, poste vi akceptos tion.
+main-window-intel-degrade-title = Intel-procesoro de 13a/14a generacio estas detektita.
+main-window-intel-degrade-accept = Mi komprenas, kaj antaŭzorgis.
+main-window-rosetta-title = Vi rulas la ludo kun Rosetta 2!
+main-window-rosetta-accept = Daŭrigi

@@ -25,47 +25,50 @@
 import sys
 import struct
 
-if len(sys.argv) != 3:
-	print("exe_set_subsystem.py <EXE> <SUBSYSTEM>")
-	print(" alters EXE in-place to change it's subsystem to SUBSYSTEM")
-	print("")
-	print("SUBSYSTEM values:")
-	print(" 2: GUI")
-	print(" 3: Console")
-	sys.exit(1)
+def main():
+    if len(sys.argv) != 3:
+        print("exe_set_subsystem.py <EXE> <SUBSYSTEM>")
+        print(" alters EXE in-place to change it's subsystem to SUBSYSTEM")
+        print("")
+        print("SUBSYSTEM values:")
+        print(" 2: GUI")
+        print(" 3: Console")
+        sys.exit(1)
 
-file = open(sys.argv[1], "r+b")
-if file.read(2) != b"MZ":
-	print("Header must be 'MZ'.")
-	sys.exit(2)
-file.seek(0x3C)
+    set_subsystem(sys.argv[1], int(sys.argv[2]))
 
-peSignatureOfs = struct.unpack("<I", file.read(4))[0]
-print("PE Signature Ofs: " + str(peSignatureOfs))
-file.seek(peSignatureOfs)
-if file.read(4) != b"PE\x00\x00":
-	print("PE Signature must be 'PE'.")
-	sys.exit(3)
-peHeader = struct.unpack("<HHIIIHH", file.read(20))
-optHeaderOfs = peSignatureOfs + 4 + 20
-print("Opt. Header Ofs: " + str(optHeaderOfs))
+def set_subsystem(exe: str, subsystem: int):
+    file = open(exe, "r+b")
+    if file.read(2) != b"MZ":
+        raise Exception("Header must be 'MZ'.")
+    file.seek(0x3C)
 
-subsystemOptOfs = 0
-# This is the hard bit.
-# Or not.
-# Expected these to be in different places.
-if peHeader[0] == 332:
-	subsystemOptOfs = 68
-elif peHeader[0] == 0x8664:
-	subsystemOptOfs = 68
-else:
-	print("Unable to handle machine: " + str(peHeader[0]))
-	sys.exit(4)
-subsystemOfs = optHeaderOfs + subsystemOptOfs
-file.seek(subsystemOfs)
-print("Current Subsystem: " + str(struct.unpack("<H", file.read(2))[0]))
-file.seek(subsystemOfs)
-file.write(struct.pack("<H", int(sys.argv[2])))
-file.close()
-print("Done!")
+    peSignatureOfs = struct.unpack("<I", file.read(4))[0]
+    print("PE Signature Ofs: " + str(peSignatureOfs))
+    file.seek(peSignatureOfs)
+    if file.read(4) != b"PE\x00\x00":
+        raise Exception("PE Signature must be 'PE'.")
+    peHeader = struct.unpack("<HHIIIHH", file.read(20))
+    optHeaderOfs = peSignatureOfs + 4 + 20
+    print("Opt. Header Ofs: " + str(optHeaderOfs))
 
+    subsystemOptOfs = 0
+    # This is the hard bit.
+    # Or not.
+    # Expected these to be in different places.
+    if peHeader[0] == 332:
+        subsystemOptOfs = 68
+    elif peHeader[0] == 0x8664:
+        subsystemOptOfs = 68
+    else:
+        raise Exception("Unable to handle machine: " + str(peHeader[0]))
+    subsystemOfs = optHeaderOfs + subsystemOptOfs
+    file.seek(subsystemOfs)
+    print("Current Subsystem: " + str(struct.unpack("<H", file.read(2))[0]))
+    file.seek(subsystemOfs)
+    file.write(struct.pack("<H", subsystem))
+    file.close()
+    print("Done!")
+
+if __name__ == "__main__":
+    main()

@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Runtime.InteropServices;
+using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading;
@@ -27,7 +28,7 @@ namespace SS14.Launcher.Models;
 /// Responsible for actually launching the game.
 /// Either by connecting to a game server, or by launching a local content bundle.
 /// </summary>
-public class Connector : ReactiveObject
+public partial class Connector : ReactiveObject
 {
     private readonly Updater _updater;
     private readonly DataManager _cfg;
@@ -334,6 +335,8 @@ public class Connector : ReactiveObject
 
         try
         {
+            var compatMode = (_cfg.GetCVar(CVars.CompatMode) && !OperatingSystem.IsMacOS()) || CheckForceCompatMode();
+
             var args = new List<string>
             {
                 // Pass username to launched client.
@@ -341,7 +344,7 @@ public class Connector : ReactiveObject
                 "--username", _loginManager.ActiveAccount?.Username ?? ConfigConstants.FallbackUsername,
 
                 // GLES2 forcing or using default fallback
-                "--cvar", $"display.compat={_cfg.GetCVar(CVars.CompatMode) && !OperatingSystem.IsMacOS()}",
+                "--cvar", $"display.compat={compatMode}",
 
                 // Tell game we are launcher
                 "--cvar", "launch.launcher=true"
@@ -547,20 +550,13 @@ public class Connector : ReactiveObject
 
         EnvVar("SS14_LAUNCHER_PATH", Process.GetCurrentProcess().MainModule!.FileName);
 
-        // ReSharper disable once ReplaceWithSingleAssignment.False
-        var manualPipeLogging = false;
-        if (_cfg.GetCVar(CVars.LogClient))
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
         {
-            manualPipeLogging = true;
-
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
-            {
-                EnvVar("SS14_LOG_CLIENT", LauncherPaths.PathClientMacLog);
-            }
-
-            startInfo.RedirectStandardOutput = true;
-            startInfo.RedirectStandardError = true;
+            EnvVar("SS14_LOG_CLIENT", LauncherPaths.PathClientMacLog);
         }
+
+        startInfo.RedirectStandardOutput = true;
+        startInfo.RedirectStandardError = true;
 
         // Performance tweaks
         EnvVar("DOTNET_TieredPGO", "1");
@@ -579,16 +575,21 @@ public class Connector : ReactiveObject
         startInfo.UseShellExecute = false;
         startInfo.ArgumentList.AddRange(extraArgs);
 
-        /*
-        foreach (var arg in startInfo.ArgumentList)
+        var commandBuilder = new StringBuilder();
+        commandBuilder.Append(startInfo.FileName);
+
+        for (var i = 0; i < startInfo.ArgumentList.Count; i++)
         {
-            Log.Debug("arg: {Arg}", arg);
+            var arg = startInfo.ArgumentList[i];
+
+            commandBuilder.Append($" [{i}] {arg}");
         }
-        */
+
+        Log.Debug("Launch command: {LaunchCommand}", commandBuilder.ToString());
 
         var process = Process.Start(startInfo);
 
-        if (manualPipeLogging && process != null)
+        if (process != null)
         {
             Log.Debug("Setting up manual-pipe logging for new client with PID {pid}.", process.Id);
 
@@ -686,7 +687,11 @@ public class Connector : ReactiveObject
 
         if (release)
         {
-            basePath = Path.Combine(LauncherPaths.DirLauncherInstall, "loader");
+            basePath = LauncherPaths.DirLauncherInstall;
+            if (OperatingSystem.IsMacOS())
+                basePath = Path.Combine(basePath, "..", "..");
+            else
+                basePath = Path.Combine(basePath, "loader");
         }
         else
         {
@@ -721,7 +726,7 @@ public class Connector : ReactiveObject
         {
             if (release)
             {
-                var appPath = Path.Combine(basePath, "Space Station 14.app");
+                var appPath = Path.GetFullPath(Path.Combine(basePath, "Space Station 14.app"));
                 Log.Debug("Using app bundle: {appPath}", appPath);
 
                 Log.Debug("Clearing quarantine on loader.");
@@ -744,11 +749,31 @@ public class Connector : ReactiveObject
 
                 await xattr.WaitForExitAsync();
 
-                return new ProcessStartInfo
+                var startInfo = new ProcessStartInfo
                 {
                     FileName = "open",
-                    ArgumentList = {appPath, "--args"},
+                    ArgumentList = { appPath }
                 };
+
+                if (RuntimeInformation.OSArchitecture != Architecture.X64)
+                {
+                    // Intel macs may be running unsupported macOS versions without open --arch.
+                    // So don't add it. It's not necessary anyways.
+
+                    // Versions before Sonoma also don't have it.
+                    // If you're on one of those... uhh.. Why are you running an outdated OS?
+                    // But don't add --arch so that people on an outdated OS can still use native Apple Silicon.
+                    if (OperatingSystem.IsMacOSVersionAtLeast(14))
+                    {
+                        startInfo.ArgumentList.Add("--arch");
+                        startInfo.ArgumentList.Add(
+                            RuntimeInformation.ProcessArchitecture == Architecture.Arm64 ? "arm64" : "x86_64");
+                    }
+                }
+
+                startInfo.ArgumentList.Add("--args");
+
+                return startInfo;
             }
             else
             {

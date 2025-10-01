@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Net.Http.Headers;
 using System.Runtime.InteropServices;
@@ -99,14 +100,11 @@ internal static class Program
         // CheckBadAntivirus();
         CheckWine(cfg);
 
-        if (cfg.GetCVar(CVars.LogLauncher))
-        {
-            Log.Logger = new LoggerConfiguration()
-                .MinimumLevel.Is(cfg.GetCVar(CVars.LogLauncherVerbose) ? LogEventLevel.Verbose : LogEventLevel.Debug)
-                .WriteTo.Console(theme: AnsiConsoleTheme.Sixteen)
-                .WriteTo.File(LauncherPaths.PathLauncherLog)
-                .CreateLogger();
-        }
+        Log.Logger = new LoggerConfiguration()
+            .MinimumLevel.Is(cfg.GetCVar(CVars.LogLauncherVerbose) ? LogEventLevel.Verbose : LogEventLevel.Debug)
+            .WriteTo.Console(theme: AnsiConsoleTheme.Sixteen)
+            .WriteTo.File(LauncherPaths.PathLauncherLog, rollingInterval: RollingInterval.Day, retainedFileCountLimit: 7, fileSizeLimitBytes: 100L * 1024 * 1024)
+            .CreateLogger();
 
         LauncherDiagnostics.LogDiagnostics();
 
@@ -114,7 +112,7 @@ internal static class Program
         Logger.Sink = new AvaloniaSeriLogger(new LoggerConfiguration()
             .MinimumLevel.Is(LogEventLevel.Warning)
             .Enrich.FromLogContext()
-            .WriteTo.Console(outputTemplate: "[{Area}] {Message} ({SourceType} #{SourceHash})\n")
+            .WriteTo.Console(outputTemplate: "[{Area} {Level:u3}] {Message} ({SourceType} #{SourceHash})\n")
             .CreateLogger());
 #endif
 

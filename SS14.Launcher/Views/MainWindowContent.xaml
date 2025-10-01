@@ -124,6 +124,28 @@
       </StackPanel>
     </ContentControl>
 
+    <ContentControl Classes="OverlayBox" IsVisible="{Binding ShouldShowIntelDegradationWarning}">
+      <StackPanel Orientation="Vertical">
+        <TextBlock HorizontalAlignment="Center" Classes="NanoHeadingMedium"
+                   Text="{loc:Loc main-window-intel-degrade-title}" />
+        <TextBlock Margin="0, 10" TextAlignment="Center" MaxWidth="450" TextWrapping="Wrap"
+                   Text="{loc:Loc main-window-intel-degrade-desc}" />
+        <Button Content="{loc:Loc main-window-intel-degrade-accept}" Command="{Binding DismissIntelDegradationPressed}"
+                HorizontalAlignment="Center" />
+      </StackPanel>
+    </ContentControl>
+
+    <ContentControl Classes="OverlayBox" IsVisible="{Binding ShouldShowRosettaWarning}">
+      <StackPanel Orientation="Vertical">
+        <TextBlock HorizontalAlignment="Center" Classes="NanoHeadingMedium"
+                   Text="{loc:Loc main-window-rosetta-title}" />
+        <TextBlock Margin="0, 10" TextAlignment="Center" MaxWidth="450" TextWrapping="Wrap"
+                   Text="{loc:Loc main-window-rosetta-desc}" />
+        <Button Content="{loc:Loc main-window-rosetta-accept}" Command="{Binding DismissAppleSiliconRosettaPressed}"
+                HorizontalAlignment="Center" />
+      </StackPanel>
+    </ContentControl>
+
     <!--
       Literally just keep piling them on it doesn't matter.
       This is way easier than coming up with some horribly over-engineered solution.

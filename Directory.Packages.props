@@ -11,16 +11,15 @@
     <PackageVersion Include="SharpZstd.Interop" Version="1.5.2-beta2"/>
     <PackageVersion Include="JetBrains.Annotations" Version="2023.2.0-eap3" />
     <PackageVersion Include="Microsoft.NET.ILLink.Tasks" Version="8.0.0" />
-    <PackageVersion Include="Robust.Natives.Zstd" Version="0.1.0-zstd1.5.7"/>
+    <PackageVersion Include="Robust.Natives.Zstd" Version="0.1.1-zstd1.5.7"/>
     <!-- Loader -->
-    <PackageVersion Include="Robust.Natives" Version="0.2.1"/>
+    <PackageVersion Include="Robust.Natives" Version="0.2.2"/>
     <!-- Launcher -->
     <PackageVersion Include="Avalonia" Version="11.2.4"/>
     <PackageVersion Include="Avalonia.Desktop" Version="11.2.4"/>
     <PackageVersion Include="Avalonia.ReactiveUI" Version="11.2.4"/>
     <PackageVersion Include="Avalonia.Diagnostics" Version="11.2.4"/>
     <PackageVersion Include="Avalonia.Themes.Simple" Version="11.2.4"/>
-    <PackageVersion Include="Avalonia.Markup.Xaml.Loader" Version="11.2.4" />
     <PackageVersion Include="CodeHollow.FeedReader" Version="1.2.6"/>
     <PackageVersion Include="Dapper" Version="2.0.123"/>
     <PackageVersion Include="DynamicData" Version="8.4.1"/>
@@ -32,7 +31,7 @@
     <PackageVersion Include="Serilog.Sinks.Console" Version="4.1.0"/>
     <PackageVersion Include="Serilog.Sinks.File" Version="5.0.0"/>
     <PackageVersion Include="YamlDotNet" Version="13.0.2"/>
-    <PackageVersion Include="TerraFX.Interop.Windows" Version="10.0.22621.1"/>
+    <PackageVersion Include="TerraFX.Interop.Windows" Version="10.0.26100.2"/>
     <PackageVersion Include="Mono.Posix.NETStandard" Version="1.0.0"/>
     <PackageVersion Include="SpaceWizards.Sodium" Version="0.2.1"/>
     <PackageVersion Include="libsodium" Version="1.0.20.1" />
@@ -46,7 +45,6 @@
     <!-- Bootstrap -->
     <PackageVersion Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3"/>
     <!-- Development -->
-    <PackageVersion Include="HotAvalonia" Version="2.1.0" />
-    <PackageVersion Include="HotAvalonia.Extensions" Version="2.1.0" PrivateAssets="All" />
+    <PackageVersion Include="HotAvalonia" Version="3.0.0" />
   </ItemGroup>
 </Project>
