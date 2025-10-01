@@ -546,3 +546,4 @@ server-entry-status-lobby = Lobi
 connecting-status-update-error-unknown = Bilinmeyen
 connecting-status-update-error-no-engine-for-platform = Bu oyun platformunuzu desteklemeyen eski bir versiyon kullanmaktadır. Lütfen farklı bir sunucu deneyiniz ya da yeniden deneyiniz.
 connecting-status-update-error-no-module-for-platform = Bu oyun platformunuzda desteklenmeyen bir ek özellik gerektirmektedir. Lütfen başka bir sunucu deneyiniz ya da yeniden deneyiniz.
+main-window-intel-degrade-title = Intel 13/14. Jenerasyon CPU algılandı.

@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.Reactive.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Avalonia.Platform.Storage;
 using DynamicData;
@@ -134,6 +136,9 @@ public sealed class MainWindowViewModel : ViewModelBase, IErrorOverlayOwner
     }
 
     public ICVarEntry<bool> HasDismissedEarlyAccessWarning => Cfg.GetCVarEntry(CVars.HasDismissedEarlyAccessWarning);
+    public bool ShouldShowIntelDegradationWarning => IsVulnerableToIntelDegradation(_cfg);
+    public bool ShouldShowRosettaWarning => IsAppleSiliconInRosetta(_cfg);
+
     public string Version => $"v{LauncherVersion.Version}";
 
     public async void OnWindowInitialized()
@@ -203,6 +208,20 @@ public sealed class MainWindowViewModel : ViewModelBase, IErrorOverlayOwner
     {
         Cfg.SetCVar(CVars.HasDismissedEarlyAccessWarning, true);
         Cfg.CommitConfig();
+    }
+
+    public void DismissIntelDegradationPressed()
+    {
+        Cfg.SetCVar(CVars.HasDismissedIntelDegradation, true);
+        Cfg.CommitConfig();
+        this.RaisePropertyChanged(nameof(ShouldShowIntelDegradationWarning));
+    }
+
+    public void DismissAppleSiliconRosettaPressed()
+    {
+        Cfg.SetCVar(CVars.HasDismissedRosettaWarning, true);
+        Cfg.CommitConfig();
+        this.RaisePropertyChanged(nameof(ShouldShowRosettaWarning));
     }
 
     public void SelectTabServers()
@@ -279,5 +298,34 @@ public sealed class MainWindowViewModel : ViewModelBase, IErrorOverlayOwner
         Debug.Assert(IsContentBundleDropValid(file));
 
         ConnectingViewModel.StartContentBundle(this, file);
+    }
+
+    private static bool IsVulnerableToIntelDegradation(DataManager cfg)
+    {
+        var processor = LauncherDiagnostics.GetProcessorModel();
+
+        // No Intel processor, or already dismissed the warning.
+        if (!processor.Contains("Intel") || cfg.GetCVar(CVars.HasDismissedIntelDegradation))
+            return false;
+
+        // Get the i#-#### from the processor string.
+        var match = Regex.Match(processor, @"i\d+-\d+(?:[A-Z]+)?(?=\s|$)");
+        if (!match.Success)
+            return false;
+
+        var affectedGenerations = new[] { "i3-13", "i5-13", "i7-13", "i9-13", "i3-14", "i5-14", "i7-14", "i9-14" };
+        var excludedSuffixes = new[] { "HX", "H", "P", "U" };
+
+        return affectedGenerations.Any(match.Value.Contains) && !excludedSuffixes.Any(match.Value.EndsWith);
+    }
+
+    private static bool IsAppleSiliconInRosetta(DataManager cfg)
+    {
+        if (!OperatingSystem.IsMacOS())
+            return false;
+
+        var processor = LauncherDiagnostics.GetProcessorModel();
+
+        return processor.Contains("VirtualApple") && !cfg.GetCVar(CVars.HasDismissedRosettaWarning);
     }
 }

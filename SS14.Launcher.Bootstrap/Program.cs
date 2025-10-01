@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Runtime.InteropServices;
 using Microsoft.Win32;
 
 namespace SS14.Launcher.Bootstrap
 {
-    internal static class Program
+    internal static partial class Program
     {
         public static void Main(string[] args)
         {
@@ -15,11 +16,35 @@ namespace SS14.Launcher.Bootstrap
             var ourDir = Path.GetDirectoryName(path)!;
             Debug.Assert(ourDir != null);
 
-            var dotnetDir = Path.Combine(ourDir, "dotnet");
-            var exeDir = Path.Combine(ourDir, "bin", "SS14.Launcher.exe");
+            var architecture = "x64";
+            if (RuntimeInformation.OSArchitecture == Architecture.Arm64
+                && Directory.Exists(Path.Combine(ourDir, "dotnet_arm64")))
+            {
+                architecture = "arm64";
+            }
+
+            var dotnetDir = Path.Combine(ourDir, $"dotnet_{architecture}");
+            var exeDir = Path.Combine(ourDir, $"bin_{architecture}");
 
             Environment.SetEnvironmentVariable("DOTNET_ROOT", dotnetDir);
-            Process.Start(new ProcessStartInfo(exeDir));
+            if (Array.IndexOf(args, "--debug") == -1)
+            {
+                Process.Start(new ProcessStartInfo(Path.Combine(exeDir, "SS14.Launcher.exe")));
+            }
+            else
+            {
+                AllocConsole();
+
+                Console.WriteLine("Console yourself some, uhhh");
+
+                var process = Process.Start(
+                    Path.Combine(dotnetDir, "dotnet.exe"),
+                    [Path.Combine(exeDir, "SS14.Launcher.dll")]);
+
+                process.WaitForExit();
+                Console.WriteLine("Press enter to exit");
+                Console.ReadLine();
+            }
         }
 
         private static void UnfuckDotnetRoot()
@@ -55,5 +80,8 @@ namespace SS14.Launcher.Bootstrap
                 Console.WriteLine($"Error while trying to fix DOTNET_ROOT env var: {e}");
             }
         }
+
+        [LibraryImport("KERNEL32.dll")]
+        private static partial int AllocConsole();
     }
 }

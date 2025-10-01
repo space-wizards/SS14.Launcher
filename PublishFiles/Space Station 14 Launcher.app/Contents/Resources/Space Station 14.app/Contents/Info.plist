@@ -3,11 +3,20 @@
 <plist version="1.0">
 <dict>
     <key>CFBundleName</key>
-    <string>SS14LO</string>
+    <string>SS14</string>
     <key>CFBundleDisplayName</key>
     <string>Space Station 14</string>
     <key>CFBundleExecutable</key>
     <string>SS14</string>
+    <key>CFBundleIdentifier</key>
+    <string>com.spacestation14.loader</string>
+    <key>LSApplicationCategoryType</key>
+    <string>public.app-category.games</string>
+    <key>LSArchitecturePriority</key>
+    <array>
+        <string>arm64</string>
+        <string>x86_64</string>
+    </array>
     <!--
     Just a note about this icon.
     MacOS seems REALLY iffy about this and even when the file is correct,

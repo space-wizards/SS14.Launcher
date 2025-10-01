@@ -1,0 +1,20 @@
+#!/bin/bash
+
+# cd to file containing script or something?
+BASEDIR=$(dirname "$0")
+echo "$BASEDIR"
+cd "$BASEDIR"
+
+# Why do we invoke dotnet with the dll, instead of the apphost?
+# Because for some reason, the ARM64 apphost is broken when published by GitHub Actions.
+# Idk dude. This works.
+DOTNET_PATH="$DOTNET_ROOT/dotnet"
+LOADER_PATH="../Resources/$(uname -m)/bin/SS14.Loader.dll"
+
+if [[ -z ${SS14_LOG_CLIENT} ]]; then
+    # No log path
+    exec "$DOTNET_PATH" "$LOADER_PATH" "$@"
+else
+    exec "$DOTNET_PATH" "$LOADER_PATH" "$@" > "$SS14_LOG_CLIENT" 2>&1
+fi
+
