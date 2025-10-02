@@ -14,11 +14,11 @@ public partial class ServerEntryView : UserControl
     {
         InitializeComponent();
 
-        Links.LayoutUpdated += UpdateLinkButtons;
+        Links.LayoutUpdated += ApplyStyle;
     }
 
     // Sets the style for the link buttons correctly so that they look correct
-    private void UpdateLinkButtons(object? _1, EventArgs _2)
+    private void ApplyStyle(object? _1, EventArgs _2)
     {
         for (var i = 0; i < Links.ItemCount; i++)
         {
