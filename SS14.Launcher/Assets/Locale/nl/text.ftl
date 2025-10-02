@@ -25,7 +25,7 @@ connecting-update-status-loading-content-bundle = Laden van contentbundel…
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-update-status-unknown = Je hoort dit niet te zien
 # Strings for the "direct connect" dialog window.
-direct-connect-title = Direct verbinden…
+direct-connect-title = Direct Verbinden
 # Strings for the "direct connect" dialog window.
 direct-connect-text = Voer serveradres in om te connecteren:
 # Strings for the "direct connect" dialog window.
@@ -427,7 +427,7 @@ server-entry-description-offline = Kan de server niet bereiken
 # Strings for entries in the server list (including home page)
 server-entry-description-fetching = Serverstatus ophalen…
 # Strings for the "home" tab
-tab-home-direct-connect = Verbind direct met server…
+tab-home-direct-connect = Verbind direct met server
 # Strings for the "options" tab
 tab-options-clear-content = Wis geïnstalleerde serverinhoud
 # Strings for the "options" tab
@@ -464,9 +464,9 @@ tab-home-favorites-guide = Markeer servers als favoriet om ze hier snel te berei
 # Strings for the "news" tab
 tab-news-title = Nieuws
 # Strings for the "home" tab
-tab-home-favorite-servers = Favoriete servers:
+tab-home-favorite-servers = Favoriete Servers
 # Strings for the "home" tab
-tab-home-add-favorite = Voeg favoriet toe…
+tab-home-add-favorite = Voeg favoriet toe
 # Strings for the "home" tab
 tab-home-refresh = Herladen
 # Strings for the "news" tab

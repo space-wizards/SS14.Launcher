@@ -61,7 +61,7 @@ connecting-status-connecting = Bağlanma bilgisi sunucudan alınıyor…
 # 'Example' name shown as a watermark in the name input box
 add-favorite-window-example-name = Honk Station
 # Strings for the "direct connect" dialog window.
-direct-connect-title = Direkt bağlanma…
+direct-connect-title = Direkt Bağlanma
 # Strings for the "direct connect" dialog window.
 direct-connect-text = Bağlanmak için sunucu adresi giriniz:
 # Strings for the "direct connect" dialog window.
@@ -117,7 +117,7 @@ filters-player-count-hide-empty-desc = Oyuncu olmayan sunucular gösterilmeyecek
 # Strings for entries in the server list (including home page)
 server-entry-raise = En üste getir
 # Strings for the "home" tab
-tab-home-add-favorite = Favori ekle…
+tab-home-add-favorite = Favori ekle
 # Strings for the "forgot password" view on login
 login-forgot-button-back = Giriş yapmaya geri dön
 # Strings for the "register confirmation" view on login
@@ -300,11 +300,11 @@ tab-development-title = { "[" }DEV]
 # Strings for the "home" tab
 tab-home-title = Ev
 # Strings for the "home" tab
-tab-home-favorite-servers = Favori sunucular:
+tab-home-favorite-servers = Favori Sunucular
 # Strings for the "home" tab
 tab-home-refresh = Yenile
 # Strings for the "home" tab
-tab-home-direct-connect = Sunucuya direkt olarak bağlan…
+tab-home-direct-connect = Sunucuya direkt olarak bağlan
 # Strings for the "home" tab
 tab-home-go-to-servers-tab = Sunucu sayfasına git
 # Strings for the "news" tab

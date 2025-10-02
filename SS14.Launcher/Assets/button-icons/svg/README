@@ -1,0 +1,8 @@
+Use Inkscape to get grid info and shape editing etc.
+
+To export, run:
+inkscape plus.svg --export-png-compression=1 -o ../plus.png
+etc.
+
+Licensing info:
+plus.svg, refresh.svg, star.svg, star-outline.svg: Public domain

@@ -16,15 +16,18 @@
     <!-- Header controls -->
     <DockPanel DockPanel.Dock="Top" LastChildFill="False" Margin="4, 0, 4, 2">
       <TextBlock DockPanel.Dock="Left" Text="{loc:Loc tab-home-favorite-servers}" Classes="NanoHeadingMedium" />
-      <Button DockPanel.Dock="Right" Content="{loc:Loc tab-home-add-favorite}"
-              Command="{Binding AddFavoritePressed}" />
+      <Button DockPanel.Dock="Right" Classes="OpenLeft" Command="{Binding AddFavoritePressed}"
+              ToolTip.Tip="{loc:Loc tab-home-add-favorite}">
+        <v:IconLabel Icon="{DynamicResource ButtonIcon-plus}" Height="20" Width="20" />
+      </Button>
+      <Button DockPanel.Dock="Right" Classes="OpenRight" Command="{Binding RefreshPressed}"
+              ToolTip.Tip="{loc:Loc tab-home-refresh}">
+        <v:IconLabel Icon="{DynamicResource ButtonIcon-refresh}" Height="20" Width="20" />
+      </Button>
     </DockPanel>
 
     <!-- Footer controls -->
     <DockPanel DockPanel.Dock="Bottom" LastChildFill="False" Margin="4 4 4 0" Height="32">
-      <Button DockPanel.Dock="Right" Content="{loc:Loc tab-home-refresh}"
-              Command="{Binding RefreshPressed}" />
-
       <Button DockPanel.Dock="Left" Classes="OpenRight"
               Content="{loc:Loc tab-home-direct-connect}"
               Command="{Binding DirectConnectPressed}" />

@@ -62,7 +62,7 @@ connecting-update-status-loading-content-bundle = Content-Packet wird geladen…
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-update-status-unknown = Du solltest dies nicht sehen
 # Strings for the "direct connect" dialog window.
-direct-connect-title = Direkt Verbindung…
+direct-connect-title = Direkt Verbinden
 # Strings for the "direct connect" dialog window.
 direct-connect-text = Serveradresse eingeben zum Verbinden:
 # Strings for the "direct connect" dialog window.
@@ -417,13 +417,13 @@ tab-development-enable-engine-override = Engine-Override aktivieren
 # Strings for the "home" tab
 tab-home-title = Startseite
 # Strings for the "home" tab
-tab-home-favorite-servers = Favoriten:
+tab-home-favorite-servers = Favoriten
 # Strings for the "home" tab
-tab-home-add-favorite = Favorit hinzufügen…
+tab-home-add-favorite = Favorit hinzufügen
 # Strings for the "home" tab
 tab-home-refresh = Aktualisieren
 # Strings for the "home" tab
-tab-home-direct-connect = Direkt mit Server verbinden…
+tab-home-direct-connect = Direkt mit Server verbinden
 # Short region names for server tag filters (shown in filter check box)
 region-short-central-america = Zentralamerika
 # Strings for the "Development" tab

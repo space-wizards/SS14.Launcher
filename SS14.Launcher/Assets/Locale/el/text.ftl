@@ -45,7 +45,7 @@ login-errors-button-ok = Οκ
 # Strings for the "login expired" view on login
 login-expired-button-forgot-password = Ξέχασες τον κωδικό σου;
 # Strings for the "home" tab
-tab-home-favorite-servers = Αγαπημένοι διακομιστές:
+tab-home-favorite-servers = Αγαπημένοι Διακομιστές
 # Localization for the "add favorite server" dialog window
 # 'Example' name shown as a watermark in the name input box
 add-favorite-window-example-name = Διαστημικός Σταθμός Χονκ
@@ -107,7 +107,7 @@ connecting-update-status-loading-into-db = Γίνεται αποθήκευσή �
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-update-status-loading-content-bundle = Γίνεται φόρτοση content bundle…
 # Strings for the "direct connect" dialog window.
-direct-connect-title = Απευθείας σύνδεση…
+direct-connect-title = Απευθείας Σύνδεση
 # Strings for the "direct connect" dialog window.
 direct-connect-text = Εισάγετε διεύθυνσή IP για να συνδεθείτε:
 # Strings for the "direct connect" dialog window.
@@ -447,11 +447,11 @@ tab-development-enable-engine-override-desc = Κάνε παράκαμψη του
 # Strings for the "home" tab
 tab-home-title = Σπίτι
 # Strings for the "home" tab
-tab-home-add-favorite = Πρόσθεσε αγαπημένο…
+tab-home-add-favorite = Πρόσθεσε αγαπημένο
 # Strings for the "home" tab
 tab-home-refresh = Ανανέωση
 # Strings for the "home" tab
-tab-home-direct-connect = Άμεση σύνδεση σε διακομιστή…
+tab-home-direct-connect = Άμεση σύνδεση σε διακομιστή
 # Strings for the "home" tab
 tab-home-run-content-bundle = Τρέξε content bundle/replay
 # Strings for the "home" tab

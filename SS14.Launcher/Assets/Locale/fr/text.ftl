@@ -64,7 +64,7 @@ connecting-update-status-loading-content-bundle = Chargement du paquet de conten
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-update-status-unknown = Vous ne devriez pas voir ça
 # Strings for the "direct connect" dialog window.
-direct-connect-title = Connexion Directe…
+direct-connect-title = Connexion Directe
 # Strings for the "direct connect" dialog window.
 direct-connect-text = Entrez l'adresse du serveur :
 # Strings for the "direct connect" dialog window.
@@ -348,7 +348,7 @@ tab-home-title = Accueil
 # Strings for the "home" tab
 tab-home-refresh = Actualiser
 # Strings for the "home" tab
-tab-home-direct-connect = Connexion Directe au serveur…
+tab-home-direct-connect = Connexion directe au serveur
 # Strings for the "home" tab
 tab-home-go-to-servers-tab = Aller dans l'onglet Serveurs
 # Strings for the "home" tab
@@ -384,7 +384,7 @@ tab-options-account-settings = Paramètres du compte
 # Strings for the "options" tab
 tab-options-account-settings-desc = Vous pouvez gérer les paramètres de votre compte, tels que la modification de votre adresse mail ou de votre mot de passe, via notre site internet.
 # Strings for the "home" tab
-tab-home-favorite-servers = Serveurs Favoris :
+tab-home-favorite-servers = Serveurs Favoris
 # Strings for the "options" tab
 tab-options-log-launcher-desc = Active l'historique d'activité du launcher. Utile pour les développeurs. (nécessite de redémarrer le launcher)
 # Strings for the "news" tab
@@ -529,7 +529,7 @@ region-short-south-america-west = SA Ouest
 # Short region names for server tag filters (shown in filter check box)
 region-short-south-america-east = SA Est
 # Strings for the "home" tab
-tab-home-add-favorite = Ajouter aux Favoris…
+tab-home-add-favorite = Ajouter aux favoris
 # Strings for the "options" tab
 tab-options-flip = { "*" }retourner
 login-login-show-password = Afficher le mot de passe

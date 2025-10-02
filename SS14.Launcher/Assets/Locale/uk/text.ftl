@@ -108,7 +108,7 @@ login-confirmation-button-cancel = Відмінити
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-update-status-unknown = Ви не повинні цього бачити
 # Strings for the "direct connect" dialog window.
-direct-connect-title = Пряме з'єднання…
+direct-connect-title = Пряме З'єднання
 # Strings for the "direct connect" dialog window.
 direct-connect-text = Введіть адресу сервера для підключення:
 # Strings for the "direct connect" dialog window.
@@ -451,13 +451,13 @@ tab-development-title = { "[" }DEV]
 # Strings for the "home" tab
 tab-home-title = Головна
 # Strings for the "home" tab
-tab-home-favorite-servers = Обрані сервери:
+tab-home-favorite-servers = Обрані Сервери
 # Strings for the "home" tab
-tab-home-add-favorite = Додати в обрані…
+tab-home-add-favorite = Додати в обрані
 # Strings for the "home" tab
 tab-home-refresh = Оновити
 # Strings for the "home" tab
-tab-home-direct-connect = Пряме під'єднання до сервера…
+tab-home-direct-connect = Пряме під'єднання до сервера
 # Strings for the "home" tab
 tab-home-run-content-bundle = Запустити контент набору/повтору
 # Strings for the "home" tab

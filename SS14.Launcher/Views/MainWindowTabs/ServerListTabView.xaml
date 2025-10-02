@@ -5,6 +5,7 @@
              xmlns:mainWindowTabs="clr-namespace:SS14.Launcher.ViewModels.MainWindowTabs"
              xmlns:mainWindowTabsViews="clr-namespace:SS14.Launcher.Views.MainWindowTabs"
              xmlns:loc="clr-namespace:SS14.Launcher.Localization"
+             xmlns:views="clr-namespace:SS14.Launcher.Views"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SS14.Launcher.Views.MainWindowTabs.ServerListTabView">
   <Design.DataContext>
@@ -19,8 +20,10 @@
 
   <DockPanel LastChildFill="True">
     <DockPanel DockPanel.Dock="Bottom" Margin="4 4 4 0" Height="32">
-      <Button DockPanel.Dock="Right" Content="{loc:Loc tab-servers-refresh}" Command="{Binding RefreshPressed}"
-              Classes="OpenLeft" />
+      <Button DockPanel.Dock="Right" Command="{Binding RefreshPressed}"
+              Classes="OpenLeft" ToolTip.Tip="{loc:Loc tab-servers-refresh}">
+        <views:IconLabel Icon="{DynamicResource ButtonIcon-refresh}" Height="20" Width="20" />
+      </Button>
       <ToggleButton DockPanel.Dock="Right" IsChecked="{Binding FiltersVisible}" Classes="OpenRight"
                     Content="{Binding Filters.FiltersText}" />
       <TextBox DockPanel.Dock="Right" Text="{Binding SearchString, Mode=TwoWay}"

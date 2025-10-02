@@ -63,7 +63,7 @@ connecting-privacy-policy-decline = Decline (disconnect)
 
 ## Strings for the "direct connect" dialog window.
 
-direct-connect-title = Direct Connect…
+direct-connect-title = Direct Connect
 direct-connect-text = Enter server address to connect:
 direct-connect-connect = Connect
 direct-connect-address-invalid = Address is invalid
@@ -293,8 +293,8 @@ filters-rp-high-desc = High
 ## Strings for entries in the server list (including home page)
 
 server-entry-connect = Connect
-server-entry-add-favorite = Add Favorite
-server-entry-remove-favorite = Remove Favorite
+server-entry-add-favorite = Favorite
+server-entry-remove-favorite = Unfavorite
 server-entry-offline = OFFLINE
 server-entry-player-count =
     { $players } / { $max ->
@@ -327,10 +327,10 @@ tab-development-enable-engine-override-desc = Override path to load engine zips 
 ## Strings for the "home" tab
 
 tab-home-title = Home
-tab-home-favorite-servers = Favorite Servers:
-tab-home-add-favorite = Add Favorite…
+tab-home-favorite-servers = Favorite Servers
+tab-home-add-favorite = Add favorite
 tab-home-refresh = Refresh
-tab-home-direct-connect = Direct Connect To Server…
+tab-home-direct-connect = Direct connect to server
 tab-home-run-content-bundle = Run content bundle/replay
 tab-home-go-to-servers-tab = Go to the servers tab
 tab-home-favorites-guide = Mark servers as favorite for easy access here
