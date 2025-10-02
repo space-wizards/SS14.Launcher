@@ -9,7 +9,7 @@
         4. build-test.yml GitHub Actions workflow
         -->
         <TargetFramework>net9.0</TargetFramework>
-        <Version>0.34.2</Version>
+        <Version>0.35.0</Version>
 
         <!--
         CET breaks for people on older, but still supported Windows versions:
