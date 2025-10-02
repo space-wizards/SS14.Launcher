@@ -13,7 +13,7 @@
     <PackageVersion Include="Microsoft.NET.ILLink.Tasks" Version="8.0.0" />
     <PackageVersion Include="Robust.Natives.Zstd" Version="0.1.1-zstd1.5.7"/>
     <!-- Loader -->
-    <PackageVersion Include="Robust.Natives" Version="0.2.2"/>
+    <PackageVersion Include="Robust.Natives" Version="0.2.3"/>
     <!-- Launcher -->
     <PackageVersion Include="Avalonia" Version="11.2.4"/>
     <PackageVersion Include="Avalonia.Desktop" Version="11.2.4"/>
