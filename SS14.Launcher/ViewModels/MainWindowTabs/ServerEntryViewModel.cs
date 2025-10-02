@@ -198,6 +198,7 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
 
     public void Receive(FavoritesChanged message)
     {
+        OnPropertyChanged(nameof(IsFavorite));
         OnPropertyChanged(nameof(FavoriteButtonText));
     }
 
