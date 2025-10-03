@@ -40,7 +40,6 @@
   <ItemGroup>
     <PackageReference Include="Avalonia" />
     <PackageReference Include="Avalonia.Desktop" />
-    <PackageReference Include="Avalonia.ReactiveUI" />
     <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" />
     <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="HotAvalonia" PrivateAssets="All" />
     <PackageReference Include="Avalonia.Themes.Simple" />
@@ -48,11 +47,10 @@
     <PackageReference Include="Dapper" />
     <PackageReference Include="DynamicData" />
     <PackageReference Include="Microsoft.Data.Sqlite.Core" />
+    <PackageReference Include="Splat" />
     <PackageReference Include="SQLitePCLRaw.provider.sqlite3" Condition="'$(UseSystemSqlite)' == 'True'" />
     <PackageReference Include="SQLitePCLRaw.bundle_e_sqlite3" Condition="'$(UseSystemSqlite)' != 'True'" />
     <PackageReference Include="Microsoft.Toolkit.Mvvm" />
-    <PackageReference Include="ReactiveUI" />
-    <PackageReference Include="ReactiveUI.Fody" />
     <PackageReference Include="Robust.Shared.AuthLib" />
     <PackageReference Include="Serilog" />
     <PackageReference Include="Serilog.Sinks.Console" />
