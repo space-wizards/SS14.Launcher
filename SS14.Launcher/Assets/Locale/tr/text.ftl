@@ -279,7 +279,7 @@ filters-rp-high = Yüksek
 # Server roleplay levels for the filters menu
 filters-rp-high-desc = Yüksek
 # Strings for entries in the server list (including home page)
-server-entry-add-favorite = Favori ekle
+server-entry-add-favorite = Favorilere ekle
 # Strings for entries in the server list (including home page)
 server-entry-remove-favorite = Favorilerden çıkar
 # Strings for entries in the server list (including home page)
@@ -551,3 +551,18 @@ connecting-status-update-error-unknown = Bilinmeyen
 connecting-status-update-error-no-engine-for-platform = Bu oyun platformunuzu desteklemeyen eski bir versiyon kullanmaktadır. Lütfen farklı bir sunucu deneyiniz ya da yeniden deneyiniz.
 connecting-status-update-error-no-module-for-platform = Bu oyun platformunuzda desteklenmeyen bir ek özellik gerektirmektedir. Lütfen başka bir sunucu deneyiniz ya da yeniden deneyiniz.
 main-window-intel-degrade-title = Intel 13/14. Jenerasyon CPU algılandı.
+main-window-intel-degrade-desc =
+    Intel'in 13 ve 14'üncü nesil işlemcileri bir mikrokod hatası yüzünden fark edilemeden kötüleşmesi ve çürümesi tarafından bilinir. Bunun size geçerli olup olmadığından emin olamadığımız için bu nesil Intel işlemcisi kullanan herkese bu uyarıyı gösteriyoruz.
+
+    Size daha fazla hasar alınmaması için GÜÇLÜ bir şekilde anakartınızın BIOS'unu en son sürüme güncellemenizi öneriyoruz. Eğer ki oyunu açmakta zorluk ve güçlük çekiyorsanız, işlemcinizi stabilize etmek için işlem hızını düşürün ve garantinizi kullanarak parça değiştirmeyi deneyin.
+
+    Eğer gerekli önlemleri almaz ve işlemcinizin stabil olduğundan emin olmazsanız, bu işlemcilerde oluşan herhangi bir sıkıntıdan sorumluluk kabul etmiyoruz. Bu mesaj kabul edildikten sonra bir daha gözükmeyecektir.
+main-window-rosetta-desc =
+    Oyunu Apple Silicon Mac aygıtıyla Rosetta 2 üzerinden kullanıyorsanız, alternatif olarak oyunu yerel açıp batarya ve performans tasarrufunda bulunursunuz.
+
+    Bunu yapmak için, Finder'da ki SS14 Başlatıcısına sağ tıklayın, "Bilgi al" kısmını seçin ve "Rosetta kullanarak başlat" seçeneğini devre dışı bırakın. Bundan sonra başlatıcıyı yeniden başlatın.
+
+    Eğer bunu bilerek yapıyorsanız bu mesajı görmezden gelebilirsinz ve bir daha karşınıza çıkmaz. Ancak bu metodu bir problemi çözmek için kullanıyorsanız lütfen bir hata raporu yazınız.
+main-window-intel-degrade-accept = Anlıyorum ve gerekli önlemleri aldığımı onaylıyorum.
+main-window-rosetta-title = Oyunu Rosetta 2 kullanarak çalıştırıyorsunuz!
+main-window-rosetta-accept = Devam
