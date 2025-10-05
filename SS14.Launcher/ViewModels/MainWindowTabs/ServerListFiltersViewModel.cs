@@ -153,6 +153,7 @@ public sealed partial class ServerListFiltersViewModel : ObservableObject
                     }
 
                     var name = culture.DisplayName;
+                    name = string.Concat(name[0].ToString().ToUpper(), name.AsSpan(1));
                     var vm = new ServerFilterViewModel(name, name, filter, this);
                     filtersLanguage.Add(vm);
                 }
