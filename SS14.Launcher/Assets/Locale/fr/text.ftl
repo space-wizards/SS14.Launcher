@@ -322,7 +322,7 @@ filters-player-count-hide-full = Masquer les serveurs pleins
 # Strings for the server filters menu
 filters-player-count-hide-full-desc = Les serveurs pleins ne seront pas affichés
 # Strings for entries in the server list (including home page)
-server-entry-remove-favorite = Supprimer des favoris
+server-entry-remove-favorite = Retirer des favoris
 # Strings for entries in the server list (including home page)
 server-entry-description-offline = Impossible de contacter le serveur
 # Strings for entries in the server list (including home page)
