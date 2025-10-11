@@ -6,6 +6,9 @@
     <Color x:Key="ThemePopupBackgroundColor">#202025</Color>
     <Color x:Key="ThemeForegroundColor">#EEEEEE</Color>
 
+    <Color x:Key="ThemeStripeDark">#1E1E22</Color>
+    <Color x:Key="ThemeStripeBright">#262626</Color>
+
     <Color x:Key="ThemeForegroundMutedColor">#666</Color>
 
     <Color x:Key="ThemeControlMidColor">#464966</Color>
@@ -21,6 +24,8 @@
 
     <Color x:Key="ThemeListSeparatorColor">#AA575B7F</Color>
     <Color x:Key="ThemeListSeparatorColorTransparent">#00575B7F</Color>
+
+    <Color x:Key="ThemeServerSeparatorColor">#2E2E35</Color>
 
     <SolidColorBrush x:Key="ThemeBackgroundBrush" Color="{StaticResource ThemeBackgroundColor}" />
     <SolidColorBrush x:Key="ThemePopupBackgroundBrush" Color="{StaticResource ThemePopupBackgroundColor}" />
@@ -42,9 +47,9 @@
 
     <VisualBrush x:Key="ThemeStripeBackBrush">
       <VisualBrush.Visual>
-        <Panel Height="32" Width="32" Background="#1e1e22">
-          <Path Data="M 0 8 L 24 32 L 8 32 L 0 24 Z" Fill="#262626" />
-          <Path Data="M 8 0 L 24 0 L 32 8 L 32 24 Z" Fill="#262626" />
+        <Panel Height="32" Width="32" Background="{StaticResource ThemeStripeDark}">
+          <Path Data="M 0 8 L 24 32 L 8 32 L 0 24 Z" Fill="{StaticResource ThemeStripeBright}" />
+          <Path Data="M 8 0 L 24 0 L 32 8 L 32 24 Z" Fill="{StaticResource ThemeStripeBright}" />
         </Panel>
       </VisualBrush.Visual>
 

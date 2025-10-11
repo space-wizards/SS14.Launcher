@@ -5,20 +5,21 @@
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450">
 
   <Style Selector="DataGrid#ServerGrid">
-    <Setter Property="Background" Value="#1e1e22" />
+    <Setter Property="Background" Value="{StaticResource ThemeStripeDark}" />
+    <Setter Property="BorderThickness" Value="0" />
 
     <Style Selector="^ DataGridRow">
       <Style Selector="^:nth-child(2n)">
-        <Setter Property="Background" Value="#262626" />
+        <Setter Property="Background" Value="{StaticResource ThemeStripeBright}" />
       </Style>
 
       <Style Selector="^:nth-child(2n + 1)">
-        <Setter Property="Background" Value="#1e1e22" />
+        <Setter Property="Background" Value="{StaticResource ThemeStripeDark}" />
       </Style>
 
       <Style Selector="^ /template/ Rectangle#BackgroundRectangle">
         <Setter Property="IsVisible" Value="False" />
-        <Setter Property="Fill" Value="#ffffff" />
+        <Setter Property="Fill" Value="White" />
       </Style>
 
       <Style Selector="^:pointerover /template/ Rectangle#BackgroundRectangle">
@@ -32,10 +33,10 @@
     </Style>
 
     <Style Selector="^ DataGridColumnHeader">
-      <Setter Property="Background" Value="#25252A" />
-      <Setter Property="Foreground" Value="#AAAAAA" />
-      <Setter Property="BorderThickness" Value="0 0 0 1" />
-      <Setter Property="BorderBrush" Value="#333333" />
+      <Setter Property="Background" Value="{StaticResource ThemeBackgroundColor}" />
+      <Setter Property="Foreground" Value="{StaticResource ThemeSubTextColor}" />
+      <Setter Property="BorderThickness" Value="0 1" />
+      <Setter Property="BorderBrush" Value="{StaticResource ThemeServerSeparatorColor}" />
     </Style>
   </Style>
 

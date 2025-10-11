@@ -37,14 +37,16 @@
     </DockPanel>
 
     <Panel DockPanel.Dock="Bottom" Classes="ScrollViewerSep" />
-    <Panel DockPanel.Dock="Top" Classes="ScrollViewerSep" />
     <Panel>
-      <DockPanel>
+      <DockPanel IsVisible="{Binding !FavoritesEmpty}"
+                 Background="{StaticResource ThemeStripeDark}">
         <Button Content="{loc:Loc tab-home-go-to-servers-tab}"
                 MaxHeight="50"
                 DockPanel.Dock="Bottom"
+                HorizontalAlignment="Center"
+                Margin="0 4"
                 Command="{Binding MainWindowViewModel.SelectTabServers}" />
-        <mwt:ServerList List="{Binding Favorites}" IsVisible="{Binding !FavoritesEmpty}" />
+        <mwt:ServerList List="{Binding Favorites}" />
       </DockPanel>
 
       <StackPanel IsVisible="{Binding FavoritesEmpty}"
