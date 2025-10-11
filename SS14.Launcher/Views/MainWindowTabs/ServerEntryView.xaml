@@ -12,6 +12,15 @@
     <mainWindowTabs:ServerEntryViewModel />
   </Design.DataContext>
 
+  <UserControl.Styles>
+    <Style Selector="Button.FavoriteButton > views|IconLabel">
+      <Setter Property="Icon" Value="{DynamicResource 'ButtonIcon-star-outline'}" />
+    </Style>
+    <Style Selector="Button.FavoriteButton.IsFavorite > views|IconLabel">
+      <Setter Property="Icon" Value="{DynamicResource 'ButtonIcon-star'}" />
+    </Style>
+  </UserControl.Styles>
+
   <DockPanel>
     <TextBlock DockPanel.Dock="Top"
                Name="Description" Margin="4,0,4,4"
@@ -55,9 +64,15 @@
         </ItemsControl.ItemTemplate>
 
         <!-- Favorite add/remove button -->
-        <Button Classes="OpenRight"
-                Content="{Binding FavoriteButtonText}"
-                Command="{Binding FavoriteButtonPressed}" />
+            <Button Name="FavoriteButton"
+                    Classes="FavoriteButton"
+                    Classes.OpenRight="{Binding ViewedInFavoritesPane}"
+                    Classes.IsFavorite="{Binding IsFavorite}"
+                    Command="{Binding FavoriteButtonPressed}">
+              <views:IconLabel Name="FavoriteButtonIconLabel"
+                               Content="{Binding FavoriteButtonText}"
+                               Height="20" />
+            </Button>
 
         <!-- Raise to top button. -->
         <Button IsVisible="{Binding ViewedInFavoritesPane}"

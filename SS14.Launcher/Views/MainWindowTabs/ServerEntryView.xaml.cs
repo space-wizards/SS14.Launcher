@@ -17,7 +17,6 @@ public partial class ServerEntryView : UserControl
         Links.LayoutUpdated += ApplyStyle;
     }
 
-
     // Sets the style for the link buttons correctly so that they look correct
     private void ApplyStyle(object? _1, EventArgs _2)
     {

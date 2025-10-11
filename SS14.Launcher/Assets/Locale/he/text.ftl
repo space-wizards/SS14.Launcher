@@ -50,7 +50,7 @@ connecting-update-status-loading-into-db = מאחסן נתונים במסד הנ
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-update-status-unknown = את/ה לא אמור לראות את זה
 # Strings for the "direct connect" dialog window.
-direct-connect-title = חיבור ישיר…
+direct-connect-title = חיבור ישיר
 # Strings for the "direct connect" dialog window.
 direct-connect-connect = להתחבר
 # Strings for the "direct connect" dialog window.

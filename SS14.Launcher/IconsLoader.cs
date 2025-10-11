@@ -15,6 +15,10 @@ public static class IconsLoader
         ("info-icons/web.png", "InfoIcon-web"),
         ("info-icons/wiki.png", "InfoIcon-wiki"),
         ("info-icons/telegram.png", "InfoIcon-telegram"),
+        ("button-icons/refresh.png", "ButtonIcon-refresh"),
+        ("button-icons/plus.png", "ButtonIcon-plus"),
+        ("button-icons/star.png", "ButtonIcon-star"),
+        ("button-icons/star-outline.png", "ButtonIcon-star-outline"),
     };
 
     public static void Load(App app)

@@ -16,6 +16,7 @@ public class AngleBox : Shape
 
     static AngleBox()
     {
+        AffectsMeasure<AngleBox>(CornerSizeProperty, SideStyleProperty);
         AffectsGeometry<AngleBox>(BoundsProperty, CornerSizeProperty, SideStyleProperty);
     }
 
@@ -29,6 +30,21 @@ public class AngleBox : Shape
     {
         get => GetValue(SideStyleProperty);
         set => SetValue(SideStyleProperty, value);
+    }
+
+    protected override Size MeasureOverride(Size availableSize)
+    {
+        var style = SideStyle;
+        var c = CornerSize;
+
+        var size = new Size();
+        if ((style & AngleBoxSideStyle.OpenRight) == 0)
+            size += new Size(c, c);
+
+        if ((style & AngleBoxSideStyle.OpenLeft) == 0)
+            size += new Size(c, c);
+
+        return size;
     }
 
     protected override Geometry CreateDefiningGeometry()

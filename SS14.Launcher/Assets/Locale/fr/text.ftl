@@ -64,7 +64,7 @@ connecting-update-status-loading-content-bundle = Chargement du paquet de conten
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-update-status-unknown = Vous ne devriez pas voir ça
 # Strings for the "direct connect" dialog window.
-direct-connect-title = Connexion Directe…
+direct-connect-title = Connexion Directe
 # Strings for the "direct connect" dialog window.
 direct-connect-text = Entrez l'adresse du serveur :
 # Strings for the "direct connect" dialog window.
@@ -322,7 +322,7 @@ filters-player-count-hide-full = Masquer les serveurs pleins
 # Strings for the server filters menu
 filters-player-count-hide-full-desc = Les serveurs pleins ne seront pas affichés
 # Strings for entries in the server list (including home page)
-server-entry-remove-favorite = Supprimer des favoris
+server-entry-remove-favorite = Retirer des favoris
 # Strings for entries in the server list (including home page)
 server-entry-description-offline = Impossible de contacter le serveur
 # Strings for entries in the server list (including home page)
@@ -348,7 +348,7 @@ tab-home-title = Accueil
 # Strings for the "home" tab
 tab-home-refresh = Actualiser
 # Strings for the "home" tab
-tab-home-direct-connect = Connexion Directe au serveur…
+tab-home-direct-connect = Connexion directe au serveur
 # Strings for the "home" tab
 tab-home-go-to-servers-tab = Aller dans l'onglet Serveurs
 # Strings for the "home" tab
@@ -529,7 +529,7 @@ region-short-south-america-west = SA Ouest
 # Short region names for server tag filters (shown in filter check box)
 region-short-south-america-east = SA Est
 # Strings for the "home" tab
-tab-home-add-favorite = Ajouter aux Favoris…
+tab-home-add-favorite = Ajouter aux favoris
 # Strings for the "options" tab
 tab-options-flip = { "*" }retourner
 login-login-show-password = Afficher le mot de passe
