@@ -542,8 +542,4 @@ connecting-privacy-policy-decline = Δεν αποδέχομαι (αποσύνδ�
 tab-servers-table-round-time = Χρόνος
 server-entry-status-lobby = Λόμπι
 connecting-status-update-error-unknown = Άγνωστο
-server-entry-round-time =
-    { $hours ->
-        [0] { $mins }M
-       *[1] { $hours }H { $mins }M
-    }
+server-entry-round-time = { $hours }h { $mins }m
