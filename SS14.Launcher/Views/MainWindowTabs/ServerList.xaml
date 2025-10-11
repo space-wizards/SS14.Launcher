@@ -17,37 +17,44 @@
             CanUserReorderColumns="True"
             SelectionMode="Single"
             RowHeight="30"
-            ColumnWidth="200">
+            GridLinesVisibility="Vertical"
+            VerticalGridLinesBrush="{DynamicResource ThemeServerSeparatorColor}">
     <DataGrid.Columns>
-      <DataGridTextColumn x:DataType="vm:ServerEntryViewModel"
-                          Header="Name"
-                          Binding="{Binding Name}"
-                          Width="*" />
       <DataGridTemplateColumn x:DataType="vm:ServerEntryViewModel"
-                              Header="Time"
-                              Width="80">
+                              Header="{loc:Loc tab-servers-table-name}"
+                              Width="*">
+        <DataGridTemplateColumn.CellTemplate>
+          <DataTemplate DataType="vm:ServerEntryViewModel">
+            <TextBlock Text="{Binding Name}"
+                       Padding="6 0" />
+          </DataTemplate>
+        </DataGridTemplateColumn.CellTemplate>
+      </DataGridTemplateColumn>
+      <DataGridTemplateColumn x:DataType="vm:ServerEntryViewModel"
+                              Header="{loc:Loc tab-servers-table-round-time}"
+                              MinWidth="80">
         <DataGridTemplateColumn.CellTemplate>
           <DataTemplate DataType="vm:ServerEntryViewModel">
             <TextBlock Text="{Binding RoundStatusString}"
-                       HorizontalAlignment="Right" />
+                       HorizontalAlignment="Right"
+                       Padding="6 0" />
           </DataTemplate>
         </DataGridTemplateColumn.CellTemplate>
       </DataGridTemplateColumn>
       <DataGridTemplateColumn x:DataType="vm:ServerEntryViewModel"
-                              Header="Players"
-                              Width="80">
+                              Header="{loc:Loc tab-servers-table-players}">
         <DataGridTemplateColumn.CellTemplate>
           <DataTemplate DataType="vm:ServerEntryViewModel">
             <TextBlock Text="{Binding PlayerCountString}"
-                       HorizontalAlignment="Center" />
+                       HorizontalAlignment="Center"
+                       Padding="6 0" />
           </DataTemplate>
         </DataGridTemplateColumn.CellTemplate>
       </DataGridTemplateColumn>
-      <DataGridTemplateColumn x:DataType="vm:ServerEntryViewModel" Width="Auto">
+      <DataGridTemplateColumn x:DataType="vm:ServerEntryViewModel">
         <DataGridTemplateColumn.CellTemplate>
           <DataTemplate DataType="vm:ServerEntryViewModel">
-            <Button DockPanel.Dock="Right"
-                    Content="{loc:Loc server-entry-connect}"
+            <Button Content="{loc:Loc server-entry-connect}"
                     Command="{Binding ConnectPressed}" />
           </DataTemplate>
         </DataGridTemplateColumn.CellTemplate>

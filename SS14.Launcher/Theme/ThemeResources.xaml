@@ -11,6 +11,7 @@
 
     <Color x:Key="ThemeForegroundMutedColor">#666</Color>
 
+    <Color x:Key="ThemeControlLowColor">#2E2E35</Color>
     <Color x:Key="ThemeControlMidColor">#464966</Color>
     <Color x:Key="ThemeControlHighColor">#3E6C45</Color>
 
@@ -32,6 +33,7 @@
     <SolidColorBrush x:Key="ThemeForegroundBrush" Color="{StaticResource ThemeForegroundColor}" />
     <SolidColorBrush x:Key="ThemeForegroundMutedBrush" Color="{StaticResource ThemeForegroundMutedColor}" />
 
+    <SolidColorBrush x:Key="ThemeControlLowBrush" Color="{StaticResource ThemeControlLowColor}" />
     <SolidColorBrush x:Key="ThemeControlMidBrush" Color="{StaticResource ThemeControlMidColor}" />
     <SolidColorBrush x:Key="ThemeControlHighBrush" Color="{StaticResource ThemeControlHighColor}" />
 
