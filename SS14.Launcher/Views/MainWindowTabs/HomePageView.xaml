@@ -46,7 +46,7 @@
                 HorizontalAlignment="Center"
                 Margin="0 4"
                 Command="{Binding MainWindowViewModel.SelectTabServers}" />
-        <mwt:ServerList List="{Binding Favorites}" />
+        <mwt:ServerList Entries="{Binding Favorites}" />
       </DockPanel>
 
       <StackPanel IsVisible="{Binding FavoritesEmpty}"

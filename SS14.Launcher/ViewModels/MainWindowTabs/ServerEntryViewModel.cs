@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
 using Avalonia.Threading;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
@@ -22,6 +24,20 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
     private bool _isExpanded;
 
     private readonly DispatcherTimer _refreshRoundStartTimer = new() { Interval = TimeSpan.FromSeconds(15) };
+
+    public const string NameSortKey = nameof(Name);
+    public const string PlayersSortKey = nameof(PlayerCount);
+    public const string TimeSortKey = nameof(RoundStatus);
+
+    /// <summary>
+    /// Maps a sorting key to a comparer to use for column sorting.
+    /// </summary>
+    public static readonly Dictionary<string, IComparer> ComparerMapping = new()
+    {
+        { NameSortKey, StringComparer.InvariantCultureIgnoreCase },
+        { TimeSortKey, Comparer<GameRoundStatus>.Default },
+        { PlayersSortKey, Comparer<int>.Default },
+    };
 
     public ServerEntryViewModel(MainWindowViewModel windowVm, ServerStatusData cacheData, IServerSource serverSource,
         DataManager cfg)
@@ -106,34 +122,25 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
         }
     }
 
+    public int PlayerCount => _cacheData.PlayerCount;
+
     // Give a ratio for servers with a defined player count, or just a current number for those without.
     public string PlayerCountString =>
         _loc.GetString("server-entry-player-count",
-            ("players", _cacheData.PlayerCount.ToString().PadLeft(3)),
+            ("players", PlayerCount.ToString().PadLeft(3)),
             ("max", _cacheData.SoftMaxPlayerCount.ToString().PadRight(3)));
 
 
-    public DateTime? RoundStartTime => _cacheData.RoundStartTime;
+    public GameRoundStatus RoundStatus => _cacheData.RoundStatus;
 
     public string RoundStatusString
-    {
-        get
+        => _cacheData.RoundStatus switch
         {
-            switch (_cacheData.RoundStatus)
-            {
-                case GameRoundStatus.InLobby:
-                    return _loc.GetString("server-entry-status-lobby");
-                case GameRoundStatus.InRound when RoundStartTime is { } start:
-                {
-                    var ts = DateTime.UtcNow.Subtract(start);
-                    return _loc.GetString("server-entry-round-time", ("hours", Math.Floor(ts.TotalHours)),
-                        ("mins", ts.Minutes.ToString().PadLeft(2, '0')));
-                }
-                default:
-                    return "";
-            }
-        }
-    }
+            InLobby => _loc.GetString("server-entry-status-lobby"),
+            InRound r => _loc.GetString("server-entry-round-time", ("hours", Math.Floor(r.TimeElapsed.TotalHours)),
+                ("mins", r.TimeElapsed.Minutes.ToString().PadLeft(2, '0'))),
+            _ => "",
+        };
 
     public string Description
     {
@@ -256,11 +263,6 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
             case nameof(IServerStatusData.SoftMaxPlayerCount):
                 OnPropertyChanged(nameof(ServerStatusString));
                 OnPropertyChanged(nameof(PlayerCountString));
-                break;
-
-            case nameof(IServerStatusData.RoundStartTime):
-                OnPropertyChanged(nameof(RoundStartTime));
-                OnPropertyChanged(nameof(RoundStatusString));
                 break;
 
             case nameof(IServerStatusData.RoundStatus):

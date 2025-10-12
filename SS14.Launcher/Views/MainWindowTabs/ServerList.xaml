@@ -9,7 +9,7 @@
              x:Class="SS14.Launcher.Views.MainWindowTabs.ServerList">
 
   <DataGrid Name="ServerGrid"
-            ItemsSource="{Binding List, RelativeSource={RelativeSource AncestorType=UserControl}}"
+            ItemsSource="{Binding Entries, RelativeSource={RelativeSource AncestorType=UserControl}}"
             IsReadOnly="True"
             RowDetailsVisibilityMode="VisibleWhenSelected"
             HeadersVisibility="All"
@@ -20,34 +20,32 @@
             GridLinesVisibility="Vertical"
             VerticalGridLinesBrush="{DynamicResource ThemeServerSeparatorColor}">
     <DataGrid.Columns>
-      <DataGridTemplateColumn x:DataType="vm:ServerEntryViewModel"
-                              Header="{loc:Loc tab-servers-table-name}"
-                              Width="*">
+      <DataGridTemplateColumn Header="{loc:Loc tab-servers-table-name}"
+                              Width="*"
+                              SortMemberPath="{x:Static vm:ServerEntryViewModel.NameSortKey}">
         <DataGridTemplateColumn.CellTemplate>
           <DataTemplate DataType="vm:ServerEntryViewModel">
-            <TextBlock Text="{Binding Name}"
-                       Padding="6 0" />
+            <TextBlock Text="{Binding Name}" />
           </DataTemplate>
         </DataGridTemplateColumn.CellTemplate>
       </DataGridTemplateColumn>
-      <DataGridTemplateColumn x:DataType="vm:ServerEntryViewModel"
-                              Header="{loc:Loc tab-servers-table-round-time}"
-                              MinWidth="80">
+      <DataGridTemplateColumn Header="{loc:Loc tab-servers-table-round-time}"
+                              MinWidth="85"
+                              CanUserSort="True"
+                              SortMemberPath="{x:Static vm:ServerEntryViewModel.TimeSortKey}">
         <DataGridTemplateColumn.CellTemplate>
           <DataTemplate DataType="vm:ServerEntryViewModel">
             <TextBlock Text="{Binding RoundStatusString}"
-                       HorizontalAlignment="Right"
-                       Padding="6 0" />
+                       HorizontalAlignment="Right" />
           </DataTemplate>
         </DataGridTemplateColumn.CellTemplate>
       </DataGridTemplateColumn>
-      <DataGridTemplateColumn x:DataType="vm:ServerEntryViewModel"
-                              Header="{loc:Loc tab-servers-table-players}">
+      <DataGridTemplateColumn Header="{loc:Loc tab-servers-table-players}"
+                              SortMemberPath="{x:Static vm:ServerEntryViewModel.PlayersSortKey}">
         <DataGridTemplateColumn.CellTemplate>
           <DataTemplate DataType="vm:ServerEntryViewModel">
             <TextBlock Text="{Binding PlayerCountString}"
-                       HorizontalAlignment="Center"
-                       Padding="6 0" />
+                       HorizontalAlignment="Center" />
           </DataTemplate>
         </DataGridTemplateColumn.CellTemplate>
       </DataGridTemplateColumn>
