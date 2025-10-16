@@ -66,6 +66,6 @@ public static class ConfigConstants
     {
         var envVarAuthUrl = Environment.GetEnvironmentVariable("SS14_LAUNCHER_OVERRIDE_AUTH");
         if (!string.IsNullOrEmpty(envVarAuthUrl))
-            AuthUrl = new UrlFallbackSet([envVarAuthUrl], AuthUrl.Stats);
+            AuthUrl = new UrlFallbackSet([envVarAuthUrl]);
     }
 }
