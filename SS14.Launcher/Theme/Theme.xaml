@@ -39,7 +39,7 @@
 
   <Style Selector="Panel.ScrollViewerSep">
     <Setter Property="Background">
-      <SolidColorBrush Color="#2e2e35" />
+      <SolidColorBrush Color="{StaticResource ThemeServerSeparatorColor}" />
     </Setter>
     <Setter Property="MinHeight" Value="1" />
   </Style>

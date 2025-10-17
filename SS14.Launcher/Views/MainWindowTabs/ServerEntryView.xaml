@@ -1,14 +1,13 @@
 <UserControl xmlns="https://github.com/avaloniaui"
-  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-  xmlns:mainWindowTabs="clr-namespace:SS14.Launcher.ViewModels.MainWindowTabs"
-  xmlns:models="clr-namespace:SS14.Launcher.Models"
-  xmlns:controls="clr-namespace:SS14.Launcher.Controls"
-  xmlns:views="clr-namespace:SS14.Launcher.Views"
-  xmlns:loc="clr-namespace:SS14.Launcher.Localization"
-  mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-  x:Class="SS14.Launcher.Views.MainWindowTabs.ServerEntryView">
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:mainWindowTabs="clr-namespace:SS14.Launcher.ViewModels.MainWindowTabs"
+             xmlns:models="clr-namespace:SS14.Launcher.Models"
+             xmlns:views="clr-namespace:SS14.Launcher.Views"
+             xmlns:loc="clr-namespace:SS14.Launcher.Localization"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="SS14.Launcher.Views.MainWindowTabs.ServerEntryView">
   <Design.DataContext>
     <mainWindowTabs:ServerEntryViewModel />
   </Design.DataContext>
@@ -22,82 +21,49 @@
     </Style>
   </UserControl.Styles>
 
-  <Panel>
-    <Expander Name="Expando" Classes="NoPad" IsExpanded="{Binding IsExpanded}">
-      <Expander.Header>
-        <Grid>
-          <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" /> <!-- Server Name -->
-            <ColumnDefinition SharedSizeGroup="TimeCol" MinWidth="80" Width="Auto" />
-            <ColumnDefinition SharedSizeGroup="StatusCol" MinWidth="80" Width="Auto" />
-            <ColumnDefinition SharedSizeGroup="ConnectCol" Width="Auto" />
-          </Grid.ColumnDefinitions>
+  <DockPanel>
+    <TextBlock DockPanel.Dock="Top"
+               Name="Description" Margin="4,0,4,4"
+               Text="{Binding Description}"
+               TextWrapping="Wrap" />
 
-          <Border Grid.Column="0" Classes="GridCell">
-            <TextBlock VerticalAlignment="Center"
-              Text="{Binding Name}" TextTrimming="CharacterEllipsis"
-              HorizontalAlignment="Left" />
-          </Border>
+    <TextBlock DockPanel.Dock="Top"
+               Margin="4,0,4,4"
+               TextWrapping="Wrap"
+               Foreground="{DynamicResource ThemeSubTextBrush}"
+               Text="{Binding FetchedFrom}"
+               IsVisible="{Binding ShowFetchedFrom}" />
 
-          <Border Grid.Column="1" Classes="GridCell" Grid.ColumnSpan="2"
-            IsVisible="{Binding !HaveData}">
-            <TextBlock Text="{Binding ServerStatusString}" TextAlignment="Left" Classes="Center" />
-          </Border>
+    <Control DockPanel.Dock="Top" Height="8" />
 
-          <Border Grid.Column="1" Classes="GridCell" IsVisible="{Binding HaveData}">
-            <Panel>
-              <controls:TimerTextCell Value="{Binding RoundStartTime}"
-                IsVisible="{Binding RoundStatusString,Converter={x:Static StringConverters.IsNullOrEmpty}}" />
-              <TextBlock Text="{Binding RoundStatusString}"
-                Classes="Center"
-                HorizontalAlignment="Right"
-                IsVisible="{Binding RoundStatusString,Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
-            </Panel>
-          </Border>
+    <views:RowSideAlignedPanel DockPanel.Dock="Bottom">
+      <ItemsControl VerticalAlignment="Bottom" ItemsSource="{Binding CacheData.Links}"
+                    Name="Links">
+        <ItemsControl.ItemsPanel>
+          <ItemsPanelTemplate>
+            <WrapPanel Orientation="Horizontal" />
+          </ItemsPanelTemplate>
+        </ItemsControl.ItemsPanel>
+        <ItemsControl.ItemTemplate>
+          <DataTemplate x:DataType="models:ServerInfoLink">
+            <views:ServerInfoLinkControl DataContext="{Binding}" />
+          </DataTemplate>
+        </ItemsControl.ItemTemplate>
+      </ItemsControl>
 
-          <Border Grid.Column="2" Classes="GridCell" IsVisible="{Binding HaveData}">
-            <TextBlock DockPanel.Dock="Right" Classes="Numeric" Text="{Binding PlayerCountString}" />
-          </Border>
+      <ItemsControl VerticalAlignment="Bottom">
+        <ItemsControl.ItemsPanel>
+          <ItemsPanelTemplate>
+            <WrapPanel Orientation="Horizontal" />
+          </ItemsPanelTemplate>
+        </ItemsControl.ItemsPanel>
+        <ItemsControl.ItemTemplate>
+          <DataTemplate x:DataType="models:ServerInfoLink">
+            <views:ServerInfoLinkControl DataContext="{Binding}" />
+          </DataTemplate>
+        </ItemsControl.ItemTemplate>
 
-          <Border Grid.Column="3" Classes="GridCell">
-            <Button IsEnabled="{Binding IsOnline}" DockPanel.Dock="Right"
-              Content="{loc:Loc server-entry-connect}"
-              Command="{Binding ConnectPressed}" />
-          </Border>
-        </Grid>
-      </Expander.Header>
-      <DockPanel Margin="4">
-        <TextBlock DockPanel.Dock="Top"
-          Name="Description" Margin="4,0,4,4"
-          Text="{Binding Description}"
-          TextWrapping="Wrap" />
-
-        <TextBlock DockPanel.Dock="Top"
-          Margin="4,0,4,4"
-          TextWrapping="Wrap"
-          Foreground="{DynamicResource ThemeSubTextBrush}"
-          Text="{Binding FetchedFrom}"
-          IsVisible="{Binding ShowFetchedFrom}" />
-
-        <Control DockPanel.Dock="Top" Height="8" />
-
-        <views:RowSideAlignedPanel>
-          <ItemsControl VerticalAlignment="Bottom" ItemsSource="{Binding CacheData.Links}"
-            Name="Links">
-            <ItemsControl.ItemsPanel>
-              <ItemsPanelTemplate>
-                <WrapPanel Orientation="Horizontal" />
-              </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-            <ItemsControl.ItemTemplate>
-              <DataTemplate x:DataType="models:ServerInfoLink">
-                <views:ServerInfoLinkControl DataContext="{Binding}" />
-              </DataTemplate>
-            </ItemsControl.ItemTemplate>
-          </ItemsControl>
-
-          <DockPanel Dock="Right">
-            <!-- Favorite add/remove button -->
+        <!-- Favorite add/remove button -->
             <Button Name="FavoriteButton"
                     Classes="FavoriteButton"
                     Classes.OpenRight="{Binding ViewedInFavoritesPane}"
@@ -108,15 +74,13 @@
                                Height="20" />
             </Button>
 
-            <!-- Raise to top button. -->
-            <Button IsVisible="{Binding ViewedInFavoritesPane}"
-              Classes="OpenLeft"
-              Content="{loc:Loc server-entry-raise}"
-              Command="{Binding FavoriteRaiseButtonPressed}" />
-          </DockPanel>
-        </views:RowSideAlignedPanel>
-      </DockPanel>
-    </Expander>
-  </Panel>
+        <!-- Raise to top button. -->
+        <Button IsVisible="{Binding ViewedInFavoritesPane}"
+                Classes="OpenLeft"
+                Content="{loc:Loc server-entry-raise}"
+                Command="{Binding FavoriteRaiseButtonPressed}" />
+      </ItemsControl>
+    </views:RowSideAlignedPanel>
+  </DockPanel>
 
 </UserControl>
