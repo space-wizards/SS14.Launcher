@@ -5,7 +5,7 @@
   buildDotnetModule,
   dotnetCorePackages,
   fetchFromGitHub,
-  wrapGAppsHook4,
+  wrapGAppsHook3,
   iconConvTools,
   copyDesktopItems,
   makeDesktopItem,
@@ -94,7 +94,7 @@ buildDotnetModule rec {
   ];
 
   nativeBuildInputs = [
-    wrapGAppsHook4
+    wrapGAppsHook3
     iconConvTools
     copyDesktopItems
   ];
