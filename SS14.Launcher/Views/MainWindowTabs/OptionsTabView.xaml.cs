@@ -3,7 +3,6 @@ using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
-using ReactiveUI;
 using SS14.Launcher.Utility;
 using SS14.Launcher.ViewModels.MainWindowTabs;
 
@@ -14,17 +13,17 @@ public partial class OptionsTabView : UserControl
     public OptionsTabView()
     {
         InitializeComponent();
+    }
 
-        Flip.Command = ReactiveCommand.Create(() =>
-        {
-            var window = (Window?) VisualRoot;
-            if (window == null)
-                return;
+    private void Flip(object? o, RoutedEventArgs routedEventArgs)
+    {
+        var window = (Window?) VisualRoot;
+        if (window == null)
+            return;
 
-            window.Classes.Add("DoAFlip");
+        window.Classes.Add("DoAFlip");
 
-            DispatcherTimer.RunOnce(() => { window.Classes.Remove("DoAFlip"); }, TimeSpan.FromSeconds(1));
-        });
+        DispatcherTimer.RunOnce(() => { window.Classes.Remove("DoAFlip"); }, TimeSpan.FromSeconds(1));
     }
 
     public async void ClearEnginesPressed(object? _1, RoutedEventArgs _2)

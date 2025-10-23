@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using DynamicData;
 using Splat;
 using SS14.Launcher.Models.Data;
 using SS14.Launcher.Utility;
@@ -13,7 +11,7 @@ namespace SS14.Launcher.ViewModels;
 public class HubSettingsViewModel : ViewModelBase
 {
     public string[] DefaultHubs => ConfigConstants.DefaultHubUrls.Select(set => set.Urls[0]).ToArray();
-    public ObservableCollection<HubViewModel> HubList { get; set; } = new();
+    public ObservableList<HubViewModel> HubList { get; set; } = new();
 
     private readonly DataManager _dataManager = Locator.Current.GetRequiredService<DataManager>();
 
