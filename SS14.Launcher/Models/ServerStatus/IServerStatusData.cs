@@ -27,7 +27,5 @@ public interface IServerStatusData : INotifyPropertyChanged
 
     int SoftMaxPlayerCount { get; set; }
 
-    DateTime? RoundStartTime { get; set; }
-
     GameRoundStatus RoundStatus { get; set; }
 }
