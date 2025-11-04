@@ -31,7 +31,7 @@ connecting-status-update-error =
     If you are still having issues, first try contacting the server you are attempting to join before asking for support on the Official Space Station 14 Discord or Forums.
 
     Technical error: { $err }
-connecting-status-update-error-no-engine-for-platform = This server is using a older game engine version that does not support your current platform. Please try another server or inform the server staff about this and try again later.
+connecting-status-update-error-no-engine-for-platform = This server is using an older game engine version that does not support your current platform. Please try another server or inform the server staff about this and try again later.
 connecting-status-update-error-no-module-for-platform = This server requires additional functionality that is not yet supported on your current platform. Please try another server or inform the server staff about this and try again later.
 connecting-status-update-error-unknown = Unknown
 connecting-status-updating = Updating: { $status }
