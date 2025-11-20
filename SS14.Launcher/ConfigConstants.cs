@@ -1,4 +1,7 @@
 using System;
+using System.Collections.Immutable;
+using System.CommandLine;
+using System.Linq;
 using SS14.Launcher.Utility;
 
 namespace SS14.Launcher;
@@ -21,8 +24,10 @@ public static class ConfigConstants
     public static readonly TimeSpan CommandQueueCheckInterval = TimeSpan.FromSeconds(1);
 
     public const string LauncherCommandsNamedPipeName = "SS14.Launcher.CommandPipe";
+
     // Amount of time to wait before the launcher decides to ignore named pipes entirely to keep the rest of the launcher functional.
     public const int LauncherCommandsNamedPipeTimeout = 150;
+
     // Amount of time to wait to let a redialling client properly die
     public const int LauncherCommandsRedialWaitTimeout = 1000;
 
@@ -50,8 +55,8 @@ public static class ConfigConstants
         "https://launcher-data.fallback.cdn.spacestation14.com/"
     ]);
 
-    public static readonly UrlFallbackSet RobustBuildsManifest = RobustBuildsBaseUrl + "manifest.json";
-    public static readonly UrlFallbackSet RobustModulesManifest = RobustBuildsBaseUrl + "modules.json";
+    public static UrlFallbackSet RobustBuildsManifest => RobustBuildsBaseUrl + "manifest.json";
+    public static UrlFallbackSet RobustModulesManifest => RobustBuildsBaseUrl + "modules.json";
 
     // How long to keep cached copies of Robust manifests.
     // TODO: Take this from Cache-Control header responses instead.
@@ -67,5 +72,23 @@ public static class ConfigConstants
         var envVarAuthUrl = Environment.GetEnvironmentVariable("SS14_LAUNCHER_OVERRIDE_AUTH");
         if (!string.IsNullOrEmpty(envVarAuthUrl))
             AuthUrl = new UrlFallbackSet([envVarAuthUrl]);
+
+        var robustBuildOptions = new Option<string>("--robustBuildsUrl");
+
+        var rootCommand = new RootCommand();
+
+        rootCommand.Options.Add(robustBuildOptions);
+
+        var result = rootCommand.Parse(Environment.GetCommandLineArgs());
+
+        var robustBuildArgs = result.GetValue(robustBuildOptions);
+
+        if (!string.IsNullOrEmpty(robustBuildArgs))
+        {
+            RobustBuildsBaseUrl = new UrlFallbackSet(
+                ImmutableArray.Create([..robustBuildArgs
+                    .Split(";")
+                    .Select(url => url.EndsWith('/') ? url : url + "/")]));
+        }
     }
 }
