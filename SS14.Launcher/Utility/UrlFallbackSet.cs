@@ -109,6 +109,8 @@ public sealed class UrlFallbackSet
             cancel
         ).ConfigureAwait(false);
 
+        response.EnsureSuccessStatusCode();
+
         return response;
     }
 
