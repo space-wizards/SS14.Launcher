@@ -9,7 +9,7 @@ import glob
 from download_net_runtime import update_netcore_runtime, PLATFORM_WINDOWS, PLATFORM_WINDOWS_ARM64, PLATFORM_LINUX, PLATFORM_LINUX_ARM64, PLATFORM_MACOS, PLATFORM_MACOS_ARM64
 from exe_set_subsystem import set_subsystem
 
-TFM = "net9.0"
+TFM = "net10.0"
 
 p = os.path.join
 

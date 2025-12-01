@@ -27,7 +27,7 @@ jobs:
       with:
         name: "bootstrap"
         retention-days: 1
-        path: "SS14.Launcher.Bootstrap/bin/Release/net9.0-windows/win-x64/publish/Space Station 14 Launcher.exe"
+        path: "SS14.Launcher.Bootstrap/bin/Release/net10.0-windows/win-x64/publish/Space Station 14 Launcher.exe"
 
   build:
     runs-on: ubuntu-latest

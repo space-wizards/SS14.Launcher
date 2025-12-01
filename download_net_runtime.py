@@ -15,15 +15,15 @@ PLATFORM_LINUX_ARM64 = "linux-arm64"
 PLATFORM_MACOS = "mac"
 PLATFORM_MACOS_ARM64 = "mac-arm64"
 
-DOTNET_RUNTIME_VERSION = "9.0.9"
+DOTNET_RUNTIME_VERSION = "10.0.0"
 
 DOTNET_RUNTIME_DOWNLOADS = {
-    PLATFORM_LINUX: "https://builds.dotnet.microsoft.com/dotnet/Runtime/9.0.9/dotnet-runtime-9.0.9-linux-x64.tar.gz",
-    PLATFORM_LINUX_ARM64: "https://builds.dotnet.microsoft.com/dotnet/Runtime/9.0.9/dotnet-runtime-9.0.9-linux-arm64.tar.gz",
-    PLATFORM_WINDOWS: "https://builds.dotnet.microsoft.com/dotnet/Runtime/9.0.9/dotnet-runtime-9.0.9-win-x64.zip",
-    PLATFORM_WINDOWS_ARM64: "https://builds.dotnet.microsoft.com/dotnet/Runtime/9.0.9/dotnet-runtime-9.0.9-win-arm64.zip",
-    PLATFORM_MACOS: "https://builds.dotnet.microsoft.com/dotnet/Runtime/9.0.9/dotnet-runtime-9.0.9-osx-x64.tar.gz",
-    PLATFORM_MACOS_ARM64: "https://builds.dotnet.microsoft.com/dotnet/Runtime/9.0.9/dotnet-runtime-9.0.9-osx-arm64.tar.gz"
+    PLATFORM_LINUX: "https://builds.dotnet.microsoft.com/dotnet/Runtime/10.0.0/dotnet-runtime-10.0.0-linux-x64.tar.gz",
+    PLATFORM_LINUX_ARM64: "https://builds.dotnet.microsoft.com/dotnet/Runtime/10.0.0/dotnet-runtime-10.0.0-linux-arm64.tar.gz",
+    PLATFORM_WINDOWS: "https://builds.dotnet.microsoft.com/dotnet/Runtime/10.0.0/dotnet-runtime-10.0.0-win-x64.zip",
+    PLATFORM_WINDOWS_ARM64: "https://builds.dotnet.microsoft.com/dotnet/Runtime/10.0.0/dotnet-runtime-10.0.0-win-arm64.zip",
+    PLATFORM_MACOS: "https://builds.dotnet.microsoft.com/dotnet/Runtime/10.0.0/dotnet-runtime-10.0.0-osx-x64.tar.gz",
+    PLATFORM_MACOS_ARM64: "https://builds.dotnet.microsoft.com/dotnet/Runtime/10.0.0/dotnet-runtime-10.0.0-osx-arm64.tar.gz"
 }
 
 p = os.path.join

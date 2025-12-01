@@ -703,7 +703,7 @@ public partial class Connector : ReactiveObject
             basePath = Path.GetFullPath(Path.Combine(
                 LauncherPaths.DirLauncherInstall,
                 "..", "..", "..", "..",
-                "SS14.Loader", "bin", buildConfiguration, "net9.0"));
+                "SS14.Loader", "bin", buildConfiguration, "net10.0"));
         }
 
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux) || RuntimeInformation.IsOSPlatform(OSPlatform.FreeBSD))
