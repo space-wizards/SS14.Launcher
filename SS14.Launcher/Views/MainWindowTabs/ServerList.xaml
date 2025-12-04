@@ -1,0 +1,67 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:SS14.Launcher.ViewModels.MainWindowTabs"
+             xmlns:views="clr-namespace:SS14.Launcher.Views.MainWindowTabs"
+             xmlns:loc="clr-namespace:SS14.Launcher.Localization"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="SS14.Launcher.Views.MainWindowTabs.ServerList">
+
+  <DataGrid Name="ServerGrid"
+            ItemsSource="{Binding Entries, RelativeSource={RelativeSource AncestorType=UserControl}}"
+            IsReadOnly="True"
+            RowDetailsVisibilityMode="VisibleWhenSelected"
+            HeadersVisibility="All"
+            HorizontalScrollBarVisibility="Disabled"
+            CanUserReorderColumns="True"
+            SelectionMode="Single"
+            RowHeight="30"
+            GridLinesVisibility="Vertical"
+            VerticalGridLinesBrush="{DynamicResource ThemeServerSeparatorColor}">
+    <DataGrid.Columns>
+      <DataGridTemplateColumn Header="{loc:Loc tab-servers-table-name}"
+                              Width="*"
+                              SortMemberPath="{x:Static vm:ServerEntryViewModel.NameSortKey}">
+        <DataGridTemplateColumn.CellTemplate>
+          <DataTemplate DataType="vm:ServerEntryViewModel">
+            <TextBlock Text="{Binding Name}" />
+          </DataTemplate>
+        </DataGridTemplateColumn.CellTemplate>
+      </DataGridTemplateColumn>
+      <DataGridTemplateColumn Header="{loc:Loc tab-servers-table-round-time}"
+                              MinWidth="85"
+                              CanUserSort="True"
+                              SortMemberPath="{x:Static vm:ServerEntryViewModel.TimeSortKey}">
+        <DataGridTemplateColumn.CellTemplate>
+          <DataTemplate DataType="vm:ServerEntryViewModel">
+            <TextBlock Text="{Binding RoundStatusString}"
+                       HorizontalAlignment="Right" />
+          </DataTemplate>
+        </DataGridTemplateColumn.CellTemplate>
+      </DataGridTemplateColumn>
+      <DataGridTemplateColumn Header="{loc:Loc tab-servers-table-players}"
+                              SortMemberPath="{x:Static vm:ServerEntryViewModel.PlayersSortKey}">
+        <DataGridTemplateColumn.CellTemplate>
+          <DataTemplate DataType="vm:ServerEntryViewModel">
+            <TextBlock Text="{Binding PlayerCountString}"
+                       HorizontalAlignment="Center" />
+          </DataTemplate>
+        </DataGridTemplateColumn.CellTemplate>
+      </DataGridTemplateColumn>
+      <DataGridTemplateColumn x:DataType="vm:ServerEntryViewModel">
+        <DataGridTemplateColumn.CellTemplate>
+          <DataTemplate DataType="vm:ServerEntryViewModel">
+            <Button Content="{loc:Loc server-entry-connect}"
+                    Command="{Binding ConnectPressed}" />
+          </DataTemplate>
+        </DataGridTemplateColumn.CellTemplate>
+      </DataGridTemplateColumn>
+    </DataGrid.Columns>
+    <DataGrid.RowDetailsTemplate>
+      <DataTemplate DataType="vm:ServerEntryViewModel">
+        <views:ServerEntryView Padding="4" />
+      </DataTemplate>
+    </DataGrid.RowDetailsTemplate>
+  </DataGrid>
+</UserControl>
