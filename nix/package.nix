@@ -16,21 +16,9 @@
   libXcursor,
   libXext,
   libXrandr,
-  fontconfig,
-  glew,
-  glfw,
-  glibc,
   libGL,
   freetype,
-  openal,
-  fluidsynth,
-  gtk3,
-  pango,
-  atk,
-  cairo,
-  zlib,
   glib,
-  gdk-pixbuf,
   alsa-lib,
   libjack2,
   pipewire,
@@ -46,7 +34,7 @@
   soundfont-path ? "${soundfont-fluid}/share/soundfonts/FluidR3_GM2-2.sf2",
 }:
 let
-  version = "0.35.0";
+  version = "0.36.1";
   pname = "space-station-14-launcher";
 in
 buildDotnetModule rec {
@@ -60,7 +48,7 @@ buildDotnetModule rec {
     owner = "space-wizards";
     repo = "SS14.Launcher";
     rev = "v${version}";
-    hash = "sha256-8YDlX5GwL5S/gdjIWOa48sEGA/sMEYZvy2FTWSPO+Ug=";
+    hash = "sha256-6wH2CkTuwy+a3EGpKrdLDsIaQ7oZc2I1OLdmAREMazw=";
     fetchSubmodules = true;
   };
 
@@ -82,10 +70,10 @@ buildDotnetModule rec {
   dotnet-sdk =
     with dotnetCorePackages;
     combinePackages [
-      sdk_9_0
+      sdk_10_0
       sdk_8_0
     ];
-  dotnet-runtime = dotnetCorePackages.runtime_9_0;
+  dotnet-runtime = dotnetCorePackages.runtime_10_0;
 
   dotnetFlags = [
     "-p:FullRelease=true"
@@ -94,48 +82,14 @@ buildDotnetModule rec {
   ];
 
   nativeBuildInputs = [
-    wrapGAppsHook3
     iconConvTools
     copyDesktopItems
   ];
 
-  LD_LIBRARY_PATH = lib.makeLibraryPath [
-    fontconfig
-    libX11
-    libICE
-    libSM
-    libXi
-    libXcursor
-    libXext
-    libXrandr
-
-    glfw
-    glibc
-    libGL
-    openal
-    freetype
-    fluidsynth
-  ];
-
   runtimeDeps = [
-    # Required by the game.
-    glfw
-    glibc
     libGL
-    openal
     freetype
-    fluidsynth
-
-    # Needed for file dialogs.
-    gtk3
-    pango
-    cairo
-    atk
-    zlib
     glib
-    gdk-pixbuf
-
-    # Avalonia UI dependencies.
     libX11
     libICE
     libSM
@@ -143,8 +97,6 @@ buildDotnetModule rec {
     libXcursor
     libXext
     libXrandr
-    fontconfig
-    glew
 
     # TODO: Figure out dependencies for CEF support.
   ]
