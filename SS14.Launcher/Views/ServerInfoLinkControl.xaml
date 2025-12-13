@@ -5,7 +5,8 @@
              xmlns:models="clr-namespace:SS14.Launcher.Models"
              xmlns:views="clr-namespace:SS14.Launcher.Views"
              mc:Ignorable="d" d:DesignWidth="300" d:DesignHeight="100" MinWidth="24" MinHeight="24"
-             x:Class="SS14.Launcher.Views.ServerInfoLinkControl">
+             x:Class="SS14.Launcher.Views.ServerInfoLinkControl"
+             x:DataType="models:ServerInfoLink">
   <Design.DataContext>
     <models:ServerInfoLink />
   </Design.DataContext>

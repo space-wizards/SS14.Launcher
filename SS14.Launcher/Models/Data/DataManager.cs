@@ -13,7 +13,7 @@ using Dapper;
 using DynamicData;
 using JetBrains.Annotations;
 using Microsoft.Data.Sqlite;
-using Microsoft.Toolkit.Mvvm.Messaging;
+using CommunityToolkit.Mvvm.Messaging;
 using ReactiveUI;
 using Serilog;
 using SS14.Launcher.Utility;

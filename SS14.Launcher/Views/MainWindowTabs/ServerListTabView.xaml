@@ -7,7 +7,8 @@
              xmlns:loc="clr-namespace:SS14.Launcher.Localization"
              xmlns:views="clr-namespace:SS14.Launcher.Views"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="SS14.Launcher.Views.MainWindowTabs.ServerListTabView">
+             x:Class="SS14.Launcher.Views.MainWindowTabs.ServerListTabView"
+             x:DataType="mainWindowTabs:ServerListTabViewModel">
   <Design.DataContext>
     <mainWindowTabs:ServerListTabViewModel />
   </Design.DataContext>

@@ -6,7 +6,8 @@
              xmlns:v="clr-namespace:SS14.Launcher.Views"
              xmlns:loc="clr-namespace:SS14.Launcher.Localization"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="SS14.Launcher.Views.LanguageSelector">
+             x:Class="SS14.Launcher.Views.LanguageSelector"
+             x:DataType="vm:LanguageSelectorViewModel">
   <Design.DataContext>
     <vm:LanguageSelectorViewModel />
   </Design.DataContext>

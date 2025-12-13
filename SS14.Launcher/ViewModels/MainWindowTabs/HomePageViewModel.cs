@@ -7,7 +7,7 @@ using Avalonia.Controls;
 using Avalonia.VisualTree;
 using DynamicData;
 using DynamicData.Alias;
-using ReactiveUI.Fody.Helpers;
+using ReactiveUI.SourceGenerators;
 using Splat;
 using SS14.Launcher.Localization;
 using SS14.Launcher.Models.Data;
@@ -104,7 +104,7 @@ public class HomePageViewModel : MainWindowTabViewModel
 
     private bool TryGetWindow([NotNullWhen(true)] out Window? window)
     {
-        window = Control?.GetVisualRoot() as Window;
+        window = Control?.GetPresentationSource()?.RootVisual as Window;
         return window != null;
     }
 

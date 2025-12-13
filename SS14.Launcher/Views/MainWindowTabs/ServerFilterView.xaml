@@ -4,7 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:mainWindowTabs="clr-namespace:SS14.Launcher.ViewModels.MainWindowTabs"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="SS14.Launcher.Views.MainWindowTabs.ServerFilterView">
+             x:Class="SS14.Launcher.Views.MainWindowTabs.ServerFilterView"
+             x:DataType="mainWindowTabs:ServerFilterViewModel">
   <Design.DataContext>
     <mainWindowTabs:ServerFilterViewModel />
   </Design.DataContext>

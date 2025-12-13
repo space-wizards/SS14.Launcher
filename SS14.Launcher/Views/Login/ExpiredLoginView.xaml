@@ -5,7 +5,8 @@
              xmlns:login="clr-namespace:SS14.Launcher.ViewModels.Login"
              xmlns:loc="clr-namespace:SS14.Launcher.Localization"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="SS14.Launcher.Views.Login.ExpiredLoginView">
+             x:Class="SS14.Launcher.Views.Login.ExpiredLoginView"
+             x:DataType="login:ExpiredLoginViewModel">
 
   <Design.DataContext>
     <login:ExpiredLoginViewModel />

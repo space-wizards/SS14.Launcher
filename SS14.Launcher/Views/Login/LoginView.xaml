@@ -4,9 +4,11 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vml="clr-namespace:SS14.Launcher.ViewModels.Login;assembly=SS14.Launcher"
              xmlns:loc="clr-namespace:SS14.Launcher.Localization"
+             xmlns:login="clr-namespace:SS14.Launcher.ViewModels.Login"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SS14.Launcher.Views.Login.LoginView"
-             Name="Login">
+             Name="Login"
+             x:DataType="login:LoginViewModel">
   <Design.DataContext>
     <vml:LoginViewModel />
   </Design.DataContext>
