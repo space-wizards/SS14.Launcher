@@ -23,6 +23,11 @@
   libjack2,
   pipewire,
   libpulseaudio,
+  at-spi2-atk,
+  at-spi2-core,
+  libxkbcommon,
+  wayland,
+  fontconfig,
   alsaSupport ? stdenv.hostPlatform.isLinux && !stdenv.hostPlatform.isAndroid,
   jackSupport ? stdenv.hostPlatform.isLinux && !stdenv.hostPlatform.isAndroid,
   pipewireSupport ? stdenv.hostPlatform.isLinux && !stdenv.hostPlatform.isAndroid,
@@ -43,14 +48,7 @@ buildDotnetModule rec {
   # Workaround to prevent buildDotnetModule from overriding assembly versions.
   name = "${pname}-${version}";
 
-  # A bit redundant but I don't trust this package to be maintained by anyone else.
-  src = fetchFromGitHub {
-    owner = "space-wizards";
-    repo = "SS14.Launcher";
-    rev = "v${version}";
-    hash = "sha256-6wH2CkTuwy+a3EGpKrdLDsIaQ7oZc2I1OLdmAREMazw=";
-    fetchSubmodules = true;
-  };
+  src = ../.;
 
   buildType = "Release";
   selfContainedBuild = false;
@@ -91,8 +89,11 @@ buildDotnetModule rec {
     libXcursor
     libXext
     libXrandr
-
-    # TODO: Figure out dependencies for CEF support.
+    at-spi2-atk
+    at-spi2-core
+    libxkbcommon
+    wayland
+    fontconfig.lib
   ]
   ++ lib.optional alsaSupport alsa-lib
   ++ lib.optional jackSupport libjack2
