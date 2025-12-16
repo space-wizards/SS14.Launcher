@@ -7,20 +7,22 @@
     flake = false;
   };
 
-
-  outputs = { self, nixpkgs, ... }:
+  outputs =
+    { self, nixpkgs, ... }:
     let
-      forAllSystems = function:
+      forAllSystems =
+        function:
         nixpkgs.lib.genAttrs [ "x86_64-linux" ] # TODO: aarch64-linux support
           (system: function system (import nixpkgs { inherit system; }));
     in
     {
 
-      packages = forAllSystems (system: pkgs: {
-        default = self.packages.${system}.space-station-14-launcher;
-        space-station-14-launcher =
-          pkgs.callPackage ./nix/package.nix { };
-      });
+      packages = forAllSystems (
+        system: pkgs: {
+          default = self.packages.${system}.space-station-14-launcher;
+          space-station-14-launcher = pkgs.callPackage ./nix/package.nix { };
+        }
+      );
 
       overlays = {
         default = self.overlays.space-station-14-launcher;
@@ -30,8 +32,12 @@
         };
       };
 
-      apps = forAllSystems (system: pkgs:
-        let pkg = self.packages.${system}.space-station-14-launcher; in {
+      apps = forAllSystems (
+        system: pkgs:
+        let
+          pkg = self.packages.${system}.space-station-14-launcher;
+        in
+        {
           default = self.apps.${system}.space-station-14-launcher;
           space-station-14-launcher = {
             type = "app";
@@ -39,10 +45,10 @@
           };
           fetch-deps = {
             type = "app";
-            program = toString
-              self.packages.${system}.space-station-14-launcher.passthru.fetch-deps;
+            program = toString self.packages.${system}.space-station-14-launcher.passthru.fetch-deps;
           };
-        });
+        }
+      );
 
       formatter = forAllSystems (_: pkgs: pkgs.nixpkgs-fmt);
 
