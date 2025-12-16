@@ -48,7 +48,14 @@ buildDotnetModule rec {
   # Workaround to prevent buildDotnetModule from overriding assembly versions.
   name = "${pname}-${version}";
 
-  src = ../.;
+  # A bit redundant but I don't trust this package to be maintained by anyone else.
+  src = fetchFromGitHub {
+    owner = "space-wizards";
+    repo = "SS14.Launcher";
+    rev = "v${version}";
+    hash = "sha256-6wH2CkTuwy+a3EGpKrdLDsIaQ7oZc2I1OLdmAREMazw=";
+    fetchSubmodules = true;
+  };
 
   buildType = "Release";
   selfContainedBuild = false;
