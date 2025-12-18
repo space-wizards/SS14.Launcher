@@ -708,6 +708,20 @@ public partial class Connector : ReactiveObject
 
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux) || RuntimeInformation.IsOSPlatform(OSPlatform.FreeBSD))
         {
+            // This is the flatpak path for gamemoderun.
+            if (Path.Exists("/app/bin/gamemoderun"))
+                return new ProcessStartInfo
+                {
+                    FileName = "/app/bin/gamemoderun",
+                    ArgumentList = { Path.Combine(basePath, "SS14.Loader") }
+                };
+            // This is for everything else.
+            if (Path.Exists("/usr/bin/gamemoderun"))
+                return new ProcessStartInfo
+                {
+                    FileName = "/usr/bin/gamemoderun",
+                    ArgumentList = { Path.Combine(basePath, "SS14.Loader") }
+                };
             return new ProcessStartInfo
             {
                 FileName = Path.Combine(basePath, "SS14.Loader")
