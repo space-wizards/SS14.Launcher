@@ -1,19 +1,19 @@
 using System;
-using System.Text.Json.Serialization;
-using ReactiveUI;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
 
 namespace SS14.Launcher.Models.Data;
 
-public sealed class FavoriteServer : ReactiveObject
+public sealed partial class FavoriteServer : ObservableObject
 {
-    private string? _name;
-    private DateTimeOffset _raiseTime;
+    public readonly string? Name;
 
-    // For serialization.
-    public FavoriteServer()
-    {
-        Address = default!;
-    }
+    public readonly string Address;
+
+    /// <summary>
+    /// Used to infer an exact ordering for servers in a simple, compatible manner.
+    /// Defaults to 0, this is fine.
+    /// </summary>
+    [ObservableProperty] private DateTimeOffset _raiseTime;
 
     public FavoriteServer(string? name, string address)
     {
@@ -26,26 +26,5 @@ public sealed class FavoriteServer : ReactiveObject
         Name = name;
         Address = address;
         RaiseTime = raiseTime;
-    }
-
-    [JsonPropertyName("name")]
-    public string? Name
-    {
-        get => _name;
-        set => this.RaiseAndSetIfChanged(ref _name, value);
-    }
-
-    [JsonPropertyName("address")]
-    public string Address { get; private set; } // Need private set for JSON.NET to work.
-
-    /// <summary>
-    /// Used to infer an exact ordering for servers in a simple, compatible manner.
-    /// Defaults to 0, this is fine.
-    /// This isn't saved in JSON because the launcher apparently doesn't use JSON for these anymore.
-    /// </summary>
-    public DateTimeOffset RaiseTime
-    {
-        get => _raiseTime;
-        set => this.RaiseAndSetIfChanged(ref _raiseTime, value);
     }
 }

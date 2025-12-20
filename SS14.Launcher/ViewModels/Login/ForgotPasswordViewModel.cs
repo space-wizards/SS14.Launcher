@@ -1,25 +1,15 @@
-using ReactiveUI.Fody.Helpers;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
 using SS14.Launcher.Api;
 using SS14.Launcher.Localization;
 
 namespace SS14.Launcher.ViewModels.Login;
 
-public sealed class ForgotPasswordViewModel : BaseLoginViewModel
+public sealed partial class ForgotPasswordViewModel(MainWindowLoginViewModel parentVM, AuthApi authApi)
+    : BaseLoginViewModel(parentVM)
 {
-    private readonly AuthApi _authApi;
     private readonly LocalizationManager _loc = LocalizationManager.Instance;
-
-    [Reactive] public string EditingEmail { get; set; } = "";
-
+    [ObservableProperty] private string _email = "";
     private bool _errored;
-
-    public ForgotPasswordViewModel(
-        MainWindowLoginViewModel parentVM,
-        AuthApi authApi)
-        : base(parentVM)
-    {
-        _authApi = authApi;
-    }
 
     public async void SubmitPressed()
     {
@@ -30,17 +20,16 @@ public sealed class ForgotPasswordViewModel : BaseLoginViewModel
         try
         {
             BusyText = "Sending email...";
-            var errors = await _authApi.ForgotPasswordAsync(EditingEmail);
+            var errors = await authApi.ForgotPasswordAsync(Email);
 
             _errored = errors != null;
 
             if (!_errored)
             {
                 // This isn't an error lol but that's what I called the control.
-                OverlayControl = new AuthErrorsOverlayViewModel(this, _loc.GetString("login-forgot-success-title"), new[]
-                {
-                    _loc.GetString("login-forgot-success-message")
-                });
+                OverlayControl = new AuthErrorsOverlayViewModel(this, _loc.GetString("login-forgot-success-title"), [
+                    _loc.GetString("login-forgot-success-message"),
+                ]);
             }
             else
             {

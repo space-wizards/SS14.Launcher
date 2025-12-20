@@ -1,7 +1,5 @@
-using System;
 using System.Threading.Tasks;
-using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
 using SS14.Launcher.Api;
 using SS14.Launcher.Localization;
 using SS14.Launcher.Models.Data;
@@ -9,18 +7,16 @@ using SS14.Launcher.Models.Logins;
 
 namespace SS14.Launcher.ViewModels.Login;
 
-public class LoginViewModel : BaseLoginViewModel
+public partial class LoginViewModel : BaseLoginViewModel
 {
     private readonly AuthApi _authApi;
     private readonly LoginManager _loginMgr;
     private readonly DataManager _dataManager;
     private readonly LocalizationManager _loc = LocalizationManager.Instance;
 
-    [Reactive] public string EditingUsername { get; set; } = "";
-    [Reactive] public string EditingPassword { get; set; } = "";
-
-    [Reactive] public bool IsInputValid { get; private set; }
-    [Reactive] public bool IsPasswordVisible { get; set; }
+    [ObservableProperty] private string _username = "";
+    [ObservableProperty] private string _password = "";
+    [ObservableProperty] private bool _isInputValid;
 
     public LoginViewModel(MainWindowLoginViewModel parentVm, AuthApi authApi,
         LoginManager loginMgr, DataManager dataManager) : base(parentVm)
@@ -30,8 +26,16 @@ public class LoginViewModel : BaseLoginViewModel
         _loginMgr = loginMgr;
         _dataManager = dataManager;
 
-        this.WhenAnyValue(x => x.EditingUsername, x => x.EditingPassword)
-            .Subscribe(s => { IsInputValid = !string.IsNullOrEmpty(s.Item1) && !string.IsNullOrEmpty(s.Item2); });
+        PropertyChanged += (_, e) =>
+        {
+            switch (e.PropertyName)
+            {
+                case nameof(Username):
+                case nameof(Password):
+                    IsInputValid = !string.IsNullOrEmpty(Username) && !string.IsNullOrEmpty(Password);
+                    break;
+            }
+        };
     }
 
     public async void OnLogInButtonPressed()
@@ -44,7 +48,7 @@ public class LoginViewModel : BaseLoginViewModel
         Busy = true;
         try
         {
-            var request = new AuthApi.AuthenticateRequest(EditingUsername, EditingPassword);
+            var request = new AuthApi.AuthenticateRequest(Username, Password);
             var resp = await _authApi.AuthenticateAsync(request);
 
             await DoLogin(this, request, resp, _loginMgr, _authApi);

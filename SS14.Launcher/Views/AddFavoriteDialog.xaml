@@ -14,14 +14,16 @@
 
   <DockPanel LastChildFill="true">
     <DockPanel DockPanel.Dock="Bottom">
-      <Button DockPanel.Dock="Right" HorizontalAlignment="Right" Name="SubmitButton" Content="Add" />
+      <Button DockPanel.Dock="Right" HorizontalAlignment="Right" Name="SubmitButton" Content="Add" Click="TrySubmit" />
       <TextBlock Text="{loc:Loc add-favorite-window-address-invalid}"  VerticalAlignment="Center" Name="TxtInvalid" />
     </DockPanel>
     <Grid Margin="4" ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto">
       <TextBlock VerticalAlignment="Center" Margin="0,0,4,0" Grid.Column="0" Grid.Row="0" Text="{loc:Loc add-favorite-window-label-name}" />
       <TextBlock VerticalAlignment="Center" Margin="0,0,4,0" Grid.Column="0" Grid.Row="1" Text="{loc:Loc add-favorite-window-label-address}" />
-      <TextBox Grid.Column="1" Grid.Row="0" Name="NameBox" Watermark="{loc:Loc add-favorite-window-example-name}" />
-      <TextBox Grid.Column="1" Grid.Row="1" Name="AddressBox" Watermark="ss14://example.com" />
+      <TextBox Grid.Column="1" Grid.Row="0" Name="NameBox" Watermark="{loc:Loc add-favorite-window-example-name}"
+               TextChanged="UpdateSubmitValid" />
+      <TextBox Grid.Column="1" Grid.Row="1" Name="AddressBox" Watermark="ss14://example.com"
+               TextChanged="UpdateSubmitValid" />
     </Grid>
   </DockPanel>
 </Window>
