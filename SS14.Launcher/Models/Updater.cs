@@ -191,25 +191,14 @@ public sealed partial class Updater : ReactiveObject
 
                 Log.Debug("Did not already have this content bundle, ingesting as new version {Version}", versionId);
 
-                if (metadata.BaseBuild is { } baseBuildData)
+                if (metadata.BaseBuild is not null)
                 {
                     Log.Debug("Content bundle has base build info, downloading...");
 
                     // We have a base build to download.
                     // Copy it into the new AnonymousContentBundle version before loading the rest of the zip contents.
                     var baseBuildId = await TouchOrDownloadContentUpdate(
-                        new ServerBuildInformation
-                        {
-                            DownloadUrl = baseBuildData.DownloadUrl,
-                            ManifestUrl = baseBuildData.ManifestUrl,
-                            ManifestDownloadUrl = baseBuildData.ManifestDownloadUrl,
-                            EngineVersion = metadata.EngineVersion,
-                            Version = baseBuildData.Version,
-                            ForkId = baseBuildData.ForkId,
-                            Hash = baseBuildData.Hash,
-                            ManifestHash = baseBuildData.ManifestHash,
-                            Acz = false
-                        },
+                        metadata.GetBaseBuildInformation(),
                         con,
                         moduleManifest,
                         new TransactedDownloadState(),

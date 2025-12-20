@@ -3,5 +3,9 @@
 /// <summary>
 /// Information loaded by the updater that we need to launch the game.
 /// </summary>
-public sealed record ContentLaunchInfo(long Version, (string Module, string Version)[] ModuleInfo, bool ServerGC = false);
+public sealed record ContentLaunchInfo(
+    long Version,
+    (string Module, string Version)[] ModuleInfo,
+    bool ServerGC = false,
+    string? OverlayZip = null);
 

@@ -128,7 +128,10 @@ public partial class Connector : ReactiveObject
         // Run update.
         Status = ConnectionStatus.Updating;
 
-        var installation = await RunUpdateAsync(info, cancel);
+        // Must have been set when retrieving build info (inferred to be automatic zipping).
+        Debug.Assert(info.BuildInformation != null, "info.BuildInformation != null");
+
+        var installation = await RunUpdateAsync(info.BuildInformation, cancel);
 
         var connectAddress = GetConnectAddress(info, infoAddr);
 
@@ -261,9 +264,25 @@ public partial class Connector : ReactiveObject
             // The launcher will create a new version in the Content DB that contains just the manifest.yml.
             // (or base build data overlaid if necessary)
             // The loader would still be in charge of transparently merging in the zip file at runtime.
-            //
 
-            installation = await InstallContentBundleAsync(zipFile, zipHash, metadata, cancel);
+            //
+            // EXCEPT!
+            // SS14 replays, the biggest files, don't have a manifest.yml! So that above comment is all for naught!
+            // We only ingest into the ContentDB if there isn't a manifest.yml and there *is* a base build.
+            // Why this set of requirements? ...because it's the least intrusive to make SS14 replays better.
+            // Also, we need to actually be able to access the zip as a path to give it to the launcher.
+            //
+            if (zipFile.GetEntry("manifest.yml") is null
+                && metadata.BaseBuild is not null
+                && file.TryGetLocalPath() is { } localPath)
+            {
+                installation = await RunUpdateAsync(metadata.GetBaseBuildInformation(), cancel);
+                installation = installation with { OverlayZip = localPath };
+            }
+            else
+            {
+                installation = await InstallContentBundleAsync(zipFile, zipHash, metadata, cancel);
+            }
 
             if (metadata.ServerGC == true)
                 installation = installation with { ServerGC = true };
@@ -429,12 +448,9 @@ public partial class Connector : ReactiveObject
         }
     }
 
-    private async Task<ContentLaunchInfo> RunUpdateAsync(ServerInfo info, CancellationToken cancel)
+    private async Task<ContentLaunchInfo> RunUpdateAsync(ServerBuildInformation info, CancellationToken cancel)
     {
-        // Must have been set when retrieving build info (inferred to be automatic zipping).
-        Debug.Assert(info.BuildInformation != null, "info.BuildInformation != null");
-
-        var installation = await _updater.RunUpdateForLaunchAsync(info.BuildInformation, cancel);
+        var installation = await _updater.RunUpdateForLaunchAsync(info, cancel);
         if (installation == null)
         {
             throw new ConnectException(ConnectionStatus.UpdateError);
@@ -530,6 +546,7 @@ public partial class Connector : ReactiveObject
 
         EnvVar("SS14_LOADER_CONTENT_DB", LauncherPaths.PathContentDb);
         EnvVar("SS14_LOADER_CONTENT_VERSION", launchInfo.Version.ToString());
+        EnvVar("SS14_LOADER_OVERLAY_ZIP", launchInfo.OverlayZip);
 
         // Env vars for engine modules.
         {
@@ -821,10 +838,33 @@ public partial class Connector : ReactiveObject
 }
 
 public sealed record ContentBundleMetadata(
-    [property: JsonPropertyName("server_gc")] bool? ServerGC,
-    [property: JsonPropertyName("engine_version")] string EngineVersion,
-    [property: JsonPropertyName("base_build")] ContentBundleBaseBuild? BaseBuild
-);
+    [property: JsonPropertyName("server_gc")]
+    bool? ServerGC,
+    [property: JsonPropertyName("engine_version")]
+    string EngineVersion,
+    [property: JsonPropertyName("base_build")]
+    ContentBundleBaseBuild? BaseBuild
+)
+{
+    public ServerBuildInformation GetBaseBuildInformation()
+    {
+        if (BaseBuild == null)
+            throw new InvalidOperationException("Metadata must have base build!");
+
+        return new ServerBuildInformation
+        {
+            DownloadUrl = BaseBuild.DownloadUrl,
+            ManifestUrl = BaseBuild.ManifestUrl,
+            ManifestDownloadUrl = BaseBuild.ManifestDownloadUrl,
+            EngineVersion = EngineVersion,
+            Version = BaseBuild.Version,
+            ForkId = BaseBuild.ForkId,
+            Hash = BaseBuild.Hash,
+            ManifestHash = BaseBuild.ManifestHash,
+            Acz = false
+        };
+    }
+}
 
 public sealed record ContentBundleBaseBuild(
     [property: JsonPropertyName("fork_id")] string ForkId,
