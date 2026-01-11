@@ -106,7 +106,7 @@ direct-connect-connect = Konekti
 direct-connect-title = Rekta Konekti
 connecting-privacy-policy-accept = Akcepti (daŭrigi)
 connecting-privacy-policy-decline = Malakcepti (malkonekti)
-hub-settings-button-done = Fini
+hub-settings-button-done = Konservi
 connecting-privacy-policy-view = Legi privatecan politikon
 hub-settings-title = Agordoj de Servilejo
 login-log-launcher = Registri Lanĉilon
@@ -136,7 +136,7 @@ login-login-show-password = Montri Pasvorton
 login-login-username-watermark = Uzantnomo aŭ retpoŝtadreso
 login-login-busy-logging-in = Ensalutas…
 login-confirmation-busy = Ensalutas…
-main-window-header-link-discord = Discord
+main-window-header-link-discord = Diskordo
 main-window-early-access-title = Atentu!
 main-window-busy-checking-login-status = Aktualiganta staton de ensaluto…
 main-window-error-unknown = Okazis nekonata eraro
@@ -195,7 +195,7 @@ connecting-status-update-error =
     - Provu konektiĝi al alia ludservlio por vidi ĉu la atentindaĵo daŭras.
     - Provu ŝalti aŭ malŝalti softvaron kiel VPNojn, se vi havas ajnan.
 
-    Se vi ankoraŭ havas problemojn, unue provu kontakti la administratojn de la servilo al kiu vi provas konekti, antaŭ ol peti asiston en la Oficiala Discord aŭ Oficiala Forumo de Space Station 14.
+    Se vi ankoraŭ havas problemojn, unue provu kontakti la administratojn de la servilo al kiu vi provas konekti, antaŭ ol peti asiston en la Oficiala Diskordo aŭ Oficiala Forumo de Space Station 14.
 
     Teknika eraro: { $err }
 connecting-update-status-downloading-engine-modules = Elŝutanta ceterajn dependeĵojn…
@@ -273,7 +273,7 @@ tab-options-log-client-desc = Ebligas registradon de eligaĵo de la ludkliento. 
 tab-options-desc-incompatible = Ĉi tiu opcio ne kongruas kun via platformo kaj estas malŝaltita.
 language-selector-help-translate = Volas helpi traduki? Vi povas!
 language-selector-system-language = Sistema lingvo ({ $languageName })
-connecting-status-client-crashed = Kliento verŝajne kraŝis dum lanĉado. Se tio daŭras, bonvolu peti asiston en Discord aŭ GitHub.
+connecting-status-client-crashed = Kliento verŝajne kraŝis dum lanĉado. Se tio daŭras, bonvolu peti asiston en Diskordo aŭ GitHub.
 connecting-privacy-policy-text = Ĉi tiu servilo postulas ke vi akceptu ĝian privatecan politikon antaŭ ol konekti.
 connecting-privacy-policy-text-version-changed = Ĉi tiu servilo ŝanĝiĝis sian privatecan politikon post kiam vi lastfoje ludis. Vi devas akcepti la novan version antaŭ ol konekti.
 hub-settings-explanation = Ĉe tie vi povas aldoni pliajn servilejojn el kiuj legi servilojn el. Vi aldonu nur servilejojn kiujn vi fidas, ĉar ĝi povas 'falsigi' ludservilojn de aliaj servilejoj. La ordo de la servilejoj gravas; se du servilejoj anoncus la saman ludservilon, la servilejo kun la pli alta prioritato (supre en la listo) prioritatigus.
