@@ -55,7 +55,9 @@ public sealed class RowSideAlignedPanel : Panel
         {
             // They don't fit on the same row, make two rows.
             left.Arrange(new Rect(0, 0, leftSize.Width, leftSize.Height));
-            right.Arrange(new Rect(finalSize.Width - rightSize.Width, leftSize.Height, rightSize.Width, finalSize.Height - leftSize.Height));
+
+            right.Arrange(new Rect(finalSize.Width - rightSize.Width, leftSize.Height, rightSize.Width,
+                Math.Max(finalSize.Height - leftSize.Height, 0)));
 
             return finalSize;
         }
