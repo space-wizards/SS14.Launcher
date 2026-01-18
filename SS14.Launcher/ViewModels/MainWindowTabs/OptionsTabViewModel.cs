@@ -27,12 +27,6 @@ public class OptionsTabViewModel : MainWindowTabViewModel
     }
     public bool DisableIncompatibleMacOS { get; }
 
-#if RELEASE
-        public bool HideDisableSigning => true;
-#else
-    public bool HideDisableSigning => false;
-#endif
-
     public override string Name => LocalizationManager.Instance.GetString("tab-options-title");
 
     public bool CompatMode
@@ -51,16 +45,6 @@ public class OptionsTabViewModel : MainWindowTabViewModel
         set
         {
             Cfg.SetCVar(CVars.LogLauncherVerbose, value);
-            Cfg.CommitConfig();
-        }
-    }
-
-    public bool DisableSigning
-    {
-        get => Cfg.GetCVar(CVars.DisableSigning);
-        set
-        {
-            Cfg.SetCVar(CVars.DisableSigning, value);
             Cfg.CommitConfig();
         }
     }
