@@ -378,3 +378,8 @@ language-selector-help-translate = Want to help translate? You can!
 language-selector-system-language = System language ({ $languageName })
 # Used for contents of each language button.
 language-selector-language = { $languageName } ({ $englishName })
+
+## Miscellaneous
+
+# Generic "Done!" message used for some buttons.
+button-done = Done!
