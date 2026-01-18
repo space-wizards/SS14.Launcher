@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
@@ -34,25 +35,36 @@ public sealed class ContentManager
     /// <summary>
     /// Clear ALL installed server content and try to truncate the DB.
     /// </summary>
-    public void ClearAll()
+    /// <returns><see langword="false"/> if a client is running and blocking the purge.</returns>
+    public async Task<bool> ClearAll()
     {
-        Task.Run(() =>
+        return await Task.Run(() =>
         {
             try
             {
                 using var con = GetSqliteConnection();
 
-                using var transact = con.BeginTransaction();
+                using var transact = con.BeginTransaction(deferred: true);
+
+                if (GetRunningClientVersions(con).Count > 0)
+                {
+                    // In case GetRunningClientVersions cleaned anything up.
+                    transact.Commit();
+                    return false;
+                }
+
                 con.Execute("DELETE FROM InterruptedDownload");
                 con.Execute("DELETE FROM ContentVersion");
                 con.Execute("DELETE FROM Content");
                 transact.Commit();
 
                 con.Execute("VACUUM");
+                return true;
             }
             catch (Exception e)
             {
                 Log.Error(e, "Error while truncating content DB!");
+                return true;
             }
         });
     }
@@ -112,5 +124,55 @@ public sealed class ContentManager
         // (also it means that hitting the "clear server content" button in settings IMMEDIATELY truncates the DB file
         // instead of waiting for the launcher to exit, at least if the client isn't running so it can checkpoint)
         return $"Data Source={LauncherPaths.PathContentDb};Mode=ReadWriteCreate;Pooling=False;Foreign Keys=True";
+    }
+
+    /// <summary>
+    /// Get a list of content version IDs that are in use by running clients.
+    /// </summary>
+    /// <remarks>
+    /// This method may make modifications to the DB to remove orphaned <c>RunningClient</c> entries.
+    /// </remarks>
+    internal static List<long> GetRunningClientVersions(SqliteConnection con)
+    {
+        var running = new List<long>();
+        var toRemove = new List<int>();
+
+        var dbRunning = con.Query<(int, string, long)>("SELECT ProcessId, MainModule, UsedVersion FROM RunningClient");
+
+        foreach (var (pid, mainModule, usedVersion) in dbRunning)
+        {
+            if (IsProcessStillRunning(pid, mainModule))
+                running.Add(usedVersion);
+            else
+                toRemove.Add(pid);
+        }
+
+        foreach (var pid in toRemove)
+        {
+            Log.Debug("Removing died client {Pid} from RunningClient", pid);
+
+            con.Execute("DELETE FROM RunningClient WHERE ProcessId = @ProcessId", new
+            {
+                ProcessId = pid
+            });
+        }
+
+        return running;
+    }
+
+    private static bool IsProcessStillRunning(int pid, string mainModule)
+    {
+        Process proc;
+        try
+        {
+            proc = Process.GetProcessById(pid);
+        }
+        catch (ArgumentException)
+        {
+            // Process doesn't exist.
+            return false;
+        }
+
+        return proc.MainModule?.FileName == mainModule;
     }
 }

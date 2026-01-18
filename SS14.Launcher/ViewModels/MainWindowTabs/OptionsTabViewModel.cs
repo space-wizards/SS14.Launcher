@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using Splat;
 using SS14.Launcher.Localization;
 using SS14.Launcher.Models.ContentManagement;
@@ -64,9 +65,9 @@ public class OptionsTabViewModel : MainWindowTabViewModel
         _engineManager.ClearAllEngines();
     }
 
-    public void ClearServerContent()
+    public async Task<bool> ClearServerContent()
     {
-        _contentManager.ClearAll();
+        return await _contentManager.ClearAll();
     }
 
     public void OpenLogDirectory()
