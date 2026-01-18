@@ -12,9 +12,11 @@
         WindowStartupLocation="CenterOwner">
 
   <DockPanel Margin="4">
-    <TextBlock Classes="NanoHeadingMedium" DockPanel.Dock="Top" Text="{loc:Loc direct-connect-text}" />
+    <TextBlock Classes="NanoHeadingMedium" DockPanel.Dock="Top"
+               Text="{loc:Loc direct-connect-text}" />
+
     <DockPanel DockPanel.Dock="Bottom" Margin="0 4 0 0">
-      <Button DockPanel.Dock="Right" Name="SubmitButton" Content="{loc:Loc direct-connect-connect}" />
+      <Button DockPanel.Dock="Right" Name="SubmitButton" Content="{loc:Loc direct-connect-connect}" IsDefault="True" Click="TrySubmit" />
       <TextBlock Name="InvalidLabel" Text="{loc:Loc direct-connect-address-invalid}" VerticalAlignment="Center" />
     </DockPanel>
 

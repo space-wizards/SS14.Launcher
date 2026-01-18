@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
-using System.Reactive.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Avalonia.Platform.Storage;
 using DynamicData;
-using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Serilog;
 using Splat;
 using SS14.Launcher.Api;
@@ -25,18 +24,17 @@ using SS14.Launcher.Views;
 
 namespace SS14.Launcher.ViewModels;
 
-public sealed class MainWindowViewModel : ViewModelBase, IErrorOverlayOwner
+public sealed partial class MainWindowViewModel : ViewModelBase, IErrorOverlayOwner
 {
     private readonly DataManager _cfg;
     private readonly LoginManager _loginMgr;
-    private readonly HttpClient _http;
     private readonly LauncherInfoManager _infoManager;
     private readonly LocalizationManager _loc;
 
     private int _selectedIndex;
 
     public DataManager Cfg => _cfg;
-    [Reactive] public bool OutOfDate { get; private set; }
+    [ObservableProperty] private bool _outOfDate;
 
     public HomePageViewModel HomeTab { get; }
     public ServerListTabViewModel ServersTab { get; }
@@ -47,7 +45,6 @@ public sealed class MainWindowViewModel : ViewModelBase, IErrorOverlayOwner
     {
         _cfg = Locator.Current.GetRequiredService<DataManager>();
         _loginMgr = Locator.Current.GetRequiredService<LoginManager>();
-        _http = Locator.Current.GetRequiredService<HttpClient>();
         _infoManager = Locator.Current.GetRequiredService<LauncherInfoManager>();
         _loc = LocalizationManager.Instance;
 
@@ -56,45 +53,34 @@ public sealed class MainWindowViewModel : ViewModelBase, IErrorOverlayOwner
         HomeTab = new HomePageViewModel(this);
         OptionsTab = new OptionsTabViewModel();
 
-        var tabs = new List<MainWindowTabViewModel>();
-        tabs.Add(HomeTab);
-        tabs.Add(ServersTab);
-        tabs.Add(NewsTab);
-        tabs.Add(OptionsTab);
+        Tabs = new List<MainWindowTabViewModel>
+        {
+            HomeTab,
+            ServersTab,
+            NewsTab,
+            OptionsTab,
 #if DEVELOPMENT
-        tabs.Add(new DevelopmentTabViewModel());
+            new DevelopmentTabViewModel(),
 #endif
-        Tabs = tabs;
+        };
 
         AccountDropDown = new AccountDropDownViewModel(this);
         LoginViewModel = new MainWindowLoginViewModel();
 
-        this.WhenAnyValue(x => x._loginMgr.ActiveAccount)
-            .Subscribe(s =>
-            {
-                this.RaisePropertyChanged(nameof(Username));
-                this.RaisePropertyChanged(nameof(LoggedIn));
-            });
+        PropertyChanged += (_, e) =>
+        {
+            if (e.PropertyName is nameof(LoggedIn) && LoggedIn)
+                RunSelectedOnTab();
+        };
+
+        _loginMgr.PropertyChanged += (_, e) =>
+        {
+            if (e.PropertyName is nameof(_loginMgr.ActiveAccount))
+                OnPropertyChanged(new PropertyChangedEventArgs(nameof(LoggedIn)));
+        };
 
         _cfg.Logins.Connect()
-            .Subscribe(_ => { this.RaisePropertyChanged(nameof(AccountDropDownVisible)); });
-
-        // If we leave the login view model (by an account getting selected)
-        // we reset it to login state
-        this.WhenAnyValue(x => x.LoggedIn)
-            .DistinctUntilChanged() // Only when change.
-            .Subscribe(x =>
-            {
-                if (x)
-                {
-                    // "Switch" to main window.
-                    RunSelectedOnTab();
-                }
-                else
-                {
-                    LoginViewModel.SwitchToLogin();
-                }
-            });
+            .Subscribe(_ => OnPropertyChanged(new PropertyChangedEventArgs(nameof(AccountDropDownVisible))));
     }
 
     public MainWindow? Control { get; set; }
@@ -102,17 +88,16 @@ public sealed class MainWindowViewModel : ViewModelBase, IErrorOverlayOwner
     public IReadOnlyList<MainWindowTabViewModel> Tabs { get; }
 
     public bool LoggedIn => _loginMgr.ActiveAccount != null;
-    private string? Username => _loginMgr.ActiveAccount?.Username;
     public bool AccountDropDownVisible => _loginMgr.Logins.Count != 0;
 
     public AccountDropDownViewModel AccountDropDown { get; }
 
     public MainWindowLoginViewModel LoginViewModel { get; }
 
-    [Reactive] public ConnectingViewModel? ConnectingVM { get; set; }
+    [ObservableProperty] private ConnectingViewModel? _connectingVM;
 
-    [Reactive] public string? BusyTask { get; private set; }
-    [Reactive] public ViewModelBase? OverlayViewModel { get; private set; }
+    [ObservableProperty] private string? _busyTask;
+    [ObservableProperty] private ViewModelBase? _overlayViewModel;
 
     public int SelectedIndex
     {
@@ -122,7 +107,12 @@ public sealed class MainWindowViewModel : ViewModelBase, IErrorOverlayOwner
             var previous = Tabs[_selectedIndex];
             previous.IsSelected = false;
 
-            this.RaiseAndSetIfChanged(ref _selectedIndex, value);
+            if (!EqualityComparer<int>.Default.Equals(_selectedIndex, value))
+            {
+                OnPropertyChanging();
+                _selectedIndex = value;
+                OnPropertyChanged();
+            }
 
             RunSelectedOnTab();
         }
@@ -214,14 +204,14 @@ public sealed class MainWindowViewModel : ViewModelBase, IErrorOverlayOwner
     {
         Cfg.SetCVar(CVars.HasDismissedIntelDegradation, true);
         Cfg.CommitConfig();
-        this.RaisePropertyChanged(nameof(ShouldShowIntelDegradationWarning));
+        OnPropertyChanged(nameof(ShouldShowIntelDegradationWarning));
     }
 
     public void DismissAppleSiliconRosettaPressed()
     {
         Cfg.SetCVar(CVars.HasDismissedRosettaWarning, true);
         Cfg.CommitConfig();
-        this.RaisePropertyChanged(nameof(ShouldShowRosettaWarning));
+        OnPropertyChanged(nameof(ShouldShowRosettaWarning));
     }
 
     public void SelectTabServers()

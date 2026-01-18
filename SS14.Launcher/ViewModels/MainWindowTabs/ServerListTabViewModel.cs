@@ -1,10 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using System.Reactive.Linq;
-using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
+using System.Linq;
+using Avalonia.Threading;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Splat;
 using SS14.Launcher.Localization;
 using SS14.Launcher.Models.ServerStatus;
@@ -12,25 +11,36 @@ using SS14.Launcher.Utility;
 
 namespace SS14.Launcher.ViewModels.MainWindowTabs;
 
-public class ServerListTabViewModel : MainWindowTabViewModel
+public partial class ServerListTabViewModel : MainWindowTabViewModel
 {
     private readonly LocalizationManager _loc = LocalizationManager.Instance;
     private readonly MainWindowViewModel _windowVm;
     private readonly ServerListCache _serverListCache;
 
-    public ObservableCollection<ServerEntryViewModel> SearchedServers { get; } = new();
+    public ObservableList<ServerEntryViewModel> SearchedServers { get; } = [];
 
     private string? _searchString;
+    private readonly DispatcherTimer _searchThrottle = new() { Interval = TimeSpan.FromMilliseconds(200) };
 
     public override string Name => _loc.GetString("tab-servers-title");
 
     public string? SearchString
     {
         get => _searchString;
-        set => this.RaiseAndSetIfChanged(ref _searchString, value);
-    }
+        set
+        {
+            if (_searchString == value)
+                return;
 
-    private const int throttleMs = 200;
+            OnPropertyChanging();
+            _searchString = value;
+            OnPropertyChanged();
+
+            // Search string was changed, stop a potential old throttle timer and restart it
+            _searchThrottle.Stop();
+            _searchThrottle.Start();
+        }
+    }
 
     public bool SpinnerVisible => _serverListCache.Status < RefreshListStatus.Updated;
 
@@ -62,7 +72,7 @@ public class ServerListTabViewModel : MainWindowTabViewModel
         }
     }
 
-    [Reactive] public bool FiltersVisible { get; set; }
+    [ObservableProperty] private bool _filtersVisible;
 
     public ServerListFiltersViewModel Filters { get; }
 
@@ -81,18 +91,20 @@ public class ServerListTabViewModel : MainWindowTabViewModel
             switch (args.PropertyName)
             {
                 case nameof(ServerListCache.Status):
-                    this.RaisePropertyChanged(nameof(ListText));
-                    this.RaisePropertyChanged(nameof(SpinnerVisible));
+                    OnPropertyChanged(nameof(ListText));
+                    OnPropertyChanged(nameof(SpinnerVisible));
                     break;
             }
         };
 
-        _loc.LanguageSwitched += () => Filters.UpdatePresentFilters(_serverListCache.AllServers);
+        _searchThrottle.Tick += (_, _) =>
+        {
+            // Interval since last search string change has passed, stop the timer and update the list
+            _searchThrottle.Stop();
+            UpdateSearchedList();
+        };
 
-        this.WhenAnyValue(x => x.SearchString)
-            .Throttle(TimeSpan.FromMilliseconds(throttleMs), RxApp.MainThreadScheduler)
-            .ObserveOn(RxApp.MainThreadScheduler)
-            .Subscribe(_ => UpdateSearchedList());
+        _loc.LanguageSwitched += () => Filters.UpdatePresentFilters(_serverListCache.AllServers);
     }
 
     private void FiltersOnFiltersUpdated()
@@ -133,14 +145,10 @@ public class ServerListTabViewModel : MainWindowTabViewModel
 
         sortList.Sort(ServerSortComparer.Instance);
 
-        SearchedServers.Clear();
-        foreach (var server in sortList)
-        {
-            var vm = new ServerEntryViewModel(_windowVm, server, _serverListCache, _windowVm.Cfg);
-            SearchedServers.Add(vm);
-        }
+        SearchedServers.SetItems(sortList.Select(server
+            => new ServerEntryViewModel(_windowVm, server, _serverListCache, _windowVm.Cfg)));
 
-        this.RaisePropertyChanged(nameof(ListText));
+        OnPropertyChanged(nameof(ListText));
     }
 
     private bool DoesSearchMatch(ServerStatusData data)

@@ -14,7 +14,7 @@
 
   <ScrollViewer HorizontalScrollBarVisibility="Disabled">
     <DockPanel>
-      <Button Content="{loc:Loc tab-options-flip}" DockPanel.Dock="Bottom" HorizontalAlignment="Right" Name="Flip" />
+      <Button Content="{loc:Loc tab-options-flip}" DockPanel.Dock="Bottom" HorizontalAlignment="Right" Click="Flip" />
       <Button Name="ClearEnginesButton" Content="{loc:Loc tab-options-clear-engines}" DockPanel.Dock="Bottom"
               HorizontalAlignment="Left" Click="ClearEnginesPressed" />
       <Button Name="ClearServerContentButton" Content="{loc:Loc tab-options-clear-content}" DockPanel.Dock="Bottom"

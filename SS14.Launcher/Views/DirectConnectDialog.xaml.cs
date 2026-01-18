@@ -1,45 +1,30 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
-using System.Reactive.Linq;
 using Avalonia.Controls;
 using Avalonia.Input;
-using ReactiveUI;
+using Avalonia.Interactivity;
 
 namespace SS14.Launcher.Views;
 
 public partial class DirectConnectDialog : Window
 {
-    private readonly TextBox _addressBox;
-
     public DirectConnectDialog()
     {
         InitializeComponent();
 
-        _addressBox = AddressBox;
-        _addressBox.KeyDown += (_, args) =>
+        AddressBox.TextChanged += (_, _) =>
         {
-            if (args.Key == Key.Enter)
-            {
-                TrySubmit();
-            }
+            var valid = IsAddressValid(AddressBox.Text);
+            InvalidLabel.IsVisible = !valid;
+            SubmitButton.IsEnabled = valid;
         };
-
-        SubmitButton.Command = ReactiveCommand.Create(TrySubmit);
-
-        this.WhenAnyValue(x => x._addressBox.Text)
-            .Select(IsAddressValid)
-            .Subscribe(b =>
-            {
-                InvalidLabel.IsVisible = !b;
-                SubmitButton.IsEnabled = b;
-            });
     }
 
     protected override void OnOpened(EventArgs e)
     {
         base.OnOpened(e);
 
-        _addressBox.Focus();
+        AddressBox.Focus();
     }
 
     protected override void OnKeyDown(KeyEventArgs e)
@@ -52,14 +37,14 @@ public partial class DirectConnectDialog : Window
         base.OnKeyDown(e);
     }
 
-    private void TrySubmit()
+    private void TrySubmit(object? sender, RoutedEventArgs routedEventArgs)
     {
-        if (!IsAddressValid(_addressBox.Text))
+        if (!IsAddressValid(AddressBox.Text))
         {
             return;
         }
 
-        Close(_addressBox.Text.Trim());
+        Close(AddressBox.Text.Trim());
     }
 
     internal static bool IsAddressValid([NotNullWhen(true)] string? address)
