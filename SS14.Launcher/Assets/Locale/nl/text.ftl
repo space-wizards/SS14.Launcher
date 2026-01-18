@@ -547,3 +547,6 @@ server-entry-round-time =
     }
 server-entry-status-lobby = Lobby
 connecting-status-update-error-unknown = Onbekend
+main-window-rosetta-accept = Ga verder
+button-done = Klaar!
+tab-options-clear-content-close-client = Sluit draaiende spellen eerst
