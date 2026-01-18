@@ -14,8 +14,7 @@ using System.Threading.Tasks;
 using Avalonia.Threading;
 using Dapper;
 using Microsoft.Data.Sqlite;
-using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Serilog;
 using Splat;
 using SS14.Launcher.Models.ContentManagement;
@@ -27,7 +26,7 @@ using YamlDotNet.Serialization.NamingConventions;
 
 namespace SS14.Launcher.Models;
 
-public sealed partial class Updater : ReactiveObject
+public sealed partial class Updater : ObservableObject
 {
     private const int ManifestDownloadProtocolVersion = 1;
 
@@ -53,9 +52,9 @@ public sealed partial class Updater : ReactiveObject
     }
 
     // Note: these get updated from different threads. Observe responsibly.
-    [Reactive] public UpdateStatus Status { get; private set; }
-    [Reactive] public (long downloaded, long total, ProgressUnit unit)? Progress { get; private set; }
-    [Reactive] public long? Speed { get; private set; }
+    [ObservableProperty] private UpdateStatus _status;
+    [ObservableProperty] private (long downloaded, long total, ProgressUnit unit)? _progress;
+    [ObservableProperty] private long? _speed;
 
     public Exception? UpdateException;
 
@@ -366,10 +365,10 @@ public sealed partial class Updater : ReactiveObject
         if (anythingRemoved)
         {
             var rows = con.Execute("""
-                DELETE FROM Content
-                WHERE Id NOT IN (SELECT ContentId FROM ContentManifest)
-                    AND Id NOT IN (SELECT ContentId FROM InterruptedDownloadContent)
-                """);
+                                   DELETE FROM Content
+                                   WHERE Id NOT IN (SELECT ContentId FROM ContentManifest)
+                                       AND Id NOT IN (SELECT ContentId FROM InterruptedDownloadContent)
+                                   """);
             Log.Debug("Culled {RowsCulled} orphaned content blobs", rows);
         }
 
@@ -515,17 +514,17 @@ public sealed partial class Updater : ReactiveObject
     private static void SaveInterruptedDownload(SqliteConnection con, TransactedDownloadState state)
     {
         var interruptedId = con.ExecuteScalar<long>("""
-            INSERT INTO InterruptedDownload (Added)
-            VALUES (datetime('now'))
-            RETURNING Id
-            """);
+                                                    INSERT INTO InterruptedDownload (Added)
+                                                    VALUES (datetime('now'))
+                                                    RETURNING Id
+                                                    """);
 
         foreach (var contentId in state.DownloadedContentEntries)
         {
             con.Execute("""
-                INSERT INTO InterruptedDownloadContent(InterruptedDownloadId, ContentId)
-                VALUES (@DownloadId, @ContentId)
-                """,
+                        INSERT INTO InterruptedDownloadContent(InterruptedDownloadId, ContentId)
+                        VALUES (@DownloadId, @ContentId)
+                        """,
                 new { DownloadId = interruptedId, ContentId = contentId });
         }
     }

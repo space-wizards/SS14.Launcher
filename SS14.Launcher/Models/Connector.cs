@@ -14,7 +14,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Avalonia.Platform.Storage;
 using DynamicData;
-using ReactiveUI;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Serilog;
 using Splat;
 using SS14.Launcher.Models.Data;
@@ -28,48 +28,21 @@ namespace SS14.Launcher.Models;
 /// Responsible for actually launching the game.
 /// Either by connecting to a game server, or by launching a local content bundle.
 /// </summary>
-public partial class Connector : ReactiveObject
+public partial class Connector : ObservableObject
 {
-    private readonly Updater _updater;
-    private readonly DataManager _cfg;
-    private readonly LoginManager _loginManager;
-    private readonly IEngineManager _engineManager;
+    private readonly Updater _updater = Locator.Current.GetRequiredService<Updater>();
+    private readonly DataManager _cfg = Locator.Current.GetRequiredService<DataManager>();
+    private readonly LoginManager _loginManager = Locator.Current.GetRequiredService<LoginManager>();
+    private readonly IEngineManager _engineManager = Locator.Current.GetRequiredService<IEngineManager>();
 
-    private ConnectionStatus _status = ConnectionStatus.None;
-    private bool _clientExitedBadly;
-    private readonly HttpClient _http;
+    private readonly HttpClient _http = Locator.Current.GetRequiredService<HttpClient>();
 
     private TaskCompletionSource<PrivacyPolicyAcceptResult>? _acceptPrivacyPolicyTcs;
-    private ServerPrivacyPolicyInfo? _serverPrivacyPolicyInfo;
-    private bool _privacyPolicyDifferentVersion;
 
-    public Connector()
-    {
-        _updater = Locator.Current.GetRequiredService<Updater>();
-        _cfg = Locator.Current.GetRequiredService<DataManager>();
-        _loginManager = Locator.Current.GetRequiredService<LoginManager>();
-        _engineManager = Locator.Current.GetRequiredService<IEngineManager>();
-        _http = Locator.Current.GetRequiredService<HttpClient>();
-    }
-
-    public ConnectionStatus Status
-    {
-        get => _status;
-        private set => this.RaiseAndSetIfChanged(ref _status, value);
-    }
-
-    public bool ClientExitedBadly
-    {
-        get => _clientExitedBadly;
-        private set => this.RaiseAndSetIfChanged(ref _clientExitedBadly, value);
-    }
-
-    public ServerPrivacyPolicyInfo? PrivacyPolicyInfo => _serverPrivacyPolicyInfo;
-    public bool PrivacyPolicyDifferentVersion
-    {
-        get => _privacyPolicyDifferentVersion;
-        private set => this.RaiseAndSetIfChanged(ref _privacyPolicyDifferentVersion, value);
-    }
+    [ObservableProperty] private ConnectionStatus _status = ConnectionStatus.None;
+    [ObservableProperty] private bool _clientExitedBadly;
+    [ObservableProperty] private bool _privacyPolicyDifferentVersion;
+    public ServerPrivacyPolicyInfo? PrivacyPolicyInfo { get; private set; }
 
     public async void Connect(string address, CancellationToken cancel = default)
     {
@@ -172,7 +145,7 @@ public partial class Connector : ReactiveObject
 
         // Ask user for privacy policy acceptance by waiting here.
         Log.Debug("Prompting user for privacy policy acceptance: {Identifer} version {Version}", identifier, version);
-        _serverPrivacyPolicyInfo = info.PrivacyPolicy;
+        PrivacyPolicyInfo = info.PrivacyPolicy;
         _acceptPrivacyPolicyTcs = new TaskCompletionSource<PrivacyPolicyAcceptResult>();
 
         Status = ConnectionStatus.AwaitingPrivacyPolicyAcceptance;
@@ -207,7 +180,7 @@ public partial class Connector : ReactiveObject
 
     private void Cleanup()
     {
-        _serverPrivacyPolicyInfo = null;
+        PrivacyPolicyInfo = null;
         _acceptPrivacyPolicyTcs = null;
         PrivacyPolicyDifferentVersion = default;
     }
