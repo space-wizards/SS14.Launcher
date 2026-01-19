@@ -27,18 +27,17 @@
   libxkbcommon,
   wayland,
   fontconfig,
-  alsaSupport ? stdenv.hostPlatform.isLinux && !stdenv.hostPlatform.isAndroid,
-  jackSupport ? stdenv.hostPlatform.isLinux && !stdenv.hostPlatform.isAndroid,
-  pipewireSupport ? stdenv.hostPlatform.isLinux && !stdenv.hostPlatform.isAndroid,
-  pulseaudioSupport ?
-    config.pulseaudio or stdenv.hostPlatform.isLinux && !stdenv.hostPlatform.isAndroid,
+  alsaSupport ? stdenv.hostPlatform.isLinux,
+  jackSupport ? stdenv.hostPlatform.isLinux,
+  pipewireSupport ? stdenv.hostPlatform.isLinux,
+  pulseaudioSupport ? config.pulseaudio or stdenv.hostPlatform.isLinux,
   soundfont-fluid,
 
   # Path to set ROBUST_SOUNDFONT_OVERRIDE to, essentially the default soundfont used.
   soundfont-path ? "${soundfont-fluid}/share/soundfonts/FluidR3_GM2-2.sf2",
 }:
 let
-  version = "0.36.1";
+  version = "0.37.0";
   pname = "space-station-14-launcher";
 in
 buildDotnetModule rec {
@@ -51,8 +50,8 @@ buildDotnetModule rec {
   src = fetchFromGitHub {
     owner = "space-wizards";
     repo = "SS14.Launcher";
-    rev = "v${version}";
-    hash = "sha256-6wH2CkTuwy+a3EGpKrdLDsIaQ7oZc2I1OLdmAREMazw=";
+    tag = "v${version}";
+    hash = "sha256-s8HgD9nWh33rEamtsPj78XCLewmvhnsaI8BEtHWIlpE=";
     fetchSubmodules = true;
   };
 
@@ -132,10 +131,10 @@ buildDotnetModule rec {
     icoFileToHiColorTheme SS14.Launcher/Assets/icon.ico space-station-14-launcher $out
   '';
 
-  meta = with lib; {
+  meta = {
     description = "Launcher for Space Station 14, a multiplayer game about paranoia and disaster";
     homepage = "https://spacestation14.io";
-    license = licenses.mit;
+    license = lib.licenses.mit;
     maintainers = [ ];
     platforms = [ "x86_64-linux" ];
     mainProgram = "SS14.Launcher";
