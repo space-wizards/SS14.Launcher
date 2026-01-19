@@ -323,3 +323,5 @@ main-window-intel-degrade-title = CPU Intel di 13ᵃ/14ᵃ Generazione rilevata.
 main-window-intel-degrade-accept = Ho capito e ho preso le precauzioni necessarie.
 main-window-rosetta-title = Stai eseguendo il gioco usando Rosetta 2!
 main-window-rosetta-accept = Continua
+button-done = Fatto!
+tab-options-clear-content-close-client = Chiudi prima i client in esecuzione
