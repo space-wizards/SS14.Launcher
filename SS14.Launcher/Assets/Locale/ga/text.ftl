@@ -301,3 +301,5 @@ tab-options-clear-engines = Glan innill suiteáilte
 tab-options-account-settings-desc = Is féidir leat do shocruithe cuntais, cosúil le do ríomhphost nó do phasfhocal a athrú, a bhainistiú ar ár suíomh gréasáin.
 tab-options-verbose-launcher-logging = Logáil Lainseálaí Foclach
 tab-options-hub-settings-desc = Athraigh an freastalaí nó freastalaithe moil ba mhaith leat a úsáid chun an liosta freastalaí a fháil.
+button-done = Déanta!
+tab-options-clear-content-close-client = Dún cliaint reatha ar dtús
