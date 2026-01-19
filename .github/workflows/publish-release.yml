@@ -52,7 +52,7 @@ jobs:
       with:
         name: "bootstrap"
 
-    - name: Create build (macOS & Linux)
+    - name: Create build (Windows)
       run: ./publish.py windows --x64-only
 
     - name: Create Release
