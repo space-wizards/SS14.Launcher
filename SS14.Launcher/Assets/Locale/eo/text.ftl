@@ -301,3 +301,5 @@ main-window-intel-degrade-title = Intel-procesoro de 13a/14a generacio estas det
 main-window-intel-degrade-accept = Mi komprenas, kaj antaŭzorgis.
 main-window-rosetta-title = Vi rulas la ludo kun Rosetta 2!
 main-window-rosetta-accept = Daŭrigi
+tab-options-clear-content-close-client = Unue fermu rulantajn klientojn
+button-done = Kompletis!
