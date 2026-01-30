@@ -152,7 +152,7 @@ public sealed partial class ServerListFiltersViewModel : ObservableObject
                         continue;
                     }
 
-                    var name = culture.DisplayName;
+                    var name = _loc.SystemCulture.TextInfo.ToTitleCase(culture.DisplayName);
                     var vm = new ServerFilterViewModel(name, name, filter, this);
                     filtersLanguage.Add(vm);
                 }
