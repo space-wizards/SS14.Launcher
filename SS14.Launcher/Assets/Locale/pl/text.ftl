@@ -550,3 +550,10 @@ connecting-privacy-policy-accept = Zaakceptuj (kontynuuj)
 connecting-privacy-policy-decline = Odmów (odłącz)
 connecting-status-update-error-no-engine-for-platform = Ta gra używa starszej wersji, która nie wspira twojej platformy. Spróbuj ponownie później lub połącz się z innym serwerem.
 connecting-status-update-error-no-module-for-platform = Ta gra wymaga dodatkowej funkcjonalności, która nie jest wspierana na twojej platformie. Spróbuj ponownie później lub połącz się z innym serwerem.
+main-window-intel-degrade-title = Wykryto procesor Intel 13./14. generacji.
+main-window-intel-degrade-desc =
+    Procesory Intel 13. i 14. generacji są znane z tego, że po cichu ulegają trwałej degradacji i przestają działać z powodu błędu mikrokodu firmy Intel. Niestety nie możemy stwierdzić, czy ten błąd dotyczy obecnie użytkowników, dlatego to ostrzeżenie pojawia się dla wszystkich użytkowników tych procesorów.
+
+    ZDECYDOWANIE zalecamy aktualizację BIOS-u płyty głównej do najnowszej wersji, aby zapobiec dalszym uszkodzeniom. Jeśli masz problemy ze stabilnością lub gra nie uruchamia się, obniż taktowanie procesora, aby przywrócić stabilność i skorzystaj z gwarancji, aby poprosić o jego wymianę.
+
+    Nie jesteśmy odpowiedzialni za pomoc w przypadku jakichkolwiek problemów z procesorami, których dotyczy problem, chyba że zachowałeś środki ostrożności i masz pewność, że Twój procesor działa stabilnie. Ten komunikat nie pojawi się ponownie po jego zaakceptowaniu.
