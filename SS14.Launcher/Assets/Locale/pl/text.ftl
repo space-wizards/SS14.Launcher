@@ -182,7 +182,7 @@ filters-rp-none = Żaden
 # Strings for entries in the server list (including home page)
 server-entry-remove-favorite = Usuń ulubiony
 # Strings for entries in the server list (including home page)
-server-entry-add-favorite = Dodaj ulubiony
+server-entry-add-favorite = Ulubiony
 # Server roleplay levels for the filters menu
 filters-rp-low = Niski
 # Server roleplay levels for the filters menu
