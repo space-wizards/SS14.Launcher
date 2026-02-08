@@ -411,7 +411,7 @@ connecting-status-starting-client = Uruchamianie klienta
 # Strings for the drop-down window to manage your active account
 account-drop-down-switch-account = Zmień konto
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-status-client-crashed = Błąd klienta podczas uruchamiania. Jeżeli błąd nie ustąpi, poproś o wsparcie na Discord lub Github.
+connecting-status-client-crashed = Wygląda na to, że klient zawiesił się w trakcie startu. Jeśli to nie ustąpi, proszę poprosić o wsparcie na Discordzie lub GitHubie.
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-update-status-fetching-manifest = Pobieranie manifestu serwera…
 # Strings for the login screen
@@ -529,7 +529,7 @@ tab-options-disable-signing-desc = { "[" } TYLKO DLA DEWELOPERÓW] Wyłącza wer
 # Strings for the "hub settings" dialog window.
 hub-settings-title = Ustawienia Listy Serwerów
 # Strings for the "hub settings" dialog window.
-hub-settings-explanation = Tutaj możesz dodać dodatkowe listy z których będą pobierane serwery gier. Należy dodać tylko zaufane listy, ponieważ mogą one dodawać niepożądane serwery. Kolejność list ma znaczenie; jeżeli dwie listy reklamują ten sam serwer gry, ta z wyższym priorytetem (wyżej na liście) będzia miała pierwszeństwo.
+hub-settings-explanation = Tutaj możesz dodać dodatkowe huby, z których będą pobierane serwery gier. Należy dodawać tylko zaufane huby, ponieważ mogą 'podszywać się' pod serwery gier z innych hubów. Kolejność hubów ma znaczenie; jeśli dwa huby reklamują ten sam serwer gry, hub z wyższym priorytetem (wyżej na liście) będzie miał pierwszeństwo.
 # Strings for the general main window layout of the launcher
 main-window-out-of-date-download-manual = Pobierz (instrukcja)
 # Strings for the general main window layout of the launcher
