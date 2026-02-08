@@ -561,3 +561,9 @@ main-window-intel-degrade-accept = Rozumiem, zostały podjęte niezbędne środk
 main-window-rosetta-title = Gra działa przy użyciu Rosetta 2!
 main-window-rosetta-accept = Kontynuuj
 button-done = Zrobione!
+main-window-rosetta-desc =
+    Wygląda na to że korzystasz z Apple Silicon Mac i gra działa przy użyciu Rosetta 2. Możliwe są lepsze osiągi i żywotność baterii przez uruchamianie gry natywnie.
+
+    Żeby to zrobić, kliknij prawym przyciskiem myszy na launcher w Finderze, wybierz "Get Info (I DON'T KNOW HOW THIS IS TRANSLATED WITHIN MAC OS, AN EXACT MATCH WOULD BE IDEAL BUT IN LIEU OF ONE NO TRANSLATION MIGHT BE PREFERABLE) " i odznacz "Open using Rosetta (SAME HERE. ALSO, DELETE THESE NOTES BEFORE IMPLEMENTING THE TRANSLATION) ". Po tym, włącz ponownie launcher.
+
+    Jeżeli celowo włączasz grę przy użyciu Rosetta 2, możesz odrzucić tę wiadomość żeby się nie pojawiła ponownie. Choć jeżeli to robisz żeby obejść jakiś problem, prosimy zreportować błąd.
