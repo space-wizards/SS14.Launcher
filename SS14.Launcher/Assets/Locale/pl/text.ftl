@@ -525,7 +525,7 @@ tab-options-hub-settings = Ustawienia Listy Serwerów
 # Strings for the "options" tab
 tab-options-hub-settings-desc = Zmień listy z którywch chcesz pobierać serwery.
 # Strings for the "options" tab
-tab-options-disable-signing-desc = { "[" } TYLKO DLA DEWELOPERÓW] Wyłącza weryfikację sygnatur silnika. NIE WŁĄCZAJ, JEŚLI NIE WIESZ CO ROBISZ.
+tab-options-disable-signing-desc = { "[" } TYLKO DLA DEWELOPERÓW] Wyłącza weryfikację sygnatur silnika. NIE WŁĄCZAJ, JEŚLI NIE WIESZ DOKŁADNIE, CO ROBISZ.
 # Strings for the "hub settings" dialog window.
 hub-settings-title = Ustawienia Listy Serwerów
 # Strings for the "hub settings" dialog window.
