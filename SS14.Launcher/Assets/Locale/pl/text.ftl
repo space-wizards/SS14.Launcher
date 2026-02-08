@@ -425,11 +425,11 @@ login-forgot-message = Jeśli nie pamiętasz swojego hasła, możesz tutaj wprow
 # Strings for the "register confirmation" view on login
 login-confirmation-confirmation-message = Sprawdź e-mail, aby potwierdzić swoje konto. Po potwierdzeniu konta naciśnij poniższy przycisk, aby się zalogować.
 # Strings for the "register confirmation" view on login
-login-confirmation-button-confirm = Potwierdziłem/am swoje konto
+login-confirmation-button-confirm = Konto potwierdzone
 # Strings for the general main window layout of the launcher
 main-window-out-of-date-desc-steam =
     Ten program uruchamiający jest nieaktualny.
-    Zezwól platformie Steam na aktualizację gry.
+    Zezwól Steam na aktualizację gry.
 # Strings for the "login" view on login
 login-login-button-resend = Ponownie wyślij potwierdzenie e-mail
 # Strings for the "login" view on login
@@ -441,7 +441,7 @@ main-window-out-of-date = Nieaktualny program uruchamiający
 # Strings for the general main window layout of the launcher
 main-window-out-of-date-desc =
     Ten program uruchamiający jest nieaktualny.
-    Pobierz nowszą wersję z naszej strony internetowej.
+    Pobierz nową wersję z naszej strony internetowej.
 # Short region names for server tag filters (shown in filter check box)
 region-short-north-america-central = Północna Ameryka Środkowa
 # Strings for the "login" view on login
@@ -480,7 +480,7 @@ filters-title-rp = Poziom Role-play
 tab-development-enable-engine-override = Włącz nadpisywanie silnika
 # Strings for the "Development" tab
 # These aren't shown to users so they're not very important
-tab-development-enable-engine-override-desc = Nadpisywanie ścięzki do wczytania plików zip silnika (release/ w RobustToolbox)
+tab-development-enable-engine-override-desc = Nadpisanie ścieżki do wczytania plików zip silnika z  (release/ w RobustToolbox)
 # Strings for the "home" tab
 tab-home-favorites-guide = Oznacz serwery jako ulubione, aby mieć do nich ułatwiony dostęp
 # Strings for the "options" tab
@@ -531,9 +531,9 @@ hub-settings-title = Ustawienia Listy Serwerów
 # Strings for the "hub settings" dialog window.
 hub-settings-explanation = Tutaj możesz dodać dodatkowe listy z których będą pobierane serwery gier. Należy dodać tylko zaufane listy, ponieważ mogą one dodawać niepożądane serwery. Kolejność list ma znaczenie; jeżeli dwie listy reklamują ten sam serwer gry, ta z wyższym priorytetem (wyżej na liście) będzia miała pierwszeństwo.
 # Strings for the general main window layout of the launcher
-main-window-out-of-date-download-manual = Pobierz (ręcznie)
+main-window-out-of-date-download-manual = Pobierz (instrukcja)
 # Strings for the general main window layout of the launcher
-main-window-drag-drop-prompt = Upuść aby odtworzyć grę
+main-window-drag-drop-prompt = Upuść by uruchomić grę
 tab-options-desc-incompatible = Ta opcja nie jest dostępna na tej platformie i została zablokowana.
 connecting-status-update-error-unknown = Nieznany
 server-entry-status-lobby = Menu
