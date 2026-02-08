@@ -100,13 +100,13 @@ login-2fa-message = Proszę wpisać kod autoryzacyjny z aplikacji w telefonie.
 # Strings for the "forgot password" view on login
 login-forgot-busy-sending = Wysyłanie e–mail…
 # Strings for the "login" view on login
-login-login-button-forgot = Nie pamiętasz swojego hasła?
+login-login-button-forgot = Zapomniałeś swojego hasła?
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-cancel = Anuluj
 # Error messages for login
 login-error-unknown = Nieznany błąd
 # Strings for the "login expired" view on login
-login-expired-button-forgot-password = Nie pamiętasz swojego hasła?
+login-expired-button-forgot-password = Zapomniałeś swojego hasła?
 # Strings for the general main window layout of the launcher
 main-window-early-access-accept = Dobra!
 # For the language selection menu.
@@ -388,7 +388,7 @@ hub-settings-button-decrease-priority-tooltip = Zmniejsz priorytet
 # Long region names for server tag filters (shown in tooltip)
 region-india = Indie
 # Strings for the "forgot password" view on login
-login-forgot-title = Nie pamiętasz hasła?
+login-forgot-title = Zapomniałeś hasła?
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-update-status-downloading-content = Pobieranie zawartości serwera…
 # Strings for the drop-down window to manage your active account
