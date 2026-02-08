@@ -106,7 +106,7 @@ connecting-cancel = Anuluj
 # Error messages for login
 login-error-unknown = Nieznany błąd
 # Strings for the "login expired" view on login
-login-expired-button-forgot-password = Zapomniałeś swojego hasła?
+login-expired-button-forgot-password = Zapomniałeś hasła?
 # Strings for the general main window layout of the launcher
 main-window-early-access-accept = Dobra!
 # For the language selection menu.
@@ -550,7 +550,7 @@ connecting-privacy-policy-accept = Zaakceptuj (kontynuuj)
 connecting-privacy-policy-decline = Odmów (odłącz)
 connecting-status-update-error-no-engine-for-platform = Ta gra używa starszej wersji, która nie wspira twojej platformy. Spróbuj ponownie później lub połącz się z innym serwerem.
 connecting-status-update-error-no-module-for-platform = Ta gra wymaga dodatkowej funkcjonalności, która nie jest wspierana na twojej platformie. Spróbuj ponownie później lub połącz się z innym serwerem.
-main-window-intel-degrade-title = Wykryto procesor Intel 13./14. generacji.
+main-window-intel-degrade-title = Wykryto procesor Intel 13/14 generacji.
 main-window-intel-degrade-desc =
     Procesory Intel 13. i 14. generacji są znane z tego, że po cichu ulegają trwałej degradacji i przestają działać z powodu błędu mikrokodu firmy Intel. Niestety nie możemy stwierdzić, czy ten błąd dotyczy obecnie użytkowników, dlatego to ostrzeżenie pojawia się dla wszystkich użytkowników tych procesorów.
 
