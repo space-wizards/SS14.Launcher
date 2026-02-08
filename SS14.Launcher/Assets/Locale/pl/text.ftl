@@ -463,7 +463,7 @@ filters-unspecified = Nieokreślone
 # Strings for the server filters menu
 filters-unspecified-desc = Nieokreślone
 # Strings for entries in the server list (including home page)
-server-entry-description-offline = Nie można skontaktować się z serwerem
+server-entry-description-offline = Nie udało połączyć się z serwerem
 # Strings for the "Development" tab
 # These aren't shown to users so they're not very important
 tab-development-disable-signing-desc = { "[" }TYLKO DLA DEWELOPERÓW] Wyłącza weryfikację sygnatur silnika. NIE WŁĄCZAJ, JEŻELI NIE WIESZ CO ROBISZ.
@@ -495,7 +495,7 @@ tab-options-flip = { "*" }obrót
 # These aren't shown to users so they're not very important
 tab-development-title-override = { "[" }DEV (nadpisywanie aktywne!!!)]
 # Strings for the "options" tab
-tab-options-open-log-directory = Otwórz folder z rejestrami
+tab-options-open-log-directory = Otwórz folder dzienników
 # Strings for the "servers" tab
 tab-servers-list-status-none = Nie ma publicznych serwerów. Upewnij się, że Twoja konfiguracja list jest poprawna.
 # Strings for the server filters menu
