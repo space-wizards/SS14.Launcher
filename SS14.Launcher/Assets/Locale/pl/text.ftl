@@ -557,3 +557,7 @@ main-window-intel-degrade-desc =
     ZDECYDOWANIE zalecamy aktualizację BIOS-u płyty głównej do najnowszej wersji, aby zapobiec dalszym uszkodzeniom. Jeśli masz problemy ze stabilnością lub gra nie uruchamia się, obniż taktowanie procesora, aby przywrócić stabilność i skorzystaj z gwarancji, aby poprosić o jego wymianę.
 
     Nie jesteśmy odpowiedzialni za pomoc w przypadku jakichkolwiek problemów z procesorami, których dotyczy problem, chyba że zachowałeś środki ostrożności i masz pewność, że Twój procesor działa stabilnie. Ten komunikat nie pojawi się ponownie po jego zaakceptowaniu.
+main-window-intel-degrade-accept = Rozumiem, zostały podjęte niezbędne środki ostrożności.
+main-window-rosetta-title = Gra działa przy użyciu Rosetta 2!
+main-window-rosetta-accept = Kontynuuj
+button-done = Zrobione!
