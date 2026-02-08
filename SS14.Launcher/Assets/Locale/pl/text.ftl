@@ -409,9 +409,9 @@ connecting-status-connecting = Pobieranie informacji o połączeniu z serwera…
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-starting-client = Uruchamianie klienta…
 # Strings for the drop-down window to manage your active account
-account-drop-down-switch-account = Przełącz konto:
+account-drop-down-switch-account = Zmień konto:
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-status-client-crashed = Klient napotkał błąd podczas uruchamiania. Jeżeli ten błąd nie ustąpi, poproś o pomoc na platformie Discord lub GitHub.
+connecting-status-client-crashed = Błąd klienta podczas uruchamiania. Jeżeli błąd nie ustąpi, poproś o wsparcie na Discord lub Github.
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-update-status-fetching-manifest = Pobieranie manifestu serwera…
 # Strings for the login screen
