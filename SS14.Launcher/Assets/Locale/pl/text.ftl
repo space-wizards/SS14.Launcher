@@ -423,7 +423,7 @@ login-forgot-success-message = Link resetujący został wysłany na Twój adres 
 # Strings for the "forgot password" view on login
 login-forgot-message = Jeśli nie pamiętasz swojego hasła, możesz tutaj wprowadzić adres e-mail powiązany z Twoim kontem, aby otrzymać link resetujący.
 # Strings for the "register confirmation" view on login
-login-confirmation-confirmation-message = Sprawdź e-mail, aby potwierdzić swoje konto. Po potwierdzeniu konta naciśnij poniższy przycisk, aby się zalogować.
+login-confirmation-confirmation-message = Sprawdź adres e–mail, aby potwierdzić swoje konto. Po potwierdzeniu konta naciśnij poniższy przycisk, aby się zalogować.
 # Strings for the "register confirmation" view on login
 login-confirmation-button-confirm = Konto potwierdzone
 # Strings for the general main window layout of the launcher
@@ -480,7 +480,7 @@ filters-title-rp = Poziom Role-play
 tab-development-enable-engine-override = Włącz nadpisywanie silnika
 # Strings for the "Development" tab
 # These aren't shown to users so they're not very important
-tab-development-enable-engine-override-desc = Nadpisanie ścieżki do wczytania plików zip silnika z  (release/ w RobustToolbox)
+tab-development-enable-engine-override-desc = Nadpisanie ścieżki do wczytania plików zip silnika z (release/ w RobustToolbox)
 # Strings for the "home" tab
 tab-home-favorites-guide = Oznacz serwery jako ulubione, aby mieć do nich ułatwiony dostęp
 # Strings for the "options" tab
