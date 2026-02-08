@@ -407,9 +407,9 @@ connecting-status-updating = Aktualizowanie: { $status }
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-connecting = Pobieranie informacji o połączeniu z serwera…
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-status-starting-client = Uruchamianie klienta
+connecting-status-starting-client = Uruchamianie klienta…
 # Strings for the drop-down window to manage your active account
-account-drop-down-switch-account = Zmień konto
+account-drop-down-switch-account = Zmień konto:
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-client-crashed = Wygląda na to, że klient zawiesił się w trakcie startu. Jeśli to nie ustąpi, proszę poprosić o wsparcie na Discordzie lub GitHubie.
 # Strings for the "connecting" menu that appears when connecting to a server.
@@ -419,7 +419,7 @@ login-log-launcher = Rejestruj błędy programu uruchamiającego
 # Strings for the "forgot password" view on login
 login-forgot-success-title = E-mail resetujący wysłany
 # Strings for the "forgot password" view on login
-login-forgot-success-message = Link resetujący został wysłany na Twój adres e-mail
+login-forgot-success-message = Link resetujący został wysłany na Twój adres e-mail.
 # Strings for the "forgot password" view on login
 login-forgot-message = Jeśli nie pamiętasz swojego hasła, możesz tutaj wprowadzić adres e-mail powiązany z Twoim kontem, aby otrzymać link resetujący.
 # Strings for the "register confirmation" view on login
@@ -529,7 +529,7 @@ tab-options-disable-signing-desc = { "[" } TYLKO DLA DEWELOPERÓW] Wyłącza wer
 # Strings for the "hub settings" dialog window.
 hub-settings-title = Ustawienia Listy Serwerów
 # Strings for the "hub settings" dialog window.
-hub-settings-explanation = Tutaj możesz dodać dodatkowe huby, z których będą pobierane serwery gier. Należy dodawać tylko zaufane huby, ponieważ mogą 'podszywać się' pod serwery gier z innych hubów. Kolejność hubów ma znaczenie; jeśli dwa huby reklamują ten sam serwer gry, hub z wyższym priorytetem (wyżej na liście) będzie miał pierwszeństwo.
+hub-settings-explanation = Tutaj możesz dodać dodatkowe listy, z których będą pobierane serwery gier. Należy dodawać tylko zaufane listy, ponieważ mogą 'podszywać się' pod inne serwery gier. Kolejność list ma znaczenie; jeśli dwie reklamują ten sam serwer gry, lista z wyższym priorytetem (wyżej na liście) będzie miała pierwszeństwo.
 # Strings for the general main window layout of the launcher
 main-window-out-of-date-download-manual = Pobierz (instrukcja)
 # Strings for the general main window layout of the launcher
@@ -562,8 +562,9 @@ main-window-rosetta-title = Gra działa przy użyciu Rosetta 2!
 main-window-rosetta-accept = Kontynuuj
 button-done = Zrobione!
 main-window-rosetta-desc =
-    Wygląda na to że korzystasz z Apple Silicon Mac i gra działa przy użyciu Rosetta 2. Możliwe są lepsze osiągi i żywotność baterii przez uruchamianie gry natywnie.
+    Wygląda na to że korzystasz z Apple Silicon Mac i gra działa przy użyciu Rosetta 2. Możliwa jest lepsza wydajność i żywotność baterii przez uruchamianie gry natywnie.
 
-    Żeby to zrobić, kliknij prawym przyciskiem myszy na launcher w Finderze, wybierz "Get Info (I DON'T KNOW HOW THIS IS TRANSLATED WITHIN MAC OS, AN EXACT MATCH WOULD BE IDEAL BUT IN LIEU OF ONE NO TRANSLATION MIGHT BE PREFERABLE) " i odznacz "Open using Rosetta (SAME HERE. ALSO, DELETE THESE NOTES BEFORE IMPLEMENTING THE TRANSLATION) ". Po tym, włącz ponownie launcher.
+    Żeby to zrobić, kliknij prawym przyciskiem myszy na launcher w Finderze, wybierz "Get Info" i odznacz "Open using Rosetta". Po tym, włącz ponownie launcher.
 
-    Jeżeli celowo włączasz grę przy użyciu Rosetta 2, możesz odrzucić tę wiadomość żeby się nie pojawiła ponownie. Choć jeżeli to robisz żeby obejść jakiś problem, prosimy zreportować błąd.
+    Jeżeli celowo włączasz grę przy użyciu Rosetta 2, możesz odrzucić tę wiadomość żeby się nie pojawiła ponownie. Choć jeżeli to robisz żeby obejść jakiś błąd, prosimy aby został on zreportowany.
+tab-options-clear-content-close-client = Najpierw zamknij innych klientów
