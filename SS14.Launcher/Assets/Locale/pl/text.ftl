@@ -405,7 +405,7 @@ add-favorite-window-example-name = Stacja Honk
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-updating = Aktualizowanie: { $status }
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-status-connecting = Pobieranie informacji o połączeniu z serwerem…
+connecting-status-connecting = Pobieranie informacji o połączeniu z serwera…
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-starting-client = Uruchamianie klienta…
 # Strings for the drop-down window to manage your active account
@@ -413,17 +413,17 @@ account-drop-down-switch-account = Przełącz konto:
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-client-crashed = Klient napotkał błąd podczas uruchamiania. Jeżeli ten błąd nie ustąpi, poproś o pomoc na platformie Discord lub GitHub.
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-update-status-fetching-manifest = Pobieranie manifestu servera…
+connecting-update-status-fetching-manifest = Pobieranie manifestu serwera…
 # Strings for the login screen
 login-log-launcher = Rejestruj błędy programu uruchamiającego
 # Strings for the "forgot password" view on login
-login-forgot-success-title = E-mail resetujący został wysłany
+login-forgot-success-title = E-mail resetujący wysłany
 # Strings for the "forgot password" view on login
-login-forgot-success-message = Link resetujący został wysłany na Twój adres e-mail.
+login-forgot-success-message = Link resetujący został wysłany na Twój adres e-mail
 # Strings for the "forgot password" view on login
-login-forgot-message = Jeżeli nie pamiętasz hasła, możesz wprowadzić adres e-mail powiązany z Twoim kontem aby otrzymać link resetujący.
+login-forgot-message = Jeśli nie pamiętasz swojego hasła, możesz tutaj wprowadzić adres e-mail powiązany z Twoim kontem, aby otrzymać link resetujący.
 # Strings for the "register confirmation" view on login
-login-confirmation-confirmation-message = Sprawdź swój e-mail, aby potwierdzić konto. Po potwierdzeniu konta, naciśnij przycisk poniżej aby się zalogować.
+login-confirmation-confirmation-message = Sprawdź e-mail, aby potwierdzić swoje konto. Po potwierdzeniu konta naciśnij poniższy przycisk, aby się zalogować.
 # Strings for the "register confirmation" view on login
 login-confirmation-button-confirm = Potwierdziłem/am swoje konto
 # Strings for the general main window layout of the launcher
