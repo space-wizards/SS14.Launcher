@@ -270,7 +270,7 @@ tab-home-direct-connect = Direkte konekti al servilo
 tab-home-go-to-servers-tab = Iri al la langeto de serviloj
 tab-home-favorites-guide = Marku servilojn kiel favoratojn por facile atingi ĉi tie
 tab-options-log-client-desc = Ebligas registradon de eligaĵo de la ludkliento. Utila por ellaborantoj.
-tab-options-desc-incompatible = Ĉi tiu opcio ne kongruas kun via platformo kaj estas malŝaltita.
+tab-options-desc-incompatible = Ĉi tiu opcio ne kongruas pro via platformo kaj estas malŝaltita.
 language-selector-help-translate = Volas helpi traduki? Vi povas!
 language-selector-system-language = Sistema lingvo ({ $languageName })
 connecting-status-client-crashed = Kliento verŝajne kraŝis dum lanĉado. Se tio daŭras, bonvolu peti asiston en Diskordo aŭ GitHub.
@@ -286,11 +286,11 @@ tab-options-hub-settings-desc = Agordi kiujn servilejojn vi volas uzi por legi l
 connecting-status-update-error-no-engine-for-platform = Ĉi tiu ludo uzas malnovan version, kiu ne subtenas vian kurantan platformon. Bonvolu provi alian servilon, aŭ alifoje reprovu.
 connecting-status-update-error-no-module-for-platform = Ĉi tiu ludo bezonas aldonan funkciecon, kiun via kuranta platformo ne subtenas. Bonvolu provi alian servilon, aŭ alifoje reprovu.
 main-window-rosetta-desc =
-    Vi ŝajnas uzi Apple Silicon Mac, kaj vi rulas la ludon kun Rosetta 2. Vi eble spertus pli bonan rendimenton kaj baterian vivdaŭron per rulu la ludon operaciume.
+    Vi ŝajnas uzi Apple Silicon Mac, kaj vi rulas la ludon per Rosetta 2. Vi eble spertus pli bonan rendimenton kaj baterian vivdaŭron per rulu la ludon operaciume.
 
     Por fari tiun, dekstre alklaku la lanĉilon en Finder, elektu "Get Info" kaj malelektu "Open using Rosetta". Poste, restartigu la lanĉilon.
 
-    Ĉu vi intence rulas la ludon kun Rosetta 2, vi povas fermi ĉi tiun mesaĝon, kaj ĝi ne aperos denove. Tamen, ĉu vi faras tiun provcele fliki atentindaĵon, bonvole sendu cimraporton.
+    Ĉu vi intence rulas la ludon per Rosetta 2, vi povas fermi ĉi tiun mesaĝon, kaj ĝi ne aperos denove. Tamen, ĉu vi faras tiun provcele fliki atentindaĵon, bonvole sendu cimraporton.
 main-window-intel-degrade-desc =
     La Intel-procesoroj de la 13a kaj 14a generacioj estas konataj degeneri silente kaj permanente, pro mikrokoda cimo en Intel-procesoroj. Bedaŭrinde, ni ne povas detekti, ĉu vi nun estas trafata de ĉi tiu cimo, tial ĉi tiu averto aperas por ĉiuj uzantoj kun ĉi tiuj procesoroj.
 
@@ -299,7 +299,7 @@ main-window-intel-degrade-desc =
     Ni ne respondecas por ajnaj atentinaĵoj, kiuj povas eliriĝi pro affekciataj procesoroj, krom se vi antaŭzorgis kaj vi certigas ke vian procesoron estas stabila. Ĉi tiu averto ne aperos denove, poste vi akceptos tion.
 main-window-intel-degrade-title = Intel-procesoro de 13a/14a generacio estas detektita.
 main-window-intel-degrade-accept = Mi komprenas, kaj antaŭzorgis.
-main-window-rosetta-title = Vi rulas la ludo kun Rosetta 2!
+main-window-rosetta-title = Vi rulas la ludo per Rosetta 2!
 main-window-rosetta-accept = Daŭrigi
 tab-options-clear-content-close-client = Unue fermu rulantajn klientojn
 button-done = Kompletis!
