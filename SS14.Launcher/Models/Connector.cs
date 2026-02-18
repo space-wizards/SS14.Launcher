@@ -762,6 +762,8 @@ public partial class Connector : ReactiveObject
                     RedirectStandardOutput = true
                 });
 
+                if (xattr is null)
+                    throw new Exception("Xattr failed to start");
                 PipeLogOutput(xattr);
 
                 await xattr.WaitForExitAsync();
