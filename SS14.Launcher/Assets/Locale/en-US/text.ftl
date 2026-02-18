@@ -301,10 +301,7 @@ server-entry-player-count =
         [0] ∞
        *[1] { $max }
     }
-server-entry-round-time = { $hours ->
- [0] { $mins }M
-*[1] { $hours }H { $mins }M
-}
+server-entry-round-time = { $hours }h { $mins }m
 server-entry-fetching = Fetching…
 server-entry-description-offline = Unable to contact server
 server-entry-description-fetching = Fetching server status…

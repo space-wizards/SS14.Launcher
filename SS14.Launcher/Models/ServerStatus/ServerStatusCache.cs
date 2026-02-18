@@ -128,21 +128,17 @@ public sealed class ServerStatusCache : IServerSource
 
         switch (status.RunLevel)
         {
-            case ServerApi.GameRunLevel.InRound:
-                data.RoundStatus = GameRoundStatus.InRound;
+            case ServerApi.GameRunLevel.InRound when status.RoundStartTime is { } start:
+                var roundStartTime = DateTime.Parse(start, null, System.Globalization.DateTimeStyles.RoundtripKind);
+                data.RoundStatus = new InRound(roundStartTime);
                 break;
             case ServerApi.GameRunLevel.PostRound:
             case ServerApi.GameRunLevel.PreRoundLobby:
-                data.RoundStatus = GameRoundStatus.InLobby;
+                data.RoundStatus = new InLobby();
                 break;
             default:
-                data.RoundStatus = GameRoundStatus.Unknown;
+                data.RoundStatus = new Unknown();
                 break;
-        }
-
-        if (status.RoundStartTime != null)
-        {
-            data.RoundStartTime = DateTime.Parse(status.RoundStartTime, null, System.Globalization.DateTimeStyles.RoundtripKind);
         }
 
         var baseTags = status.Tags ?? Array.Empty<string>();

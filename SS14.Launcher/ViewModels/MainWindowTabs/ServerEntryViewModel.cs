@@ -1,5 +1,8 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
+using Avalonia.Threading;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Messaging;
 using SS14.Launcher.Localization;
@@ -20,6 +23,22 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
     private string _fallbackName = string.Empty;
     private bool _isExpanded;
 
+    private readonly DispatcherTimer _refreshRoundStartTimer = new() { Interval = TimeSpan.FromSeconds(15) };
+
+    public const string NameSortKey = nameof(Name);
+    public const string PlayersSortKey = nameof(PlayerCount);
+    public const string TimeSortKey = nameof(RoundStatus);
+
+    /// <summary>
+    /// Maps a sorting key to a comparer to use for column sorting.
+    /// </summary>
+    public static readonly Dictionary<string, IComparer> ComparerMapping = new()
+    {
+        { NameSortKey, StringComparer.InvariantCultureIgnoreCase },
+        { TimeSortKey, Comparer<GameRoundStatus>.Default },
+        { PlayersSortKey, Comparer<int>.Default },
+    };
+
     public ServerEntryViewModel(MainWindowViewModel windowVm, ServerStatusData cacheData, IServerSource serverSource,
         DataManager cfg)
     {
@@ -27,6 +46,11 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
         _windowVm = windowVm;
         _cacheData = cacheData;
         _serverSource = serverSource;
+
+        _cacheData.PropertyChanged += OnCacheDataOnPropertyChanged;
+
+        _refreshRoundStartTimer.Start();
+        _refreshRoundStartTimer.Tick += (_, _) => OnPropertyChanged(nameof(RoundStatusString));
     }
 
     public ServerEntryViewModel(
@@ -38,6 +62,8 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
         : this(windowVm, cacheData, serverSource, cfg)
     {
         Favorite = favorite;
+
+        _cacheData.PropertyChanged += OnCacheDataOnPropertyChanged;
     }
 
     public ServerEntryViewModel(
@@ -48,11 +74,6 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
         : this(windowVm, ssdfb.Data, serverSource, cfg)
     {
         FallbackName = ssdfb.FallbackName ?? "";
-    }
-
-    public void Tick()
-    {
-        OnPropertyChanged(nameof(RoundStartTime));
     }
 
     public void ConnectPressed()
@@ -101,18 +122,25 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
         }
     }
 
+    public int PlayerCount => _cacheData.PlayerCount;
+
     // Give a ratio for servers with a defined player count, or just a current number for those without.
     public string PlayerCountString =>
         _loc.GetString("server-entry-player-count",
-            ("players", _cacheData.PlayerCount), ("max", _cacheData.SoftMaxPlayerCount));
+            ("players", PlayerCount.ToString().PadLeft(3)),
+            ("max", _cacheData.SoftMaxPlayerCount.ToString().PadRight(3)));
 
 
-    public DateTime? RoundStartTime => _cacheData.RoundStartTime;
+    public GameRoundStatus RoundStatus => _cacheData.RoundStatus;
 
-    public string RoundStatusString =>
-        _cacheData.RoundStatus == GameRoundStatus.InLobby
-            ? _loc.GetString("server-entry-status-lobby")
-            : "";
+    public string RoundStatusString
+        => _cacheData.RoundStatus switch
+        {
+            InLobby => _loc.GetString("server-entry-status-lobby"),
+            InRound r => _loc.GetString("server-entry-round-time", ("hours", Math.Floor(r.TimeElapsed.TotalHours)),
+                ("mins", r.TimeElapsed.Minutes.ToString().PadLeft(2, '0'))),
+            _ => "",
+        };
 
     public string Description
     {
@@ -235,10 +263,6 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
             case nameof(IServerStatusData.SoftMaxPlayerCount):
                 OnPropertyChanged(nameof(ServerStatusString));
                 OnPropertyChanged(nameof(PlayerCountString));
-                break;
-
-            case nameof(IServerStatusData.RoundStartTime):
-                OnPropertyChanged(nameof(RoundStartTime));
                 break;
 
             case nameof(IServerStatusData.RoundStatus):
