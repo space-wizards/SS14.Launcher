@@ -110,7 +110,7 @@ connecting-status-starting-client = Запуск клиента…
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-not-a-content-bundle = Файл не является допустимым набором контента!
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-update-status-checking-client-update = Проверка обновлений контента сервера. . .
+connecting-update-status-checking-client-update = Проверка обновлений серверного контента. . .
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-update-status-fetching-manifest = Получение манифеста сервера…
 # Strings for the "hub settings" dialog window.
@@ -566,3 +566,5 @@ main-window-rosetta-desc =
     Если вы намеренно запускаете игру с помощью Rosetta 2, можете закрыть это сообщение, и оно больше не будет появляться. Однако, если вы делаете это в попытке устранить проблему, пожалуйста, отправьте отчёт об ошибке.
 main-window-intel-degrade-accept = Я понимаю и принял необходимые меры предосторожности.
 main-window-rosetta-accept = Продолжить
+tab-options-clear-content-close-client = Сперва закройте запущенные клиенты
+button-done = Готово!
