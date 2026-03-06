@@ -566,3 +566,5 @@ main-window-rosetta-desc =
 main-window-intel-degrade-accept = Я розумію і вжив необхідних запобіжних заходів.
 main-window-rosetta-title = Ви запускаєте гру за допомогою Rosetta 2!
 main-window-rosetta-accept = Продовжити
+tab-options-clear-content-close-client = Спершу закрийте запущені клієнти
+button-done = Готово!
