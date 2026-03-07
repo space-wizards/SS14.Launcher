@@ -398,7 +398,7 @@ account-drop-down-none-selected = Ei valittua tiliä
 language-selector-system-language = Jäsjestelmäkieli ({ $languageName })
 # For the language selection menu.
 # Used for contents of each language button.
-language-selector-language = { $languageName }{ $englishName }
+language-selector-language = { $languageName } ({ $englishName })
 # Strings for the "options" tab
 tab-options-account-settings = Tiliasetukset
 # Strings for the "options" tab
