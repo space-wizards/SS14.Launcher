@@ -190,25 +190,14 @@ public sealed partial class Updater : ObservableObject
 
                 Log.Debug("Did not already have this content bundle, ingesting as new version {Version}", versionId);
 
-                if (metadata.BaseBuild is { } baseBuildData)
+                if (metadata.BaseBuild is not null)
                 {
                     Log.Debug("Content bundle has base build info, downloading...");
 
                     // We have a base build to download.
                     // Copy it into the new AnonymousContentBundle version before loading the rest of the zip contents.
                     var baseBuildId = await TouchOrDownloadContentUpdate(
-                        new ServerBuildInformation
-                        {
-                            DownloadUrl = baseBuildData.DownloadUrl,
-                            ManifestUrl = baseBuildData.ManifestUrl,
-                            ManifestDownloadUrl = baseBuildData.ManifestDownloadUrl,
-                            EngineVersion = metadata.EngineVersion,
-                            Version = baseBuildData.Version,
-                            ForkId = baseBuildData.ForkId,
-                            Hash = baseBuildData.Hash,
-                            ManifestHash = baseBuildData.ManifestHash,
-                            Acz = false
-                        },
+                        metadata.GetBaseBuildInformation(),
                         con,
                         moduleManifest,
                         new TransactedDownloadState(),
@@ -337,6 +326,9 @@ public sealed partial class Updater : ObservableObject
 
         var versions = con.Query<ContentVersion>("SELECT * FROM ContentVersion ORDER BY LastUsed DESC").ToArray();
 
+        // NOTE: GetRunningClientVersions may modify DB, best to let it commit for cleanup.
+        var usedVersions = ContentManager.GetRunningClientVersions(con);
+
         var forkCounts = versions.Select(x => x.ForkId).Distinct().ToDictionary(x => x, _ => 0);
 
         var totalCount = 0;
@@ -352,9 +344,19 @@ public sealed partial class Updater : ObservableObject
             }
             else
             {
-                Log.Debug("Culling version {ForkId}/{ForkVersion}", version.ForkId, version.ForkVersion);
-                con.Execute("DELETE FROM ContentVersion WHERE Id = @Id", new { version.Id });
-                anythingRemoved = true;
+                if (usedVersions.Contains(version.Id))
+                {
+                    Log.Debug(
+                        "Not culling version {ForkId}/{ForkVersion}: in use by running client",
+                        version.ForkId,
+                        version.ForkVersion);
+                }
+                else
+                {
+                    Log.Debug("Culling version {ForkId}/{ForkVersion}", version.ForkId, version.ForkVersion);
+                    con.Execute("DELETE FROM ContentVersion WHERE Id = @Id", new { version.Id });
+                    anythingRemoved = true;
+                }
             }
         }
 

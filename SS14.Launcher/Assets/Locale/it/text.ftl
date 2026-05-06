@@ -53,7 +53,7 @@ connecting-update-status-committing-download = Sincronizzo al disco…
 connecting-update-status-loading-into-db = Memorizzo gli asset nel database…
 connecting-update-status-loading-content-bundle = Caricamento del pacchetto contenuti…
 connecting-update-status-unknown = Non dovresti vedere questo
-direct-connect-title = Connessione diretta…
+direct-connect-title = Connessione Diretta
 direct-connect-text = Inserisci indirizzo server a cui connetterti:
 connecting-status-updating = Aggiorno: { $status }
 connecting-status-client-crashed = Il client sembra essere crashato durante l'avvio. Se questo persiste, chiedi supporto su Discord o GitHub.
@@ -264,10 +264,10 @@ server-entry-description-error = Errore nel recupero della descrizione del serve
 server-entry-status-lobby = Lobby
 server-entry-raise = Metti in cima
 tab-development-disable-signing = Disabilita controllo firma motore
-tab-home-add-favorite = Aggiungi ai preferiti…
+tab-home-add-favorite = Aggiungi ai preferiti
 tab-development-enable-engine-override = Abilita l'override del motore
 tab-home-title = Home
-tab-home-favorite-servers = Server Preferiti:
+tab-home-favorite-servers = Server Preferiti
 tab-development-enable-engine-override-desc = Sovrascrivi il percorso da cui caricare gli zip del motore (release/ su RobustToolbox)
 tab-options-disable-signing-desc = { "[" }SOLO DEV] Disabilita la verifica della firma del motore. NON ATTIVARE A MENO CHE TU NON SAPPIA ESATTAMENTE COSA STAI FACENDO.
 tab-options-seasonal-branding = Branding stagionale
@@ -296,7 +296,7 @@ language-selector-label = Lingua
 tab-options-seasonal-branding-desc = Qualsiasi icona e logo temporaneamente rilevanti che possiamo ideare.
 language-selector-save = Salva
 language-selector-help-translate = Vuoi aiutare a tradurre? Puoi farlo!
-tab-home-direct-connect = Connessione diretta al server…
+tab-home-direct-connect = Connessione diretta al server
 tab-home-go-to-servers-tab = Vai alla scheda dei server
 tab-news-title = Notizie
 tab-options-title = Opzioni
@@ -307,3 +307,21 @@ language-selector-system-language = Lingua di sistema ({ $languageName })
 language-selector-language = { $languageName } ({ $englishName })
 connecting-status-update-error-no-engine-for-platform = Questo gioco sta usando una versione vecchia che non supporta la tua piattaforma attuale. Prova un altro server o riprova più tardi.
 connecting-status-update-error-no-module-for-platform = Questo gioco richiede funzionalità aggiuntive che non sono ancora supportate sulla tua piattaforma attuale. Prova un altro server o riprova più tardi.
+main-window-intel-degrade-desc =
+    Le CPU Intel di 13ᵃ/14ᵃ generazione sono note per deteriorarsi silenziosamente e permanentemente ed eventualmente smettere di funzionare per via di un bug del microcode di Intel. Purtroppo non riusciamo a determinare chi è affetto da questo bug, quindi questo avviso appare per tutti gli utenti con quelle CPU.
+
+    Ti consigliamo FORTEMENTE di aggiornare il BIOS della tua scheda madre all'ultima versione per assicurare che non vengano causati ulteriori danni. Se stai avendo problemi di stabilità/non riesci ad avviare il gioco, downclocka la tua CPU finchè non torna ad essere stabile e usa la tua garanzia per chiederne una sostituzione.
+
+    Non abbiamo la responsabilità di aiutarti con qualsiasi problema che potrebbe insorgere dai processori affetti se non hai preso le precauzioni e non sei sicuro che la tua CPU sia stabile. Questo messaggio non apparirà di nuovo una volta che lo avrai accettato.
+main-window-rosetta-desc =
+    Sembra che tu sia su un Mac Apple Silicon e stai eseguendo il gioco con Rosetta 2. Potresti avere migliori performance e maggiore durata della batteria eseguendo il gioco nativamente.
+
+    Per farlo, fai tasto destro sul launcher su Finder, seleziona "Ottieni informazioni" e togli la spunta a "Apri con Rosetta". Dopodichè, riavvia il launcher.
+
+    Se stai intenzionalmente eseguendo il gioco usando Rosetta 2, puoi chiudere questo messaggio e non apparirà di nuovo. Però, se lo stai facendo per cercare di risolvere un problema, per piacere apri un bug report.
+main-window-intel-degrade-title = CPU Intel di 13ᵃ/14ᵃ Generazione rilevata.
+main-window-intel-degrade-accept = Ho capito e ho preso le precauzioni necessarie.
+main-window-rosetta-title = Stai eseguendo il gioco usando Rosetta 2!
+main-window-rosetta-accept = Continua
+button-done = Fatto!
+tab-options-clear-content-close-client = Chiudi prima i client in esecuzione

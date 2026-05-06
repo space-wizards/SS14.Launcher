@@ -1,7 +1,7 @@
 # Strings for the drop-down window to manage your active account
 account-drop-down-none-selected = Aucun compte sélectionné
 # Strings for the drop-down window to manage your active account
-account-drop-down-not-logged-in = Non connecté
+account-drop-down-not-logged-in = Déconnecté
 # Strings for the drop-down window to manage your active account
 account-drop-down-log-out = Se déconnecter
 # Strings for the drop-down window to manage your active account
@@ -64,7 +64,7 @@ connecting-update-status-loading-content-bundle = Chargement du paquet de conten
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-update-status-unknown = Vous ne devriez pas voir ça
 # Strings for the "direct connect" dialog window.
-direct-connect-title = Connexion Directe…
+direct-connect-title = Connexion Directe
 # Strings for the "direct connect" dialog window.
 direct-connect-text = Entrez l'adresse du serveur :
 # Strings for the "direct connect" dialog window.
@@ -179,9 +179,13 @@ add-favorite-window-address-invalid = Adresse invalide
 connecting-status-connecting = Récupération des informations de connexion du serveur…
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-update-error =
-    Il y a eu une erreur lors du téléchargement du contenu du serveur. Demandez de l'aide sur Discord si le problème persiste.
+    Il y a eu une erreur lors du téléchargement du contenu du serveur. Si le problème persiste, essayez les solutions suivantes :
+    - Essayez de vous connecter à un autre serveur pour vérifier si le problème persiste.
+    - Essayez de désactivez votre VPN si vous en avez un.
 
-    Error: { $err }
+    Si le problème persiste, contactez d'abord le serveur sur lequel vous essayez de vous connecter avant de demander de l'aide sur le serveur Discord Officiel de Space Station 14 ou leurs Forums.
+
+    Error : { $err }
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-update-status-fetching-manifest = Récupération du manifeste du serveur…
 # Strings for the "connecting" menu that appears when connecting to a server.
@@ -225,13 +229,13 @@ tab-servers-search-watermark = Recherche de serveurs…
 # Strings for the "servers" tab
 tab-servers-table-players = Joueurs
 # Strings for the "servers" tab
-tab-servers-list-status-error = Une erreur s'est produite lors de la récupération des listes du serveur principal.
+tab-servers-list-status-error = Une erreur s'est produite lors de la récupération des listes du serveur principal. Essayez d’actualiser.
 # Strings for the "servers" tab
 tab-servers-list-status-updating-master = Récupération de la liste du serveur maître…
 # Strings for the "servers" tab
 tab-servers-table-name = Nom du Serveur
 # Strings for the "servers" tab
-tab-servers-list-status-partial-error = Échec de la récupération de certaines ou de toutes les listes de serveurs. Assurez-vous que la configuration de vos hubs est correcte.
+tab-servers-list-status-partial-error = Échec de la récupération d'une partie des listes de serveurs. Assurez-vous que la configuration de votre hub est correcte et essayez de d'actualiser.
 # Strings for the "servers" tab
 filters = Filtres ({ $filteredServers } / { $totalServers })
 # Strings for the "servers" tab
@@ -257,11 +261,11 @@ filters-18-no = Non
 # Strings for the server filters menu
 filters-18-no-desc = Non
 # Strings for the server filters menu
-filters-player-count-minimum = Minimum:
+filters-player-count-minimum = Minimum :
 # Strings for the server filters menu
 filters-player-count-minimum-desc = Les serveurs avec moins de joueurs ne seront pas affichés
 # Strings for the server filters menu
-filters-player-count-maximum = Maximum:
+filters-player-count-maximum = Maximum :
 # Strings for the server filters menu
 filters-player-count-maximum-desc = Les serveurs avec plus de joueurs ne seront pas affichés
 # Strings for the server filters menu
@@ -318,7 +322,7 @@ filters-player-count-hide-full = Masquer les serveurs pleins
 # Strings for the server filters menu
 filters-player-count-hide-full-desc = Les serveurs pleins ne seront pas affichés
 # Strings for entries in the server list (including home page)
-server-entry-remove-favorite = Supprimer des favoris
+server-entry-remove-favorite = Retirer des favoris
 # Strings for entries in the server list (including home page)
 server-entry-description-offline = Impossible de contacter le serveur
 # Strings for entries in the server list (including home page)
@@ -344,7 +348,7 @@ tab-home-title = Accueil
 # Strings for the "home" tab
 tab-home-refresh = Actualiser
 # Strings for the "home" tab
-tab-home-direct-connect = Connexion Directe au serveur…
+tab-home-direct-connect = Connexion directe au serveur
 # Strings for the "home" tab
 tab-home-go-to-servers-tab = Aller dans l'onglet Serveurs
 # Strings for the "home" tab
@@ -380,7 +384,7 @@ tab-options-account-settings = Paramètres du compte
 # Strings for the "options" tab
 tab-options-account-settings-desc = Vous pouvez gérer les paramètres de votre compte, tels que la modification de votre adresse mail ou de votre mot de passe, via notre site internet.
 # Strings for the "home" tab
-tab-home-favorite-servers = Serveurs Favoris:
+tab-home-favorite-servers = Serveurs Favoris
 # Strings for the "options" tab
 tab-options-log-launcher-desc = Active l'historique d'activité du launcher. Utile pour les développeurs. (nécessite de redémarrer le launcher)
 # Strings for the "news" tab
@@ -472,7 +476,7 @@ region-oceania = Océanie
 # Long region names for server tag filters (shown in tooltip)
 region-south-america-east = Amérique du Sud Est
 # Long region names for server tag filters (shown in tooltip)
-region-south-america-south = Amérique du Sud Sud
+region-south-america-south = Amérique du Sud
 # Long region names for server tag filters (shown in tooltip)
 region-south-america-west = Amérique du Sud Ouest
 # Short region names for server tag filters (shown in filter check box)
@@ -525,8 +529,39 @@ region-short-south-america-west = SA Ouest
 # Short region names for server tag filters (shown in filter check box)
 region-short-south-america-east = SA Est
 # Strings for the "home" tab
-tab-home-add-favorite = Ajouter aux Favoris…
+tab-home-add-favorite = Ajouter aux favoris
 # Strings for the "options" tab
 tab-options-flip = { "*" }retourner
 login-login-show-password = Afficher le mot de passe
 tab-options-desc-incompatible = Cette option a été désactivée parce qu'elle est incompatible avec votre platforme.
+main-window-rosetta-desc =
+    Il semble que vous utilisiez un Mac Apple Silicon et que vous exécutiez le jeu avec Rosetta 2. Vous pourriez bénéficier de meilleures performances et d’une autonomie accrue en lançant le jeu en mode natif.
+
+    Pour ce faire, faites un clic droit sur le lanceur dans Finder, sélectionnez « Lire les informations » (Get Info) et décochez « Ouvrir avec Rosetta ». Redémarrez ensuite le lanceur de jeu.
+
+    Si vous exécutez intentionnellement le jeu avec Rosetta 2, vous pouvez ignorer ce message et il ne réapparaîtra plus. Toutefois, si vous tentez de résoudre un problème, merci de le signaler via un rapport de bug.
+main-window-intel-degrade-desc =
+    Les processeurs Intel de 13e/14e génération sont connus pour se dégrader progressivement, voire tomber en panne, en raison d’un bug de microcode d’Intel. Nous ne pouvons malheureusement pas déterminer si votre processeur est actuellement affecté par ce bug ; cet avertissement s’affiche donc pour tous les utilisateurs de ces processeurs.
+
+    Nous vous encourageons vivement à mettre à jour le BIOS de votre carte mère vers la dernière version afin de prévenir tout dommage supplémentaire. Si vous rencontrez des problèmes de stabilité ou si vous ne parvenez pas à lancer le jeu, réduisez la fréquence (downclock) de votre processeur pour le stabiliser et utilisez votre garantie afin d’en demander le remplacement.
+
+    Nous déclinons toute responsabilité concernant les problèmes pouvant survenir avec les processeurs affectés, sauf si vous avez pris les précautions nécessaires et êtes certain que votre processeur est stable. Ce message ne réapparaîtra plus une fois que vous l’aurez accepté.
+main-window-intel-degrade-title = Processeur Intel de 13e/14e génération détecté.
+main-window-intel-degrade-accept = Je comprends et j'ai pris les précautions nécessaires.
+main-window-rosetta-title = Vous exécutez le jeu avec Rosetta 2 !
+main-window-rosetta-accept = Continuer
+connecting-status-update-error-no-engine-for-platform = Ce jeu utilise une version plus ancienne qui n’est pas compatible avec votre plateforme actuelle. Veuillez essayer un autre serveur ou réessayer plus tard.
+connecting-status-update-error-no-module-for-platform = Ce jeu nécessite des fonctionnalités supplémentaires qui ne sont pas prises en charge par votre platforme actuelle. Veuillez essayer un autre serveur ou réessayer plus tard.
+connecting-status-update-error-unknown = Inconnu
+tab-servers-table-round-time = Temps
+connecting-privacy-policy-text = Ce serveur exige que vous acceptiez sa politique de confidentialité avant de vous connecter.
+connecting-privacy-policy-text-version-changed = Ce serveur a mis à jour sa politique de confidentialité depuis votre dernière partie. Vous devez accepter la nouvelle version avant de vous connecter.
+connecting-privacy-policy-view = Voir la politique de confidentialité
+connecting-privacy-policy-accept = Accepter (continuer)
+connecting-privacy-policy-decline = Refuser (déconnexion)
+server-entry-round-time =
+    { $hours ->
+        [0] { $mins }min
+       *[1] { $hours }h { $mins }min
+    }
+server-entry-status-lobby = Salon

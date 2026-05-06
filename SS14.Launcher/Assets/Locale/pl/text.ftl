@@ -32,7 +32,7 @@ connecting-update-status-loading-content-bundle = Wczytywanie pliku danych…
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-update-status-unknown = Nie powinieneś tego widzieć
 # Strings for the "direct connect" dialog window.
-direct-connect-title = Łączenie bezpośrednie…
+direct-connect-title = Łączenie Bezpośrednie
 # Strings for the "direct connect" dialog window.
 direct-connect-text = Podaj adres serwera by połączyć:
 # Strings for the "direct connect" dialog window.
@@ -100,13 +100,13 @@ login-2fa-message = Proszę wpisać kod autoryzacyjny z aplikacji w telefonie.
 # Strings for the "forgot password" view on login
 login-forgot-busy-sending = Wysyłanie e–mail…
 # Strings for the "login" view on login
-login-login-button-forgot = Nie pamiętasz swojego hasła?
+login-login-button-forgot = Zapomniałeś swojego hasła?
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-cancel = Anuluj
 # Error messages for login
 login-error-unknown = Nieznany błąd
 # Strings for the "login expired" view on login
-login-expired-button-forgot-password = Nie pamiętasz swojego hasła?
+login-expired-button-forgot-password = Zapomniałeś hasła?
 # Strings for the general main window layout of the launcher
 main-window-early-access-accept = Dobra!
 # For the language selection menu.
@@ -182,7 +182,7 @@ filters-rp-none = Żaden
 # Strings for entries in the server list (including home page)
 server-entry-remove-favorite = Usuń ulubiony
 # Strings for entries in the server list (including home page)
-server-entry-add-favorite = Dodaj ulubiony
+server-entry-add-favorite = Ulubiony
 # Server roleplay levels for the filters menu
 filters-rp-low = Niski
 # Server roleplay levels for the filters menu
@@ -198,7 +198,7 @@ filters-rp-high-desc = Wysoki
 # Strings for the "home" tab
 tab-home-refresh = Odśwież
 # Strings for the "home" tab
-tab-home-add-favorite = Dodaj ulubiony…
+tab-home-add-favorite = Dodaj ulubiony
 # Strings for entries in the server list (including home page)
 server-entry-raise = Przenieś na górę listy
 # Strings for the "options" tab
@@ -227,7 +227,7 @@ tab-options-compatibility-mode = Tryb kompatybilności
 # Strings for the "options" tab
 tab-options-account-settings-desc = Możesz zarządzać ustawieniami swojego konta, takimi jak zmiana adresu e–mail lub hasła, za pośrednictwem naszej strony internetowej.
 # Strings for the "home" tab
-tab-home-direct-connect = Bezpośrednie połączenie z serwerem…
+tab-home-direct-connect = Bezpośrednie połączenie z serwerem
 # Strings for the "options" tab
 tab-options-clear-content = Wyczyść zainstalowaną zawartość serwerów
 # Strings for the "options" tab
@@ -369,7 +369,7 @@ server-entry-description-fetching = Pobieranie statusu serwera…
 # Short region names for server tag filters (shown in filter check box)
 region-short-europe-west = Europa Zachodnia
 # Strings for the "home" tab
-tab-home-favorite-servers = Ulubione serwery:
+tab-home-favorite-servers = Ulubione Serwery
 # Strings for the "home" tab
 tab-home-title = Strona główna
 # Strings for the "Development" tab
@@ -388,7 +388,7 @@ hub-settings-button-decrease-priority-tooltip = Zmniejsz priorytet
 # Long region names for server tag filters (shown in tooltip)
 region-india = Indie
 # Strings for the "forgot password" view on login
-login-forgot-title = Nie pamiętasz hasła?
+login-forgot-title = Zapomniałeś hasła?
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-update-status-downloading-content = Pobieranie zawartości serwera…
 # Strings for the drop-down window to manage your active account
@@ -405,31 +405,31 @@ add-favorite-window-example-name = Stacja Honk
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-updating = Aktualizowanie: { $status }
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-status-connecting = Pobieranie informacji o połączeniu z serwerem…
+connecting-status-connecting = Pobieranie informacji o połączeniu z serwera…
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-starting-client = Uruchamianie klienta…
 # Strings for the drop-down window to manage your active account
-account-drop-down-switch-account = Przełącz konto:
+account-drop-down-switch-account = Zmień konto:
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-status-client-crashed = Klient napotkał błąd podczas uruchamiania. Jeżeli ten błąd nie ustąpi, poproś o pomoc na platformie Discord lub GitHub.
+connecting-status-client-crashed = Wygląda na to, że klient zawiesił się w trakcie startu. Jeśli to nie ustąpi, proszę poprosić o wsparcie na Discordzie lub GitHubie.
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-update-status-fetching-manifest = Pobieranie manifestu servera…
+connecting-update-status-fetching-manifest = Pobieranie manifestu serwera…
 # Strings for the login screen
 login-log-launcher = Rejestruj błędy programu uruchamiającego
 # Strings for the "forgot password" view on login
-login-forgot-success-title = E-mail resetujący został wysłany
+login-forgot-success-title = E-mail resetujący wysłany
 # Strings for the "forgot password" view on login
 login-forgot-success-message = Link resetujący został wysłany na Twój adres e-mail.
 # Strings for the "forgot password" view on login
-login-forgot-message = Jeżeli nie pamiętasz hasła, możesz wprowadzić adres e-mail powiązany z Twoim kontem aby otrzymać link resetujący.
+login-forgot-message = Jeśli nie pamiętasz swojego hasła, możesz tutaj wprowadzić adres e-mail powiązany z Twoim kontem, aby otrzymać link resetujący.
 # Strings for the "register confirmation" view on login
-login-confirmation-confirmation-message = Sprawdź swój e-mail, aby potwierdzić konto. Po potwierdzeniu konta, naciśnij przycisk poniżej aby się zalogować.
+login-confirmation-confirmation-message = Sprawdź adres e–mail, aby potwierdzić swoje konto. Po potwierdzeniu konta naciśnij poniższy przycisk, aby się zalogować.
 # Strings for the "register confirmation" view on login
-login-confirmation-button-confirm = Potwierdziłem/am swoje konto
+login-confirmation-button-confirm = Konto potwierdzone
 # Strings for the general main window layout of the launcher
 main-window-out-of-date-desc-steam =
     Ten program uruchamiający jest nieaktualny.
-    Zezwól platformie Steam na aktualizację gry.
+    Zezwól Steam na aktualizację gry.
 # Strings for the "login" view on login
 login-login-button-resend = Ponownie wyślij potwierdzenie e-mail
 # Strings for the "login" view on login
@@ -441,7 +441,7 @@ main-window-out-of-date = Nieaktualny program uruchamiający
 # Strings for the general main window layout of the launcher
 main-window-out-of-date-desc =
     Ten program uruchamiający jest nieaktualny.
-    Pobierz nowszą wersję z naszej strony internetowej.
+    Pobierz nową wersję z naszej strony internetowej.
 # Short region names for server tag filters (shown in filter check box)
 region-short-north-america-central = Północna Ameryka Środkowa
 # Strings for the "login" view on login
@@ -463,7 +463,7 @@ filters-unspecified = Nieokreślone
 # Strings for the server filters menu
 filters-unspecified-desc = Nieokreślone
 # Strings for entries in the server list (including home page)
-server-entry-description-offline = Nie można skontaktować się z serwerem
+server-entry-description-offline = Nie udało połączyć się z serwerem
 # Strings for the "Development" tab
 # These aren't shown to users so they're not very important
 tab-development-disable-signing-desc = { "[" }TYLKO DLA DEWELOPERÓW] Wyłącza weryfikację sygnatur silnika. NIE WŁĄCZAJ, JEŻELI NIE WIESZ CO ROBISZ.
@@ -480,7 +480,7 @@ filters-title-rp = Poziom Role-play
 tab-development-enable-engine-override = Włącz nadpisywanie silnika
 # Strings for the "Development" tab
 # These aren't shown to users so they're not very important
-tab-development-enable-engine-override-desc = Nadpisywanie ścięzki do wczytania plików zip silnika (release/ w RobustToolbox)
+tab-development-enable-engine-override-desc = Nadpisanie ścieżki do wczytania plików zip silnika z (release/ w RobustToolbox)
 # Strings for the "home" tab
 tab-home-favorites-guide = Oznacz serwery jako ulubione, aby mieć do nich ułatwiony dostęp
 # Strings for the "options" tab
@@ -495,7 +495,7 @@ tab-options-flip = { "*" }obrót
 # These aren't shown to users so they're not very important
 tab-development-title-override = { "[" }DEV (nadpisywanie aktywne!!!)]
 # Strings for the "options" tab
-tab-options-open-log-directory = Otwórz folder z rejestrami
+tab-options-open-log-directory = Otwórz folder dzienników
 # Strings for the "servers" tab
 tab-servers-list-status-none = Nie ma publicznych serwerów. Upewnij się, że Twoja konfiguracja list jest poprawna.
 # Strings for the server filters menu
@@ -525,15 +525,15 @@ tab-options-hub-settings = Ustawienia Listy Serwerów
 # Strings for the "options" tab
 tab-options-hub-settings-desc = Zmień listy z którywch chcesz pobierać serwery.
 # Strings for the "options" tab
-tab-options-disable-signing-desc = { "[" } TYLKO DLA DEWELOPERÓW] Wyłącza weryfikację sygnatur silnika. NIE WŁĄCZAJ, JEŚLI NIE WIESZ CO ROBISZ.
+tab-options-disable-signing-desc = { "[" } TYLKO DLA DEWELOPERÓW] Wyłącza weryfikację sygnatur silnika. NIE WŁĄCZAJ, JEŚLI NIE WIESZ DOKŁADNIE, CO ROBISZ.
 # Strings for the "hub settings" dialog window.
 hub-settings-title = Ustawienia Listy Serwerów
 # Strings for the "hub settings" dialog window.
-hub-settings-explanation = Tutaj możesz dodać dodatkowe listy z których będą pobierane serwery gier. Należy dodać tylko zaufane listy, ponieważ mogą one dodawać niepożądane serwery. Kolejność list ma znaczenie; jeżeli dwie listy reklamują ten sam serwer gry, ta z wyższym priorytetem (wyżej na liście) będzia miała pierwszeństwo.
+hub-settings-explanation = Tutaj możesz dodać dodatkowe listy, z których będą pobierane serwery gier. Należy dodawać tylko zaufane listy, ponieważ mogą 'podszywać się' pod inne serwery gier. Kolejność list ma znaczenie; jeśli dwie reklamują ten sam serwer gry, lista z wyższym priorytetem (wyżej na liście) będzie miała pierwszeństwo.
 # Strings for the general main window layout of the launcher
-main-window-out-of-date-download-manual = Pobierz (ręcznie)
+main-window-out-of-date-download-manual = Pobierz (instrukcja)
 # Strings for the general main window layout of the launcher
-main-window-drag-drop-prompt = Upuść aby odtworzyć grę
+main-window-drag-drop-prompt = Upuść by uruchomić grę
 tab-options-desc-incompatible = Ta opcja nie jest dostępna na tej platformie i została zablokowana.
 connecting-status-update-error-unknown = Nieznany
 server-entry-status-lobby = Menu
@@ -550,3 +550,21 @@ connecting-privacy-policy-accept = Zaakceptuj (kontynuuj)
 connecting-privacy-policy-decline = Odmów (odłącz)
 connecting-status-update-error-no-engine-for-platform = Ta gra używa starszej wersji, która nie wspira twojej platformy. Spróbuj ponownie później lub połącz się z innym serwerem.
 connecting-status-update-error-no-module-for-platform = Ta gra wymaga dodatkowej funkcjonalności, która nie jest wspierana na twojej platformie. Spróbuj ponownie później lub połącz się z innym serwerem.
+main-window-intel-degrade-title = Wykryto procesor Intel 13/14 generacji.
+main-window-intel-degrade-desc =
+    Procesory Intel 13. i 14. generacji są znane z tego, że po cichu ulegają trwałej degradacji i przestają działać z powodu błędu mikrokodu firmy Intel. Niestety nie możemy stwierdzić, czy ten błąd dotyczy obecnie użytkowników, dlatego to ostrzeżenie pojawia się dla wszystkich użytkowników tych procesorów.
+
+    ZDECYDOWANIE zalecamy aktualizację BIOS-u płyty głównej do najnowszej wersji, aby zapobiec dalszym uszkodzeniom. Jeśli masz problemy ze stabilnością lub gra nie uruchamia się, obniż taktowanie procesora, aby przywrócić stabilność i skorzystaj z gwarancji, aby poprosić o jego wymianę.
+
+    Nie jesteśmy odpowiedzialni za pomoc w przypadku jakichkolwiek problemów z procesorami, których dotyczy problem, chyba że zachowałeś środki ostrożności i masz pewność, że Twój procesor działa stabilnie. Ten komunikat nie pojawi się ponownie po jego zaakceptowaniu.
+main-window-intel-degrade-accept = Rozumiem, zostały podjęte niezbędne środki ostrożności.
+main-window-rosetta-title = Gra działa przy użyciu Rosetta 2!
+main-window-rosetta-accept = Kontynuuj
+button-done = Zrobione!
+main-window-rosetta-desc =
+    Wygląda na to że korzystasz z Apple Silicon Mac i gra działa przy użyciu Rosetta 2. Możliwa jest lepsza wydajność i żywotność baterii przez uruchamianie gry natywnie.
+
+    Żeby to zrobić, kliknij prawym przyciskiem myszy na launcher w Finderze, wybierz "Get Info" i odznacz "Open using Rosetta". Po tym, włącz ponownie launcher.
+
+    Jeżeli celowo włączasz grę przy użyciu Rosetta 2, możesz odrzucić tę wiadomość żeby się nie pojawiła ponownie. Choć jeżeli to robisz żeby obejść jakiś błąd, prosimy aby został on zreportowany.
+tab-options-clear-content-close-client = Najpierw zamknij innych klientów

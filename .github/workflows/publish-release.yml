@@ -17,7 +17,7 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: 9.0.x
+        dotnet-version: 10.0.x
 
     - name: Publish bootstrap
       working-directory: SS14.Launcher.Bootstrap
@@ -27,7 +27,7 @@ jobs:
       with:
         name: "bootstrap"
         retention-days: 1
-        path: "SS14.Launcher.Bootstrap/bin/Release/net9.0-windows/win-x64/publish/Space Station 14 Launcher.exe"
+        path: "SS14.Launcher.Bootstrap/bin/Release/net10.0-windows/win-x64/publish/Space Station 14 Launcher.exe"
 
   build:
     runs-on: ubuntu-latest
@@ -42,7 +42,7 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: 9.0.x
+        dotnet-version: 10.0.x
 
     - name: Create build (macOS & Linux)
       run: ./publish.py osx linux
@@ -52,7 +52,7 @@ jobs:
       with:
         name: "bootstrap"
 
-    - name: Create build (macOS & Linux)
+    - name: Create build (Windows)
       run: ./publish.py windows --x64-only
 
     - name: Create Release

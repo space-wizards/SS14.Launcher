@@ -103,10 +103,10 @@ connecting-update-status-culling-content = Foriganta malnovan enhavon de servilo
 connecting-update-status-committing-download = Konservanta al disko…
 connecting-update-status-unknown = Vi ne devus ĉi tion
 direct-connect-connect = Konekti
-direct-connect-title = Rekta Konekti…
+direct-connect-title = Rekta Konekti
 connecting-privacy-policy-accept = Akcepti (daŭrigi)
 connecting-privacy-policy-decline = Malakcepti (malkonekti)
-hub-settings-button-done = Fini
+hub-settings-button-done = Konservi
 connecting-privacy-policy-view = Legi privatecan politikon
 hub-settings-title = Agordoj de Servilejo
 login-log-launcher = Registri Lanĉilon
@@ -136,7 +136,7 @@ login-login-show-password = Montri Pasvorton
 login-login-username-watermark = Uzantnomo aŭ retpoŝtadreso
 login-login-busy-logging-in = Ensalutas…
 login-confirmation-busy = Ensalutas…
-main-window-header-link-discord = Discord
+main-window-header-link-discord = Diskordo
 main-window-early-access-title = Atentu!
 main-window-busy-checking-login-status = Aktualiganta staton de ensaluto…
 main-window-error-unknown = Okazis nekonata eraro
@@ -165,12 +165,12 @@ filters-rp-high-desc = Alta
 filters-rp-medium = Meza
 filters-rp-medium-desc = Meza
 server-entry-offline = SENKONEKTA
-server-entry-remove-favorite = Forigi Favoraton
-server-entry-add-favorite = Aldoni Favoraton
+server-entry-remove-favorite = Eksfavorati
+server-entry-add-favorite = Favorati
 server-entry-fetching = Leganta…
 tab-home-title = Hejmo
-tab-home-favorite-servers = Favorataj Serviloj:
-tab-home-add-favorite = Aldoni Favoraton…
+tab-home-favorite-servers = Favorataj Serviloj
+tab-home-add-favorite = Aldoni favoraton
 tab-home-refresh = Aktualigi
 tab-options-seasonal-branding = Sezona Markado
 tab-options-title = Opcioj
@@ -195,7 +195,7 @@ connecting-status-update-error =
     - Provu konektiĝi al alia ludservlio por vidi ĉu la atentindaĵo daŭras.
     - Provu ŝalti aŭ malŝalti softvaron kiel VPNojn, se vi havas ajnan.
 
-    Se vi ankoraŭ havas problemojn, unue provu kontakti la administratojn de la servilo al kiu vi provas konekti, antaŭ ol peti asiston en la Oficiala Discord aŭ Oficiala Forumo de Space Station 14.
+    Se vi ankoraŭ havas problemojn, unue provu kontakti la administratojn de la servilo al kiu vi provas konekti, antaŭ ol peti asiston en la Oficiala Diskordo aŭ Oficiala Forumo de Space Station 14.
 
     Teknika eraro: { $err }
 connecting-update-status-downloading-engine-modules = Elŝutanta ceterajn dependeĵojn…
@@ -266,14 +266,14 @@ tab-options-seasonal-branding-desc = Ajnajn tempe signifajn ikonojn kaj emblemoj
 tab-home-run-content-bundle = Ekruli enhavopakaĵon/ludregistraĵon
 tab-options-open-log-directory = Malfermi dosierujon de registrado
 tab-options-clear-content = Forigi instalitan enhavon de serviloj
-tab-home-direct-connect = Direkte Konekti Al Servilo…
+tab-home-direct-connect = Direkte konekti al servilo
 tab-home-go-to-servers-tab = Iri al la langeto de serviloj
 tab-home-favorites-guide = Marku servilojn kiel favoratojn por facile atingi ĉi tie
 tab-options-log-client-desc = Ebligas registradon de eligaĵo de la ludkliento. Utila por ellaborantoj.
-tab-options-desc-incompatible = Ĉi tiu opcio ne kongruas kun via platformo kaj estas malŝaltita.
+tab-options-desc-incompatible = Ĉi tiu opcio ne kongruas pro via platformo kaj estas malŝaltita.
 language-selector-help-translate = Volas helpi traduki? Vi povas!
 language-selector-system-language = Sistema lingvo ({ $languageName })
-connecting-status-client-crashed = Kliento verŝajne kraŝis dum lanĉado. Se tio daŭras, bonvolu peti asiston en Discord aŭ GitHub.
+connecting-status-client-crashed = Kliento verŝajne kraŝis dum lanĉado. Se tio daŭras, bonvolu peti asiston en Diskordo aŭ GitHub.
 connecting-privacy-policy-text = Ĉi tiu servilo postulas ke vi akceptu ĝian privatecan politikon antaŭ ol konekti.
 connecting-privacy-policy-text-version-changed = Ĉi tiu servilo ŝanĝiĝis sian privatecan politikon post kiam vi lastfoje ludis. Vi devas akcepti la novan version antaŭ ol konekti.
 hub-settings-explanation = Ĉe tie vi povas aldoni pliajn servilejojn el kiuj legi servilojn el. Vi aldonu nur servilejojn kiujn vi fidas, ĉar ĝi povas 'falsigi' ludservilojn de aliaj servilejoj. La ordo de la servilejoj gravas; se du servilejoj anoncus la saman ludservilon, la servilejo kun la pli alta prioritato (supre en la listo) prioritatigus.
@@ -285,3 +285,21 @@ tab-options-account-settings-desc = Vi povas manaĝi vian agordojn de via konto,
 tab-options-hub-settings-desc = Agordi kiujn servilejojn vi volas uzi por legi la liston de serviloj.
 connecting-status-update-error-no-engine-for-platform = Ĉi tiu ludo uzas malnovan version, kiu ne subtenas vian kurantan platformon. Bonvolu provi alian servilon, aŭ alifoje reprovu.
 connecting-status-update-error-no-module-for-platform = Ĉi tiu ludo bezonas aldonan funkciecon, kiun via kuranta platformo ne subtenas. Bonvolu provi alian servilon, aŭ alifoje reprovu.
+main-window-rosetta-desc =
+    Vi ŝajnas uzi Apple Silicon Mac, kaj vi rulas la ludon per Rosetta 2. Vi eble spertus pli bonan rendimenton kaj baterian vivdaŭron per rulu la ludon operaciume.
+
+    Por fari tiun, dekstre alklaku la lanĉilon en Finder, elektu "Get Info" kaj malelektu "Open using Rosetta". Poste, restartigu la lanĉilon.
+
+    Ĉu vi intence rulas la ludon per Rosetta 2, vi povas fermi ĉi tiun mesaĝon, kaj ĝi ne aperos denove. Tamen, ĉu vi faras tiun provcele fliki atentindaĵon, bonvole sendu cimraporton.
+main-window-intel-degrade-desc =
+    La Intel-procesoroj de la 13a kaj 14a generacioj estas konataj degeneri silente kaj permanente, pro mikrokoda cimo en Intel-procesoroj. Bedaŭrinde, ni ne povas detekti, ĉu vi nun estas trafata de ĉi tiu cimo, tial ĉi tiu averto aperas por ĉiuj uzantoj kun ĉi tiuj procesoroj.
+
+    Ni FORTE instigas vin, aktualigu vian ĉeftabulon al la aktuala versio, por certigi la preventon de plua damaĝo. Ĉu vi spertus atentinaĵojn, aŭ nefarus lanĉi la ludo, reduktu la taktofrekvencon de via procesoro por reatingi stabiligecon, kaj uzu vian garantion por peti pri anstataŭigo.
+
+    Ni ne respondecas por ajnaj atentinaĵoj, kiuj povas eliriĝi pro affekciataj procesoroj, krom se vi antaŭzorgis kaj vi certigas ke vian procesoron estas stabila. Ĉi tiu averto ne aperos denove, poste vi akceptos tion.
+main-window-intel-degrade-title = Intel-procesoro de 13a/14a generacio estas detektita.
+main-window-intel-degrade-accept = Mi komprenas, kaj antaŭzorgis.
+main-window-rosetta-title = Vi rulas la ludo per Rosetta 2!
+main-window-rosetta-accept = Daŭrigi
+tab-options-clear-content-close-client = Unue fermu rulantajn klientojn
+button-done = Kompletis!

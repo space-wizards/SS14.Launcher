@@ -5,7 +5,7 @@ namespace SS14.Launcher;
 
 public static class ConfigConstants
 {
-    public const string CurrentLauncherVersion = "56";
+    public const string CurrentLauncherVersion = "61";
     public static readonly bool DoVersionCheck = true;
 
     // Refresh login tokens if they're within <this much> of expiry.
@@ -66,6 +66,6 @@ public static class ConfigConstants
     {
         var envVarAuthUrl = Environment.GetEnvironmentVariable("SS14_LAUNCHER_OVERRIDE_AUTH");
         if (!string.IsNullOrEmpty(envVarAuthUrl))
-            AuthUrl = new UrlFallbackSet([envVarAuthUrl], AuthUrl.Stats);
+            AuthUrl = new UrlFallbackSet([envVarAuthUrl]);
     }
 }
