@@ -283,3 +283,14 @@ server-entry-round-time =
         [0] { $mins }M
        *[1] { $hours }H { $mins }M
     }
+connecting-status-update-error-no-engine-for-platform = Acest joc folosește o versiune veche care nu suportă platforma ta curenta. Te rog să încerci un alt server sau încearcă mai târziu.
+connecting-status-update-error-no-module-for-platform = Acest joc necesită o funcționalitate adițională care nu este încă suportata pe platforma ta curentă.
+main-window-intel-degrade-title = Generația de CPU Intel 13th/14th detectată.
+main-window-intel-degrade-desc =
+    Generația de CPU Intel 13th/14th este cunoscută să se degradeze silențios permanent si să moară din cauza unui micro-cod bug de la Intel. Din păcate nu putem sa ne dăm seama daca ești afectat de acest bug, așa că această avertizare apare pentru toți utilizatorii cu aceasta generație de CPU.
+
+    Vă încurajăm cu IMPUTERNICIRE ca tu să îți faci update la placa ta de bază prin BIOS până la ultima versiune ca să vă asigurați că nu sunt alte daune ulterioare. Dacă ai probleme cu stabilitatea/nu reușești sa începi jocul, fă downclock(Coboară viteza la procesor.) la procesorul tău ca să îl faci stabil din nou și folosește-ți garanția și întreabă să ți-se schimbe.
+
+    Noi nu suntem responsabili să te ajutăm cu orice problemă care ar putea apărea din cauza procesoarelor, doar dacă tu ai luat măsurile necesare și te-ai asigurat ca procesorul tău e stabil. Acest mesaj nu o să mai apară după ce accepți acest mesaj.
+main-window-intel-degrade-accept = Înțeleg și am luat măsurile necesare.
+main-window-rosetta-title = Tu rulezi jocul cu Rosetta 2!
