@@ -1,10 +1,9 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Threading;
 using DynamicData;
-using ReactiveUI;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Serilog;
 using SS14.Launcher.Api;
 using SS14.Launcher.Models.Data;
@@ -13,7 +12,7 @@ namespace SS14.Launcher.Models.Logins;
 
 // This is different from DataManager in that this class actually manages logic more complex than raw storage.
 // Checking and refreshing tokens, marking accounts as "need signing in again", etc...
-public sealed class LoginManager : ReactiveObject
+public sealed class LoginManager : ObservableObject
 {
     // TODO: If the user tries to connect to a server or such
     // on the split second interval that the launcher does a token refresh
@@ -46,8 +45,14 @@ public sealed class LoginManager : ReactiveObject
                 }
             }
 
-            this.RaiseAndSetIfChanged(ref _activeLoginId, value);
-            this.RaisePropertyChanged(nameof(ActiveAccount));
+            if (_activeLoginId != value)
+            {
+                OnPropertyChanging();
+                _activeLoginId = value;
+                OnPropertyChanged();
+            }
+
+            OnPropertyChanged(nameof(ActiveAccount));
             _cfg.SelectedLoginId = value;
         }
     }
@@ -86,7 +91,7 @@ public sealed class LoginManager : ReactiveObject
     public async Task Initialize()
     {
         // Set up timer so that if the user leaves their launcher open for a month or something
-        // his tokens don't expire.
+        // their tokens don't expire.
         _timer = DispatcherTimer.Run(() =>
         {
             async void Impl()
@@ -203,7 +208,12 @@ public sealed class LoginManager : ReactiveObject
 
         public void SetStatus(AccountLoginStatus status)
         {
-            this.RaiseAndSetIfChanged(ref _status, status, nameof(Status));
+            if (_status == status)
+                return;
+
+            OnPropertyChanging(nameof(Status));
+            _status = status;
+            OnPropertyChanged(nameof(Status));
             Log.Debug("Setting status for login {account} to {status}", LoginInfo, status);
         }
     }

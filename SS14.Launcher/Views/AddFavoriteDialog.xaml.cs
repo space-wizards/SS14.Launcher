@@ -1,46 +1,32 @@
 using System;
 using Avalonia.Controls;
-using ReactiveUI;
+using Avalonia.Interactivity;
 
 namespace SS14.Launcher.Views;
 
 public partial class AddFavoriteDialog : Window
 {
-    private readonly TextBox _nameBox;
-    private readonly TextBox _addressBox;
-
     public AddFavoriteDialog()
     {
         InitializeComponent();
-
-        _nameBox = NameBox;
-        _addressBox = AddressBox;
-
-        SubmitButton.Command = ReactiveCommand.Create(TrySubmit);
-
-        this.WhenAnyValue(x => x._nameBox.Text)
-            .Subscribe(_ => UpdateSubmitValid());
-
-        this.WhenAnyValue(x => x._addressBox.Text)
-            .Subscribe(_ => UpdateSubmitValid());
     }
 
     protected override void OnOpened(EventArgs e)
     {
         base.OnOpened(e);
 
-        _nameBox.Focus();
+        NameBox.Focus();
     }
 
-    private void TrySubmit()
+    private void TrySubmit(object? _1, RoutedEventArgs _2)
     {
-        Close((_nameBox.Text?.Trim() ?? "", _addressBox.Text?.Trim() ?? ""));
+        Close((NameBox.Text?.Trim() ?? "", AddressBox.Text?.Trim() ?? ""));
     }
 
-    private void UpdateSubmitValid()
+    private void UpdateSubmitValid(object? _1, TextChangedEventArgs _2)
     {
-        var validAddr = DirectConnectDialog.IsAddressValid(_addressBox.Text);
-        var valid = validAddr && !string.IsNullOrEmpty(_nameBox.Text);
+        var validAddr = DirectConnectDialog.IsAddressValid(AddressBox.Text);
+        var valid = validAddr && !string.IsNullOrEmpty(NameBox.Text);
 
         SubmitButton.IsEnabled = valid;
         TxtInvalid.IsVisible = !validAddr;
