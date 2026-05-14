@@ -6,8 +6,10 @@
              xmlns:vl="clr-namespace:SS14.Launcher.Views.Login;assembly=SS14.Launcher"
              xmlns:views="clr-namespace:SS14.Launcher.Views"
              xmlns:loc="clr-namespace:SS14.Launcher.Localization"
+             xmlns:viewModels="clr-namespace:SS14.Launcher.ViewModels"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="SS14.Launcher.Views.MainWindowLogin">
+             x:Class="SS14.Launcher.Views.MainWindowLogin"
+             x:DataType="viewModels:MainWindowLoginViewModel">
   <Design.DataContext>
     <vm:MainWindowLoginViewModel />
   </Design.DataContext>

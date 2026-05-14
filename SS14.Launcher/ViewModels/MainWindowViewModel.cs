@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using Avalonia.Platform.Storage;
 using DynamicData;
 using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
+using ReactiveUI.SourceGenerators;
 using Serilog;
 using Splat;
 using SS14.Launcher.Api;

@@ -7,7 +7,8 @@
              xmlns:loc="clr-namespace:SS14.Launcher.Localization"
              xmlns:mainWindowTabs="clr-namespace:SS14.Launcher.ViewModels.MainWindowTabs"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="SS14.Launcher.Views.MainWindowContent">
+             x:Class="SS14.Launcher.Views.MainWindowContent"
+             x:DataType="vm:MainWindowViewModel">
   <Design.DataContext>
     <vm:MainWindowViewModel />
   </Design.DataContext>

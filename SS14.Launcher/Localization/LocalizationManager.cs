@@ -149,7 +149,7 @@ public sealed class LocalizationManager
             {
                 using var asset = AssetLoader.Open(ftl);
                 using var reader = new StreamReader(asset, Encoding.UTF8);
-                var resource = new LinguiniParser(reader).Parse();
+                var resource = LinguiniParser.FromTextReader(reader, location).Parse();
                 foreach (var resourceError in resource.Errors)
                 {
                     Log.Error("Error in loc {LocFile}: {Error}", ftl, resourceError);

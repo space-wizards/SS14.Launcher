@@ -9,7 +9,7 @@ using Serilog;
 using Splat;
 using SS14.Launcher.Utility;
 using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
+using ReactiveUI.SourceGenerators;
 using SS14.Launcher.Api;
 using SS14.Launcher.Models.Data;
 using static SS14.Launcher.Api.HubApi;

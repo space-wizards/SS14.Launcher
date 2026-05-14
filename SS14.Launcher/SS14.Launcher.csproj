@@ -40,19 +40,18 @@
   <ItemGroup>
     <PackageReference Include="Avalonia" />
     <PackageReference Include="Avalonia.Desktop" />
-    <PackageReference Include="Avalonia.ReactiveUI" />
-    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" />
     <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="HotAvalonia" PrivateAssets="All" />
     <PackageReference Include="Avalonia.Themes.Simple" />
     <PackageReference Include="CodeHollow.FeedReader" />
+    <PackageReference Include="CommunityToolkit.Mvvm" />
     <PackageReference Include="Dapper" />
     <PackageReference Include="DynamicData" />
     <PackageReference Include="Microsoft.Data.Sqlite.Core" />
     <PackageReference Include="SQLitePCLRaw.provider.sqlite3" Condition="'$(UseSystemSqlite)' == 'True'" />
     <PackageReference Include="SQLitePCLRaw.bundle_e_sqlite3" Condition="'$(UseSystemSqlite)' != 'True'" />
-    <PackageReference Include="Microsoft.Toolkit.Mvvm" />
     <PackageReference Include="ReactiveUI" />
-    <PackageReference Include="ReactiveUI.Fody" />
+    <PackageReference Include="ReactiveUI.Avalonia" />
+    <PackageReference Include="ReactiveUI.SourceGenerators" />
     <PackageReference Include="Robust.Shared.AuthLib" />
     <PackageReference Include="Serilog" />
     <PackageReference Include="Serilog.Sinks.Console" />
@@ -60,7 +59,6 @@
     <PackageReference Include="YamlDotNet" />
     <PackageReference Include="TerraFX.Interop.Windows" />
     <PackageReference Include="NSec.Cryptography" />
-    <PackageReference Include="Mono.Posix.NETStandard" />
     <PackageReference Include="SharpZstd.Interop" ExcludeAssets="native" />
     <PackageReference Include="Robust.Natives.Zstd" />
     <PackageReference Include="SpaceWizards.Sodium" />

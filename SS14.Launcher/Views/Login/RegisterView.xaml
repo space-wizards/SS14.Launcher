@@ -3,9 +3,11 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vml="clr-namespace:SS14.Launcher.ViewModels.Login;assembly=SS14.Launcher"
+             xmlns:login="clr-namespace:SS14.Launcher.ViewModels.Login"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SS14.Launcher.Views.Login.RegisterView"
-             Name="Register">
+             Name="Register"
+             x:DataType="login:RegisterViewModel">
   <Design.DataContext>
     <vml:RegisterViewModel />
   </Design.DataContext>

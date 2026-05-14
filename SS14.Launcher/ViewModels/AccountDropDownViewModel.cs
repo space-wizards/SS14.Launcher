@@ -4,7 +4,7 @@ using System.Reactive.Linq;
 using DynamicData;
 using JetBrains.Annotations;
 using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
+using ReactiveUI.SourceGenerators;
 using Serilog;
 using Splat;
 using SS14.Launcher.Api;
@@ -133,6 +133,6 @@ public sealed class AvailableAccountViewModel : ViewModelBase
                 AccountLoginStatus.Expired => $"{p.Item2} (!)",
                 _ => $"{p.Item2} (?)"
             })
-            .ToPropertyEx(this, x => x.StatusText);
+            .ToProperty(this, x => x.StatusText);
     }
 }

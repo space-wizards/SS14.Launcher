@@ -6,7 +6,8 @@
              xmlns:mwtv="clr-namespace:SS14.Launcher.Views.MainWindowTabs"
              xmlns:loc="clr-namespace:SS14.Launcher.Localization"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="SS14.Launcher.Views.MainWindowTabs.ServerListFiltersView">
+             x:Class="SS14.Launcher.Views.MainWindowTabs.ServerListFiltersView"
+             x:DataType="mainWindowTabs:ServerListFiltersViewModel">
   <Design.DataContext>
     <mainWindowTabs:ServerListFiltersViewModel />
   </Design.DataContext>

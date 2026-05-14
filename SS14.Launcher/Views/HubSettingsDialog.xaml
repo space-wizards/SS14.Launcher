@@ -11,7 +11,8 @@
         Icon="{DynamicResource WindowIcon}"
         Title="{loc:Loc hub-settings-title}"
         Padding="4"
-        WindowStartupLocation="CenterOwner">
+        WindowStartupLocation="CenterOwner"
+        x:DataType="vm:HubSettingsViewModel">
   <Design.DataContext>
     <vm:HubSettingsViewModel />
   </Design.DataContext>
