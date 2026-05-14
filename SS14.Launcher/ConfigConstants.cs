@@ -42,7 +42,8 @@ public static class ConfigConstants
 
     private static readonly UrlFallbackSet RobustBuildsBaseUrl = new([
         "https://robust-builds.cdn.spacestation14.com/",
-        "https://robust-builds.fallback.cdn.spacestation14.com/"
+        "https://robust-builds.fallback.cdn.spacestation14.com/",
+        "https://cdn.station14.ru/robust-builds/"
     ]);
 
     private static readonly UrlFallbackSet LauncherDataBaseUrl = new([
