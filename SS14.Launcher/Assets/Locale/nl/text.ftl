@@ -540,11 +540,7 @@ connecting-privacy-policy-view = Bekijk privacybeleid
 connecting-privacy-policy-accept = Accepteer (doorgaan)
 connecting-privacy-policy-decline = Weigeren (verbreken)
 tab-servers-table-round-time = Tijd
-server-entry-round-time =
-    { $hours ->
-        [0] { $mins }M
-       *[1] { $hours }U { $mins }M
-    }
+server-entry-round-time = { $hours }u { $mins }m
 server-entry-status-lobby = Lobby
 connecting-status-update-error-unknown = Onbekend
 main-window-rosetta-accept = Ga verder
