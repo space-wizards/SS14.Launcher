@@ -8,6 +8,7 @@ using System.Reactive.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Avalonia.Platform.Storage;
+using Avalonia.Threading;
 using DynamicData;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
@@ -37,6 +38,8 @@ public sealed class MainWindowViewModel : ViewModelBase, IErrorOverlayOwner
 
     public DataManager Cfg => _cfg;
     [Reactive] public bool OutOfDate { get; private set; }
+
+    private IDisposable? _authOverrideCountdownTimer;
 
     public HomePageViewModel HomeTab { get; }
     public ServerListTabViewModel ServersTab { get; }
@@ -138,6 +141,9 @@ public sealed class MainWindowViewModel : ViewModelBase, IErrorOverlayOwner
     public ICVarEntry<bool> HasDismissedEarlyAccessWarning => Cfg.GetCVarEntry(CVars.HasDismissedEarlyAccessWarning);
     public bool ShouldShowIntelDegradationWarning => IsVulnerableToIntelDegradation(_cfg);
     public bool ShouldShowRosettaWarning => IsAppleSiliconInRosetta(_cfg);
+    [Reactive] public bool ShouldShowAuthOverrideWarning { get; set; }
+    [Reactive] public int AuthOverrideCountdown { get; private set; } = 5;
+    [Reactive] public bool IsAuthOverrideButtonEnabled { get; private set; }
 
     public string Version => $"v{LauncherVersion.Version}";
 
@@ -222,6 +228,33 @@ public sealed class MainWindowViewModel : ViewModelBase, IErrorOverlayOwner
         Cfg.SetCVar(CVars.HasDismissedRosettaWarning, true);
         Cfg.CommitConfig();
         this.RaisePropertyChanged(nameof(ShouldShowRosettaWarning));
+    }
+
+    public void DismissAuthOverridePressed()
+    {
+        _authOverrideCountdownTimer?.Dispose();
+        _authOverrideCountdownTimer = null;
+        ShouldShowAuthOverrideWarning = false;
+    }
+
+    public void StartAuthOverrideCountdown()
+    {
+        AuthOverrideCountdown = 5;
+        IsAuthOverrideButtonEnabled = false;
+        _authOverrideCountdownTimer?.Dispose();
+
+        _authOverrideCountdownTimer = DispatcherTimer.Run(() =>
+        {
+            AuthOverrideCountdown--;
+            if (AuthOverrideCountdown <= 0)
+            {
+                IsAuthOverrideButtonEnabled = true;
+                _authOverrideCountdownTimer?.Dispose();
+                _authOverrideCountdownTimer = null;
+                return false;
+            }
+            return true;
+        }, TimeSpan.FromSeconds(1), DispatcherPriority.Normal);
     }
 
     public void SelectTabServers()

@@ -153,6 +153,15 @@ public class App : Application
         Locator.CurrentMutable.RegisterConstant(lc);
         msgr.StartServerTask(lc);
 
+        // Check if auth URL is overridden
+        var authOverride = Environment.GetEnvironmentVariable("SS14_LAUNCHER_OVERRIDE_AUTH");
+        if (!string.IsNullOrEmpty(authOverride))
+        {
+            Log.Information("Auth URL override detected: {AuthUrl}.", authOverride);
+            viewModel.ShouldShowAuthOverrideWarning = true;
+            viewModel.StartAuthOverrideCountdown();
+        }
+
         window.Show();
     }
 
