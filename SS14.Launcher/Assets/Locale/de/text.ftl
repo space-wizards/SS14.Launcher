@@ -140,6 +140,8 @@ login-forgot-error = Fehler
 # Strings for the "login" view on login
 login-login-title = Anmeldung
 # Strings for the "login" view on login
+login-login-auth-server-changed = Auth Server hat sich geändert
+# Strings for the "login" view on login
 login-login-username-watermark = Nutzername oder E-Mail
 # Strings for the "login" view on login
 login-login-password-watermark = Passwort
@@ -542,3 +544,10 @@ server-entry-round-time =
     }
 tab-servers-table-round-time = Zeit
 tab-options-desc-incompatible = Diese Option ist mit deiner Plattform nicht kompatibel und wurde deaktiviert.
+# Strings for the general main window layout of the launcher
+main-window-auth-override-title = Die Authentifizierungs-Server-URL hat sich geändert
+# Strings for the general main window layout of the launcher
+main-window-auth-override-desc =
+    Wenn du dies nicht absichtlich geändert hast, könnte jemand Böswilliges versuchen, auf deine Anmeldedaten zuzugreifen. Indem du dieses Popup schließt, erklärst du dich selbst für verantwortlich für deine eigene Sicherheit und erhältst keinen Support.
+# Strings for the general main window layout of the launcher
+main-window-auth-override-acknowledge = Ich bestätige

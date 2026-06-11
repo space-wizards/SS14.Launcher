@@ -134,6 +134,7 @@ login-forgot-error = Error
 ## Strings for the "login" view on login
 
 login-login-title = Log in
+login-login-auth-server-changed = Auth server has changed
 login-login-username-watermark = Username or email
 login-login-password-watermark = Password
 login-login-show-password = Show Password
