@@ -62,12 +62,10 @@ public static class ConfigConstants
 
     public const string FallbackUsername = "JoeGenero";
 
-#if DEBUG
     static ConfigConstants()
     {
         var envVarAuthUrl = Environment.GetEnvironmentVariable("SS14_LAUNCHER_OVERRIDE_AUTH");
         if (!string.IsNullOrEmpty(envVarAuthUrl))
             AuthUrl = new UrlFallbackSet([envVarAuthUrl]);
     }
-#endif
 }
