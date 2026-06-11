@@ -192,6 +192,10 @@ main-window-busy-checking-login-status = Refreshing login status…
 main-window-busy-checking-account-status = Checking account status
 main-window-error-connecting-auth-server = Error connecting to authentication server
 main-window-error-unknown = Unknown error occurred
+main-window-auth-override-title = The authentication server URL has changed
+main-window-auth-override-desc =
+     If you don't remember changing this, it's possible someone malicious may be trying to snoop on your credentials. By closing this popup, you agree you are responsible for your own security, and will not be provided support.
+main-window-auth-override-acknowledge = I acknowledge
 
 ## Long region names for server tag filters (shown in tooltip)
 
