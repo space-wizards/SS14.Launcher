@@ -22,6 +22,8 @@ public class LoginViewModel : BaseLoginViewModel
     [Reactive] public bool IsInputValid { get; private set; }
     [Reactive] public bool IsPasswordVisible { get; set; }
 
+    public bool IsAuthServerOverridden => !string.IsNullOrEmpty(Environment.GetEnvironmentVariable("SS14_LAUNCHER_OVERRIDE_AUTH"));
+
     public LoginViewModel(MainWindowLoginViewModel parentVm, AuthApi authApi,
         LoginManager loginMgr, DataManager dataManager) : base(parentVm)
     {
