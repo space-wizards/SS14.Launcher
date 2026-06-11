@@ -1,6 +1,6 @@
 using System;
 using System.Threading;
-using Microsoft.Toolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SS14.Launcher.Models.ServerStatus;
 

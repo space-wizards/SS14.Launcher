@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Globalization;
 using System.Linq;
-using Microsoft.Toolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 using SS14.Launcher.Localization;
 using SS14.Launcher.Models.Data;
 using SS14.Launcher.Models.ServerStatus;

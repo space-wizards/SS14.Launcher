@@ -1,4 +1,4 @@
-using ReactiveUI.Fody.Helpers;
+using ReactiveUI.SourceGenerators;
 using SS14.Launcher.Api;
 
 namespace SS14.Launcher.ViewModels.Login;

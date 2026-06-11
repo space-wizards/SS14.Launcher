@@ -15,7 +15,7 @@ using Avalonia.Threading;
 using Dapper;
 using Microsoft.Data.Sqlite;
 using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
+using ReactiveUI.SourceGenerators;
 using Serilog;
 using Splat;
 using SS14.Launcher.Models.ContentManagement;

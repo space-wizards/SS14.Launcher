@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Reactive.Linq;
 using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
+using ReactiveUI.SourceGenerators;
 using Splat;
 using SS14.Launcher.Localization;
 using SS14.Launcher.Models.ServerStatus;
@@ -90,8 +90,8 @@ public class ServerListTabViewModel : MainWindowTabViewModel
         _loc.LanguageSwitched += () => Filters.UpdatePresentFilters(_serverListCache.AllServers);
 
         this.WhenAnyValue(x => x.SearchString)
-            .Throttle(TimeSpan.FromMilliseconds(throttleMs), RxApp.MainThreadScheduler)
-            .ObserveOn(RxApp.MainThreadScheduler)
+            .Throttle(TimeSpan.FromMilliseconds(throttleMs), RxSchedulers.MainThreadScheduler)
+            .ObserveOn(RxSchedulers.MainThreadScheduler)
             .Subscribe(_ => UpdateSearchedList());
     }
 

@@ -7,7 +7,6 @@ using System.Net.Http;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
-using Mono.Unix;
 using Serilog;
 using TerraFX.Interop.Windows;
 using Win = TerraFX.Interop.Windows.Windows;
@@ -189,10 +188,7 @@ public static class Helpers
 
     public static void ChmodPlusX(string path)
     {
-        var f = new UnixFileInfo(path);
-        f.FileAccessPermissions |=
-            FileAccessPermissions.UserExecute | FileAccessPermissions.GroupExecute |
-            FileAccessPermissions.OtherExecute;
+        File.SetUnixFileMode(path, UnixFileMode.UserExecute | UnixFileMode.UserRead | UnixFileMode.UserWrite);
     }
     public static unsafe int MessageBoxHelper(string text, string caption, uint type)
     {

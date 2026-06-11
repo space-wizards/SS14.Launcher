@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Linq;
-using Microsoft.Toolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 using Splat;
 using SS14.Launcher.Localization;
 using SS14.Launcher.Models.Data;

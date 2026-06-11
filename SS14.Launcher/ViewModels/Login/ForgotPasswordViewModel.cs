@@ -1,4 +1,4 @@
-using ReactiveUI.Fody.Helpers;
+using ReactiveUI.SourceGenerators;
 using SS14.Launcher.Api;
 using SS14.Launcher.Localization;
 

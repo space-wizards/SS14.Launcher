@@ -1,6 +1,6 @@
 using System;
 using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
+using ReactiveUI.SourceGenerators;
 
 namespace SS14.Launcher.Models.Data;
 

@@ -1,4 +1,4 @@
-﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using SS14.Launcher.Models.Data;
 using SS14.Launcher.Utility;
 
