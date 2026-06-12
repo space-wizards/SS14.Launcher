@@ -69,7 +69,9 @@ public static class ConfigConstants
         if (!string.IsNullOrEmpty(envVarAuthUrl))
         {
             AuthUrl = new UrlFallbackSet([envVarAuthUrl]);
+#if !DEBUG
             IsAuthOverride = true;
+#endif
         }
     }
 }
