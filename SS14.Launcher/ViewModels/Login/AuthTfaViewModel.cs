@@ -1,22 +1,20 @@
 ﻿using System;
-using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
 using SS14.Launcher.Api;
 using SS14.Launcher.Models.Data;
 using SS14.Launcher.Models.Logins;
 
 namespace SS14.Launcher.ViewModels.Login;
 
-public sealed class AuthTfaViewModel : BaseLoginViewModel
+public sealed partial class AuthTfaViewModel : BaseLoginViewModel
 {
     private readonly AuthApi.AuthenticateRequest _request;
     private readonly LoginManager _loginMgr;
     private readonly AuthApi _authApi;
     private readonly DataManager _cfg;
 
-    [Reactive] public string Code { get; set; } = "";
-
-    [Reactive] public bool IsInputValid { get; private set; }
+    [ObservableProperty] private string _code = "";
+    [ObservableProperty] private bool _isInputValid;
 
     public AuthTfaViewModel(
         MainWindowLoginViewModel parentVm,
@@ -30,13 +28,16 @@ public sealed class AuthTfaViewModel : BaseLoginViewModel
         _authApi = authApi;
         _cfg = cfg;
 
-        this.WhenAnyValue(x => x.Code)
-            .Subscribe(s => { IsInputValid = CheckInputValid(s); });
+        PropertyChanged += (_, e) =>
+        {
+            if (e.PropertyName is nameof(Code))
+                IsInputValid = CheckInputValid();
+        };
     }
 
-    private static bool CheckInputValid(string code)
+    private bool CheckInputValid()
     {
-        var trimmed = code.AsSpan().Trim();
+        var trimmed = Code.AsSpan().Trim();
         if (trimmed.Length != 6)
             return false;
 

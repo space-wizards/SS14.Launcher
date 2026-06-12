@@ -1,10 +1,10 @@
 using System;
-using ReactiveUI;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
 using SS14.Launcher.Models.Data;
 
 namespace SS14.Launcher.Models.Logins;
 
-public abstract class LoggedInAccount : ReactiveObject
+public abstract class LoggedInAccount : ObservableObject
 {
     public string Username => LoginInfo.Username;
     public Guid UserId => LoginInfo.UserId;

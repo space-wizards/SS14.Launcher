@@ -18,10 +18,10 @@
 
     <TextBox DockPanel.Dock="Top" Name="CodeBox" MaxWidth="300" Margin="0, 20, 0, 0"
              Watermark="{loc:Loc login-2fa-input-watermark}"
-             Text="{Binding Code, Mode=TwoWay}" IsEnabled="{Binding !Busy}" />
+             Text="{Binding Code}" IsEnabled="{Binding !Busy}" />
 
     <DockPanel DockPanel.Dock="Top" LastChildFill="False" MaxWidth="300" Margin="0 20 0 0">
-      <Button DockPanel.Dock="Right" HorizontalAlignment="Center"
+      <Button DockPanel.Dock="Right" HorizontalAlignment="Center" IsDefault="True"
               Content="{loc:Loc login-2fa-button-confirm}" Command="{Binding ConfirmTfa}">
         <Button.IsEnabled>
           <MultiBinding Converter="{x:Static BoolConverters.And}">

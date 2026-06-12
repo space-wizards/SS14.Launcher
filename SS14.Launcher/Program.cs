@@ -9,7 +9,6 @@ using System.Text;
 using Avalonia;
 using Avalonia.Logging;
 using Avalonia.Media;
-using Avalonia.ReactiveUI;
 using Microsoft.Win32;
 using Serilog;
 using Serilog.Sinks.SystemConsole.Themes;
@@ -245,8 +244,7 @@ internal static class Program
             {
                 // Necessary workaround for #84 on Linux
                 DefaultFamilyName = "avares://SS14.Launcher/Assets/Fonts/noto_sans/*.ttf#Noto Sans"
-            })
-            .UseReactiveUI();
+            });
     }
 
     private static void CheckLauncherArchitecture(DataManager cfg, EngineManagerDynamic engineManager)
