@@ -27,10 +27,12 @@ public class ServerListTabViewModel : MainWindowTabViewModel
     public string? SearchString
     {
         get => _searchString;
-        set => this.RaiseAndSetIfChanged(ref _searchString, value);
+        set
+        {
+            this.RaiseAndSetIfChanged(ref _searchString, value);
+            UpdateSearchedList();
+        }
     }
-
-    private const int throttleMs = 200;
 
     public bool SpinnerVisible => _serverListCache.Status < RefreshListStatus.Updated;
 
@@ -88,11 +90,6 @@ public class ServerListTabViewModel : MainWindowTabViewModel
         };
 
         _loc.LanguageSwitched += () => Filters.UpdatePresentFilters(_serverListCache.AllServers);
-
-        this.WhenAnyValue(x => x.SearchString)
-            .Throttle(TimeSpan.FromMilliseconds(throttleMs), RxApp.MainThreadScheduler)
-            .ObserveOn(RxApp.MainThreadScheduler)
-            .Subscribe(_ => UpdateSearchedList());
     }
 
     private void FiltersOnFiltersUpdated()

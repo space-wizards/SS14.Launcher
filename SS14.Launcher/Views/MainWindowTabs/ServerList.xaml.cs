@@ -1,16 +1,66 @@
-using System;
+using System.Collections;
+using System.ComponentModel;
+using System.Linq;
 using Avalonia;
-using Avalonia.Controls.Primitives;
-using System.Collections.Generic;
+using Avalonia.Collections;
 using Avalonia.Controls;
-using Avalonia.Metadata;
-using Serilog;
 using SS14.Launcher.ViewModels.MainWindowTabs;
+using static System.ComponentModel.ListSortDirection;
 
 namespace SS14.Launcher.Views.MainWindowTabs;
 
-public sealed partial class ServerList : TemplatedControl
+public sealed partial class ServerList : UserControl
 {
+    public ServerList()
+    {
+        InitializeComponent();
+
+        ServerGrid.SelectionChanged += (_, args) =>
+        {
+            foreach (ServerEntryViewModel rem in args.RemovedItems)
+            {
+                rem.IsExpanded = false;
+            }
+
+            foreach (ServerEntryViewModel add in args.AddedItems)
+            {
+                add.IsExpanded = true;
+            }
+        };
+
+        ServerGrid.Sorting += (_, args) =>
+        {
+            args.Handled = true; // Stop Avalonia from messing with our custom behavior
+
+            if (ServerGrid.ItemsSource is not DataGridCollectionView view)
+                return;
+
+            var currentSort = view.SortDescriptions.FirstOrDefault();
+            view.SortDescriptions.Clear(); // Start fresh
+
+            // This key/path corresponds to what the user wants to sort
+            var clickedKey = args.Column.SortMemberPath;
+
+            ListSortDirection? direction = currentSort switch
+            {
+                // No column is sorted: set clicked column to ascending
+                null => Ascending,
+                // Clicked column does not match currently sorted column: set clicked column to ascending
+                { PropertyPath: { } currentKey } when currentKey != clickedKey => Ascending,
+                // Cycle through ascending -> descending -> no sort -> ascending
+                { Direction: Ascending } => Descending,
+                { Direction: Descending } => null,
+                _ => Ascending,
+            };
+
+            if (direction is not { } d)
+                return; // Do not set any sorting
+
+            var comparer = ServerEntryViewModel.ComparerMapping[clickedKey];
+            view.SortDescriptions.Add(DataGridSortDescription.FromPath(clickedKey, d, comparer));
+        };
+    }
+
     public static readonly DirectProperty<ServerList, bool> ShowHeaderProperty =
         AvaloniaProperty.RegisterDirect<ServerList, bool>(
             nameof(ShowHeader),
@@ -60,32 +110,18 @@ public sealed partial class ServerList : TemplatedControl
         set => SetAndRaise(SpinnerVisibleProperty, ref _spinnerVisible, value);
     }
 
-    public static readonly DirectProperty<ServerList, IReadOnlyCollection<ServerEntryViewModel>> ListProperty =
-        AvaloniaProperty.RegisterDirect<ServerList, IReadOnlyCollection<ServerEntryViewModel>>(
-            nameof(List),
-            o => o.List,
-            (o, v) => o.List = v
-        );
+    public static readonly DirectProperty<ServerList, IEnumerable> EntriesProperty =
+        AvaloniaProperty.RegisterDirect<ServerList, IEnumerable>(nameof(Entries),
+            l => l.Entries,
+            (l, e) => l.Entries = e);
 
-    private IReadOnlyCollection<ServerEntryViewModel> _serverList = Array.Empty<ServerEntryViewModel>();
-
-    public IReadOnlyCollection<ServerEntryViewModel> List
+    public IEnumerable Entries
     {
-        get => _serverList;
-        set => SetAndRaise(ListProperty, ref _serverList, value);
-    }
-
-    public static readonly StyledProperty<object?> ContentProperty =
-        ContentControl.ContentProperty.AddOwner<ServerList>();
-
-    /// <summary>
-    /// If an optional content block is provided it will be
-    /// shown at the bottom of the server list.
-    /// </summary>
-    [Content]
-    public object? Content
-    {
-        get => GetValue(ContentProperty);
-        set => SetValue(ContentProperty, value);
+        get => ServerGrid.ItemsSource;
+        set
+        {
+            ServerGrid.ItemsSource = new DataGridCollectionView(value);
+            ServerGrid.SelectedItem = null;
+        }
     }
 }

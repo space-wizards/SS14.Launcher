@@ -42,7 +42,7 @@
       </Grid.RowDefinitions>
 
       <!-- Main server list table -->
-      <mainWindowTabsViews:ServerList Grid.Row="0" DockPanel.Dock="Top" List="{Binding SearchedServers}"
+      <mainWindowTabsViews:ServerList Grid.Row="0" DockPanel.Dock="Top" Entries="{Binding SearchedServers}"
                                       ListText="{Binding ListText}"
                                       SpinnerVisible="{Binding SpinnerVisible}"
                                       ShowHeader="True"

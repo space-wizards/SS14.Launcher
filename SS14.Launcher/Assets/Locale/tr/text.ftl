@@ -541,11 +541,7 @@ connecting-privacy-policy-text-version-changed = Bu sunucu son oynadığınızda
 connecting-privacy-policy-accept = Kabul et (devam et)
 connecting-privacy-policy-decline = Reddet (bağlantıyı kes)
 tab-servers-table-round-time = Zaman
-server-entry-round-time =
-    { $hours ->
-        [0] { $mins }M
-       *[1] { $hours }H { $mins }M
-    }
+server-entry-round-time = { $hours }h { $mins }m
 server-entry-status-lobby = Lobi
 connecting-status-update-error-unknown = Bilinmeyen
 connecting-status-update-error-no-engine-for-platform = Bu oyun platformunuzu desteklemeyen eski bir versiyon kullanmaktadır. Lütfen farklı bir sunucu deneyiniz ya da yeniden deneyiniz.
