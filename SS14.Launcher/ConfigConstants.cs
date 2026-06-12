@@ -39,6 +39,7 @@ public static class ConfigConstants
     public const string DownloadUrl = "https://spacestation14.com/about/nightlies/";
     public const string NewsFeedUrl = "https://spacestation14.com/post/index.xml";
     public const string TranslateUrl = "https://docs.spacestation14.com/en/general-development/contributing-translations.html";
+    public static bool IsAuthOverride;
 
     private static readonly UrlFallbackSet RobustBuildsBaseUrl = new([
         "https://robust-builds.cdn.spacestation14.com/",
@@ -62,12 +63,15 @@ public static class ConfigConstants
 
     public const string FallbackUsername = "JoeGenero";
 
-#if DEBUG
     static ConfigConstants()
     {
         var envVarAuthUrl = Environment.GetEnvironmentVariable("SS14_LAUNCHER_OVERRIDE_AUTH");
         if (!string.IsNullOrEmpty(envVarAuthUrl))
+        {
             AuthUrl = new UrlFallbackSet([envVarAuthUrl]);
-    }
+#if !DEBUG
+            IsAuthOverride = true;
 #endif
+        }
+    }
 }

@@ -179,6 +179,8 @@ login-forgot-error = Fout
 # Strings for the "login" view on login
 login-login-title = Inloggen
 # Strings for the "login" view on login
+login-login-auth-server-changed = Authenticatieserver is veranderd
+# Strings for the "login" view on login
 login-login-username-watermark = Gebruikersnaam of e-mail
 # Strings for the "login" view on login
 login-login-password-watermark = Wachtwoord
@@ -549,4 +551,11 @@ server-entry-status-lobby = Lobby
 connecting-status-update-error-unknown = Onbekend
 main-window-rosetta-accept = Ga verder
 button-done = Klaar!
+# Strings for the general main window layout of the launcher
+main-window-auth-override-title = De authenticatieserver-URL is veranderd
+# Strings for the general main window layout of the launcher
+main-window-auth-override-desc =
+    Als je dit niet opzettelijk hebt veranderd, is het mogelijk dat iemand met slechte bedoelingen jouw inloggegevens probeert in te zien. Door dit venster te sluiten, ben je zelf verantwoordelijk voor jouw eigen veiligheid en ontvang je geen ondersteuning.
+# Strings for the general main window layout of the launcher
+main-window-auth-override-acknowledge = Ga verder
 tab-options-clear-content-close-client = Sluit draaiende spellen eerst
