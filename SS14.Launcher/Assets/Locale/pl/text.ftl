@@ -539,11 +539,7 @@ connecting-status-update-error-unknown = Nieznany
 server-entry-status-lobby = Menu
 connecting-privacy-policy-text = Ten serwer wymaga zaakceptowania swojej polityki prywatności przed połączeniem.
 tab-servers-table-round-time = Czas
-server-entry-round-time =
-    { $hours ->
-        [0] { $mins }M
-       *[1] { $hours }G { $mins }M
-    }
+server-entry-round-time = { $hours }g { $mins }m
 connecting-privacy-policy-text-version-changed = Ten serwer zaktualizował swoją politykę prywatności od twojej ostatniej rozgrywki. Musisz zaakceptować nową wersję przed połączeniem.
 connecting-privacy-policy-view = Pokaż politykę prywatności
 connecting-privacy-policy-accept = Zaakceptuj (kontynuuj)

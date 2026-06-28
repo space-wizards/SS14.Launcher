@@ -79,12 +79,6 @@ public sealed class ServerStatusData : ObservableObject, IServerStatusData
         set => SetProperty(ref _softMaxPlayerCount, value);
     }
 
-    public DateTime? RoundStartTime
-    {
-        get => _roundStartTime;
-        set => SetProperty(ref _roundStartTime, value);
-    }
-
     public GameRoundStatus RoundStatus
     {
         get => _roundStatus;
