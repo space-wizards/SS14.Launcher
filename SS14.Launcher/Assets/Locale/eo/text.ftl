@@ -303,3 +303,7 @@ main-window-rosetta-title = Vi rulas la ludo per Rosetta 2!
 main-window-rosetta-accept = Daŭrigi
 tab-options-clear-content-close-client = Unue fermu rulantajn klientojn
 button-done = Kompletis!
+login-login-auth-server-changed = Aŭtentigan servilon ŝanĝis
+main-window-auth-override-title = Retadreson de aŭtentiga servilo ŝanĝis
+main-window-auth-override-desc = Se vi ne memoras ŝangis ĉi tion, eblas ke iu spionus por viajn ensalutilojn. Se vi fermus ĉi tion mesaĝo, vi akceptus ke vi respondos por vian propran sekuron, kaj ne donos subtenon al vi.
+main-window-auth-override-acknowledge = Mi akceptas
