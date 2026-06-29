@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
@@ -7,7 +6,7 @@ using Avalonia.Controls;
 using Avalonia.VisualTree;
 using DynamicData;
 using DynamicData.Alias;
-using ReactiveUI.Fody.Helpers;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Splat;
 using SS14.Launcher.Localization;
 using SS14.Launcher.Models.Data;
@@ -17,7 +16,7 @@ using SS14.Launcher.Views;
 
 namespace SS14.Launcher.ViewModels.MainWindowTabs;
 
-public class HomePageViewModel : MainWindowTabViewModel
+public partial class HomePageViewModel : MainWindowTabViewModel
 {
     public MainWindowViewModel MainWindowViewModel { get; }
     private readonly DataManager _cfg;
@@ -58,9 +57,8 @@ public class HomePageViewModel : MainWindowTabViewModel
     }
 
     public ReadOnlyObservableCollection<ServerEntryViewModel> Favorites { get; }
-    public ObservableCollection<ServerEntryViewModel> Suggestions { get; } = new();
 
-    [Reactive] public bool FavoritesEmpty { get; private set; } = true;
+    [ObservableProperty] private bool _favoritesEmpty = true;
 
     public override string Name => LocalizationManager.Instance.GetString("tab-home-title");
     public Control? Control { get; set; }
