@@ -31,7 +31,7 @@ connecting-update-status-loading-into-db = Guardando archivos a la base de datos
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-update-status-loading-content-bundle = Cargando paquete de contenido…
 # Strings for the "direct connect" dialog window.
-direct-connect-title = Conexion directa…
+direct-connect-title = Conexion Directa
 # Strings for the "direct connect" dialog window.
 direct-connect-text = Ingresa la direccion de server:
 # Strings for the "direct connect" dialog window.
@@ -454,13 +454,13 @@ tab-development-enable-engine-override-desc = Sobrescribir ruta para cargar zips
 # Strings for the "home" tab
 tab-home-title = Inicio
 # Strings for the "home" tab
-tab-home-favorite-servers = Servidores Favoritos:
+tab-home-favorite-servers = Servidores Favoritos
 # Strings for the "home" tab
-tab-home-add-favorite = Añadir favorito…
+tab-home-add-favorite = Añadir favorito
 # Strings for the "home" tab
 tab-home-refresh = Refrescar
 # Strings for the "home" tab
-tab-home-direct-connect = Conexion Directa Al Server…
+tab-home-direct-connect = Conexion directa al server
 # Strings for the "home" tab
 tab-home-run-content-bundle = Lanzar paquete de contenido/replay
 # Strings for the "home" tab

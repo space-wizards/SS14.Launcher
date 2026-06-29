@@ -48,7 +48,7 @@ connecting-privacy-policy-text-version-changed = Acest server a actualizat polit
 connecting-privacy-policy-view = Vezi politica de confidențialitate
 connecting-privacy-policy-accept = Acceptă (continuă)
 connecting-privacy-policy-decline = Respinge (deconectează-te)
-direct-connect-title = Conectare Directă…
+direct-connect-title = Conectare Directă
 direct-connect-text = Introdu adresa serverului pentru a te conecta:
 direct-connect-connect = Conectează-te
 direct-connect-address-invalid = Adresa este invalidă
@@ -176,7 +176,7 @@ server-entry-raise = Ridică până sus
 tab-development-disable-signing = Dezactivați verificările semnăturii motorului
 tab-development-enable-engine-override = Activați suprascrierea motorului
 tab-home-title = Acasă
-tab-home-add-favorite = Adaugă la favorite…
+tab-home-add-favorite = Adaugă la favorite
 tab-home-refresh = Reîmprospătează
 tab-home-run-content-bundle = Rulați pachetul de conținut/redare
 tab-home-go-to-servers-tab = Accesați tab-ul cu servere
@@ -190,7 +190,7 @@ tab-options-account-settings = Setări cont
 tab-options-log-client = Client Jurnal
 tab-options-log-client-desc = Activează înregistrarea oricărei ieșiri a clientului de joc. Util pentru dezvoltatori.
 tab-options-log-launcher = Lansatorul de jurnal
-language-selector-language = { $languageName }{ $englishName }
+language-selector-language = { $languageName } ({ $englishName })
 language-selector-system-language = Limba sistemului ({ $languageName })
 login-error-account-2fa-invalid = Codul de autentificare în 2-factori este invalid
 login-error-account-account-locked = Contul a fost blocat. Te rog contactează-ne dacă crezi că a fost o eroare.
@@ -243,7 +243,7 @@ filters = Filtre ({ $filteredServers } / { $totalServers })
 filters-title-rp = Nivel pentru rolul de joc
 tab-development-title-override = { "[" }DEV (override active!!!)]
 tab-development-enable-engine-override-desc = Suprascrie calea pentru încărcarea fișierelor zips ale motorului din (release/ in RobustToolbox)
-tab-home-favorite-servers = Servere favorite:
+tab-home-favorite-servers = Servere Favorite
 tab-options-clear-engines = Ștergeți motoarele instalate
 filters-player-count-maximum-desc = Serverele cu mai mulți jucători nu vor fi afișate
 main-window-out-of-date-desc =
@@ -254,7 +254,7 @@ tab-options-compatibility-mode = Mod de compatibilitate
 login-forgot-message = Dacă ți-ai uitat parola, poți introduce adresa de email asociată cu contul tău aici ca să primești un link de resetare.
 main-window-early-access-desc = Space Station 14 este încă foarte mult in alpha. Speram ca îți place ce vezi, și poate să mai stai și prin preajmă, dar asigură-te să îți păstrezi așteptările cât mai modeste între timp.
 tab-development-disable-signing-desc = { "[" }DEV ONLY] Dezactivează verificarea semnăturii motorului. NU ACTIVA DOAR DACA ȘTI EXACT CE FACI.
-tab-home-direct-connect = Conectare Directă La Server…
+tab-home-direct-connect = Conectare directă la server
 tab-options-open-log-directory = Deschideți directorul de jurnal
 tab-options-account-settings-desc = Îți poți gestiona setările pentru contul tău, ca și schimbarea e-mailului sau a parolei, prin site-ul nostru web.
 tab-options-compatibility-mode-desc = Acest lucru obligă jocul să utilizeze un backend grafic diferit, care e mai puțin dispus să sufere de erori de drivere. Încearcă asta daca Întâmpini probleme de grafică sau crash-uri.
@@ -283,3 +283,14 @@ server-entry-round-time =
         [0] { $mins }M
        *[1] { $hours }H { $mins }M
     }
+connecting-status-update-error-no-engine-for-platform = Acest joc folosește o versiune veche care nu suportă platforma ta curenta. Te rog să încerci un alt server sau încearcă mai târziu.
+connecting-status-update-error-no-module-for-platform = Acest joc necesită o funcționalitate adițională care nu este încă suportata pe platforma ta curentă.
+main-window-intel-degrade-title = Generația de CPU Intel 13th/14th detectată.
+main-window-intel-degrade-desc =
+    Generația de CPU Intel 13th/14th este cunoscută să se degradeze silențios permanent si să moară din cauza unui micro-cod bug de la Intel. Din păcate nu putem sa ne dăm seama daca ești afectat de acest bug, așa că această avertizare apare pentru toți utilizatorii cu aceasta generație de CPU.
+
+    Vă încurajăm cu IMPUTERNICIRE ca tu să îți faci update la placa ta de bază prin BIOS până la ultima versiune ca să vă asigurați că nu sunt alte daune ulterioare. Dacă ai probleme cu stabilitatea/nu reușești sa începi jocul, fă downclock(Coboară viteza la procesor.) la procesorul tău ca să îl faci stabil din nou și folosește-ți garanția și întreabă să ți-se schimbe.
+
+    Noi nu suntem responsabili să te ajutăm cu orice problemă care ar putea apărea din cauza procesoarelor, doar dacă tu ai luat măsurile necesare și te-ai asigurat ca procesorul tău e stabil. Acest mesaj nu o să mai apară după ce accepți acest mesaj.
+main-window-intel-degrade-accept = Înțeleg și am luat măsurile necesare.
+main-window-rosetta-title = Tu rulezi jocul cu Rosetta 2!

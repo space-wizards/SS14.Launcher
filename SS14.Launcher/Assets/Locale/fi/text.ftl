@@ -76,7 +76,7 @@ connecting-update-status-fetching-manifest = Noudetaan serverilistaa…
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-update-status-culling-content = Tyhjennetään vanhaa serverisisältöä…
 # Strings for the "direct connect" dialog window.
-direct-connect-title = Yhdistä suoraan…
+direct-connect-title = Yhdistä Suoraan
 # Strings for the "hub settings" dialog window.
 hub-settings-heading-default = Oletus
 # Error messages for login
@@ -326,9 +326,9 @@ server-entry-fetching = Noudetaan…
 # Strings for the "home" tab
 tab-home-title = Koti
 # Strings for the "home" tab
-tab-home-favorite-servers = Suosikkipalvelimet:
+tab-home-favorite-servers = Suosikkipalvelimet
 # Strings for the "home" tab
-tab-home-add-favorite = Lisää suosikki…
+tab-home-add-favorite = Lisää suosikki
 # Strings for the "home" tab
 tab-home-refresh = Päivitä
 # Strings for the "home" tab
@@ -398,7 +398,7 @@ account-drop-down-none-selected = Ei valittua tiliä
 language-selector-system-language = Jäsjestelmäkieli ({ $languageName })
 # For the language selection menu.
 # Used for contents of each language button.
-language-selector-language = { $languageName }{ $englishName }
+language-selector-language = { $languageName } ({ $englishName })
 # Strings for the "options" tab
 tab-options-account-settings = Tiliasetukset
 # Strings for the "options" tab
@@ -503,7 +503,7 @@ hub-settings-button-remove-tooltip = Poista keskus
 # Strings for the "servers" tab
 tab-servers-list-status-error = Virhe pääserverilistaa haettaessa.
 # Strings for the "home" tab
-tab-home-direct-connect = Yhdistä suoraan serverille…
+tab-home-direct-connect = Yhdistä suoraan serverille
 # Strings for the "home" tab
 tab-home-favorites-guide = Merkitse suosikkiserverisi helpompaa pääsyä varten
 # Strings for the "options" tab

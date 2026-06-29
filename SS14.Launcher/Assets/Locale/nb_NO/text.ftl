@@ -25,7 +25,7 @@ connecting-status-update-error =
 connecting-cancel = Avbryt
 connecting-privacy-policy-accept = Aksepter
 direct-connect-connect = Koble til
-direct-connect-title = Direkte tilkobling…
+direct-connect-title = Direkte Tilkobling
 direct-connect-text = Skriv inn server adresse for tilkobling:
 connecting-update-status-committing-download = Synkroniserer til disk…
 connecting-update-status-verifying = Verifiserer nedlastingsintegritet…
@@ -192,9 +192,9 @@ tab-development-disable-signing = Deaktiver motorsignatursjekker
 tab-development-disable-signing-desc = { "[" }DEV ONLY] Deaktiver verdifisering av motorsignatursjekker. IKKE AKTIVER MED MINDRE DU VET EKSAKT HVA DU GJØR.
 tab-development-enable-engine-override = Aktiver motoroverstyring
 tab-home-title = Hjem
-tab-home-favorite-servers = Favorittservere:
-tab-home-add-favorite = Legg til Favoritter…
-tab-home-direct-connect = Koble direkte til Server…
+tab-home-favorite-servers = Favorittservere
+tab-home-add-favorite = Legg til favoritter
+tab-home-direct-connect = Koble direkte til server
 tab-home-run-content-bundle = Kjør innholdspakke/gjenspilling
 tab-home-go-to-servers-tab = Gå til serverfanen
 tab-news-title = Nyheter
@@ -278,3 +278,11 @@ login-error-account-unconfirmed = E-postadressen for denne kontoen må fortsatt 
 tab-servers-table-round-time = Tid
 connecting-status-update-error-unknown = Ukjent
 server-entry-status-lobby = Lobby
+server-entry-round-time =
+    { $hours ->
+        [0] { $mins }M
+       *[1] { $hours }T { $mins }M
+    }
+main-window-intel-degrade-title = Intel 13./14. generasjons CPU oppdaget.
+connecting-status-update-error-no-engine-for-platform = Spillet bruker en gammel versjon som ikke støtter din nåværende plattform. Vennligst prøv en annen sørver eller prøv igjen senere.
+connecting-status-update-error-no-module-for-platform = Spillet krever en ekstra funksjon som ikke ennå er støtter av din nåværende plattform. Vennligst prøv en annen sørver eller prøv igjen senere.

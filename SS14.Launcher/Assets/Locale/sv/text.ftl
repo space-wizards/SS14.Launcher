@@ -29,7 +29,7 @@ main-window-out-of-date = Launchern behöver uppdateras
 # Strings for entries in the server list (including home page)
 server-entry-fetching = Hämtar…
 # Strings for the "home" tab
-tab-home-direct-connect = Direktanslut till server…
+tab-home-direct-connect = Direktanslut till server
 # Error messages for login
 login-error-account-unconfirmed = E-postadressen till detta kontot behöver fortfarande bekräftas. Vänligen bekräfta e-postadressen innan du loggar in
 # Strings for the "servers" tab
@@ -130,7 +130,7 @@ connecting-update-status-loading-into-db = Sparar resurser i databasen…
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-update-status-unknown = Du borde inte se detta
 # Strings for the "direct connect" dialog window.
-direct-connect-title = Direktanslutning…
+direct-connect-title = Direktanslutning
 # Strings for the "direct connect" dialog window.
 direct-connect-text = Ange serveradress att ansluta till:
 # Strings for the "direct connect" dialog window.
@@ -437,9 +437,9 @@ tab-development-title-override = { "[" }DEV (override aktiv!!!)]
 # These aren't shown to users so they're not very important
 tab-development-enable-engine-override = Aktivera spelmotor-override
 # Strings for the "home" tab
-tab-home-favorite-servers = Favoritservrar:
+tab-home-favorite-servers = Favoritservrar
 # Strings for the "home" tab
-tab-home-add-favorite = Lägg till favorit…
+tab-home-add-favorite = Lägg till favorit
 # Strings for the "home" tab
 tab-home-refresh = Uppdatera
 # Strings for the "home" tab

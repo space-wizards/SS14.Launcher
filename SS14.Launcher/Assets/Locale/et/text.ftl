@@ -106,7 +106,7 @@ connecting-update-status-loading-content-bundle = Sisupaketi laadimine…
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-update-status-unknown = Sa ei peaks seda nägema
 # Strings for the "direct connect" dialog window.
-direct-connect-title = Otseühendus…
+direct-connect-title = Otseühendus
 # Strings for the "direct connect" dialog window.
 direct-connect-connect = Ühenda
 # Strings for the "direct connect" dialog window.
@@ -388,13 +388,13 @@ tab-development-enable-engine-override = Luba engine override
 # Strings for the "home" tab
 tab-home-title = Avaleht
 # Strings for the "home" tab
-tab-home-favorite-servers = Lemmikserverid:
+tab-home-favorite-servers = Lemmikserverid
 # Strings for the "home" tab
-tab-home-add-favorite = Lisa Lemmik…
+tab-home-add-favorite = Lisa lemmik
 # Strings for the "home" tab
 tab-home-refresh = Värskenda
 # Strings for the "home" tab
-tab-home-direct-connect = Otseühendus serveriga…
+tab-home-direct-connect = Otseühendus serveriga
 # Strings for the "home" tab
 tab-home-run-content-bundle = Käivita sisupakett/taasesitlus
 # Strings for the "home" tab

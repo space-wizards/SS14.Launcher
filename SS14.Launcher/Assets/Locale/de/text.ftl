@@ -62,7 +62,7 @@ connecting-update-status-loading-content-bundle = Content-Packet wird geladen…
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-update-status-unknown = Du solltest dies nicht sehen
 # Strings for the "direct connect" dialog window.
-direct-connect-title = Direkt Verbindung…
+direct-connect-title = Direkt Verbinden
 # Strings for the "direct connect" dialog window.
 direct-connect-text = Serveradresse eingeben zum Verbinden:
 # Strings for the "direct connect" dialog window.
@@ -139,6 +139,8 @@ login-forgot-success-title = Wiederherstellungs E-Mail gesendet
 login-forgot-error = Fehler
 # Strings for the "login" view on login
 login-login-title = Anmeldung
+# Strings for the "login" view on login
+login-login-auth-server-changed = Auth Server hat sich geändert
 # Strings for the "login" view on login
 login-login-username-watermark = Nutzername oder E-Mail
 # Strings for the "login" view on login
@@ -417,13 +419,13 @@ tab-development-enable-engine-override = Engine-Override aktivieren
 # Strings for the "home" tab
 tab-home-title = Startseite
 # Strings for the "home" tab
-tab-home-favorite-servers = Favoriten:
+tab-home-favorite-servers = Favoriten
 # Strings for the "home" tab
-tab-home-add-favorite = Favorit hinzufügen…
+tab-home-add-favorite = Favorit hinzufügen
 # Strings for the "home" tab
 tab-home-refresh = Aktualisieren
 # Strings for the "home" tab
-tab-home-direct-connect = Direkt mit Server verbinden…
+tab-home-direct-connect = Direkt mit Server verbinden
 # Short region names for server tag filters (shown in filter check box)
 region-short-central-america = Zentralamerika
 # Strings for the "Development" tab
@@ -542,3 +544,10 @@ server-entry-round-time =
     }
 tab-servers-table-round-time = Zeit
 tab-options-desc-incompatible = Diese Option ist mit deiner Plattform nicht kompatibel und wurde deaktiviert.
+# Strings for the general main window layout of the launcher
+main-window-auth-override-title = Die Authentifizierungs-Server-URL hat sich geändert
+# Strings for the general main window layout of the launcher
+main-window-auth-override-desc =
+    Wenn du dies nicht absichtlich geändert hast, könnte jemand Böswilliges versuchen, auf deine Anmeldedaten zuzugreifen. Indem du dieses Popup schließt, erklärst du dich selbst für verantwortlich für deine eigene Sicherheit und erhältst keinen Support.
+# Strings for the general main window layout of the launcher
+main-window-auth-override-acknowledge = Ich bestätige

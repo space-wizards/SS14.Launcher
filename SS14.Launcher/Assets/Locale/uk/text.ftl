@@ -108,7 +108,7 @@ login-confirmation-button-cancel = Відмінити
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-update-status-unknown = Ви не повинні цього бачити
 # Strings for the "direct connect" dialog window.
-direct-connect-title = Пряме з'єднання…
+direct-connect-title = Пряме З'єднання
 # Strings for the "direct connect" dialog window.
 direct-connect-text = Введіть адресу сервера для підключення:
 # Strings for the "direct connect" dialog window.
@@ -142,7 +142,7 @@ hub-settings-warning-invalid = Невірний хаб (не забудьте п
 # Strings for the "hub settings" dialog window.
 hub-settings-warning-duplicate = Дубльовані хаби
 # Strings for the login screen
-login-log-launcher = Логувати Лаунчер
+login-log-launcher = Логувати лаунчер
 # Error messages for login
 login-error-account-2fa-required = Потрібна 2х-факторна автентифікація
 # Error messages for login
@@ -451,13 +451,13 @@ tab-development-title = { "[" }DEV]
 # Strings for the "home" tab
 tab-home-title = Головна
 # Strings for the "home" tab
-tab-home-favorite-servers = Обрані сервери:
+tab-home-favorite-servers = Обрані Сервери
 # Strings for the "home" tab
-tab-home-add-favorite = Додати в обрані…
+tab-home-add-favorite = Додати в обрані
 # Strings for the "home" tab
 tab-home-refresh = Оновити
 # Strings for the "home" tab
-tab-home-direct-connect = Пряме під'єднання до сервера…
+tab-home-direct-connect = Пряме під'єднання до сервера
 # Strings for the "home" tab
 tab-home-run-content-bundle = Запустити контент набору/повтору
 # Strings for the "home" tab
@@ -550,3 +550,21 @@ server-entry-status-lobby = Лоббі
 connecting-status-update-error-unknown = Невідомо
 connecting-status-update-error-no-module-for-platform = Ця гра потребує додаткового функціоналу, який поки що не підтримується вашою поточною платформою. Спробуйте інший сервер або підключіться пізніше.
 connecting-status-update-error-no-engine-for-platform = Ця гра використовує старішу версію, яка не підтримується вашою поточною платформою. Спробуйте інший сервер або підключіться пізніше.
+main-window-intel-degrade-title = Виявлено процесор Intel 13-го або 14-го покоління.
+main-window-intel-degrade-desc =
+    Процесори Intel 13-го та 14-го покоління відомі тим, що вони можуть без попередження деградувати назавжди та виходити з ладу через помилку в мікрокоді від Intel. Ми, на жаль, не можемо сказати, чи торкнулася ця помилка саме вас, тому це попередження з’являється для всіх користувачів із цими процесорами.
+
+    Ми НАПОЛЕГЛИВО радимо оновити BIOS вашої материнської плати до останньої версії, щоб запобігти подальшому пошкодженню. Якщо у вас виникають проблеми зі стабільністю або гра не запускається, знизьте частоту роботи процесора, щоб відновити стабільність, та скористайтеся гарантією, щоб дізнатися про можливість заміни.
+
+    Ми не несемо відповідальності за допомогу з будь-якими проблемами, що можуть виникнути через уражені процесори, якщо ви не вжили запобіжних заходів і не впевнені, що ваш процесор стабільний. Це повідомлення більше не з’являтиметься після того, як ви його приймете.
+main-window-rosetta-desc =
+    Схоже, ви використовуєте Mac з процесором Apple Silicon і запускаєте гру за допомогою Rosetta 2. Ви можете отримати кращу продуктивність і тривалість роботи акумулятора, запустивши гру в нативному режимі.
+
+    Для цього клацніть правою кнопкою миші на лаунчер в Finder, виберіть «Досьє» і зніміть прапорець «Відкривати за допомогою Rosetta». Після цього перезапустіть лаунчер.
+
+    Якщо ви навмисно запускаєте гру за допомогою Rosetta 2, ви можете закрити це повідомлення, і воно більше не з'явиться. Однак якщо ви робите це, щоб вирішити проблему, будь ласка, повідомте про помилку.
+main-window-intel-degrade-accept = Я розумію і вжив необхідних запобіжних заходів.
+main-window-rosetta-title = Ви запускаєте гру за допомогою Rosetta 2!
+main-window-rosetta-accept = Продовжити
+tab-options-clear-content-close-client = Спершу закрийте запущені клієнти
+button-done = Готово!

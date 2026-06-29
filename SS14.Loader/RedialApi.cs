@@ -21,6 +21,7 @@ internal sealed class RedialApi : IRedialApi
         // Launcher config.
         "SS14_LOADER_CONTENT_DB",
         "SS14_LOADER_CONTENT_VERSION",
+        "SS14_LOADER_OVERLAY_ZIP",
         "SS14_DISABLE_SIGNING",
         "SS14_LAUNCHER_PATH",
         "SS14_LOG_CLIENT",

@@ -31,8 +31,8 @@ connecting-status-update-error =
     If you are still having issues, first try contacting the server you are attempting to join before asking for support on the Official Space Station 14 Discord or Forums.
 
     Technical error: { $err }
-connecting-status-update-error-no-engine-for-platform = This game is using an older version that does not support your current platform. Please try another server or try again later.
-connecting-status-update-error-no-module-for-platform = This game requires additional functionality that is not yet supported on your current platform. Please try another server or try again later.
+connecting-status-update-error-no-engine-for-platform = This server is using an older game engine version that does not support your current platform. Please try another server or inform the server staff about this and try again later.
+connecting-status-update-error-no-module-for-platform = This server requires additional functionality that is not yet supported on your current platform. Please try another server or inform the server staff about this and try again later.
 connecting-status-update-error-unknown = Unknown
 connecting-status-updating = Updating: { $status }
 connecting-status-connecting = Fetching connection info from server…
@@ -63,7 +63,7 @@ connecting-privacy-policy-decline = Decline (disconnect)
 
 ## Strings for the "direct connect" dialog window.
 
-direct-connect-title = Direct Connect…
+direct-connect-title = Direct Connect
 direct-connect-text = Enter server address to connect:
 direct-connect-connect = Connect
 direct-connect-address-invalid = Address is invalid
@@ -134,6 +134,7 @@ login-forgot-error = Error
 ## Strings for the "login" view on login
 
 login-login-title = Log in
+login-login-auth-server-changed = Auth server has changed
 login-login-username-watermark = Username or email
 login-login-password-watermark = Password
 login-login-show-password = Show Password
@@ -171,11 +172,11 @@ main-window-early-access-desc = Space Station 14 is still very much in alpha. We
 main-window-early-access-accept = Got it!
 main-window-intel-degrade-title = Intel 13th/14th Generation CPU detected.
 main-window-intel-degrade-desc =
-    The Intel 13th/14th generation CPUs are known to silently degrade permenently and die due to a microcode bug by Intel. We sadly can't tell if you are currently affected by this bug, so this warning appears for all users with these CPUs.
+    The Intel 13th/14th generation CPUs are known to silently degrade permanently and die due to a microcode bug by Intel. We sadly can't tell if you are currently affected by this bug, so this warning appears for all users with these CPUs.
 
     We STRONGLY encourage you to update your motherboard's BIOS to the latest version to ensure prevention of further damage. If you are having stability issues/failing to start the game, downclock your CPU to get it stable again and use your warranty to ask about getting it replaced.
 
-    We are not responsible to help with any issues that may arise from affected processors unless you took the precautions and are sure your CPU is stable. This message will not appear again after you accept it.
+    We are not responsible to help with any issues that may arise from affected processors, unless you took the precautions and are sure your CPU is stable. This message will not appear again after you accept it.
 main-window-intel-degrade-accept = I understand and have taken the necessary precautions.
 main-window-rosetta-title = You are running the game using Rosetta 2!
 main-window-rosetta-desc =
@@ -191,6 +192,10 @@ main-window-busy-checking-login-status = Refreshing login status…
 main-window-busy-checking-account-status = Checking account status
 main-window-error-connecting-auth-server = Error connecting to authentication server
 main-window-error-unknown = Unknown error occurred
+main-window-auth-override-title = The authentication server URL has changed
+main-window-auth-override-desc =
+     If you don't remember changing this, it's possible someone malicious may be trying to snoop on your credentials. By closing this popup, you agree you are responsible for your own security, and will not be provided support.
+main-window-auth-override-acknowledge = I acknowledge
 
 ## Long region names for server tag filters (shown in tooltip)
 
@@ -293,8 +298,8 @@ filters-rp-high-desc = High
 ## Strings for entries in the server list (including home page)
 
 server-entry-connect = Connect
-server-entry-add-favorite = Add Favorite
-server-entry-remove-favorite = Remove Favorite
+server-entry-add-favorite = Favorite
+server-entry-remove-favorite = Unfavorite
 server-entry-offline = OFFLINE
 server-entry-player-count =
     { $players } / { $max ->
@@ -327,10 +332,10 @@ tab-development-enable-engine-override-desc = Override path to load engine zips 
 ## Strings for the "home" tab
 
 tab-home-title = Home
-tab-home-favorite-servers = Favorite Servers:
-tab-home-add-favorite = Add Favorite…
+tab-home-favorite-servers = Favorite Servers
+tab-home-add-favorite = Add favorite
 tab-home-refresh = Refresh
-tab-home-direct-connect = Direct Connect To Server…
+tab-home-direct-connect = Direct connect to server
 tab-home-run-content-bundle = Run content bundle/replay
 tab-home-go-to-servers-tab = Go to the servers tab
 tab-home-favorites-guide = Mark servers as favorite for easy access here
@@ -347,6 +352,7 @@ tab-options-title = Options
 tab-options-flip = { "*" }flip
 tab-options-clear-engines = Clear installed engines
 tab-options-clear-content = Clear installed server content
+tab-options-clear-content-close-client = Close running clients first
 tab-options-open-log-directory = Open log directory
 tab-options-account-settings = Account Settings
 tab-options-account-settings-desc = You can manage your account settings, such as changing email or password, through our website.
@@ -378,3 +384,8 @@ language-selector-help-translate = Want to help translate? You can!
 language-selector-system-language = System language ({ $languageName })
 # Used for contents of each language button.
 language-selector-language = { $languageName } ({ $englishName })
+
+## Miscellaneous
+
+# Generic "Done!" message used for some buttons.
+button-done = Done!

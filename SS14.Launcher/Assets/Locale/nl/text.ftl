@@ -25,7 +25,7 @@ connecting-update-status-loading-content-bundle = Laden van contentbundel…
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-update-status-unknown = Je hoort dit niet te zien
 # Strings for the "direct connect" dialog window.
-direct-connect-title = Direct verbinden…
+direct-connect-title = Direct Verbinden
 # Strings for the "direct connect" dialog window.
 direct-connect-text = Voer serveradres in om te connecteren:
 # Strings for the "direct connect" dialog window.
@@ -178,6 +178,8 @@ login-forgot-success-message = Er is een herstellink naar uw e-mailadres verzond
 login-forgot-error = Fout
 # Strings for the "login" view on login
 login-login-title = Inloggen
+# Strings for the "login" view on login
+login-login-auth-server-changed = Authenticatieserver is veranderd
 # Strings for the "login" view on login
 login-login-username-watermark = Gebruikersnaam of e-mail
 # Strings for the "login" view on login
@@ -427,7 +429,7 @@ server-entry-description-offline = Kan de server niet bereiken
 # Strings for entries in the server list (including home page)
 server-entry-description-fetching = Serverstatus ophalen…
 # Strings for the "home" tab
-tab-home-direct-connect = Verbind direct met server…
+tab-home-direct-connect = Verbind direct met server
 # Strings for the "options" tab
 tab-options-clear-content = Wis geïnstalleerde serverinhoud
 # Strings for the "options" tab
@@ -464,9 +466,9 @@ tab-home-favorites-guide = Markeer servers als favoriet om ze hier snel te berei
 # Strings for the "news" tab
 tab-news-title = Nieuws
 # Strings for the "home" tab
-tab-home-favorite-servers = Favoriete servers:
+tab-home-favorite-servers = Favoriete Servers
 # Strings for the "home" tab
-tab-home-add-favorite = Voeg favoriet toe…
+tab-home-add-favorite = Voeg favoriet toe
 # Strings for the "home" tab
 tab-home-refresh = Herladen
 # Strings for the "news" tab
@@ -547,3 +549,13 @@ server-entry-round-time =
     }
 server-entry-status-lobby = Lobby
 connecting-status-update-error-unknown = Onbekend
+main-window-rosetta-accept = Ga verder
+button-done = Klaar!
+# Strings for the general main window layout of the launcher
+main-window-auth-override-title = De authenticatieserver-URL is veranderd
+# Strings for the general main window layout of the launcher
+main-window-auth-override-desc =
+    Als je dit niet opzettelijk hebt veranderd, is het mogelijk dat iemand met slechte bedoelingen jouw inloggegevens probeert in te zien. Door dit venster te sluiten, ben je zelf verantwoordelijk voor jouw eigen veiligheid en ontvang je geen ondersteuning.
+# Strings for the general main window layout of the launcher
+main-window-auth-override-acknowledge = Ga verder
+tab-options-clear-content-close-client = Sluit draaiende spellen eerst

@@ -146,6 +146,19 @@
       </StackPanel>
     </ContentControl>
 
+    <ContentControl Classes="OverlayBox" IsVisible="{Binding ShouldShowAuthOverrideWarning}">
+      <StackPanel Orientation="Vertical">
+        <TextBlock HorizontalAlignment="Center" Classes="NanoHeadingMedium" Foreground="Red"
+                   Text="{loc:Loc main-window-auth-override-title}" />
+        <TextBlock Margin="0, 10" TextAlignment="Center" MaxWidth="450" TextWrapping="Wrap"
+                   Text="{loc:Loc main-window-auth-override-desc}" />
+        <Button Content="{Binding AuthOverrideCountdown, StringFormat='I acknowledge ({0}s)'}"
+                Command="{Binding DismissAuthOverridePressed}"
+                IsEnabled="{Binding IsAuthOverrideButtonEnabled}"
+                HorizontalAlignment="Center" />
+      </StackPanel>
+    </ContentControl>
+
     <!--
       Literally just keep piling them on it doesn't matter.
       This is way easier than coming up with some horribly over-engineered solution.
