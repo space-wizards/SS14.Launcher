@@ -131,9 +131,9 @@ public sealed partial class MainWindowViewModel : ViewModelBase, IErrorOverlayOw
     public ICVarEntry<bool> HasDismissedEarlyAccessWarning => Cfg.GetCVarEntry(CVars.HasDismissedEarlyAccessWarning);
     public bool ShouldShowIntelDegradationWarning => IsVulnerableToIntelDegradation(_cfg);
     public bool ShouldShowRosettaWarning => IsAppleSiliconInRosetta(_cfg);
-    [Reactive] public bool ShouldShowAuthOverrideWarning { get; set; }
-    [Reactive] public int AuthOverrideCountdown { get; private set; } = 5;
-    [Reactive] public bool IsAuthOverrideButtonEnabled { get; private set; }
+    [ObservableProperty] private bool _shouldShowAuthOverrideWarning;
+    [ObservableProperty] private int _authOverrideCountdown = 5;
+    [ObservableProperty] private bool _isAuthOverrideButtonEnabled;
 
     public string Version => $"v{LauncherVersion.Version}";
 
