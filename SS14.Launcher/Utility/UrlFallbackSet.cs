@@ -109,6 +109,9 @@ public sealed class UrlFallbackSet
             cancel
         ).ConfigureAwait(false);
 
+        if ((int)response.StatusCode >= 500)
+            throw new HttpRequestException($"Server returned {response.StatusCode} for {message.RequestUri}");
+
         return response;
     }
 
