@@ -111,8 +111,9 @@ def publish_linux(x64_only: bool):
 
     shutil.copyfile("PublishFiles/SS14.Launcher", "bin/publish/Linux/SS14.Launcher")
     shutil.copyfile("PublishFiles/SS14.desktop", "bin/publish/Linux/SS14.desktop")
+    shutil.copyfile("PublishFiles/SS14.ico", "bin/publish/Linux/SS14.ico")
 
-    shutil.make_archive("SS14.Launcher_Linux", "zip", "bin/publish/Linux")
+    shutil.make_archive("SS14.Launcher_Linux", "gztar", "bin/publish/Linux")
 
 
 def publish_osx():
