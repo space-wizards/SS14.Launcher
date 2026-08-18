@@ -21,6 +21,7 @@
         <v:IconLabel Icon="{DynamicResource ButtonIcon-plus}" Height="20" Width="20" />
       </Button>
       <Button DockPanel.Dock="Right" Classes="OpenRight" Command="{Binding RefreshPressed}"
+              IsEnabled="{Binding RefreshEnabled}"
               ToolTip.Tip="{loc:Loc tab-home-refresh}">
         <v:IconLabel Icon="{DynamicResource ButtonIcon-refresh}" Height="20" Width="20" />
       </Button>

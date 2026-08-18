@@ -18,6 +18,7 @@ public partial class ServerListTabViewModel : MainWindowTabViewModel
     private readonly ServerListCache _serverListCache;
 
     public ObservableList<ServerEntryViewModel> SearchedServers { get; } = [];
+    private readonly Dictionary<string, ServerEntryViewModel> _serverViewModels = new();
 
     private string? _searchString;
     private readonly DispatcherTimer _searchThrottle = new() { Interval = TimeSpan.FromMilliseconds(200) };
@@ -43,6 +44,8 @@ public partial class ServerListTabViewModel : MainWindowTabViewModel
     }
 
     public bool SpinnerVisible => _serverListCache.Status < RefreshListStatus.Updated;
+
+    public bool RefreshEnabled => _serverListCache.Status != RefreshListStatus.UpdatingMaster;
 
     public string ListText
     {
@@ -93,6 +96,7 @@ public partial class ServerListTabViewModel : MainWindowTabViewModel
                 case nameof(ServerListCache.Status):
                     OnPropertyChanged(nameof(ListText));
                     OnPropertyChanged(nameof(SpinnerVisible));
+                    OnPropertyChanged(nameof(RefreshEnabled));
                     break;
             }
         };
@@ -119,11 +123,17 @@ public partial class ServerListTabViewModel : MainWindowTabViewModel
 
     public void RefreshPressed()
     {
+        if (!RefreshEnabled)
+            return;
+
         _serverListCache.RequestRefresh();
     }
 
-    private void ServerListUpdated(object? sender, NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)
+    private void ServerListUpdated(object? sender, NotifyCollectionChangedEventArgs args)
     {
+        if (args.Action == NotifyCollectionChangedAction.Reset)
+            _serverViewModels.Clear();
+
         Filters.UpdatePresentFilters(_serverListCache.AllServers);
 
         UpdateSearchedList();
@@ -145,8 +155,19 @@ public partial class ServerListTabViewModel : MainWindowTabViewModel
 
         sortList.Sort(ServerSortComparer.Instance);
 
-        SearchedServers.SetItems(sortList.Select(server
-            => new ServerEntryViewModel(_windowVm, server, _serverListCache, _windowVm.Cfg)));
+        var searchedServers = new List<ServerEntryViewModel>(sortList.Count);
+        foreach (var server in sortList)
+        {
+            if (!_serverViewModels.TryGetValue(server.Address, out var vm))
+            {
+                vm = new ServerEntryViewModel(_windowVm, server, _serverListCache, _windowVm.Cfg);
+                _serverViewModels.Add(server.Address, vm);
+            }
+
+            searchedServers.Add(vm);
+        }
+
+        SearchedServers.SetItems(searchedServers);
 
         OnPropertyChanged(nameof(ListText));
     }

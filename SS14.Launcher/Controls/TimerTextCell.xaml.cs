@@ -55,14 +55,19 @@ public class TimerTextCell : TemplatedControl
 
     protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
     {
+        base.OnAttachedToVisualTree(e);
+
         _attached = true;
-        StartTimer();
+        UpdateText();
     }
 
     protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
     {
+        base.OnDetachedFromVisualTree(e);
+
         _attached = false;
         _timer?.Dispose();
+        _timer = null;
     }
 
     // Trigger an update when the visible timer will roll over to the next minute
@@ -74,8 +79,7 @@ public class TimerTextCell : TemplatedControl
         // and we’re on the visual tree.
         if (_attached && Value is { } dt)
         {
-            var ts = DateTime.UtcNow.Subtract(dt);
-            _timer = DispatcherTimer.RunOnce(UpdateText, TimeSpan.FromSeconds((ts.Seconds >= 0 ? ts.Seconds : 60)));
+            _timer = DispatcherTimer.RunOnce(UpdateText, GetDelayUntilNextMinute(dt));
         }
     }
 
@@ -83,6 +87,17 @@ public class TimerTextCell : TemplatedControl
     {
         this.Text = Value is { } dt ? GetTimeStringSince(dt) : "";
         StartTimer();
+    }
+
+    private static TimeSpan GetDelayUntilNextMinute(DateTime dateTime)
+    {
+        var elapsed = DateTime.UtcNow.Subtract(dateTime);
+        if (elapsed < TimeSpan.Zero)
+            return TimeSpan.FromSeconds(1);
+
+        var secondsIntoMinute = (int)Math.Floor(elapsed.TotalSeconds) % 60;
+        var secondsUntilNextMinute = 60 - secondsIntoMinute;
+        return TimeSpan.FromSeconds(secondsUntilNextMinute);
     }
 
     private string GetTimeStringSince(DateTime dateTime)

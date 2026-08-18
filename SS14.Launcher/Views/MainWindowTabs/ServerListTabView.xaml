@@ -21,6 +21,7 @@
   <DockPanel LastChildFill="True">
     <DockPanel DockPanel.Dock="Bottom" Margin="4 4 4 0" Height="32">
       <Button DockPanel.Dock="Right" Command="{Binding RefreshPressed}"
+              IsEnabled="{Binding RefreshEnabled}"
               Classes="OpenLeft" ToolTip.Tip="{loc:Loc tab-servers-refresh}">
         <views:IconLabel Icon="{DynamicResource ButtonIcon-refresh}" Height="20" Width="20" />
       </Button>
