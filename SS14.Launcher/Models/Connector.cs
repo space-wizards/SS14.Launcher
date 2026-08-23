@@ -588,7 +588,7 @@ public partial class Connector : ObservableObject
                 FileMode.Create,
                 FileAccess.Write,
                 FileShare.Delete | FileShare.ReadWrite,
-                4096,
+                0,
                 FileOptions.Asynchronous);
 
             var fileStderr = new FileStream(
@@ -596,7 +596,7 @@ public partial class Connector : ObservableObject
                 FileMode.Create,
                 FileAccess.Write,
                 FileShare.Delete | FileShare.ReadWrite,
-                4096,
+                0,
                 FileOptions.Asynchronous);
 
             PipeOutput(process, fileStdout, fileStderr);
