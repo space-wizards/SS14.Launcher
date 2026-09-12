@@ -1,21 +1,25 @@
 #!/usr/bin/env xdg-open
 [Desktop Entry]
+Categories=Game
 Comment=A multiplayer disaster simulator
 Encoding=UTF-8
-Exec=./SS14.Launcher %u
+Exec=SS14.Launcher %u
 GenericName[en_US]=Space Station 14
 GenericName=Space Station 14 Launcher
-Icon=SS14.ico
+Icon=SS14
+Keywords=game;gaming;launcher;multiplayer;ss14
 MimeType=
 Name[en_US]=Space Station 14 Launcher
 Name=Space Station 14 Launcher
 NoDisplay=false
 Path=
 PrefersNonDefaultGPU=false
+SingleMainWindow=true
 StartupNotify=true
+StartupWMClass=SS14.Launcher
 Terminal=false
 TerminalOptions=
 Type=Application
-Version=1.0
+Version=1.5
 X-KDE-SubstituteUID=false
 X-KDE-Username=
