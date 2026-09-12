@@ -36,7 +36,17 @@ public static class UriHelper
     [Pure]
     public static bool TryParseSs14Uri(string address, [NotNullWhen(true)] out Uri? uri)
     {
-        if (!address.Contains("://"))
+        uri = null;
+        if (string.IsNullOrWhiteSpace(address))
+            return false;
+
+        address = address.Trim();
+
+        // Prevent control characters, command injection, and traversal characters in the raw input
+        if (address.IndexOfAny(new[] { '\r', '\n', '\0', '"', '\'', ';', '&', '|', '`', '$', '<', '>', '\\', '\t', '\b' }) >= 0)
+            return false;
+
+        if (!address.Contains("://", StringComparison.Ordinal))
         {
             address = "ss14://" + address;
         }
@@ -51,7 +61,10 @@ public static class UriHelper
             return false;
         }
 
-        if (string.IsNullOrWhiteSpace(uri.Host))
+        if (string.IsNullOrWhiteSpace(uri.Host) || uri.HostNameType == UriHostNameType.Unknown)
+            return false;
+
+        if (uri.Port == 0)
             return false;
 
         return true;
