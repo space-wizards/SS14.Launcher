@@ -139,12 +139,9 @@ public class LauncherMessaging
                 if (token.IsCancellationRequested) break;
                 try
                 {
-                    while (!sr.EndOfStream)
+                    while (await sr.ReadLineAsync().WaitAsync(token).ConfigureAwait(false) is { } line)
                     {
-                        // Can't be cancelled
-                        var line = await sr.ReadLineAsync().WaitAsync(token).ConfigureAwait(false);
-                        if (line != null)
-                            await lc.QueueCommand(line);
+                        await lc.QueueCommand(line);
                     }
 
                     _pipeServer.Disconnect();
