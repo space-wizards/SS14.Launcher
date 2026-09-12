@@ -118,7 +118,25 @@ public static class Helpers
 
     public static void OpenUri(string uri)
     {
-        Process.Start(new ProcessStartInfo(uri) { UseShellExecute = true });
+        if (string.IsNullOrWhiteSpace(uri))
+            return;
+
+        // Allow opening existing directories directly in the system file manager
+        if (Directory.Exists(uri))
+        {
+            Process.Start(new ProcessStartInfo(uri) { UseShellExecute = true });
+            return;
+        }
+
+        // Validate strictly for http, https, and mailto schemes to prevent arbitrary command/handler execution
+        if (Uri.TryCreate(uri, UriKind.Absolute, out var parsedUri) &&
+            (parsedUri.Scheme == Uri.UriSchemeHttp || parsedUri.Scheme == Uri.UriSchemeHttps || parsedUri.Scheme == Uri.UriSchemeMailto))
+        {
+            Process.Start(new ProcessStartInfo(parsedUri.AbsoluteUri) { UseShellExecute = true });
+            return;
+        }
+
+        Log.Warning("Refusing to open unsafe or untrusted URI/path: {Uri}", uri);
     }
 
     private static readonly string[] ByteSuffixes =
