@@ -736,13 +736,16 @@ public partial class Connector : ObservableObject
                 // Fucking stupid since we can clearly just work around it like this...
                 // Thank you, Blaisorblade on Ask Different
                 // https://apple.stackexchange.com/questions/105155/denied-file-read-access-on-file-i-own-and-have-full-r-w-permissions-on
-                var xattr = Process.Start(new ProcessStartInfo
+                var xattrStartInfo = new ProcessStartInfo
                 {
                     FileName = "xattr",
                     ArgumentList = {"-d", "com.apple.quarantine", appPath},
                     RedirectStandardError = true,
                     RedirectStandardOutput = true
-                });
+                };
+
+                ForwardSteamInjectionPastMacOsHelper(xattrStartInfo);
+                var xattr = Process.Start(xattrStartInfo);
 
                 if (xattr is null)
                     throw new Exception("Xattr failed to start");
@@ -772,6 +775,7 @@ public partial class Connector : ObservableObject
                     }
                 }
 
+                ForwardSteamInjectionPastMacOsHelper(startInfo);
                 startInfo.ArgumentList.Add("--args");
 
                 return startInfo;
@@ -786,6 +790,19 @@ public partial class Connector : ObservableObject
         }
 
         throw new NotSupportedException("Unsupported platform.");
+    }
+
+    internal static void ForwardSteamInjectionPastMacOsHelper(ProcessStartInfo startInfo)
+    {
+        const string dyldInsertLibraries = "DYLD_INSERT_LIBRARIES";
+        const string forwardedDyldInsertLibraries = "SS14_STEAM_DYLD_INSERT_LIBRARIES";
+
+        if (startInfo.EnvironmentVariables[dyldInsertLibraries] is { } libraries)
+        {
+            // Keep Steam's arm64 library out of arm64e system processes. The app script restores it for .NET.
+            startInfo.EnvironmentVariables.Remove(dyldInsertLibraries);
+            startInfo.EnvironmentVariables[forwardedDyldInsertLibraries] = libraries;
+        }
     }
 #pragma warning restore 162
 

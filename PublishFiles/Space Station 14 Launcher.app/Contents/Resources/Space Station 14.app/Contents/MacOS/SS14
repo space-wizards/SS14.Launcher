@@ -11,10 +11,15 @@ cd "$BASEDIR"
 DOTNET_PATH="$DOTNET_ROOT/dotnet"
 LOADER_PATH="../Resources/$(uname -m)/bin/SS14.Loader.dll"
 
+if [[ -n ${SS14_STEAM_DYLD_INSERT_LIBRARIES} ]]; then
+    # Restore Steam injection only after the arm64e system helper processes.
+    export DYLD_INSERT_LIBRARIES="$SS14_STEAM_DYLD_INSERT_LIBRARIES"
+    unset SS14_STEAM_DYLD_INSERT_LIBRARIES
+fi
+
 if [[ -z ${SS14_LOG_CLIENT} ]]; then
     # No log path
     exec "$DOTNET_PATH" "$LOADER_PATH" "$@"
 else
     exec "$DOTNET_PATH" "$LOADER_PATH" "$@" > "$SS14_LOG_CLIENT" 2>&1
 fi
-
