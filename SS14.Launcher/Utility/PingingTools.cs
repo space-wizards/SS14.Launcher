@@ -21,21 +21,27 @@ namespace SS14.Launcher.Utility
             const int numPings = 3;
             short timeOuts = 0;
 
-            for (int i = 0; i < numPings; i++)
+            for (int i = 0; i < numPings;)
             {
+                //await Task.Delay(500);
+
                 try
                 {
                     using (var pingSender = new System.Net.NetworkInformation.Ping())
                     {
-                        var reply = await pingSender.SendPingAsync(host, 750);
+                        var reply = await pingSender.SendPingAsync(host, 1000);
                         if (reply.Status == System.Net.NetworkInformation.IPStatus.Success)
                         {
                             roundtripTimes.Add(reply.RoundtripTime);
+                            i++;
                         }
                         else if (reply.Status == System.Net.NetworkInformation.IPStatus.TimedOut)
                         {
-                            roundtripTimes.Add(750);
                             timeOuts++;
+                            if (timeOuts == numPings)
+                            {
+                                return -2;
+                            }
                         }
                     }
                 }
@@ -46,12 +52,7 @@ namespace SS14.Launcher.Utility
                 }
 
             }
-
-            if (timeOuts == numPings)
-            {
-                return -2;
-            }
-            else if (roundtripTimes.Any())
+            if (roundtripTimes.Any())
             {
                 return (long)roundtripTimes.Average();
             }
