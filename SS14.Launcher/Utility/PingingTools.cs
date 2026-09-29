@@ -1,8 +1,10 @@
 using Serilog;
+using SS14.Launcher.Models.ServerStatus;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace SS14.Launcher.Utility;
 
@@ -11,11 +13,14 @@ public static class PingingTools
     /// <summary>
     /// Gets the ping time for a host.
     /// </summary>
-    public static async Task<int> GetPingTime(string? host)
+    public static async Task<int> GetPingTime(string? unparsedHost)
     {
-        if (string.IsNullOrWhiteSpace(host)) return -1;
-
-        host = NormalizeToHost(host);
+        if (unparsedHost == null || !UriHelper.TryParseSs14Uri(unparsedHost, out var parssedHost))
+        {
+            Log.Warning("Server has invalid URI");
+            return -1;
+        }
+        var host = parssedHost.Host;
         if (string.IsNullOrEmpty(host)) return -1;
 
         const int TargetSuccessfulPings = 3;
@@ -24,7 +29,7 @@ public static class PingingTools
         long roundtripTime = 0;
         int failedPingCounter = 0;
         int successfulPings = 0;
-        const int DelayBetweenPingsMs = 1000;
+        const int DelayBetweenPingsMs = 250;
 
         using var pingSender = new System.Net.NetworkInformation.Ping();
 
@@ -51,7 +56,8 @@ public static class PingingTools
             }
 
             // Bail if it's failing too much
-            if (failedPingCounter >= MaxFailedPings) return -2;
+            if (failedPingCounter >= MaxFailedPings)
+                return -2;
 
             if (successfulPings >= TargetSuccessfulPings)
                 return (int)(roundtripTime / TargetSuccessfulPings);
@@ -59,15 +65,4 @@ public static class PingingTools
             await Task.Delay(DelayBetweenPingsMs);
         }
     }
-
-    public static string NormalizeToHost(string url)
-    {
-        if (Uri.TryCreate(url, UriKind.Absolute, out Uri result))
-        {
-            return result.Host;
-        }
-
-        return string.Empty;
-    }
-
 }
