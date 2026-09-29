@@ -17,14 +17,13 @@ public static class PingingTools
         host = NormalizeToHost(host);
         if (host == string.Empty) return -1;
 
-        var roundtripTimes = new List<long>();
-        const int numPings = 3;
-        short timeOuts = 0;
+        const int HowManyPings = 3;
+        const int FailedPingPenalty = 3;
+        long roundtripTime = 0;
+        int failedPingCounter = 0;
 
-        for (int i = 0; i < numPings;)
+        for (int i = 0; i < HowManyPings; i++)
         {
-            //await Task.Delay(500);
-
             try
             {
                 using (var pingSender = new System.Net.NetworkInformation.Ping())
@@ -32,32 +31,26 @@ public static class PingingTools
                     var reply = await pingSender.SendPingAsync(host, 1000);
                     if (reply.Status == System.Net.NetworkInformation.IPStatus.Success)
                     {
-                        roundtripTimes.Add(reply.RoundtripTime);
-                        i++;
+                        roundtripTime+=reply.RoundtripTime;
                     }
                     else if (reply.Status == System.Net.NetworkInformation.IPStatus.TimedOut)
                     {
-                        timeOuts++;
-                        if (timeOuts == numPings)
-                        {
-                            return -2;
-                        }
+                        failedPingCounter++;
+                        roundtripTime += FailedPingPenalty;
+                        if (failedPingCounter >= HowManyPings) return -2;
                     }
                 }
             }
             catch (Exception ex)
             {
-                timeOuts++;
                 Log.Error(ex, "An error occurred during pinging server {ServerAddress}", host);
+                failedPingCounter++;
+                roundtripTime += FailedPingPenalty;
+                if (failedPingCounter >= HowManyPings) return -2;
             }
 
         }
-        if (roundtripTimes.Any())
-        {
-            return (long)roundtripTimes.Average();
-        }
-
-        return -1;
+        return roundtripTime/ HowManyPings;
     }
 
     public static string NormalizeToHost(string url)

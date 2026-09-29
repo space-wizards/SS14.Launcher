@@ -16,7 +16,6 @@ public class OptionsTabViewModel : MainWindowTabViewModel
     public DataManager Cfg { get; }
     private readonly IEngineManager _engineManager;
     private readonly ContentManager _contentManager;
-    private readonly ServerListCache _statusCache;
 
     public LanguageSelectorViewModel Language { get; } = new();
 
@@ -25,7 +24,6 @@ public class OptionsTabViewModel : MainWindowTabViewModel
         Cfg = Locator.Current.GetRequiredService<DataManager>();
         _engineManager = Locator.Current.GetRequiredService<IEngineManager>();
         _contentManager = Locator.Current.GetRequiredService<ContentManager>();
-        _statusCache = Locator.Current.GetRequiredService<ServerListCache>();
 
         DisableIncompatibleMacOS = OperatingSystem.IsMacOS();
     }
