@@ -11,46 +11,53 @@ public static class PingingTools
     /// <summary>
     /// Gets the ping time for a host.
     /// </summary>
-    public static async Task<long> GetPingTime(string? host)
+    public static async Task<int> GetPingTime(string? host)
     {
-        if (host == null) return -1;
-        host = NormalizeToHost(host);
-        if (host == string.Empty) return -1;
+        if (string.IsNullOrWhiteSpace(host)) return -1;
 
-        const int HowManyPings = 3;
-        const int FailedPingPenalty = 3;
+        host = NormalizeToHost(host);
+        if (string.IsNullOrEmpty(host)) return -1;
+
+        const int TargetSuccessfulPings = 3;
+        const int MaxFailedPings = 2;
+
         long roundtripTime = 0;
         int failedPingCounter = 0;
+        int successfulPings = 0;
+        const int DelayBetweenPingsMs = 1000;
 
-        for (int i = 0; i < HowManyPings; i++)
+        using var pingSender = new System.Net.NetworkInformation.Ping();
+
+        while (true)
         {
             try
             {
-                using (var pingSender = new System.Net.NetworkInformation.Ping())
+                var reply = await pingSender.SendPingAsync(host, 750);
+
+                if (reply.Status == System.Net.NetworkInformation.IPStatus.Success)
                 {
-                    var reply = await pingSender.SendPingAsync(host, 1000);
-                    if (reply.Status == System.Net.NetworkInformation.IPStatus.Success)
-                    {
-                        roundtripTime+=reply.RoundtripTime;
-                    }
-                    else if (reply.Status == System.Net.NetworkInformation.IPStatus.TimedOut)
-                    {
-                        failedPingCounter++;
-                        roundtripTime += FailedPingPenalty;
-                        if (failedPingCounter >= HowManyPings) return -2;
-                    }
+                    roundtripTime += reply.RoundtripTime;
+                    successfulPings++;
+                }
+                else
+                {
+                    failedPingCounter++;
                 }
             }
             catch (Exception ex)
             {
                 Log.Error(ex, "An error occurred during pinging server {ServerAddress}", host);
                 failedPingCounter++;
-                roundtripTime += FailedPingPenalty;
-                if (failedPingCounter >= HowManyPings) return -2;
             }
 
+            // Bail if it's failing too much
+            if (failedPingCounter >= MaxFailedPings) return -2;
+
+            if (successfulPings >= TargetSuccessfulPings)
+                return (int)(roundtripTime / TargetSuccessfulPings);
+
+            await Task.Delay(DelayBetweenPingsMs);
         }
-        return roundtripTime/ HowManyPings;
     }
 
     public static string NormalizeToHost(string url)

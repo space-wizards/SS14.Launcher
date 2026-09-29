@@ -60,10 +60,17 @@ public sealed class ServerStatusCache : IServerSource
 
         reg.DidInitialStatusUpdate = true;
         data.PingTime = -1;
+        Task updateTask = UpdateStatusFor(reg);
+        Task<int>? pingTask = null;
+
+        if (_cfg.GetCVar(CVars.FavoritePinging))
+        {
+            pingTask = PingingTools.GetPingTime(reg.Data.Address);
+        }
 
         try
         {
-            await UpdateStatusFor(reg);
+            await updateTask;
         }
         catch (Exception ex)
         {
@@ -72,12 +79,11 @@ public sealed class ServerStatusCache : IServerSource
             return;
         }
 
-        if (_cfg.GetCVar(CVars.FavoritePinging))
+        if (pingTask != null && _cfg.GetCVar(CVars.FavoritePinging))
         {
             try
             {
-                var pingTime = await PingingTools.GetPingTime(reg.Data.Address);
-                data.PingTime = (int)pingTime;
+                data.PingTime = await pingTask;
             }
             catch (Exception ex)
             {
