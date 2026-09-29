@@ -69,7 +69,6 @@ public class OptionsTabViewModel : MainWindowTabViewModel
         {
             Cfg.SetCVar(CVars.FavoritePinging, value);
             Cfg.CommitConfig();
-            _statusCache.RequestRefresh();
         }
     }
 

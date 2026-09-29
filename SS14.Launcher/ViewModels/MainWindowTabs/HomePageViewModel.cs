@@ -128,8 +128,15 @@ public partial class HomePageViewModel : MainWindowTabViewModel
     {
         foreach (var favorite in Favorites)
         {
-            _ = _statusCache.UpdateStatus(favorite.CacheData);
-            favorite.ShowPingColl = _cfg.GetCVar(CVars.FavoritePinging);
+            if (favorite.ShowPingColl != _cfg.GetCVar(CVars.FavoritePinging))
+            {
+                favorite.ShowPingColl = _cfg.GetCVar(CVars.FavoritePinging);
+                _ = _statusCache.UpdateStatus(favorite.CacheData, true);
+
+            }
+            else
+                _ = _statusCache.UpdateStatus(favorite.CacheData);
+
         }
         _serverListCache.RequestInitialUpdate();
     }
