@@ -43,6 +43,7 @@ public sealed class ServerStatusData : ObservableObject, IServerStatusData
         get => _desc;
         set => SetProperty(ref _desc, value);
     }
+
     public int? PingTime
     {
         get => _pingTime;
