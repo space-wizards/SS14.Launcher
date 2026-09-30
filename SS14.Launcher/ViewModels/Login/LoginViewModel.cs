@@ -113,7 +113,13 @@ public partial class LoginViewModel : BaseLoginViewModel
 
     public void ResendConfirmationPressed()
     {
-        // Registration is purely via website now, sorry.
+        // Resending confirmation is purely via website now, sorry.
         Helpers.OpenUri(ConfigConstants.AccountResendConfirmationUrl);
+    }
+
+    public void ForgotPasswordPressed()
+    {
+        // Forgot password is purely via website now, sorry.
+        Helpers.OpenUri(ConfigConstants.AccountForgotPasswordUrl);
     }
 }
