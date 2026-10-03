@@ -312,7 +312,7 @@ public sealed partial class MainWindowViewModel : ViewModelBase, IErrorOverlayOw
         if (ConnectingVM != null)
             return false;
 
-        return Path.GetExtension(file.Name) == ".zip";
+        return new List<string> { ".zip", ".rtbundle", ".rtreplay" }.Contains(Path.GetExtension(file.Name));
     }
 
     public void Dropped(IStorageFile file)
@@ -321,6 +321,13 @@ public sealed partial class MainWindowViewModel : ViewModelBase, IErrorOverlayOw
         Debug.Assert(IsContentBundleDropValid(file));
 
         ConnectingViewModel.StartContentBundle(this, file);
+    }
+
+    public async Task OnWindowLoaded()
+    {
+    #if !DEBUG
+        await Protocol.ProtocolSignupPopup(Control!, _cfg);
+    #endif
     }
 
     private static bool IsVulnerableToIntelDegradation(DataManager cfg)
