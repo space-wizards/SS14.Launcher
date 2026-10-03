@@ -1,6 +1,5 @@
 ﻿using Avalonia.Controls;
 using Avalonia.Input;
-using ReactiveUI;
 
 namespace SS14.Launcher.Views;
 
@@ -22,7 +21,7 @@ public partial class OkDialog : Window
     {
         InitializeComponent();
 
-        OkButton.Command = ReactiveCommand.Create(Close);
+        OkButton.Click += (_, _) => Close();
     }
 
     protected override void OnKeyDown(KeyEventArgs e)

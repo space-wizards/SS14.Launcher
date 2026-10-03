@@ -1,6 +1,5 @@
 ﻿using Avalonia.Controls;
 using Avalonia.Input;
-using ReactiveUI;
 
 namespace SS14.Launcher.Views;
 
@@ -28,8 +27,8 @@ public partial class ConfirmDialog : Window
     {
         InitializeComponent();
 
-        ConfirmButton.Command = ReactiveCommand.Create(() => Close(true));
-        CancelButton.Command = ReactiveCommand.Create(() => Close(false));
+        ConfirmButton.Click += (_, _) => Close(true);
+        CancelButton.Click += (_, _) => Close(false);
     }
 
     protected override void OnKeyDown(KeyEventArgs e)
