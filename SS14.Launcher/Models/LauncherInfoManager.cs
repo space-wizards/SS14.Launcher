@@ -70,7 +70,46 @@ public sealed class LauncherInfoManager(HttpClient httpClient)
 
     public sealed record LauncherInfoModel(
         Dictionary<string, string[]> Messages,
-        string[] AllowedVersions,
+        string MinVersion,
+        string[] BlockedVersions,
         Dictionary<string, string?> OverrideAssets
     );
+
+    /// <summary>
+    /// Checks whether the running launcher version is allowed by the remote
+    /// <see cref="LauncherInfoModel.MinVersion"/> and <see cref="LauncherInfoModel.BlockedVersions"/>.
+    /// </summary>
+    public static bool IsVersionAllowed(LauncherInfoModel info, Version current)
+    {
+        current = Normalize(current);
+
+        if (!Version.TryParse(info.MinVersion, out var min))
+        {
+            Log.Warning("Unable to parse remote minimum launcher version '{MinVersion}', ignoring it.", info.MinVersion);
+        }
+        else if (current < Normalize(min))
+        {
+            return false;
+        }
+
+        foreach (var blockedStr in info.BlockedVersions)
+        {
+            if (!Version.TryParse(blockedStr, out var blocked))
+            {
+                Log.Warning("Unable to parse remote blocked launcher version '{Blocked}', ignoring it.", blockedStr);
+                continue;
+            }
+
+            if (current == Normalize(blocked))
+                return false;
+        }
+
+        return true;
+    }
+
+    // Needed to parse the versioning we use
+    private static Version Normalize(Version v)
+    {
+        return new Version(v.Major, v.Minor, Math.Max(v.Build, 0), Math.Max(v.Revision, 0));
+    }
 }
