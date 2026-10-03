@@ -627,6 +627,9 @@ public partial class Connector : ObservableObject
 
     private static async void PipeOutput(Process process, Stream targetStdout, Stream targetStderr)
     {
+        await using var writerOut = targetStdout;
+        await using var writerErr = targetStderr;
+
         async Task DoPipe(StreamReader reader, Stream writer)
         {
             var readStream = reader.BaseStream;
@@ -645,8 +648,8 @@ public partial class Connector : ObservableObject
         }
 
         await Task.WhenAll(
-            DoPipe(process.StandardOutput, targetStdout),
-            DoPipe(process.StandardError, targetStderr));
+            DoPipe(process.StandardOutput, writerOut),
+            DoPipe(process.StandardError, writerErr));
     }
 
     private static void PipeLogOutput(Process process)
