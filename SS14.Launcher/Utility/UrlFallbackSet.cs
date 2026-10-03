@@ -9,11 +9,31 @@ using Serilog;
 
 namespace SS14.Launcher.Utility;
 
-public sealed class UrlFallbackSet(ImmutableArray<string> urls)
+public sealed class UrlFallbackSet
 {
     public static readonly TimeSpan AttemptDelay = TimeSpan.FromSeconds(3);
 
-    public readonly ImmutableArray<string> Urls = urls;
+    public readonly ImmutableArray<string> Urls;
+    public readonly UrlFallbackSetStats Stats;
+
+    public UrlFallbackSet(ImmutableArray<string> urls, UrlFallbackSetStats? stats = null)
+    {
+        if (urls.Length == 0)
+            throw new ArgumentException("Urls must not be empty.", nameof(urls));
+
+        Urls = urls;
+
+        if (stats != null)
+        {
+            if (stats.RequestCount.Length != urls.Length)
+                throw new ArgumentException("Stats has wrong length!");
+            Stats = stats;
+        }
+        else
+        {
+            Stats = new UrlFallbackSetStats(urls.Length);
+        }
+    }
 
     public async Task<T?> GetFromJsonAsync<T>(HttpClient client, CancellationToken cancel = default) where T : notnull
     {
@@ -45,6 +65,15 @@ public sealed class UrlFallbackSet(ImmutableArray<string> urls)
             .ConfigureAwait(false);
     }
 
+    public async Task<HttpResponseMessage> PostAsync(HttpClient httpClient, HttpContent content,
+        CancellationToken cancel = default)
+    {
+        return await SendAsync(httpClient, url => new HttpRequestMessage(HttpMethod.Post, url)
+        {
+            Content = content
+        }, cancel);
+    }
+
     public async Task<HttpResponseMessage> SendAsync(
         HttpClient httpClient,
         Func<string, HttpRequestMessage> builder,
@@ -55,6 +84,8 @@ public sealed class UrlFallbackSet(ImmutableArray<string> urls)
             (i, token) => AttemptConnection(httpClient, builder(Urls[i]), token),
             AttemptDelay,
             cancel).ConfigureAwait(false);
+
+        Stats.AddSuccessfulRequest(index);
 
         Log.Verbose("Successfully connected to {Url}", Urls[index]);
 
@@ -81,8 +112,49 @@ public sealed class UrlFallbackSet(ImmutableArray<string> urls)
         return response;
     }
 
+    public string GetMostSuccessfulUrl()
+    {
+        var maxUrl = Enumerable.Range(0, Urls.Length).MaxBy(i => Stats.RequestCount[i]);
+        return Urls[maxUrl];
+    }
+
     public static UrlFallbackSet operator +(UrlFallbackSet set, string s)
     {
-        return new UrlFallbackSet([..set.Urls.Select(x => x + s)]);
+        return new UrlFallbackSet([..set.Urls.Select(x => x + s)], set.Stats);
+    }
+
+    public static UrlFallbackSet FromSingle(Uri url)
+    {
+        return FromSingle(url.ToString());
+    }
+
+    public static UrlFallbackSet FromSingle(string url)
+    {
+        return new UrlFallbackSet([url]);
+    }
+}
+
+public sealed class UrlFallbackSetStats(int countUrls)
+{
+    // I don't actually think we're gonna have more than 2 billion requests in the app's lifetime,
+    // but I definitely know we're never gonna have 2^63.
+    public readonly long[] RequestCount = new long[countUrls];
+
+    public void AddSuccessfulRequest(int idx)
+    {
+        Interlocked.Increment(ref RequestCount[idx]);
+    }
+}
+
+public static class UrlFallbackSetHttpClientExtensions
+{
+    public static async Task<HttpResponseMessage> PostAsJsonAsync<TValue>(
+        this HttpClient httpClient,
+        UrlFallbackSet fallbackSet,
+        TValue value,
+        CancellationToken cancel = default)
+    {
+        var content = JsonContent.Create(value);
+        return await fallbackSet.PostAsync(httpClient, content, cancel).ConfigureAwait(false);
     }
 }

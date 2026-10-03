@@ -1,15 +1,12 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Collections.Specialized;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Serilog;
 using Splat;
 using SS14.Launcher.Utility;
-using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
 using SS14.Launcher.Api;
 using SS14.Launcher.Models.Data;
 using static SS14.Launcher.Api.HubApi;
@@ -19,24 +16,16 @@ namespace SS14.Launcher.Models.ServerStatus;
 /// <summary>
 ///     Caches the Hub's server list.
 /// </summary>
-public sealed class ServerListCache : ReactiveObject, IServerSource
+public sealed partial class ServerListCache : ObservableObject, IServerSource
 {
-    private readonly HubApi _hubApi;
-    private readonly DataManager _dataManager;
+    private readonly HubApi _hubApi = Locator.Current.GetRequiredService<HubApi>();
+    private readonly DataManager _dataManager = Locator.Current.GetRequiredService<DataManager>();
 
     private CancellationTokenSource? _refreshCancel;
 
-    public ObservableCollection<ServerStatusData> AllServers => _allServers;
-    private readonly ServerListCollection _allServers = new();
+    public ObservableList<ServerStatusData> AllServers { get; } = [];
 
-    [Reactive]
-    public RefreshListStatus Status { get; private set; } = RefreshListStatus.NotUpdated;
-
-    public ServerListCache()
-    {
-        _hubApi = Locator.Current.GetRequiredService<HubApi>();
-        _dataManager = Locator.Current.GetRequiredService<DataManager>();
-    }
+    [ObservableProperty] private RefreshListStatus _status = RefreshListStatus.NotUpdated;
 
     /// <summary>
     /// This function requests the initial update from the server if one hasn't already been requested.
@@ -54,15 +43,18 @@ public sealed class ServerListCache : ReactiveObject, IServerSource
     /// </summary>
     public void RequestRefresh()
     {
+        if (Status == RefreshListStatus.UpdatingMaster)
+            return;
+
         _refreshCancel?.Cancel();
-        _allServers.Clear();
+        AllServers.Clear();
         _refreshCancel = new CancellationTokenSource(10000);
         RefreshServerList(_refreshCancel.Token);
     }
 
     public async void RefreshServerList(CancellationToken cancel)
     {
-        _allServers.Clear();
+        AllServers.Clear();
         Status = RefreshListStatus.UpdatingMaster;
 
         try
@@ -74,17 +66,18 @@ public sealed class ServerListCache : ReactiveObject, IServerSource
             // Queue requests
             foreach (var hub in ConfigConstants.DefaultHubUrls)
             {
-                requests.Add((_hubApi.GetServers(hub, cancel), hub));
+                requests.Add((_hubApi.GetServers(hub, cancel), new Uri(hub.Urls[0])));
             }
 
             foreach (var hub in _dataManager.Hubs.OrderBy(h => h.Priority))
             {
-                requests.Add((_hubApi.GetServers(hub.Address, cancel), hub.Address));
+                requests.Add((_hubApi.GetServers(UrlFallbackSet.FromSingle(hub.Address), cancel), hub.Address));
             }
 
             // Await all requests
             try
             {
+                // await Task.Delay(2000, cancel);
                 await Task.WhenAll(requests.Select(t => t.Request));
             }
             catch
@@ -108,7 +101,6 @@ public sealed class ServerListCache : ReactiveObject, IServerSource
                     else if (request.IsCanceled)
                     {
                         Log.Warning("Request to hub {HubAddress} failed: canceled", hub);
-
                     }
 
                     allSucceeded = false;
@@ -129,17 +121,25 @@ public sealed class ServerListCache : ReactiveObject, IServerSource
                 }
             }
 
-            _allServers.AddItems(entries.Select(entry =>
+            AllServers.AddRange(entries.Select(entry =>
             {
                 var statusData = new ServerStatusData(entry.Address, entry.HubAddress);
                 ServerStatusCache.ApplyStatus(statusData, entry.StatusData);
                 return statusData;
             }));
 
-            Status = allSucceeded ? RefreshListStatus.Updated : RefreshListStatus.PartialError;
+            if (AllServers.Count == 0)
+                // We did not get any servers
+                Status = RefreshListStatus.Error;
+            else if (!allSucceeded)
+                // Some hubs succeeded and returned data
+                Status = RefreshListStatus.PartialError;
+            else
+                Status = RefreshListStatus.Updated;
         }
         catch (OperationCanceledException)
         {
+            Status = RefreshListStatus.Error;
         }
         catch (Exception e)
         {
@@ -159,19 +159,6 @@ public sealed class ServerListCache : ReactiveObject, IServerSource
         ServerStatusCache.UpdateInfoForCore(
             statusData,
             async token => await _hubApi.GetServerInfo(statusData.Address, statusData.HubAddress, token));
-    }
-
-    private sealed class ServerListCollection : ObservableCollection<ServerStatusData>
-    {
-        public void AddItems(IEnumerable<ServerStatusData> items)
-        {
-            foreach (var item in items)
-            {
-                Items.Add(item);
-            }
-
-            OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
-        }
     }
 }
 

@@ -1,14 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
-using System.Reactive.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Avalonia.Platform.Storage;
+using Avalonia.Threading;
 using DynamicData;
-using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Serilog;
 using Splat;
 using SS14.Launcher.Api;
@@ -23,18 +25,19 @@ using SS14.Launcher.Views;
 
 namespace SS14.Launcher.ViewModels;
 
-public sealed class MainWindowViewModel : ViewModelBase, IErrorOverlayOwner
+public sealed partial class MainWindowViewModel : ViewModelBase, IErrorOverlayOwner
 {
     private readonly DataManager _cfg;
     private readonly LoginManager _loginMgr;
-    private readonly HttpClient _http;
     private readonly LauncherInfoManager _infoManager;
     private readonly LocalizationManager _loc;
 
     private int _selectedIndex;
 
     public DataManager Cfg => _cfg;
-    [Reactive] public bool OutOfDate { get; private set; }
+    [ObservableProperty] private bool _outOfDate;
+
+    private IDisposable? _authOverrideCountdownTimer;
 
     public HomePageViewModel HomeTab { get; }
     public ServerListTabViewModel ServersTab { get; }
@@ -45,7 +48,6 @@ public sealed class MainWindowViewModel : ViewModelBase, IErrorOverlayOwner
     {
         _cfg = Locator.Current.GetRequiredService<DataManager>();
         _loginMgr = Locator.Current.GetRequiredService<LoginManager>();
-        _http = Locator.Current.GetRequiredService<HttpClient>();
         _infoManager = Locator.Current.GetRequiredService<LauncherInfoManager>();
         _loc = LocalizationManager.Instance;
 
@@ -54,45 +56,34 @@ public sealed class MainWindowViewModel : ViewModelBase, IErrorOverlayOwner
         HomeTab = new HomePageViewModel(this);
         OptionsTab = new OptionsTabViewModel();
 
-        var tabs = new List<MainWindowTabViewModel>();
-        tabs.Add(HomeTab);
-        tabs.Add(ServersTab);
-        tabs.Add(NewsTab);
-        tabs.Add(OptionsTab);
+        Tabs = new List<MainWindowTabViewModel>
+        {
+            HomeTab,
+            ServersTab,
+            NewsTab,
+            OptionsTab,
 #if DEVELOPMENT
-        tabs.Add(new DevelopmentTabViewModel());
+            new DevelopmentTabViewModel(),
 #endif
-        Tabs = tabs;
+        };
 
         AccountDropDown = new AccountDropDownViewModel(this);
         LoginViewModel = new MainWindowLoginViewModel();
 
-        this.WhenAnyValue(x => x._loginMgr.ActiveAccount)
-            .Subscribe(s =>
-            {
-                this.RaisePropertyChanged(nameof(Username));
-                this.RaisePropertyChanged(nameof(LoggedIn));
-            });
+        PropertyChanged += (_, e) =>
+        {
+            if (e.PropertyName is nameof(LoggedIn) && LoggedIn)
+                RunSelectedOnTab();
+        };
+
+        _loginMgr.PropertyChanged += (_, e) =>
+        {
+            if (e.PropertyName is nameof(_loginMgr.ActiveAccount))
+                OnPropertyChanged(new PropertyChangedEventArgs(nameof(LoggedIn)));
+        };
 
         _cfg.Logins.Connect()
-            .Subscribe(_ => { this.RaisePropertyChanged(nameof(AccountDropDownVisible)); });
-
-        // If we leave the login view model (by an account getting selected)
-        // we reset it to login state
-        this.WhenAnyValue(x => x.LoggedIn)
-            .DistinctUntilChanged() // Only when change.
-            .Subscribe(x =>
-            {
-                if (x)
-                {
-                    // "Switch" to main window.
-                    RunSelectedOnTab();
-                }
-                else
-                {
-                    LoginViewModel.SwitchToLogin();
-                }
-            });
+            .Subscribe(_ => OnPropertyChanged(new PropertyChangedEventArgs(nameof(AccountDropDownVisible))));
     }
 
     public MainWindow? Control { get; set; }
@@ -100,17 +91,16 @@ public sealed class MainWindowViewModel : ViewModelBase, IErrorOverlayOwner
     public IReadOnlyList<MainWindowTabViewModel> Tabs { get; }
 
     public bool LoggedIn => _loginMgr.ActiveAccount != null;
-    private string? Username => _loginMgr.ActiveAccount?.Username;
     public bool AccountDropDownVisible => _loginMgr.Logins.Count != 0;
 
     public AccountDropDownViewModel AccountDropDown { get; }
 
     public MainWindowLoginViewModel LoginViewModel { get; }
 
-    [Reactive] public ConnectingViewModel? ConnectingVM { get; set; }
+    [ObservableProperty] private ConnectingViewModel? _connectingVM;
 
-    [Reactive] public string? BusyTask { get; private set; }
-    [Reactive] public ViewModelBase? OverlayViewModel { get; private set; }
+    [ObservableProperty] private string? _busyTask;
+    [ObservableProperty] private ViewModelBase? _overlayViewModel;
 
     public int SelectedIndex
     {
@@ -120,7 +110,12 @@ public sealed class MainWindowViewModel : ViewModelBase, IErrorOverlayOwner
             var previous = Tabs[_selectedIndex];
             previous.IsSelected = false;
 
-            this.RaiseAndSetIfChanged(ref _selectedIndex, value);
+            if (!EqualityComparer<int>.Default.Equals(_selectedIndex, value))
+            {
+                OnPropertyChanging();
+                _selectedIndex = value;
+                OnPropertyChanged();
+            }
 
             RunSelectedOnTab();
         }
@@ -134,6 +129,12 @@ public sealed class MainWindowViewModel : ViewModelBase, IErrorOverlayOwner
     }
 
     public ICVarEntry<bool> HasDismissedEarlyAccessWarning => Cfg.GetCVarEntry(CVars.HasDismissedEarlyAccessWarning);
+    public bool ShouldShowIntelDegradationWarning => IsVulnerableToIntelDegradation(_cfg);
+    public bool ShouldShowRosettaWarning => IsAppleSiliconInRosetta(_cfg);
+    [ObservableProperty] private bool _shouldShowAuthOverrideWarning;
+    [ObservableProperty] private int _authOverrideCountdown = 5;
+    [ObservableProperty] private bool _isAuthOverrideButtonEnabled;
+
     public string Version => $"v{LauncherVersion.Version}";
 
     public async void OnWindowInitialized()
@@ -203,6 +204,47 @@ public sealed class MainWindowViewModel : ViewModelBase, IErrorOverlayOwner
     {
         Cfg.SetCVar(CVars.HasDismissedEarlyAccessWarning, true);
         Cfg.CommitConfig();
+    }
+
+    public void DismissIntelDegradationPressed()
+    {
+        Cfg.SetCVar(CVars.HasDismissedIntelDegradation, true);
+        Cfg.CommitConfig();
+        OnPropertyChanged(nameof(ShouldShowIntelDegradationWarning));
+    }
+
+    public void DismissAppleSiliconRosettaPressed()
+    {
+        Cfg.SetCVar(CVars.HasDismissedRosettaWarning, true);
+        Cfg.CommitConfig();
+        OnPropertyChanged(nameof(ShouldShowRosettaWarning));
+    }
+
+    public void DismissAuthOverridePressed()
+    {
+        _authOverrideCountdownTimer?.Dispose();
+        _authOverrideCountdownTimer = null;
+        ShouldShowAuthOverrideWarning = false;
+    }
+
+    public void StartAuthOverrideCountdown()
+    {
+        AuthOverrideCountdown = 5;
+        IsAuthOverrideButtonEnabled = false;
+        _authOverrideCountdownTimer?.Dispose();
+
+        _authOverrideCountdownTimer = DispatcherTimer.Run(() =>
+        {
+            AuthOverrideCountdown--;
+            if (AuthOverrideCountdown <= 0)
+            {
+                IsAuthOverrideButtonEnabled = true;
+                _authOverrideCountdownTimer?.Dispose();
+                _authOverrideCountdownTimer = null;
+                return false;
+            }
+            return true;
+        }, TimeSpan.FromSeconds(1), DispatcherPriority.Normal);
     }
 
     public void SelectTabServers()
@@ -286,5 +328,34 @@ public sealed class MainWindowViewModel : ViewModelBase, IErrorOverlayOwner
     #if !DEBUG
         await Protocol.ProtocolSignupPopup(Control!, _cfg);
     #endif
+    }
+
+    private static bool IsVulnerableToIntelDegradation(DataManager cfg)
+    {
+        var processor = LauncherDiagnostics.GetProcessorModel();
+
+        // No Intel processor, or already dismissed the warning.
+        if (!processor.Contains("Intel") || cfg.GetCVar(CVars.HasDismissedIntelDegradation))
+            return false;
+
+        // Get the i#-#### from the processor string.
+        var match = Regex.Match(processor, @"i\d+-\d+(?:[A-Z]+)?(?=\s|$)");
+        if (!match.Success)
+            return false;
+
+        var affectedGenerations = new[] { "i3-13", "i5-13", "i7-13", "i9-13", "i3-14", "i5-14", "i7-14", "i9-14" };
+        var excludedSuffixes = new[] { "HX", "H", "P", "U" };
+
+        return affectedGenerations.Any(match.Value.Contains) && !excludedSuffixes.Any(match.Value.EndsWith);
+    }
+
+    private static bool IsAppleSiliconInRosetta(DataManager cfg)
+    {
+        if (!OperatingSystem.IsMacOS())
+            return false;
+
+        var processor = LauncherDiagnostics.GetProcessorModel();
+
+        return processor.Contains("VirtualApple") && !cfg.GetCVar(CVars.HasDismissedRosettaWarning);
     }
 }

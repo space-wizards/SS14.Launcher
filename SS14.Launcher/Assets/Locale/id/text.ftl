@@ -61,7 +61,7 @@ connecting-update-status-loading-content-bundle = Memuat paket konten…
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-update-status-unknown = Anda seharusnya tidak melihat ini
 # Strings for the "direct connect" dialog window.
-direct-connect-title = Koneksi Langsung…
+direct-connect-title = Koneksi Langsung
 # Strings for the "direct connect" dialog window.
 direct-connect-text = Masukkan alamat server untuk mengkoneksi:
 # Strings for the "direct connect" dialog window.

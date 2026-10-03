@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using System.Globalization;
 using Dapper;
 
 namespace SS14.Launcher.Models.Data;
@@ -23,12 +24,12 @@ public sealed class DateTimeOffsetTypeHandler : SqlMapper.TypeHandler<DateTimeOf
     public override void SetValue(IDbDataParameter parameter, DateTimeOffset value)
     {
         parameter.DbType = DbType.String;
-        parameter.Value = value.ToString("O");
+        parameter.Value = value.ToString("O", CultureInfo.InvariantCulture);
     }
 
     public override DateTimeOffset Parse(object value)
     {
-        return DateTimeOffset.Parse((string) value);
+        return DateTimeOffset.Parse((string) value, CultureInfo.InvariantCulture);
     }
 }
 

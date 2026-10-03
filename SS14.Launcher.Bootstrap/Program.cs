@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Runtime.InteropServices;
 using Microsoft.Win32;
 using System.Linq;
 
 namespace SS14.Launcher.Bootstrap
 {
-    internal static class Program
+    internal static partial class Program
     {
         public static void Main(string[] args)
         {
@@ -59,23 +60,49 @@ namespace SS14.Launcher.Bootstrap
                 Environment.Exit(0);
             }
 
-            var path = typeof(Program).Assembly.Location;
-            var ourDir = Path.GetDirectoryName(path);
+            var path = AppContext.BaseDirectory;
+            var ourDir = Path.GetDirectoryName(path)!;
             Debug.Assert(ourDir != null);
 
-            var dotnetDir = Path.Combine(ourDir, "dotnet");
-            var exeDir = Path.Combine(ourDir, "bin", "SS14.Launcher.exe");
+            var architecture = "x64";
+            if (RuntimeInformation.OSArchitecture == Architecture.Arm64
+                && Directory.Exists(Path.Combine(ourDir, "dotnet_arm64")))
+            {
+                architecture = "arm64";
+            }
+
+            var dotnetDir = Path.Combine(ourDir, $"dotnet_{architecture}");
+            var exeDir = Path.Combine(ourDir, $"bin_{architecture}");
 
             Environment.SetEnvironmentVariable("DOTNET_ROOT", dotnetDir);
-            if (args.Length > 0)
+            // IDK if i will need this again i will just put it here for me later.
+            // if (args.Length > 0)
+            // {
+            //     // blursed
+            //     // thanks anonymous for how to make args pass in properly
+            //     Process.Start(new ProcessStartInfo(exeDir, string.Join("", args.Select((str) => $"\"{str}\" "))));
+            // }
+            // else
+            // {
+            //     Process.Start(new ProcessStartInfo(exeDir));
+            // }
+            if (Array.IndexOf(args, "--debug") == -1)
             {
-                // blursed
-                // thanks anonymous for how to make args pass in properly
-                Process.Start(new ProcessStartInfo(exeDir, string.Join("", args.Select((str) => $"\"{str}\" "))));
+                Process.Start(new ProcessStartInfo(Path.Combine(exeDir, "SS14.Launcher.exe")));
             }
             else
             {
-                Process.Start(new ProcessStartInfo(exeDir));
+                AllocConsole();
+
+                Console.WriteLine("Console yourself some, uhhh");
+
+                var process = Process.Start(
+                    Path.Combine(dotnetDir, "dotnet.exe"),
+                    [Path.Combine(exeDir, "SS14.Launcher.dll")]);
+
+                process.WaitForExit();
+                Console.WriteLine("Press enter to exit");
+                Console.ReadLine();
             }
         }
 
@@ -112,5 +139,8 @@ namespace SS14.Launcher.Bootstrap
                 Console.WriteLine($"Error while trying to fix DOTNET_ROOT env var: {e}");
             }
         }
+
+        [LibraryImport("KERNEL32.dll")]
+        private static partial int AllocConsole();
     }
 }

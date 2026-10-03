@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
+using System.Linq;
+using Avalonia.Threading;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Splat;
 using SS14.Launcher.Localization;
 using SS14.Launcher.Models.ServerStatus;
@@ -11,15 +11,17 @@ using SS14.Launcher.Utility;
 
 namespace SS14.Launcher.ViewModels.MainWindowTabs;
 
-public class ServerListTabViewModel : MainWindowTabViewModel
+public partial class ServerListTabViewModel : MainWindowTabViewModel
 {
     private readonly LocalizationManager _loc = LocalizationManager.Instance;
     private readonly MainWindowViewModel _windowVm;
     private readonly ServerListCache _serverListCache;
 
-    public ObservableCollection<ServerEntryViewModel> SearchedServers { get; } = new();
+    public ObservableList<ServerEntryViewModel> SearchedServers { get; } = [];
+    private readonly Dictionary<string, ServerEntryViewModel> _serverViewModels = new();
 
     private string? _searchString;
+    private readonly DispatcherTimer _searchThrottle = new() { Interval = TimeSpan.FromMilliseconds(200) };
 
     public override string Name => _loc.GetString("tab-servers-title");
 
@@ -28,13 +30,22 @@ public class ServerListTabViewModel : MainWindowTabViewModel
         get => _searchString;
         set
         {
-            this.RaiseAndSetIfChanged(ref _searchString, value);
-            UpdateSearchedList();
+            if (_searchString == value)
+                return;
+
+            OnPropertyChanging();
+            _searchString = value;
+            OnPropertyChanged();
+
+            // Search string was changed, stop a potential old throttle timer and restart it
+            _searchThrottle.Stop();
+            _searchThrottle.Start();
         }
     }
 
-    public bool ListTextVisible => _serverListCache.Status != RefreshListStatus.Updated;
     public bool SpinnerVisible => _serverListCache.Status < RefreshListStatus.Updated;
+
+    public bool RefreshEnabled => _serverListCache.Status != RefreshListStatus.UpdatingMaster;
 
     public string ListText
     {
@@ -54,7 +65,6 @@ public class ServerListTabViewModel : MainWindowTabViewModel
                 case RefreshListStatus.Updated:
                 default:
                     if (SearchedServers.Count == 0 && _serverListCache.AllServers.Count != 0)
-                        // TODO: Actually make this show up or just remove it entirely
                         return _loc.GetString("tab-servers-list-status-none-filtered");
 
                     if (_serverListCache.AllServers.Count == 0)
@@ -65,7 +75,7 @@ public class ServerListTabViewModel : MainWindowTabViewModel
         }
     }
 
-    [Reactive] public bool FiltersVisible { get; set; }
+    [ObservableProperty] private bool _filtersVisible;
 
     public ServerListFiltersViewModel Filters { get; }
 
@@ -84,12 +94,21 @@ public class ServerListTabViewModel : MainWindowTabViewModel
             switch (args.PropertyName)
             {
                 case nameof(ServerListCache.Status):
-                    this.RaisePropertyChanged(nameof(ListText));
-                    this.RaisePropertyChanged(nameof(ListTextVisible));
-                    this.RaisePropertyChanged(nameof(SpinnerVisible));
+                    OnPropertyChanged(nameof(ListText));
+                    OnPropertyChanged(nameof(SpinnerVisible));
+                    OnPropertyChanged(nameof(RefreshEnabled));
                     break;
             }
         };
+
+        _searchThrottle.Tick += (_, _) =>
+        {
+            // Interval since last search string change has passed, stop the timer and update the list
+            _searchThrottle.Stop();
+            UpdateSearchedList();
+        };
+
+        _loc.LanguageSwitched += () => Filters.UpdatePresentFilters(_serverListCache.AllServers);
     }
 
     private void FiltersOnFiltersUpdated()
@@ -104,11 +123,17 @@ public class ServerListTabViewModel : MainWindowTabViewModel
 
     public void RefreshPressed()
     {
+        if (!RefreshEnabled)
+            return;
+
         _serverListCache.RequestRefresh();
     }
 
-    private void ServerListUpdated(object? sender, NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)
+    private void ServerListUpdated(object? sender, NotifyCollectionChangedEventArgs args)
     {
+        if (args.Action == NotifyCollectionChangedAction.Reset)
+            _serverViewModels.Clear();
+
         Filters.UpdatePresentFilters(_serverListCache.AllServers);
 
         UpdateSearchedList();
@@ -130,12 +155,21 @@ public class ServerListTabViewModel : MainWindowTabViewModel
 
         sortList.Sort(ServerSortComparer.Instance);
 
-        SearchedServers.Clear();
+        var searchedServers = new List<ServerEntryViewModel>(sortList.Count);
         foreach (var server in sortList)
         {
-            var vm = new ServerEntryViewModel(_windowVm, server, _serverListCache, _windowVm.Cfg);
-            SearchedServers.Add(vm);
+            if (!_serverViewModels.TryGetValue(server.Address, out var vm))
+            {
+                vm = new ServerEntryViewModel(_windowVm, server, _serverListCache, _windowVm.Cfg);
+                _serverViewModels.Add(server.Address, vm);
+            }
+
+            searchedServers.Add(vm);
         }
+
+        SearchedServers.SetItems(searchedServers);
+
+        OnPropertyChanged(nameof(ListText));
     }
 
     private bool DoesSearchMatch(ServerStatusData data)

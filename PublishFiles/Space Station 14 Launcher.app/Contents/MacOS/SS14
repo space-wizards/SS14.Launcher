@@ -7,6 +7,11 @@ cd "$BASEDIR"
 
 mkdir -p "$HOME/Library/Application Support/Space Station 14"
 
-export DOTNET_ROOT="$(pwd)/../Resources/dotnet"
+ARCH=$(uname -m)
 
-exec ../Resources/bin/SS14.Launcher "$@" > "$HOME/Library/Application Support/Space Station 14/launcher.log"
+export DOTNET_ROOT="$(pwd)/../Resources/$ARCH/dotnet"
+
+# Why do we invoke dotnet with the dll, instead of the apphost?
+# Because for some reason, the ARM64 apphost is broken when published by GitHub Actions.
+# Idk dude. This works.
+exec "$DOTNET_ROOT/dotnet" ../Resources/$ARCH/bin/SS14.Launcher.dll "$@" > "$HOME/Library/Application Support/Space Station 14/launcher.log"

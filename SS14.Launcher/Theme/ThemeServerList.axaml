@@ -1,10 +1,109 @@
-<Styles xmlns="https://github.com/avaloniaui">
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:loc="clr-namespace:SS14.Launcher.Localization"
+        xmlns:views="using:SS14.Launcher.Views"
+        xmlns:mwt="using:SS14.Launcher.Views.MainWindowTabs">
+  <Style Selector="ItemsControl.ServerList > ContentPresenter">
+    <Setter Property="HorizontalAlignment" Value="Stretch" />
+  </Style>
+
   <Style Selector="ItemsControl.ServerList > ContentPresenter:nth-child(2n)">
     <Setter Property="Background">
       <SolidColorBrush Color="#262626" />
     </Setter>
   </Style>
-  <Style Selector=":is(Panel).ServerFilterGroup">
-    <Setter Property="Margin" Value="4" />
+
+  <Style Selector="Border.GridCell">
+    <Setter Property="BorderBrush">
+      <SolidColorBrush Color="{DynamicResource ThemeListSeparatorColor}" />
+    </Setter>
+    <Setter Property="BorderThickness" Value="0,0,2,0" />
+    <Setter Property="Padding" Value="10 0" />
+    <Style Selector="^:nth-last-child(1)">
+      <!-- Disable divider line for the last column -->
+      <Setter Property="BorderThickness" Value="0" />
+    </Style>
+    <Style Selector="^ TextBlock">
+      <Setter Property="TextAlignment" Value="Left" />
+      <Setter Property="HorizontalAlignment" Value="Left" />
+      <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+    <Style Selector="^ TextBlock.Center">
+      <Setter Property="TextAlignment" Value="Center" />
+      <Setter Property="HorizontalAlignment" Value="Center" />
+    </Style>
+    <Style Selector="^ TextBlock.Numeric">
+      <Setter Property="FontFamily" Value="Mono" />
+      <Setter Property="TextAlignment" Value="Right" />
+      <Setter Property="HorizontalAlignment" Value="Right" />
+
+      <!--
+      This is to offset a bug with monospace fonts being rendered slightly off-center vertically
+      https://github.com/AvaloniaUI/Avalonia/issues/10658 (Bug is present as of Feb '25)
+      -->
+      <Setter Property="Margin" Value="0 3 0 0" />
+    </Style>
+  </Style>
+
+  <Style Selector="mwt|ServerList">
+    <Setter Property="Template">
+      <ControlTemplate>
+        <DockPanel ZIndex="-1">
+          <!-- Server Name, Round Time, Player Count, Connect -->
+          <Grid DockPanel.Dock="Top" Margin="24 0 24 0" IsVisible="{TemplateBinding ShowHeader}"
+                ColumnDefinitions="*,100,100,112">
+
+            <Border Grid.Column="0" Classes="GridCell">
+              <TextBlock Text="{loc:Loc tab-servers-table-name}" Classes="SubText" />
+            </Border>
+            <Border Grid.Column="1" Classes="GridCell">
+              <TextBlock Text="{loc:Loc tab-servers-table-round-time}" Classes="SubText Center" />
+            </Border>
+            <Border Grid.Column="2" Classes="GridCell">
+              <TextBlock Text="{loc:Loc tab-servers-table-players}" Classes="SubText Center" />
+            </Border>
+            <Border Grid.Column="3" Classes="GridCell">
+              <TextBlock Text="" Classes="SubText Center" />
+            </Border>
+          </Grid>
+
+          <Panel DockPanel.Dock="Top" Classes="ScrollViewerSep" IsVisible="{TemplateBinding ShowHeader}" />
+
+          <Panel>
+            <Panel.Background>
+              <SolidColorBrush Color="#1e1e22" />
+            </Panel.Background>
+            <Grid RowDefinitions="*,Auto" MinHeight="150">
+              <ScrollViewer Grid.Row="0"
+                            HorizontalScrollBarVisibility="Disabled"
+                            VerticalScrollBarVisibility="Auto">
+                <ItemsControl ItemsSource="{TemplateBinding List}" Classes="ServerList">
+                  <ItemsControl.ItemTemplate>
+                    <mwt:ServerEntryDataTemplate />
+                  </ItemsControl.ItemTemplate>
+                  <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                      <!-- Virtualize because otherwise avalonia will absolutely lag just opening the list. -->
+                      <VirtualizingStackPanel />
+                    </ItemsPanelTemplate>
+                  </ItemsControl.ItemsPanel>
+                </ItemsControl>
+              </ScrollViewer>
+              <StackPanel Grid.Row="0" VerticalAlignment="Center">
+                <TextBlock IsVisible="{TemplateBinding ListText,Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+                           TextAlignment="Center"
+                           Text="{TemplateBinding ListText}" />
+                <Viewbox IsVisible="{TemplateBinding SpinnerVisible}"
+                         Classes="DungSpinnerBox">
+                  <!-- Explicitly setting visible to block animations -->
+                  <views:DungSpinner IsVisible="{TemplateBinding SpinnerVisible}" />
+                </Viewbox>
+              </StackPanel>
+              <ContentPresenter Grid.Row="1" Content="{TemplateBinding Content}" HorizontalAlignment="Center" />
+            </Grid>
+          </Panel>
+        </DockPanel>
+      </ControlTemplate>
+    </Setter>
   </Style>
 </Styles>

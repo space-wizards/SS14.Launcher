@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Runtime;
 using System.Runtime.InteropServices;
 using System.Runtime.Intrinsics.Arm;
 using System.Runtime.Intrinsics.X86;
@@ -30,6 +31,8 @@ internal static class LauncherDiagnostics
             GetProcessorModel());
         Log.Information("System Memory: {TotalMemory} MiB",
             GC.GetGCMemoryInfo().TotalAvailableMemoryBytes / 1024 / 1024);
+        Log.Information("Server GC: {ServerGC}",
+            GCSettings.IsServerGC);
 
         Log.Information("SQLite version: {SqliteVersion}", raw.sqlite3_libversion().utf8_to_string());
     }

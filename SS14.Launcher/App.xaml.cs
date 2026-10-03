@@ -170,6 +170,13 @@ public class App : Application
         Locator.CurrentMutable.RegisterConstant(lc);
         msgr.StartServerTask(lc);
 
+        if (ConfigConstants.IsAuthOverride)
+        {
+            Log.Information("Auth URL override detected: {AuthUrl}.", ConfigConstants.AuthUrl.Urls);
+            viewModel.ShouldShowAuthOverrideWarning = true;
+            viewModel.StartAuthOverrideCountdown();
+        }
+
         window.Show();
     }
 

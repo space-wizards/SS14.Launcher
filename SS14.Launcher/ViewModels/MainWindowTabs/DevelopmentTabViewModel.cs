@@ -1,5 +1,4 @@
-﻿using ReactiveUI;
-using Splat;
+﻿using Splat;
 using SS14.Launcher.Localization;
 using SS14.Launcher.Models.Data;
 using SS14.Launcher.Utility;
@@ -9,50 +8,49 @@ namespace SS14.Launcher.ViewModels.MainWindowTabs;
 public sealed class DevelopmentTabViewModel : MainWindowTabViewModel
 {
     private readonly LocalizationManager _loc = LocalizationManager.Instance;
-    public DataManager Cfg { get; }
+    private readonly DataManager _cfg = Locator.Current.GetRequiredService<DataManager>();
 
     public DevelopmentTabViewModel()
     {
-        Cfg = Locator.Current.GetRequiredService<DataManager>();
-
         // TODO: This sucks and leaks.
-        Cfg.GetCVarEntry(CVars.EngineOverrideEnabled).PropertyChanged += (sender, args) =>
+        _cfg.GetCVarEntry(CVars.EngineOverrideEnabled).PropertyChanged += (_, _) =>
         {
-            this.RaisePropertyChanged(nameof(Name));
+            OnPropertyChanged(nameof(Name));
         };
     }
 
-    public override string Name => Cfg.GetCVar(CVars.EngineOverrideEnabled)
+    public override string Name
+        => _cfg.GetCVar(CVars.EngineOverrideEnabled)
         ? _loc.GetString("tab-development-title-override")
         : _loc.GetString("tab-development-title");
 
     public bool DisableSigning
     {
-        get => Cfg.GetCVar(CVars.DisableSigning);
+        get => _cfg.GetCVar(CVars.DisableSigning);
         set
         {
-            Cfg.SetCVar(CVars.DisableSigning, value);
-            Cfg.CommitConfig();
+            _cfg.SetCVar(CVars.DisableSigning, value);
+            _cfg.CommitConfig();
         }
     }
 
     public bool EngineOverrideEnabled
     {
-        get => Cfg.GetCVar(CVars.EngineOverrideEnabled);
+        get => _cfg.GetCVar(CVars.EngineOverrideEnabled);
         set
         {
-            Cfg.SetCVar(CVars.EngineOverrideEnabled, value);
-            Cfg.CommitConfig();
+            _cfg.SetCVar(CVars.EngineOverrideEnabled, value);
+            _cfg.CommitConfig();
         }
     }
 
     public string EngineOverridePath
     {
-        get => Cfg.GetCVar(CVars.EngineOverridePath);
+        get => _cfg.GetCVar(CVars.EngineOverridePath);
         set
         {
-            Cfg.SetCVar(CVars.EngineOverridePath, value);
-            Cfg.CommitConfig();
+            _cfg.SetCVar(CVars.EngineOverridePath, value);
+            _cfg.CommitConfig();
         }
     }
 }

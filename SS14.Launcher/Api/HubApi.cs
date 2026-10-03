@@ -1,11 +1,13 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using SS14.Launcher.Models;
+using SS14.Launcher.Utility;
 
 namespace SS14.Launcher.Api;
 
@@ -18,13 +20,15 @@ public sealed class HubApi
         _http = http;
     }
 
-    public async Task<ServerListEntry[]> GetServers(Uri hubUri, CancellationToken cancel)
+    public async Task<ServerListEntry[]> GetServers(UrlFallbackSet hubUri, CancellationToken cancel)
     {
         // Sanity check, this should be enforced with code
-        if (!hubUri.AbsoluteUri.EndsWith('/'))
+        if (!hubUri.Urls.All(u => u.EndsWith('/')))
             throw new Exception("URI doesn't have trailing slash");
 
-        return await _http.GetFromJsonAsync<ServerListEntry[]>(new Uri(hubUri, "api/servers"), cancel)
+        var finalUrl = hubUri + "api/servers";
+
+        return await finalUrl.GetFromJsonAsync<ServerListEntry[]>(_http, cancel)
                ?? throw new JsonException("Server list is null!");
     }
 

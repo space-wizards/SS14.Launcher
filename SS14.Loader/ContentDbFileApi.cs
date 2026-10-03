@@ -2,6 +2,7 @@
 using System.Buffers;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.IO.Compression;
@@ -32,8 +33,10 @@ internal sealed class ContentDbFileApi : IFileApi, IDisposable
         var err = sqlite3_open_v2(
             contentDbPath,
             out var db,
-            SQLITE_OPEN_READONLY | SQLITE_OPEN_NOMUTEX | SQLITE_OPEN_SHAREDCACHE,
+            SQLITE_OPEN_READWRITE | SQLITE_OPEN_NOMUTEX,
             null);
+
+        AddRunningClient(db, version);
 
         // Make sure to have a read transaction on every database connection
         // so that the launcher can't delete anything from underneath us if the user does anything.
@@ -46,14 +49,14 @@ internal sealed class ContentDbFileApi : IFileApi, IDisposable
         // Create pool of connections to avoid lock contention on multithreaded scenarios.
         var poolSize = _connectionPoolSize = ConnectionPoolSize();
         _dbConnectionsSemaphore = new SemaphoreSlim(poolSize, poolSize);
-        _dbConnections.Add(new ConPoolEntry(db, ZSTD_createDCtx(), InitBlob()));
+        _dbConnections.Add(new ConPoolEntry(db, ZSTD_createDCtx(), InitBlob()) { IsMaster = true });
 
         for (var i = 1; i < poolSize; i++)
         {
             err = sqlite3_open_v2(
                 contentDbPath,
                 out db,
-                SQLITE_OPEN_READONLY | SQLITE_OPEN_NOMUTEX | SQLITE_OPEN_SHAREDCACHE,
+                SQLITE_OPEN_READONLY | SQLITE_OPEN_NOMUTEX,
                 null);
             CheckThrowSqliteErr(db, err);
 
@@ -68,6 +71,47 @@ internal sealed class ContentDbFileApi : IFileApi, IDisposable
             SqliteException.ThrowExceptionForRC(rc, db);
             return blob;
         }
+    }
+
+    private static void AddRunningClient(sqlite3 db, long contentVersion)
+    {
+        var err = sqlite3_prepare_v2(
+            db,
+            """
+            INSERT OR REPLACE INTO
+                RunningClient (ProcessId, MainModule, UsedVersion)
+            VALUES
+                (?, ?, ?)
+            """,
+            out var stmt);
+        CheckThrowSqliteErr(db, err);
+        sqlite3_bind_int(stmt, 1, Environment.ProcessId);
+        sqlite3_bind_text(stmt, 2, Process.GetCurrentProcess().MainModule?.FileName ?? "");
+        sqlite3_bind_int64(stmt, 3, contentVersion);
+
+        sqlite3_step(stmt);
+
+        stmt.Dispose();
+    }
+
+    private static void ClearRunningClient(sqlite3 db)
+    {
+        // Ensure we are not in a transaction anymore.
+        sqlite3_exec(db, "ROLLBACK");
+
+        var err = sqlite3_prepare_v2(
+            db,
+            """
+            DELETE FROM RunningClient
+            WHERE ProcessId = ?
+            """,
+            out var stmt);
+        CheckThrowSqliteErr(db, err);
+        sqlite3_bind_int(stmt, 1, Environment.ProcessId);
+
+        sqlite3_step(stmt);
+
+        stmt.Dispose();
     }
 
     private void LoadManifest(long version, sqlite3 db, out long initBlob)
@@ -119,6 +163,7 @@ internal sealed class ContentDbFileApi : IFileApi, IDisposable
 
     public void Dispose()
     {
+        sqlite3? master = null;
         for (var i = 0; i < _connectionPoolSize; i++)
         {
             _dbConnectionsSemaphore.Wait();
@@ -128,9 +173,19 @@ internal sealed class ContentDbFileApi : IFileApi, IDisposable
                 continue;
             }
 
+            if (db.IsMaster)
+                master = db.Connection;
+            else
+                db.Connection.Close();
+
             db.Blob.Close();
-            db.Connection.Close();
         }
+
+        Debug.Assert(master != null);
+
+        ClearRunningClient(master);
+
+        master.Dispose();
     }
 
     public bool TryOpen(string path, [NotNullWhen(true)] out Stream? stream)
@@ -256,6 +311,7 @@ internal sealed class ContentDbFileApi : IFileApi, IDisposable
         public readonly sqlite3 Connection;
         public readonly ZSTD_DCtx* DecompressionContext;
         public readonly sqlite3_blob Blob;
+        public bool IsMaster;
 
         public ConPoolEntry(sqlite3 connection, ZSTD_DCtx* decompressionContext, sqlite3_blob blob)
         {

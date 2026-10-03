@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
@@ -7,7 +6,7 @@ using Avalonia.Controls;
 using Avalonia.VisualTree;
 using DynamicData;
 using DynamicData.Alias;
-using ReactiveUI.Fody.Helpers;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Splat;
 using SS14.Launcher.Localization;
 using SS14.Launcher.Models.Data;
@@ -17,7 +16,7 @@ using SS14.Launcher.Views;
 
 namespace SS14.Launcher.ViewModels.MainWindowTabs;
 
-public class HomePageViewModel : MainWindowTabViewModel
+public partial class HomePageViewModel : MainWindowTabViewModel
 {
     public MainWindowViewModel MainWindowViewModel { get; }
     private readonly DataManager _cfg;
@@ -29,6 +28,13 @@ public class HomePageViewModel : MainWindowTabViewModel
         MainWindowViewModel = mainWindowViewModel;
         _cfg = Locator.Current.GetRequiredService<DataManager>();
         _serverListCache = Locator.Current.GetRequiredService<ServerListCache>();
+        _serverListCache.PropertyChanged += (_, args) =>
+        {
+            if (args.PropertyName == nameof(ServerListCache.Status))
+            {
+                OnPropertyChanged(nameof(RefreshEnabled));
+            }
+        };
 
         _cfg.FavoriteServers
             .Connect()
@@ -58,12 +64,13 @@ public class HomePageViewModel : MainWindowTabViewModel
     }
 
     public ReadOnlyObservableCollection<ServerEntryViewModel> Favorites { get; }
-    public ObservableCollection<ServerEntryViewModel> Suggestions { get; } = new();
 
-    [Reactive] public bool FavoritesEmpty { get; private set; } = true;
+    [ObservableProperty] private bool _favoritesEmpty = true;
 
     public override string Name => LocalizationManager.Instance.GetString("tab-home-title");
     public Control? Control { get; set; }
+
+    public bool RefreshEnabled => _serverListCache.Status != RefreshListStatus.UpdatingMaster;
 
     public async void DirectConnectPressed()
     {
@@ -110,6 +117,9 @@ public class HomePageViewModel : MainWindowTabViewModel
 
     public void RefreshPressed()
     {
+        if (!RefreshEnabled)
+            return;
+
         _statusCache.Refresh();
         _serverListCache.RequestRefresh();
     }

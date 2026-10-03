@@ -1,0 +1,9 @@
+files: ["icon.ico"]
+  license: "CC-BY-SA-4.0"
+  copyright: "By AftrLite"
+  source: "https://github.com/space-wizards/SS14.Launcher/pull/290/"
+
+- files: ["logo-long.png"]
+  license: "CC-BY-SA-4.0"
+  copyright: "By AftrLite"
+  source: "https://github.com/space-wizards/SS14.Launcher/pull/290/"

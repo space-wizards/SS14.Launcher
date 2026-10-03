@@ -20,7 +20,14 @@ account-drop-down-log-out-of = Выйти из { $name }
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-title-connecting = Подключение…
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-status-update-error = Произошла ошибка во время загрузки серверного контента. Пожалуйста, обратитесь в Discord за помощью, если проблема не исчезнет.
+connecting-status-update-error =
+    Произошла ошибка во время загрузки серверного контента. Если проблема не исчезает, попробуйте следующее:
+    - Попробуйте подключиться к другому серверу и проверьте, сохраняется ли проблема.
+    - Попробуйте выключить или включить программы по типу VPN, если они у вас есть.
+
+    Если у вас все еще возникают проблемы, сначала попробуйте связаться с сервером, к которому вы пытаетесь присоединиться, прежде чем просить поддержки в официальном Discord Space Station 14 или на форумах.
+
+    Ошибка: { $err }
 # Strings for the "hub settings" dialog window.
 hub-settings-explanation = Здесь вы можете добавлять дополнительные хабы для получения игровых серверов. Вы должны добавлять только хабы, которым вы доверяете, так как они могут подделывать игровые сервера других хабов. Порядок хабов важен. Если два хаба рекламируют сервер дважды, то приоритет будет иметь хаб с большим приоритетом (расположен выше в списке).
 # Long region names for server tag filters (shown in tooltip)
@@ -34,7 +41,7 @@ login-confirmation-confirmation-message = Пожалуйста, проверьт
 # Long region names for server tag filters (shown in tooltip)
 region-central-america = Центральная Америка
 # Strings for the "servers" tab
-tab-servers-list-status-partial-error = Не удалось получить некоторые или все списки серверов. Убедитесь в правильности вашей настройки хабов.
+tab-servers-list-status-partial-error = Не удалось получить некоторые списки серверов. Убедитесь в правильности вашей настройки хабов и попробуйте обновить.
 # Strings for the "servers" tab
 tab-servers-list-status-updating-master = Получение главного списка серверов…
 # Strings for the server filters menu
@@ -52,7 +59,7 @@ region-north-america-east = Северная Америка - Восток
 # Strings for the "servers" tab
 filters = Фильтры ({ $filteredServers } / { $totalServers })
 # Strings for the "servers" tab
-tab-servers-list-status-error = Произошла ошибка во время получения списка главных серверов.
+tab-servers-list-status-error = Возникла ошибка при получении списков главных серверов. Может быть, попробуйте обновить?
 # Strings for the server filters menu
 filters-title-rp = Уровень отыгрыша
 # Strings for the server filters menu
@@ -103,7 +110,7 @@ connecting-status-starting-client = Запуск клиента…
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-not-a-content-bundle = Файл не является допустимым набором контента!
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-update-status-checking-client-update = Проверка на обновление серверного контента…
+connecting-update-status-checking-client-update = Проверка обновлений серверного контента. . .
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-update-status-fetching-manifest = Получение манифеста сервера…
 # Strings for the "hub settings" dialog window.
@@ -117,7 +124,7 @@ connecting-update-status-checking-engine-modules = Проверка дополн
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-update-status-downloading-engine-modules = Скачивание дополнительных зависимостей…
 # Strings for the "direct connect" dialog window.
-direct-connect-title = Прямое подключение…
+direct-connect-title = Прямое Подключение
 # Strings for the "direct connect" dialog window.
 direct-connect-text = Введите адрес сервера для подключения:
 # Strings for the "direct connect" dialog window.
@@ -217,7 +224,7 @@ login-login-busy-logging-in = Вход…
 # Strings for the "login" view on login
 login-login-error-title = Не удалось войти
 # Strings for the general main window layout of the launcher
-main-window-title = Space Station 14 Launcher
+main-window-title = Лаунчер Space Station 14
 # Strings for the general main window layout of the launcher
 main-window-header-link-website = Веб-сайт
 # Strings for the general main window layout of the launcher
@@ -396,9 +403,9 @@ tab-development-title = { "[" }DEV]
 # Strings for the "home" tab
 tab-home-title = Главная
 # Strings for the "home" tab
-tab-home-favorite-servers = Избранные серверы:
+tab-home-favorite-servers = Избранные Серверы
 # Strings for the "home" tab
-tab-home-add-favorite = Добавить в избранное…
+tab-home-add-favorite = Добавить в избранное
 # Strings for the "home" tab
 tab-home-refresh = Обновить
 # Strings for the "home" tab
@@ -408,7 +415,7 @@ tab-home-go-to-servers-tab = Перейти на вкладку серверов
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-none = Начало подключения…
 # Strings for the drop-down window to manage your active account
-account-drop-down-not-logged-in = Не выполнен вход
+account-drop-down-not-logged-in = Вход не выполнен
 # For the language selection menu.
 # Used for contents of each language button.
 language-selector-language = { $languageName } ({ $englishName })
@@ -469,7 +476,7 @@ tab-development-disable-signing-desc = { "[" }DEV ONLY] Отключает пр�
 # These aren't shown to users so they're not very important
 tab-development-enable-engine-override-desc = Перезаписать путь до архивов загрузки движка из (release/ in RobustToolbox)
 # Strings for the "home" tab
-tab-home-direct-connect = Прямое подключение к серверу…
+tab-home-direct-connect = Прямое подключение к серверу
 # Strings for the "home" tab
 tab-home-favorites-guide = Помечайте серверы избранными для быстрого доступа к ним отсюда
 # Strings for the "options" tab
@@ -492,7 +499,7 @@ language-selector-save = Сохранить
 # "Cancel" button.
 language-selector-cancel = Отмена
 # For the language selection menu.
-language-selector-help-translate = Хотите помочь с переводом? Вы можете!
+language-selector-help-translate = Хотите помочь с переводом? Вперёд!
 # For the language selection menu.
 language-selector-system-language = Язык системы ({ $languageName })
 # Strings for the "options" tab
@@ -529,7 +536,35 @@ tab-options-seasonal-branding = Сезонное оформление
 server-entry-raise = Поднять на самый верх
 tab-options-desc-incompatible = Эта опция несовместима с вашей платформой, поэтому она отключена.
 connecting-privacy-policy-text-version-changed = Этот сервер обновил политику конфиденциальности с момента вашей последней игры. Вы должны принять новую версию перед подключением.
-connecting-privacy-policy-text = Этот сервер требует чтобы вы приняли его политику конфиденциальности перед подключением.
+connecting-privacy-policy-text = Перед подключением к этому серверу вам необходимо принять его политику конфиденциальности.
 connecting-privacy-policy-view = Посмотреть политику конфиденциальности
 connecting-privacy-policy-accept = Принять (продолжить)
 connecting-privacy-policy-decline = Отклонить (отключиться)
+server-entry-round-time =
+    { $hours ->
+        [0] { $mins }м
+       *[1] { $hours }ч { $mins }м
+    }
+tab-servers-table-round-time = Время
+connecting-status-update-error-unknown = Неизвестно
+server-entry-status-lobby = Лобби
+connecting-status-update-error-no-engine-for-platform = Эта игра использует более старую версию, которая не поддерживается вашей текущей платформой. Попробуйте другой сервер или подключитесь позже.
+connecting-status-update-error-no-module-for-platform = Эта игра требует дополнительного функционала, который пока что не поддерживается вашей текущей платформой. Попробуйте другой сервер или подключитесь позже.
+main-window-intel-degrade-title = Обнаружен процессор Intel 13-го или 14-го поколения.
+main-window-intel-degrade-desc =
+    Процессоры Intel 13-го и 14-го поколения известны тем, что они могут незаметно деградировать навсегда и выходить из строя из-за ошибки в микрокоде от Intel. К сожалению, мы не можем сказать, затронула ли эта ошибка именно вас, поэтому это предупреждение показывается всем пользователям с этими процессорами.
+
+    Мы НАСТОЙЧИВО рекомендуем обновить BIOS вашей материнской платы до последней версии, чтобы предотвратить дальнейшие повреждения. Если у вас возникают проблемы со стабильностью или игра не запускается, понизьте частоту работы процессора для восстановления стабильности и используйте гарантию, чтобы уточнить возможность замены.
+
+    Мы не несем ответственности за помощь с любыми проблемами, которые могут возникнуть из-за затронутых процессоров, если вы не предприняли меры предосторожности и не уверены в стабильности вашего процессора. Это сообщение больше не появится после того, как вы его примете.
+main-window-rosetta-title = Вы запускаете игру с помощью Rosetta 2!
+main-window-rosetta-desc =
+    Похоже, вы используете Mac с процессором Apple Silicon и запускаете игру с помощью Rosetta 2. Вы можете добиться лучшей производительности и увеличить время работы от батареи, запустив игру в нативном режиме.
+
+    Для этого щелкните правой кнопкой мыши на лаунчер в Finder, выберите «Свойства» и снимите флажок «Открыть с помощью Rosetta». После этого перезапустите лаунчер.
+
+    Если вы намеренно запускаете игру с помощью Rosetta 2, можете закрыть это сообщение, и оно больше не будет появляться. Однако, если вы делаете это в попытке устранить проблему, пожалуйста, отправьте отчёт об ошибке.
+main-window-intel-degrade-accept = Я понимаю и принял необходимые меры предосторожности.
+main-window-rosetta-accept = Продолжить
+tab-options-clear-content-close-client = Сперва закройте запущенные клиенты
+button-done = Готово!

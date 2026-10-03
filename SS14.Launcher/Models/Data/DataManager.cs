@@ -13,8 +13,8 @@ using Dapper;
 using DynamicData;
 using JetBrains.Annotations;
 using Microsoft.Data.Sqlite;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Messaging;
-using ReactiveUI;
 using Serilog;
 using SS14.Launcher.Utility;
 
@@ -37,7 +37,7 @@ public interface ICVarEntry<T> : INotifyPropertyChanged
 /// All data is stored in an SQLite DB. Simple config variables are stored K/V in a single table.
 /// More complex things like logins is stored in individual tables.
 /// </remarks>
-public sealed class DataManager : ReactiveObject
+public sealed class DataManager : ObservableObject
 {
     private delegate void DbCommand(SqliteConnection connection);
 

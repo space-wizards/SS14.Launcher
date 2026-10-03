@@ -25,7 +25,14 @@ connecting-title-content-bundle = Yükleniyor…
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-cancel = İptal
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-status-update-error = Sunucu içeriği indirilirken bir hata oluştu. Hata devam ederse Discord'dan yardım isteyiniz.
+connecting-status-update-error =
+    Sunucu içeriklerini indirirken bir hata oldu. Eğer hata devam ederse aşağıdakileri deneyiniz:
+    - Başka bir sunucuya bağlanarak sıkıntının devam edip etmediğini kontrol ediniz.
+    - VPN gibi yazılımlarınız varsa onları kapatmayı veya açmayı deneyiniz.
+
+    Eğer hala sıkıntı yaşıyorsanız, Space Station 14 Discord veya Forumlara sormadan önce bağlanmaya çalıştığınız sunucuyla iletişime geçiniz.
+
+    Teknik hata: { $err }
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-connection-failed = Sunucuya bağlanma başarısız!
 # Localization for the "add favorite server" dialog window
@@ -54,7 +61,7 @@ connecting-status-connecting = Bağlanma bilgisi sunucudan alınıyor…
 # 'Example' name shown as a watermark in the name input box
 add-favorite-window-example-name = Honk Station
 # Strings for the "direct connect" dialog window.
-direct-connect-title = Direkt bağlanma…
+direct-connect-title = Direkt Bağlanma
 # Strings for the "direct connect" dialog window.
 direct-connect-text = Bağlanmak için sunucu adresi giriniz:
 # Strings for the "direct connect" dialog window.
@@ -110,7 +117,7 @@ filters-player-count-hide-empty-desc = Oyuncu olmayan sunucular gösterilmeyecek
 # Strings for entries in the server list (including home page)
 server-entry-raise = En üste getir
 # Strings for the "home" tab
-tab-home-add-favorite = Favori ekle…
+tab-home-add-favorite = Favori ekle
 # Strings for the "forgot password" view on login
 login-forgot-button-back = Giriş yapmaya geri dön
 # Strings for the "register confirmation" view on login
@@ -272,7 +279,7 @@ filters-rp-high = Yüksek
 # Server roleplay levels for the filters menu
 filters-rp-high-desc = Yüksek
 # Strings for entries in the server list (including home page)
-server-entry-add-favorite = Favori ekle
+server-entry-add-favorite = Favorilere ekle
 # Strings for entries in the server list (including home page)
 server-entry-remove-favorite = Favorilerden çıkar
 # Strings for entries in the server list (including home page)
@@ -293,11 +300,11 @@ tab-development-title = { "[" }DEV]
 # Strings for the "home" tab
 tab-home-title = Ev
 # Strings for the "home" tab
-tab-home-favorite-servers = Favori sunucular:
+tab-home-favorite-servers = Favori Sunucular
 # Strings for the "home" tab
 tab-home-refresh = Yenile
 # Strings for the "home" tab
-tab-home-direct-connect = Sunucuya direkt olarak bağlan…
+tab-home-direct-connect = Sunucuya direkt olarak bağlan
 # Strings for the "home" tab
 tab-home-go-to-servers-tab = Sunucu sayfasına git
 # Strings for the "news" tab
@@ -425,9 +432,9 @@ region-south-america-south = Güney Amerika-Güney
 # Long region names for server tag filters (shown in tooltip)
 region-south-america-west = Güney Amerika-Batı
 # Strings for the "servers" tab
-tab-servers-list-status-error = Master sunucu listeleri getirilirken bir hata oluştu.
+tab-servers-list-status-error = Master sunucu listeleri getirilirken bir hata oluştu. Yenilemeyi deneyiniz?
 # Strings for the "servers" tab
-tab-servers-list-status-partial-error = Tüm sunucu listelerini getirilemedi. Sunucu merkezi konfigürasyonunuzun doğru olduğunu kontrol edin.
+tab-servers-list-status-partial-error = Bazı sunucu listeleri getirilemedi. Sunucu merkezi konfigürasyonunuzun doğru olduğunu kontrol edin ve yenilemeyi deneyiniz.
 # Strings for the "servers" tab
 tab-servers-list-status-none-filtered = Hiçbir sunucu aramalarınıza ve filtre ayarlarınıza uymuyor.
 # Strings for the "servers" tab
@@ -533,3 +540,29 @@ connecting-privacy-policy-text = Bu sunucuya bağlanmadan önce gizlilik politik
 connecting-privacy-policy-text-version-changed = Bu sunucu son oynadığınızdan beri gizlilik politikasını güncelledi. Bağlanmadan önce yeni halini kabul etmelisiniz.
 connecting-privacy-policy-accept = Kabul et (devam et)
 connecting-privacy-policy-decline = Reddet (bağlantıyı kes)
+tab-servers-table-round-time = Zaman
+server-entry-round-time =
+    { $hours ->
+        [0] { $mins }M
+       *[1] { $hours }H { $mins }M
+    }
+server-entry-status-lobby = Lobi
+connecting-status-update-error-unknown = Bilinmeyen
+connecting-status-update-error-no-engine-for-platform = Bu oyun platformunuzu desteklemeyen eski bir versiyon kullanmaktadır. Lütfen farklı bir sunucu deneyiniz ya da yeniden deneyiniz.
+connecting-status-update-error-no-module-for-platform = Bu oyun platformunuzda desteklenmeyen bir ek özellik gerektirmektedir. Lütfen başka bir sunucu deneyiniz ya da yeniden deneyiniz.
+main-window-intel-degrade-title = Intel 13/14. Jenerasyon CPU algılandı.
+main-window-intel-degrade-desc =
+    Intel'in 13 ve 14'üncü nesil işlemcileri bir mikrokod hatası yüzünden fark edilemeden kötüleşmesi ve çürümesi tarafından bilinir. Bunun size geçerli olup olmadığından emin olamadığımız için bu nesil Intel işlemcisi kullanan herkese bu uyarıyı gösteriyoruz.
+
+    Size daha fazla hasar alınmaması için GÜÇLÜ bir şekilde anakartınızın BIOS'unu en son sürüme güncellemenizi öneriyoruz. Eğer ki oyunu açmakta zorluk ve güçlük çekiyorsanız, işlemcinizi stabilize etmek için işlem hızını düşürün ve garantinizi kullanarak parça değiştirmeyi deneyin.
+
+    Eğer gerekli önlemleri almaz ve işlemcinizin stabil olduğundan emin olmazsanız, bu işlemcilerde oluşan herhangi bir sıkıntıdan sorumluluk kabul etmiyoruz. Bu mesaj kabul edildikten sonra bir daha gözükmeyecektir.
+main-window-rosetta-desc =
+    Oyunu Apple Silicon Mac aygıtıyla Rosetta 2 üzerinden kullanıyorsanız, alternatif olarak oyunu yerel açıp batarya ve performans tasarrufunda bulunursunuz.
+
+    Bunu yapmak için, Finder'da ki SS14 Başlatıcısına sağ tıklayın, "Bilgi al" kısmını seçin ve "Rosetta kullanarak başlat" seçeneğini devre dışı bırakın. Bundan sonra başlatıcıyı yeniden başlatın.
+
+    Eğer bunu bilerek yapıyorsanız bu mesajı görmezden gelebilirsinz ve bir daha karşınıza çıkmaz. Ancak bu metodu bir problemi çözmek için kullanıyorsanız lütfen bir hata raporu yazınız.
+main-window-intel-degrade-accept = Anlıyorum ve gerekli önlemleri aldığımı onaylıyorum.
+main-window-rosetta-title = Oyunu Rosetta 2 kullanarak çalıştırıyorsunuz!
+main-window-rosetta-accept = Devam

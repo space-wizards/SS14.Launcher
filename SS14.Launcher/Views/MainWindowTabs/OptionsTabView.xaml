@@ -14,7 +14,7 @@
 
   <ScrollViewer HorizontalScrollBarVisibility="Disabled">
     <DockPanel>
-      <Button Content="{loc:Loc tab-options-flip}" DockPanel.Dock="Bottom" HorizontalAlignment="Right" Name="Flip" />
+      <Button Content="{loc:Loc tab-options-flip}" DockPanel.Dock="Bottom" HorizontalAlignment="Right" Click="Flip" />
       <Button Name="ClearEnginesButton" Content="{loc:Loc tab-options-clear-engines}" DockPanel.Dock="Bottom"
               HorizontalAlignment="Left" Click="ClearEnginesPressed" />
       <Button Name="ClearServerContentButton" Content="{loc:Loc tab-options-clear-content}" DockPanel.Dock="Bottom"
@@ -39,16 +39,6 @@
                    Margin="8" />
         <TextBlock VerticalAlignment="Center" IsVisible="{Binding DisableIncompatibleMacOS}" TextWrapping="Wrap"
                    Text="{loc:Loc tab-options-desc-incompatible}"
-                   Margin="8" />
-
-        <CheckBox VerticalAlignment="Center" Margin="4" IsChecked="{Binding LogClient}" Content="{loc:Loc tab-options-log-client}" />
-        <TextBlock VerticalAlignment="Center" TextWrapping="Wrap"
-                   Text="{loc:Loc tab-options-log-client-desc}"
-                   Margin="8" />
-
-        <CheckBox VerticalAlignment="Center" Margin="4" IsChecked="{Binding LogLauncher}" Content="{loc:Loc tab-options-log-launcher}" />
-        <TextBlock VerticalAlignment="Center" TextWrapping="Wrap"
-                   Text="{loc:Loc tab-options-log-launcher-desc}"
                    Margin="8" />
 
         <CheckBox VerticalAlignment="Center" Margin="4" IsChecked="{Binding LogLauncherVerbose}" Content="{loc:Loc tab-options-verbose-launcher-logging}" />

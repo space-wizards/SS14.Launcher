@@ -1,3 +1,4 @@
+using Serilog;
 using System;
 using SS14.Launcher.Utility;
 
@@ -5,13 +6,13 @@ namespace SS14.Launcher;
 
 public static class ConfigConstants
 {
-    public const string CurrentLauncherVersion = "52";
+    public const string CurrentLauncherVersion = "61";
     public static readonly bool DoVersionCheck = true;
 
     // Refresh login tokens if they're within <this much> of expiry.
     public static readonly TimeSpan TokenRefreshThreshold = TimeSpan.FromDays(15);
 
-    // If the user leaves the launcher running for absolute ages, this is how often we'll update his login tokens.
+    // If the user leaves the launcher running for absolute ages, this is how often we'll update their login tokens.
     public static readonly TimeSpan TokenRefreshInterval = TimeSpan.FromDays(7);
 
     // The amount of time before a server is considered timed out for status checks.
@@ -26,17 +27,21 @@ public static class ConfigConstants
     // Amount of time to wait to let a redialling client properly die
     public const int LauncherCommandsRedialWaitTimeout = 1000;
 
-    public static readonly string AuthUrl = "https://auth.spacestation14.com/";
-    public static readonly Uri[] DefaultHubUrls = { new("https://hub.spacestation14.com/") };
+    private static readonly UrlFallbackSetStats StatsHubInfra = new(2);
+
+    public static readonly UrlFallbackSet AuthUrl = new(["https://auth.spacestation14.com/", "https://auth.fallback.spacestation14.com/"], StatsHubInfra);
+    public static readonly UrlFallbackSet[] DefaultHubUrls = [new(["https://hub.spacestation14.com/", "https://hub.fallback.spacestation14.com/"], StatsHubInfra)];
     public const string DiscordUrl = "https://discord.ss14.io/";
     public const string AccountBaseUrl = "https://account.spacestation14.com/Identity/Account/";
     public const string AccountManagementUrl = $"{AccountBaseUrl}Manage";
     public const string AccountRegisterUrl = $"{AccountBaseUrl}Register";
     public const string AccountResendConfirmationUrl = $"{AccountBaseUrl}ResendEmailConfirmation";
+    public const string AccountForgotPasswordUrl = $"{AccountBaseUrl}ForgotPassword";
     public const string WebsiteUrl = "https://spacestation14.com";
     public const string DownloadUrl = "https://spacestation14.com/about/nightlies/";
     public const string NewsFeedUrl = "https://spacestation14.com/post/index.xml";
     public const string TranslateUrl = "https://docs.spacestation14.com/en/general-development/contributing-translations.html";
+    public static bool IsAuthOverride;
 
     private static readonly UrlFallbackSet RobustBuildsBaseUrl = new([
         "https://robust-builds.cdn.spacestation14.com/",
@@ -62,8 +67,14 @@ public static class ConfigConstants
 
     static ConfigConstants()
     {
-        var envVarAuthUrl = Environment.GetEnvironmentVariable("SS14_LAUNCHER_OVERRIDE_AUTH");
+        var envVarAuthUrl = Environment.GetEnvironmentVariable("SS14_LAUNCHER_OVERRIDE_AUTH_URL");
         if (!string.IsNullOrEmpty(envVarAuthUrl))
-            AuthUrl = envVarAuthUrl;
+        {
+            Log.Information("Auth override envar detected. Switching to: {AuthUrl}", envVarAuthUrl);
+            AuthUrl = new UrlFallbackSet([envVarAuthUrl]);
+#if !DEBUG
+            IsAuthOverride = true;
+#endif
+        }
     }
 }

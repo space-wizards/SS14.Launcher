@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
@@ -7,7 +8,7 @@ using Robust.LoaderApi;
 
 namespace SS14.Loader;
 
-internal sealed class ZipFileApi : IFileApi
+internal sealed class ZipFileApi : IFileApi, IDisposable
 {
     private readonly ZipArchive _archive;
     private readonly string? _prefix;
@@ -59,5 +60,10 @@ internal sealed class ZipFileApi : IFileApi
                 .Where(e => e.Name != "")
                 .Select(entry => entry.FullName);
         }
+    }
+
+    public void Dispose()
+    {
+        _archive.Dispose();
     }
 }

@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using Serilog;
 using SS14.Launcher.Models;
 using SS14.Launcher.Models.Data;
+using SS14.Launcher.Utility;
 
 namespace SS14.Launcher.Api;
 
@@ -257,9 +258,12 @@ public sealed class AuthApi
         {
             var authUrl = ConfigConstants.AuthUrl + "api/auth/ping";
 
-            using var requestMessage = new HttpRequestMessage(HttpMethod.Get, authUrl);
-            requestMessage.Headers.Authorization = new AuthenticationHeaderValue("SS14Auth", token);
-            using var resp = await _httpClient.SendAsync(requestMessage);
+            using var resp = await authUrl.SendAsync(_httpClient, url =>
+            {
+                var requestMessage = new HttpRequestMessage(HttpMethod.Get, url);
+                requestMessage.Headers.Authorization = new AuthenticationHeaderValue("SS14Auth", token);
+                return requestMessage;
+            });
 
             if (resp.IsSuccessStatusCode)
             {

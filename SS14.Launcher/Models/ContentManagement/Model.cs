@@ -10,6 +10,6 @@ public sealed class ContentVersion
     public byte[] Hash = default!;
     public string ForkId = default!;
     public string ForkVersion = default!;
-    public DateTimeOffset LastUsed = default!;
+    public DateTime LastUsed = default!;
     public byte[]? ZipHash;
 }

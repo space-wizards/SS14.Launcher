@@ -54,7 +54,10 @@ connecting-cancel = Cancelar
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-none = Iniciando conexão…
 # Strings for the "connecting" menu that appears when connecting to a server.
-connecting-status-update-error = Houve um erro ao tentar baixar o conteúdo do servidor. Por favor, solicite ajuda no Discord se o problema persistir.
+connecting-status-update-error =
+    Houve um erro ao tentar baixar o conteúdo do servidor. Por favor, solicite ajuda no Discord se o problema persistir.
+
+    Error: { $err }
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-status-updating = Atualizando: { $status }
 # Strings for the "connecting" menu that appears when connecting to a server.
@@ -90,7 +93,7 @@ connecting-update-status-loading-content-bundle = Carregando pacote de conteúdo
 # Strings for the "connecting" menu that appears when connecting to a server.
 connecting-update-status-unknown = Você não deveria ver isso
 # Strings for the "direct connect" dialog window.
-direct-connect-title = Conexão direta…
+direct-connect-title = Conexão Direta
 # Strings for the "direct connect" dialog window.
 direct-connect-text = Entre o endereço do servidor para conectar:
 # Strings for the "direct connect" dialog window.
@@ -452,13 +455,13 @@ server-entry-player-count =
 # Strings for the "home" tab
 tab-home-title = Página Inicial
 # Strings for the "home" tab
-tab-home-favorite-servers = Servidores Favoritos:
+tab-home-favorite-servers = Servidores Favoritos
 # Strings for the "home" tab
-tab-home-add-favorite = Adicionar Favorito…
+tab-home-add-favorite = Adicionar favorito
 # Strings for the "home" tab
 tab-home-refresh = Recarregar
 # Strings for the "home" tab
-tab-home-direct-connect = Conectar diretamente ao Servidor…
+tab-home-direct-connect = Conectar diretamente ao servidor
 # Strings for the "home" tab
 tab-home-run-content-bundle = Rodar pacote de arquivos/replay
 # Strings for the "home" tab
@@ -522,7 +525,7 @@ language-selector-save = Salvar
 language-selector-cancel = Cancelar
 # For the language selection menu.
 # Used for contents of each language button.
-language-selector-language = { $languageName } { $englishName }
+language-selector-language = { $languageName } ({ $englishName })
 # Strings for entries in the server list (including home page)
 server-entry-raise = Mover ao topo
 # Strings for the "login" view on login

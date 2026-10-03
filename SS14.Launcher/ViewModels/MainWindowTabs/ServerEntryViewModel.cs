@@ -1,6 +1,8 @@
 using System;
 using System.ComponentModel;
+using System.Windows.Input;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
+using Microsoft.Toolkit.Mvvm.Input;
 using Microsoft.Toolkit.Mvvm.Messaging;
 using SS14.Launcher.Localization;
 using SS14.Launcher.Models.Data;
@@ -20,6 +22,10 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
     private string _fallbackName = string.Empty;
     private bool _isExpanded;
 
+    public ICommand ConnectCommand { get; }
+    public ICommand FavoriteButtonCommand { get; }
+    public ICommand FavoriteRaiseButtonCommand { get; }
+
     public ServerEntryViewModel(MainWindowViewModel windowVm, ServerStatusData cacheData, IServerSource serverSource,
         DataManager cfg)
     {
@@ -27,6 +33,9 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
         _windowVm = windowVm;
         _cacheData = cacheData;
         _serverSource = serverSource;
+        ConnectCommand = new RelayCommand(ConnectPressed);
+        FavoriteButtonCommand = new RelayCommand(FavoriteButtonPressed);
+        FavoriteRaiseButtonCommand = new RelayCommand(FavoriteRaiseButtonPressed);
     }
 
     public ServerEntryViewModel(
@@ -74,11 +83,11 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
 
     public string Name => Favorite?.Name ?? _cacheData.Name ?? _fallbackName;
 
-    public string FavoriteButtonText => IsFavorite
+    private string FavoriteButtonText => IsFavorite
         ? _loc.GetString("server-entry-remove-favorite")
         : _loc.GetString("server-entry-add-favorite");
 
-    private bool IsFavorite => _cfg.FavoriteServers.Lookup(Address).HasValue;
+    public bool IsFavorite => _cfg.FavoriteServers.Lookup(Address).HasValue;
 
     public bool ViewedInFavoritesPane { get; set; }
 
@@ -198,6 +207,7 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
 
     public void Receive(FavoritesChanged message)
     {
+        OnPropertyChanged(nameof(IsFavorite));
         OnPropertyChanged(nameof(FavoriteButtonText));
     }
 

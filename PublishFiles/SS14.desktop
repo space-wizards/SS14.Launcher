@@ -1,11 +1,15 @@
 #!/usr/bin/env xdg-open
 [Desktop Entry]
-Encoding=UTF-8
-Version=1.0
+Categories=Game
+Comment=A multiplayer disaster simulator
+Exec=SS14.Launcher %u
+Icon=SS14
+Keywords=game;gaming;launcher;multiplayer;ss14
+Name[en_US]=Space Station 14 Launcher
+Name=Space Station 14 Launcher
+SingleMainWindow=true
+StartupWMClass=SS14.Launcher
+Terminal=false
 Type=Application
-Exec=env ./SS14.Launcher %u
-Name=Space Station 14
-Comment=Open source Multiplayer Disaster Simulator
-Categories=Game;
-Keywords=ss14;
+Version=1.5
 MimeType=x-scheme-handler/ss14s;x-scheme-handler/ss14;application/rtbundle;application/rtreplay;application/zip

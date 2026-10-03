@@ -42,26 +42,6 @@ public class OptionsTabViewModel : MainWindowTabViewModel
         }
     }
 
-    public bool LogClient
-    {
-        get => Cfg.GetCVar(CVars.LogClient);
-        set
-        {
-            Cfg.SetCVar(CVars.LogClient, value);
-            Cfg.CommitConfig();
-        }
-    }
-
-    public bool LogLauncher
-    {
-        get => Cfg.GetCVar(CVars.LogLauncher);
-        set
-        {
-            Cfg.SetCVar(CVars.LogLauncher, value);
-            Cfg.CommitConfig();
-        }
-    }
-
     public bool LogLauncherVerbose
     {
         get => Cfg.GetCVar(CVars.LogLauncherVerbose);
@@ -87,9 +67,9 @@ public class OptionsTabViewModel : MainWindowTabViewModel
         _engineManager.ClearAllEngines();
     }
 
-    public void ClearServerContent()
+    public async Task<bool> ClearServerContent()
     {
-        _contentManager.ClearAll();
+        return await _contentManager.ClearAll();
     }
 
     public void OpenLogDirectory()

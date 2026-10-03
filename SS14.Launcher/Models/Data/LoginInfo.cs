@@ -1,17 +1,13 @@
 using System;
-using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
 
 namespace SS14.Launcher.Models.Data;
 
-public class LoginInfo : ReactiveObject
+public partial class LoginInfo : ObservableObject
 {
-    [Reactive]
-    public Guid UserId { get; set; }
-    [Reactive]
-    public string Username { get; set; } = default!;
-    [Reactive]
-    public LoginToken Token { get; set; }
+    public Guid UserId;
+    public string? Username;
+    [ObservableProperty] private LoginToken _token;
 
     public override string ToString()
     {
