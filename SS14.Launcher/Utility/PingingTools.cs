@@ -1,10 +1,6 @@
 using Serilog;
-using SS14.Launcher.Models.ServerStatus;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace SS14.Launcher.Utility;
 
@@ -37,7 +33,7 @@ public static class PingingTools
         {
             try
             {
-                var reply = await pingSender.SendPingAsync(host, 750);
+                var reply = await pingSender.SendPingAsync(host, 3000);
 
                 if (reply.Status == System.Net.NetworkInformation.IPStatus.Success)
                 {
