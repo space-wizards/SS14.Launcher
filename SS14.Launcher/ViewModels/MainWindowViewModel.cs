@@ -186,7 +186,15 @@ public sealed partial class MainWindowViewModel : ViewModelBase, IErrorOverlayOw
             return;
         }
 
-        OutOfDate = Array.IndexOf(_infoManager.Model.AllowedVersions, ConfigConstants.CurrentLauncherVersion) == -1;
+        var currentVersion = LauncherVersion.Version;
+        if (currentVersion == null)
+        {
+            Log.Error("Unable to determine launcher version.");
+            OutOfDate = true;
+            return;
+        }
+
+        OutOfDate = !LauncherInfoManager.IsVersionAllowed(_infoManager.Model, currentVersion);
         Log.Debug("Launcher out of date? {Value}", OutOfDate);
     }
 

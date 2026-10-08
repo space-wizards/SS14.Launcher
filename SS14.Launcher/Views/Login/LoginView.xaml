@@ -43,7 +43,7 @@
       </Button>
 
       <Button DockPanel.Dock="Left" HorizontalAlignment="Center" Content="{loc:Loc login-login-button-forgot}"
-              Command="{Binding ParentVM.SwitchToForgotPassword}" IsEnabled="{Binding !Busy}" />
+              Command="{Binding ForgotPasswordPressed}" IsEnabled="{Binding !Busy}" />
     </DockPanel>
 
     <DockPanel DockPanel.Dock="Top" LastChildFill="False" MaxWidth="300">
