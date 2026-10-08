@@ -53,11 +53,6 @@ public class MainWindowLoginViewModel : ViewModelBase
         Screen = new ExpiredLoginViewModel(this, _cfg, _authApi, _loginMgr, account);
     }
 
-    public void SwitchToForgotPassword()
-    {
-        Screen = new ForgotPasswordViewModel(this, _authApi);
-    }
-
     public void SwitchToAuthTfa(AuthApi.AuthenticateRequest request)
     {
         Screen = new AuthTfaViewModel(this, request, _loginMgr, _authApi, _cfg);
