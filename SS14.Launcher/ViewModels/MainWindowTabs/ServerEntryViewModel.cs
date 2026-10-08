@@ -123,11 +123,11 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
         {
             if (_cacheData.PingTime == -1)
             {
-                return "pinging...";
+                return _loc.GetString("pinging-please-wait");
             }
             else if (_cacheData.PingTime == -2)
             {
-                return "Timed Out";
+                return _loc.GetString("pinging-timed-out");
             }
             else
             {

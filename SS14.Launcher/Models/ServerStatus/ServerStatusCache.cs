@@ -49,9 +49,9 @@ public sealed class ServerStatusCache : IServerSource
         return data;
     }
 
-    /// <summary> 
+    /// <summary>
     ///     Do the initial status update for a server status. This only acts once.
-    /// </summary> 
+    /// </summary>
     public async Task UpdateStatus(ServerStatusData data, bool forceRefresh = false)
     {
         var reg = _cachedData[data.Address];

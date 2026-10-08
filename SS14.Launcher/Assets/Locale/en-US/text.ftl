@@ -391,3 +391,7 @@ language-selector-language = { $languageName } ({ $englishName })
 
 # Generic "Done!" message used for some buttons.
 button-done = Done!
+
+# pinging
+pinging-please-wait = pinging...
+pinging-timed-out = timed out

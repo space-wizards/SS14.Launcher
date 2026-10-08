@@ -1,5 +1,6 @@
 using Serilog;
 using System;
+using System.Net.NetworkInformation;
 using System.Threading.Tasks;
 
 namespace SS14.Launcher.Utility;
@@ -27,7 +28,7 @@ public static class PingingTools
         int successfulPings = 0;
         const int DelayBetweenPingsMs = 250;
 
-        using var pingSender = new System.Net.NetworkInformation.Ping();
+        using var pingSender = new Ping();
 
         while (true)
         {
@@ -35,7 +36,7 @@ public static class PingingTools
             {
                 var reply = await pingSender.SendPingAsync(host, 3000);
 
-                if (reply.Status == System.Net.NetworkInformation.IPStatus.Success)
+                if (reply.Status == IPStatus.Success)
                 {
                     roundtripTime += reply.RoundtripTime;
                     successfulPings++;
