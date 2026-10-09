@@ -393,5 +393,5 @@ language-selector-language = { $languageName } ({ $englishName })
 button-done = Done!
 
 # pinging
-pinging-please-wait = pinging...
-pinging-timed-out = timed out
+pinging-please-wait = Pinging...
+pinging-timed-out = Timed out
