@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using Serilog;
 using Splat;
 using SS14.Launcher.Api;
+using SS14.Launcher.Models.Data;
 using SS14.Launcher.Utility;
 
 namespace SS14.Launcher.Models.ServerStatus;
@@ -24,10 +25,11 @@ public sealed class ServerStatusCache : IServerSource
     // Oh well!
     private readonly Dictionary<string, CacheReg> _cachedData = new();
     private readonly HttpClient _http;
-
+    private readonly DataManager _cfg;
     public ServerStatusCache()
     {
         _http = Locator.Current.GetRequiredService<HttpClient>();
+        _cfg = Locator.Current.GetRequiredService<DataManager>();
     }
 
     /// <summary>
@@ -50,18 +52,49 @@ public sealed class ServerStatusCache : IServerSource
     /// <summary>
     ///     Do the initial status update for a server status. This only acts once.
     /// </summary>
-    public void InitialUpdateStatus(ServerStatusData data)
+    public async Task UpdateStatus(ServerStatusData data, bool forceRefresh = false)
     {
         var reg = _cachedData[data.Address];
-        if (reg.DidInitialStatusUpdate)
+        if (reg.DidInitialStatusUpdate && !forceRefresh)
             return;
 
-        UpdateStatusFor(reg);
+        reg.DidInitialStatusUpdate = true;
+        data.PingTime = new Pinging();
+        Task updateTask = UpdateStatusFor(reg);
+        Task<PingStatus>? pingTask = null;
+
+        if (_cfg.GetCVar(CVars.FavoritePinging))
+        {
+            pingTask = PingingTools.GetPingTime(reg.Data.Address);
+        }
+
+        try
+        {
+            await updateTask;
+        }
+        catch (Exception ex)
+        {
+            Log.Warning(ex, "An error occurred during initial status update for server {ServerAddress}", data.Address);
+            data.Status = ServerStatusCode.Offline;
+            return;
+        }
+
+        if (pingTask != null && _cfg.GetCVar(CVars.FavoritePinging))
+        {
+            try
+            {
+                data.PingTime = await pingTask;
+            }
+            catch (Exception ex)
+            {
+                Log.Warning(ex, "An error occurred during pinging update for server {ServerAddress}", data.Address);
+                data.PingTime = new PingError();
+            }
+        }
     }
 
-    private async void UpdateStatusFor(CacheReg reg)
+    private async Task UpdateStatusFor(CacheReg reg)
     {
-        reg.DidInitialStatusUpdate = true;
         await reg.Semaphore.WaitAsync();
         var cancelSource = reg.Cancellation = new CancellationTokenSource();
         var cancel = cancelSource.Token;
@@ -214,7 +247,7 @@ public sealed class ServerStatusCache : IServerSource
             datum.Data.Links = null;
             datum.Data.Description = null;
 
-            UpdateStatusFor(datum);
+            _ = UpdateStatus(datum.Data, true);
         }
     }
 

@@ -30,6 +30,7 @@
             <ColumnDefinition Width="*" /> <!-- Server Name -->
             <ColumnDefinition Width="100" /> <!-- Round Time -->
             <ColumnDefinition Width="100" /> <!-- Player Count -->
+            <ColumnDefinition Width="auto" /> <!-- Ping Time -->
             <ColumnDefinition Width="112" /> <!-- Connect -->
           </Grid.ColumnDefinitions>
 
@@ -59,7 +60,11 @@
             <TextBlock DockPanel.Dock="Right" Classes="Numeric" Text="{Binding PlayerCountString}" />
           </Border>
 
-          <Border Grid.Column="3" Classes="GridCell">
+          <Border Grid.Column="3" Width="100" Classes="GridCell" IsVisible="{Binding ShowPingColl}">
+            <TextBlock DockPanel.Dock="Right" HorizontalAlignment="Right" Classes="Center" Text="{Binding PingTimeString}" />
+          </Border>
+          
+          <Border Grid.Column="4" Classes="GridCell">
             <Button IsEnabled="{Binding IsOnline}" DockPanel.Dock="Right"
               Content="{loc:Loc server-entry-connect}"
               Command="{Binding ConnectCommand}" />

@@ -43,7 +43,7 @@ public partial class HomePageViewModel : MainWindowTabViewModel
             {
                 if (IsSelected)
                 {
-                    _statusCache.InitialUpdateStatus(a.CacheData);
+                    _ = _statusCache.UpdateStatus(a.CacheData);
                 }
             })
             .Sort(Comparer<ServerEntryViewModel>.Create((a, b) => {
@@ -128,7 +128,15 @@ public partial class HomePageViewModel : MainWindowTabViewModel
     {
         foreach (var favorite in Favorites)
         {
-            _statusCache.InitialUpdateStatus(favorite.CacheData);
+            if (favorite.ShowPingColl != _cfg.GetCVar(CVars.FavoritePinging))
+            {
+                favorite.ShowPingColl = _cfg.GetCVar(CVars.FavoritePinging);
+                _ = _statusCache.UpdateStatus(favorite.CacheData, true);
+
+            }
+            else
+                _ = _statusCache.UpdateStatus(favorite.CacheData);
+
         }
         _serverListCache.RequestInitialUpdate();
     }

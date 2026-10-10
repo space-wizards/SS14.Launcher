@@ -370,6 +370,8 @@ tab-options-disable-signing = Disable Engine Signature Checks
 tab-options-disable-signing-desc = { "[" }DEV ONLY] Disables verification of engine signatures. DO NOT ENABLE UNLESS YOU KNOW EXACTLY WHAT YOU'RE DOING.
 tab-options-hub-settings = Hub Settings
 tab-options-hub-settings-desc = Change what hub server or servers you would like to use to fetch the server list.
+tab-options-favorite-pinging = Favorite Servers pinging
+tab-options-favorite-pinging-desc = Should launcher ping servers on home page to measure their lag.
 tab-options-desc-incompatible = This option is incompatible with your platform and has been disabled.
 
 ## For the language selection menu.
@@ -389,3 +391,8 @@ language-selector-language = { $languageName } ({ $englishName })
 
 # Generic "Done!" message used for some buttons.
 button-done = Done!
+
+# pinging
+pinging-please-wait = Pinging...
+pinging-timed-out = Timed out
+pinging-error = Ping error
