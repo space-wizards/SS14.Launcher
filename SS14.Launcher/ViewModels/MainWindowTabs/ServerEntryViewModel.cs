@@ -127,7 +127,7 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
                 PingTimedOut => _loc.GetString("pinging-timed-out"),
                 PingError => _loc.GetString("pinging-error"),
                 PingTime pt => $"{pt.Value}ms",
-                _ => ""
+                _ => throw new ArgumentOutOfRangeException()
             };
         }
     }
