@@ -59,9 +59,9 @@ public sealed class ServerStatusCache : IServerSource
             return;
 
         reg.DidInitialStatusUpdate = true;
-        data.PingTime = -1;
+        data.PingTime = new Pinging();
         Task updateTask = UpdateStatusFor(reg);
-        Task<int>? pingTask = null;
+        Task<PingStatus>? pingTask = null;
 
         if (_cfg.GetCVar(CVars.FavoritePinging))
         {
@@ -74,7 +74,7 @@ public sealed class ServerStatusCache : IServerSource
         }
         catch (Exception ex)
         {
-            Log.Error(ex, "An error occurred during initial status update for server {ServerAddress}", data.Address);
+            Log.Warning(ex, "An error occurred during initial status update for server {ServerAddress}", data.Address);
             data.Status = ServerStatusCode.Offline;
             return;
         }
@@ -87,8 +87,8 @@ public sealed class ServerStatusCache : IServerSource
             }
             catch (Exception ex)
             {
-                Log.Error(ex, "An error occurred during pinging update for server {ServerAddress}", data.Address);
-                data.PingTime = -1;
+                Log.Warning(ex, "An error occurred during pinging update for server {ServerAddress}", data.Address);
+                data.PingTime = new PingError();
             }
         }
     }

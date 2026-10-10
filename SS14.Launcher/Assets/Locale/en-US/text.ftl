@@ -395,3 +395,4 @@ button-done = Done!
 # pinging
 pinging-please-wait = Pinging...
 pinging-timed-out = Timed out
+pinging-error = Ping error

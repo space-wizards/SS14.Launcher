@@ -8,7 +8,7 @@ public sealed class ServerStatusData : ObservableObject, IServerStatusData
 {
     private string? _name;
     private string? _desc;
-    private int? _pingTime;
+    private PingStatus? _pingTime;
     private int _playerCount;
     private int _softMaxPlayerCount;
     private DateTime? _roundStartTime;
@@ -44,7 +44,7 @@ public sealed class ServerStatusData : ObservableObject, IServerStatusData
         set => SetProperty(ref _desc, value);
     }
 
-    public int? PingTime
+    public PingStatus? PingTime
     {
         get => _pingTime;
         set => SetProperty(ref _pingTime, value);

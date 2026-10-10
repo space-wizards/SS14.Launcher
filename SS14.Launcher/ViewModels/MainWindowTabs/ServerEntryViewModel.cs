@@ -121,18 +121,14 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
     {
         get
         {
-            if (_cacheData.PingTime == -1)
+            return _cacheData.PingTime switch
             {
-                return _loc.GetString("pinging-please-wait");
-            }
-            else if (_cacheData.PingTime == -2)
-            {
-                return _loc.GetString("pinging-timed-out");
-            }
-            else
-            {
-                return _cacheData.PingTime.ToString() + "ms";
-            }
+                Pinging => _loc.GetString("pinging-please-wait"),
+                PingTimedOut => _loc.GetString("pinging-timed-out"),
+                PingError => _loc.GetString("pinging-error"),
+                PingTime pt => $"{pt.Value}ms",
+                _ => ""
+            };
         }
     }
 

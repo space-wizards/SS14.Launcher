@@ -1,6 +1,8 @@
 using Serilog;
+using SS14.Launcher.Models.ServerStatus;
 using System;
 using System.Net.NetworkInformation;
+using System.Net.Sockets;
 using System.Threading.Tasks;
 
 namespace SS14.Launcher.Utility;
@@ -10,15 +12,15 @@ public static class PingingTools
     /// <summary>
     /// Gets the ping time for a host.
     /// </summary>
-    public static async Task<int> GetPingTime(string? unparsedHost)
+    public static async Task<PingStatus> GetPingTime(string? unparsedHost)
     {
         if (unparsedHost == null || !UriHelper.TryParseSs14Uri(unparsedHost, out var parssedHost))
         {
             Log.Warning("Server has invalid URI");
-            return -1;
+            return new PingError();
         }
         var host = parssedHost.Host;
-        if (string.IsNullOrEmpty(host)) return -1;
+        if (string.IsNullOrEmpty(host)) return new PingError();
 
         const int TargetSuccessfulPings = 3;
         const int MaxFailedPings = 2;
@@ -41,23 +43,32 @@ public static class PingingTools
                     roundtripTime += reply.RoundtripTime;
                     successfulPings++;
                 }
-                else
+                else if(reply.Status == IPStatus.TimedOut)
                 {
                     failedPingCounter++;
                 }
+                else
+                {
+                    return new PingError();
+                }
+            }
+            catch (PingException ex) when (ex.InnerException is SocketException)
+            {
+                Log.Warning("Failed to resolve host for ping: {ServerAddress}", host);
+                return new PingError();
             }
             catch (Exception ex)
             {
-                Log.Error(ex, "An error occurred during pinging server {ServerAddress}", host);
-                failedPingCounter++;
+                Log.Warning(ex, "An error occurred during pinging server: {ServerAddress}", host);
+                return new PingError();
             }
 
             // Bail if it's failing too much
             if (failedPingCounter >= MaxFailedPings)
-                return -2;
+                return new PingTimedOut();
 
             if (successfulPings >= TargetSuccessfulPings)
-                return (int)(roundtripTime / TargetSuccessfulPings);
+                return new PingTime((int)(roundtripTime / TargetSuccessfulPings));
 
             await Task.Delay(DelayBetweenPingsMs);
         }
