@@ -6,6 +6,7 @@ using SS14.Launcher.Localization;
 using SS14.Launcher.Models.ContentManagement;
 using SS14.Launcher.Models.Data;
 using SS14.Launcher.Models.EngineManager;
+using SS14.Launcher.Models.ServerStatus;
 using SS14.Launcher.Utility;
 
 namespace SS14.Launcher.ViewModels.MainWindowTabs;
@@ -56,6 +57,15 @@ public class OptionsTabViewModel : MainWindowTabViewModel
         set
         {
             Cfg.SetCVar(CVars.OverrideAssets, value);
+            Cfg.CommitConfig();
+        }
+    }
+    public bool FavoritePinging
+    {
+        get => Cfg.GetCVar(CVars.FavoritePinging);
+        set
+        {
+            Cfg.SetCVar(CVars.FavoritePinging, value);
             Cfg.CommitConfig();
         }
     }
