@@ -408,7 +408,7 @@ public sealed partial class EngineManagerDynamic : IEngineManager
             File.Delete(file);
         }
 
-        foreach (var dir in Directory.EnumerateFiles(LauncherPaths.DirModuleInstallations))
+        foreach (var dir in Directory.EnumerateDirectories(LauncherPaths.DirModuleInstallations))
         {
             Directory.Delete(dir, recursive: true);
         }
