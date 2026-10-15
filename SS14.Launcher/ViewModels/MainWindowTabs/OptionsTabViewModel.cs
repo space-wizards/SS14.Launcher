@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Splat;
@@ -27,6 +28,7 @@ public class OptionsTabViewModel : MainWindowTabViewModel
         DisableIncompatibleMacOS = OperatingSystem.IsMacOS();
     }
     public bool DisableIncompatibleMacOS { get; }
+    public bool OsProtocolBool;
 
     public override string Name => LocalizationManager.Instance.GetString("tab-options-title");
 
