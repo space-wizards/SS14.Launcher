@@ -270,27 +270,50 @@ public sealed partial class Updater : ObservableObject
                 "SELECT ModuleName, moduleVersion FROM ContentEngineDependency WHERE VersionId = @Version",
                 new { Version = versionRowId }).ToArray();
 
+            var robustIndex = Array.FindIndex(modules, m => m.Item1 == "Robust");
+            if (robustIndex < 0)
+                throw new UpdateException("Content version has no engine dependency!");
+
+            // Engine version may change here due to manifest version redirects.
+            var engineVersion = await InstallEngineVersionIfMissing(modules[robustIndex].Item2, cancel);
+            modules[robustIndex] = ("Robust", engineVersion);
+
             for (var index = 0; index < modules.Length; index++)
             {
-                var (name, version) = modules[index];
-                if (name == "Robust")
-                {
-                    // Engine version may change here due to manifest version redirects.
-                    var newEngineVersion = await InstallEngineVersionIfMissing(version, cancel);
-                    modules[index] = (name, newEngineVersion);
-                }
-                else
-                {
-                    Status = UpdateStatus.DownloadingEngineModules;
+                if (index == robustIndex)
+                    continue;
 
-                    var manifest = await moduleManifest.Value;
-                    await _engineManager.DownloadModuleIfNecessary(
+                var (name, storedVersion) = modules[index];
+
+                Status = UpdateStatus.DownloadingEngineModules;
+
+                var manifest = await moduleManifest.Value;
+
+                // Re-resolve every launch so stale data isn't reused
+                var version = IEngineManager.ResolveEngineModuleVersion(manifest, name, engineVersion);
+                modules[index] = (name, version);
+
+                if (version != storedVersion)
+                {
+                    Log.Information(
+                        "Module {ModuleName} resolved to {ModuleVersion}, was {OldModuleVersion}",
                         name,
                         version,
-                        manifest,
-                        DownloadProgressCallback,
-                        cancel);
+                        storedVersion);
+
+                    // Engine culling keeps whatever versions are in this table, this stops it from deleting what we just installed
+                    con.Execute(
+                        @"UPDATE ContentEngineDependency SET ModuleVersion = @ModVersion
+                            WHERE VersionId = @Version AND ModuleName = @ModName",
+                        new { Version = versionRowId, ModName = name, ModVersion = version });
                 }
+
+                await _engineManager.DownloadModuleIfNecessary(
+                    name,
+                    version,
+                    manifest,
+                    DownloadProgressCallback,
+                    cancel);
             }
         }
 
@@ -631,7 +654,7 @@ public sealed partial class Updater : ObservableObject
 
                         con.Execute(@"
                                 INSERT INTO ContentEngineDependency(VersionId, ModuleName, ModuleVersion)
-                                VALUES (@Version, @ModName, @EngineVersion)",
+                                VALUES (@Version, @ModName, @ModVersion)",
                             new
                             {
                                 Version = versionId,

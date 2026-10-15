@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Data.Sqlite;
@@ -52,7 +53,23 @@ public interface IEngineManager
         if (selectedVersion == null)
             throw new UpdateException("Unable to find suitable module version in manifest!");
 
-        return selectedVersion.Key;
+        // Follow redirects. The redirect target does not need to satisfy the engine minimum check above
+        var key = selectedVersion.Key;
+        var versionData = selectedVersion.Value;
+        var seen = new HashSet<string> { key };
+        while (versionData.Redirect is { } redirect)
+        {
+            if (!seen.Add(redirect))
+                throw new UpdateException("Module version redirect loop detected in manifest!");
+
+            if (!moduleData.Versions.TryGetValue(redirect, out var redirected))
+                throw new UpdateException("Module version redirect target not found in manifest!");
+
+            key = redirect;
+            versionData = redirected;
+        }
+
+        return key;
     }
 }
 
@@ -68,7 +85,9 @@ public sealed record EngineModuleData(
 
 public sealed record EngineModuleVersionData(
     Dictionary<string, EngineModulePlatformData> Platforms,
-    bool Insecure = false
+    bool Insecure = false,
+    [property: JsonPropertyName("redirect")]
+    string? Redirect = null
 );
 
 public sealed record EngineModulePlatformData(
