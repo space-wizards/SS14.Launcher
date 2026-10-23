@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
@@ -173,6 +174,15 @@ public sealed class ContentManager
             return false;
         }
 
-        return proc.MainModule?.FileName == mainModule;
+        try
+        {
+            return proc.MainModule?.FileName == mainModule;
+        }
+        catch (Exception e) when (e is Win32Exception or InvalidOperationException)
+        {
+            // The PID got reused by another process when we weren't looking, evil shit
+            Log.Debug(e, "Unable to inspect process {Pid}, assuming it's not a running client", pid);
+            return false;
+        }
     }
 }
