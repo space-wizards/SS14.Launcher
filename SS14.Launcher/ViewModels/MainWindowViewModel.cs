@@ -129,6 +129,7 @@ public sealed partial class MainWindowViewModel : ViewModelBase, IErrorOverlayOw
     }
 
     public ICVarEntry<bool> HasDismissedEarlyAccessWarning => Cfg.GetCVarEntry(CVars.HasDismissedEarlyAccessWarning);
+    public ICVarEntry<bool> HasDismissedEpilepsyWarning => Cfg.GetCVarEntry(CVars.HasDismissedEpilepsyWarning);
     public bool ShouldShowIntelDegradationWarning => IsVulnerableToIntelDegradation(_cfg);
     public bool ShouldShowRosettaWarning => IsAppleSiliconInRosetta(_cfg);
     [ObservableProperty] private bool _shouldShowAuthOverrideWarning;
@@ -211,6 +212,12 @@ public sealed partial class MainWindowViewModel : ViewModelBase, IErrorOverlayOw
     public void DismissEarlyAccessPressed()
     {
         Cfg.SetCVar(CVars.HasDismissedEarlyAccessWarning, true);
+        Cfg.CommitConfig();
+    }
+
+    public void DismissEpilepsyWarningPressed()
+    {
+        Cfg.SetCVar(CVars.HasDismissedEpilepsyWarning, true);
         Cfg.CommitConfig();
     }
 

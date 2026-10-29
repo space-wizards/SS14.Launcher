@@ -124,6 +124,17 @@
       </StackPanel>
     </ContentControl>
 
+    <ContentControl Classes="OverlayBox" IsVisible="{Binding !HasDismissedEpilepsyWarning.Value}">
+      <StackPanel Orientation="Vertical">
+        <TextBlock HorizontalAlignment="Center" Classes="NanoHeadingMedium"
+                   Text="{loc:Loc main-window-epilepsy-title}" />
+        <TextBlock Margin="0, 10" TextAlignment="Center" MaxWidth="450" TextWrapping="Wrap"
+                   Text="{loc:Loc main-window-epilepsy-desc}" />
+        <Button Content="{loc:Loc main-window-epilepsy-accept}" Command="{Binding DismissEpilepsyWarningPressed}"
+                HorizontalAlignment="Center" />
+      </StackPanel>
+    </ContentControl>
+
     <ContentControl Classes="OverlayBox" IsVisible="{Binding ShouldShowIntelDegradationWarning}">
       <StackPanel Orientation="Vertical">
         <TextBlock HorizontalAlignment="Center" Classes="NanoHeadingMedium"
