@@ -180,6 +180,7 @@ main-window-epilepsy-desc =
 
     Stop playing immediately and seek medical attention if you experience dizziness, altered vision, eye or muscle twitches, disorientation, or any involuntary movement. This message will not appear again after you accept it.
 main-window-epilepsy-accept = I understand
+main-window-warning-accept-countdown = { $text } ({ $seconds }s)
 main-window-intel-degrade-title = Intel 13th/14th Generation CPU detected.
 main-window-intel-degrade-desc =
     The Intel 13th/14th generation CPUs are known to silently degrade permanently and die due to a microcode bug by Intel. We sadly can't tell if you are currently affected by this bug, so this warning appears for all users with these CPUs.
