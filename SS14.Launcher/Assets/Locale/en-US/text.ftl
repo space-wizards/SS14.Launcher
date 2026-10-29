@@ -176,7 +176,9 @@ main-window-epilepsy-desc =
 
     Space Station 14 and the servers you can join through this launcher may contain flashing lights, strobing effects and rapidly changing visuals. Servers are run by third parties, and we cannot control what they display.
 
-    If you or anyone in your family has an epileptic condition, consult a doctor before playing. Stop playing immediately and seek medical attention if you experience dizziness, altered vision, eye or muscle twitches, disorientation, or any involuntary movement. This message will not appear again after you accept it.
+    If you or anyone in your family has an epileptic condition, consult a doctor before playing.
+
+    Stop playing immediately and seek medical attention if you experience dizziness, altered vision, eye or muscle twitches, disorientation, or any involuntary movement. This message will not appear again after you accept it.
 main-window-epilepsy-accept = I understand
 main-window-intel-degrade-title = Intel 13th/14th Generation CPU detected.
 main-window-intel-degrade-desc =
