@@ -65,24 +65,30 @@ public class LauncherMessaging
 
         // So during testing on Linux, I found that NamedPipeServerStream does NOT have it's "mutex" semantics.
         // Don't know who to blame for this, don't care, let's just try connecting first.
-        try
+        var result = TrySendCommands(actualPipeName, commands, LauncherVersion.Version);
+        if (result == SendResult.TakeOver)
         {
-            using (var client = new NamedPipeClientStream(".", actualPipeName, PipeDirection.InOut, PipeOptions.CurrentUserOnly))
+            // An older primary launcher agreed to close so we can replace it.
+            Console.WriteLine("Older primary launcher is making way for us");
+            if (WaitForPrimaryToExit(actualPipeName))
             {
-                // If we are waiting more than 5 seconds something has gone HORRIBLY wrong and we should just let the launcher start.
-                client.Connect(ConfigConstants.LauncherCommandsNamedPipeTimeout);
-                // Command is newline-terminated.
-                byte[] commandEncoded = Encoding.UTF8.GetBytes(string.Join('\n', commands) + "\n");
-                client.Write(commandEncoded);
+                result = SendResult.NoPrimary;
             }
+            else
+            {
+                Console.WriteLine("Older primary launcher did not close, passing commands to it instead");
+                result = TrySendCommands(actualPipeName, commands, null);
+            }
+        }
+
+        if (result == SendResult.Sent)
+        {
             Console.WriteLine("Passed commands to primary launcher");
             return true;
         }
-        catch (Exception)
-        {
-            // Ok, so we're server (we hope)
-            Console.WriteLine("We are primary launcher (or primary launcher is out for lunch)");
-        }
+
+        // Ok, so we're server (we hope)
+        Console.WriteLine("We are primary launcher (or primary launcher is out for lunch)");
 
         // Try to create server
         try
@@ -101,6 +107,82 @@ public class LauncherMessaging
         return false;
     }
 
+    private enum SendResult
+    {
+        /// <summary>The commands were handed to the primary launcher.</summary>
+        Sent,
+
+        /// <summary>There is no primary launcher we could talk to.</summary>
+        NoPrimary,
+
+        /// <summary>The primary launcher is older than us and is closing so we can become the primary.</summary>
+        TakeOver,
+    }
+
+    /// <param name="ourVersion">
+    /// If not null, announce it to the primary launcher first so that it can make way if we are newer.
+    /// </param>
+    private static SendResult TrySendCommands(string pipeName, string[] commands, Version? ourVersion)
+    {
+        try
+        {
+            using var client = new NamedPipeClientStream(".", pipeName, PipeDirection.InOut, PipeOptions.Asynchronous | PipeOptions.CurrentUserOnly);
+            client.Connect(ConfigConstants.LauncherCommandsNamedPipeTimeout);
+
+            if (ourVersion != null && RequestTakeOver(client, ourVersion))
+                return SendResult.TakeOver;
+
+            byte[] commandEncoded = Encoding.UTF8.GetBytes(string.Join('\n', commands) + "\n");
+            client.Write(commandEncoded);
+            return SendResult.Sent;
+        }
+        catch (Exception)
+        {
+            return SendResult.NoPrimary;
+        }
+    }
+
+    /// <returns>True if the primary launcher is older than us and has agreed to close.</returns>
+    private static bool RequestTakeOver(NamedPipeClientStream client, Version ourVersion)
+    {
+        client.Write(Encoding.UTF8.GetBytes(LauncherCommands.VersionPrefix + ourVersion + "\n"));
+
+        using var cts = new CancellationTokenSource(ConfigConstants.LauncherCommandsVersionReplyTimeout);
+        var reply = new byte[16];
+        try
+        {
+            var read = client.ReadAsync(reply, cts.Token).AsTask().GetAwaiter().GetResult();
+            return read > 0 && (char) reply[0] == LauncherCommands.YieldReply[0];
+        }
+        catch (Exception e) when (e is OperationCanceledException or IOException)
+        {
+            // Launchers from before the version announcement never answer.
+            return false;
+        }
+    }
+
+    /// <returns>False if the primary launcher is still there after waiting for it.</returns>
+    private static bool WaitForPrimaryToExit(string pipeName)
+    {
+        var deadline = DateTime.UtcNow + TimeSpan.FromMilliseconds(ConfigConstants.LauncherCommandsTakeOverTimeout);
+        while (DateTime.UtcNow < deadline)
+        {
+            try
+            {
+                using var probe = new NamedPipeClientStream(".", pipeName, PipeDirection.InOut, PipeOptions.CurrentUserOnly);
+                probe.Connect(ConfigConstants.LauncherCommandsNamedPipeTimeout);
+            }
+            catch (Exception)
+            {
+                return true;
+            }
+
+            Thread.Sleep(100);
+        }
+
+        return false;
+    }
+
     public void StartServerTask(LauncherCommands lc)
     {
         _serverTask = ServerTask(lc);
@@ -110,6 +192,22 @@ public class LauncherMessaging
     {
         _pipeServerSelfDestruct.Cancel();
         _serverTask?.Wait();
+    }
+
+    /// <summary>
+    /// Answers a launcher announcing its version, closing ourselves afterwards if it should take over.
+    /// </summary>
+    private async Task AnswerVersion(string line, LauncherCommands lc)
+    {
+        var yield = Version.TryParse(line.AsSpan(LauncherCommands.VersionPrefix.Length), out var version)
+                    && await lc.CanYieldTo(version);
+
+        var reply = yield ? LauncherCommands.YieldReply : LauncherCommands.KeepReply;
+        await _pipeServer!.WriteAsync(Encoding.UTF8.GetBytes(reply + "\n"));
+        await _pipeServer.FlushAsync();
+
+        if (yield)
+            lc.Yield();
     }
 
     /// <summary>
@@ -143,7 +241,12 @@ public class LauncherMessaging
                     {
                         // Can't be cancelled
                         var line = await sr.ReadLineAsync().WaitAsync(token).ConfigureAwait(false);
-                        if (line != null)
+                        if (line == null)
+                            continue;
+
+                        if (line.StartsWith(LauncherCommands.VersionPrefix))
+                            await AnswerVersion(line, lc);
+                        else
                             await lc.QueueCommand(line);
                     }
 
