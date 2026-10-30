@@ -12,3 +12,4 @@ StartupWMClass=SS14.Launcher
 Terminal=false
 Type=Application
 Version=1.5
+MimeType=x-scheme-handler/ss14s;x-scheme-handler/ss14;application/rtbundle;application/rtreplay;application/zip

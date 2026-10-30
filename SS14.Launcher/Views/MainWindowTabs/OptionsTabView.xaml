@@ -51,6 +51,12 @@
                    Text="{loc:Loc tab-options-seasonal-branding-desc}"
                    Margin="8" />
 
+
+        <Button Click="OSProtocol" Content="{loc:Loc tab-options-os-protocol}" Margin="4" HorizontalAlignment="Left" />
+        <TextBlock VerticalAlignment="Center" TextWrapping="Wrap"
+                   Text="{loc:Loc tab-options-os-protocol-desc}"
+                   Margin="8" />
+
         <Button Click="OpenHubSettings" Content="{loc:Loc tab-options-hub-settings}" Margin="4" HorizontalAlignment="Left" />
         <TextBlock VerticalAlignment="Center" TextWrapping="Wrap"
                    Text="{loc:Loc tab-options-hub-settings-desc}"
