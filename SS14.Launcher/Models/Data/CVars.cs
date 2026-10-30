@@ -43,6 +43,11 @@ public static class CVars
         = CVarDef.Create("HasDismissedRosettaWarning", false);
 
     /// <summary>
+    /// Whether to download updates for favorite servers in the background, so they're ready when joining.
+    /// </summary>
+    public static readonly CVarDef<bool> PrefetchFavoriteServers = CVarDef.Create("PrefetchFavoriteServers", false);
+
+    /// <summary>
     /// Disable checking engine build signatures when launching game.
     /// Only enable if you know what you're doing.
     /// </summary>

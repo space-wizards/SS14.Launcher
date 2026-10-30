@@ -31,6 +31,7 @@ public sealed partial class MainWindowViewModel : ViewModelBase, IErrorOverlayOw
     private readonly LoginManager _loginMgr;
     private readonly LauncherInfoManager _infoManager;
     private readonly LocalizationManager _loc;
+    private readonly Updater _updater;
 
     private int _selectedIndex;
 
@@ -50,6 +51,7 @@ public sealed partial class MainWindowViewModel : ViewModelBase, IErrorOverlayOw
         _loginMgr = Locator.Current.GetRequiredService<LoginManager>();
         _infoManager = Locator.Current.GetRequiredService<LauncherInfoManager>();
         _loc = LocalizationManager.Instance;
+        _updater = Locator.Current.GetRequiredService<Updater>();
 
         ServersTab = new ServerListTabViewModel(this);
         NewsTab = new NewsTabViewModel();
@@ -74,6 +76,12 @@ public sealed partial class MainWindowViewModel : ViewModelBase, IErrorOverlayOw
         {
             if (e.PropertyName is nameof(LoggedIn) && LoggedIn)
                 RunSelectedOnTab();
+        };
+
+        _updater.PropertyChanged += (_, e) =>
+        {
+            if (e.PropertyName is nameof(_updater.IsBackgroundUpdating))
+                OnPropertyChanged(new PropertyChangedEventArgs(nameof(IsBackgroundUpdating)));
         };
 
         _loginMgr.PropertyChanged += (_, e) =>
@@ -134,6 +142,8 @@ public sealed partial class MainWindowViewModel : ViewModelBase, IErrorOverlayOw
     [ObservableProperty] private bool _shouldShowAuthOverrideWarning;
     [ObservableProperty] private int _authOverrideCountdown = 5;
     [ObservableProperty] private bool _isAuthOverrideButtonEnabled;
+
+    public bool IsBackgroundUpdating => _updater.IsBackgroundUpdating;
 
     public string Version => $"v{LauncherVersion.Version}";
 

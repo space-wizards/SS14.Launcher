@@ -43,6 +43,8 @@ public sealed partial class Updater : ObservableObject
     private readonly IEngineManager _engineManager;
     private readonly HttpClient _http;
     private bool _updating;
+    private CancellationTokenSource? _backgroundCancel;
+    private TaskCompletionSource? _backgroundDone;
 
     public Updater()
     {
@@ -55,6 +57,11 @@ public sealed partial class Updater : ObservableObject
     [ObservableProperty] private UpdateStatus _status;
     [ObservableProperty] private (long downloaded, long total, ProgressUnit unit)? _progress;
     [ObservableProperty] private long? _speed;
+
+    /// <summary>
+    /// Whether an update is currently running in the background, not because of a launch.
+    /// </summary>
+    [ObservableProperty] private bool _isBackgroundUpdating;
 
     public Exception? UpdateException;
 
@@ -74,8 +81,61 @@ public sealed partial class Updater : ObservableObject
         return await GuardUpdateAsync(() => InstallContentBundle(archive, zipHash, metadata, cancel));
     }
 
+    /// <summary>
+    /// Runs an update without a launch waiting on it, such as pre-downloading.
+    /// Does nothing if another update is running, and is cancelled if a launch update starts.
+    /// </summary>
+    public async Task<bool> RunBackgroundUpdateAsync(
+        ServerBuildInformation buildInformation,
+        CancellationToken cancel = default)
+    {
+        if (_updating)
+            return false;
+
+        _updating = true;
+        IsBackgroundUpdating = true;
+        var previousStatus = Status;
+        _backgroundCancel = CancellationTokenSource.CreateLinkedTokenSource(cancel);
+        _backgroundDone = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
+
+        try
+        {
+            await RunUpdate(buildInformation, _backgroundCancel.Token);
+            return true;
+        }
+        catch (OperationCanceledException)
+        {
+            Log.Debug("Background update was cancelled");
+            return false;
+        }
+        catch (Exception e)
+        {
+            Log.Warning(e, "Exception while running background update");
+            return false;
+        }
+        finally
+        {
+            Progress = null;
+            Speed = null;
+            Status = previousStatus;
+            IsBackgroundUpdating = false;
+            _backgroundCancel.Dispose();
+            _backgroundCancel = null;
+            _updating = false;
+            _backgroundDone.SetResult();
+            _backgroundDone = null;
+        }
+    }
+
     private async Task<T?> GuardUpdateAsync<T>(Func<Task<T>> func) where T : class
     {
+        // A launch takes priority over a background update
+        if (_backgroundDone is { } backgroundDone)
+        {
+            _backgroundCancel?.Cancel();
+            await backgroundDone.Task;
+        }
+
         if (_updating)
         {
             throw new InvalidOperationException("Update already in progress.");

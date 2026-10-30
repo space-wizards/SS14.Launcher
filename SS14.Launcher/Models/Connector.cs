@@ -461,26 +461,33 @@ public partial class Connector : ObservableObject
         try
         {
             var info = await _http.GetFromJsonAsync<ServerInfo>(infoAddr, cancel) ?? throw new InvalidDataException();
-            if (info.BuildInformation is {} buildInfo && (buildInfo.Acz || string.IsNullOrEmpty(buildInfo.DownloadUrl)))
-            {
-                var acz = info.BuildInformation.Acz;
-                var apiAddress = UriHelper.GetServerApiAddress(parsedAddress);
-
-                // Infer download URL to be self-hosted client address if not supplied
-                // (The server may not know it's own address)
-                info.BuildInformation.DownloadUrl = new Uri(apiAddress, "client.zip").ToString();
-
-                if (acz)
-                {
-                    info.BuildInformation.ManifestUrl = new Uri(apiAddress, "manifest.txt").ToString();
-                    info.BuildInformation.ManifestDownloadUrl = new Uri(apiAddress, "download").ToString();
-                }
-            }
+            InferBuildDownloadUrls(info, parsedAddress);
             return (info, parsedAddress, infoAddr);
         }
         catch (Exception e) when (e is JsonException or HttpRequestException or InvalidDataException)
         {
             throw new ConnectException(ConnectionStatus.ConnectionFailed, e);
+        }
+    }
+
+    /// <summary>
+    /// Fills in the download URLs of a server's build information if the server hosts its own client.
+    /// </summary>
+    internal static void InferBuildDownloadUrls(ServerInfo info, Uri parsedAddress)
+    {
+        if (info.BuildInformation is not { } buildInfo || !(buildInfo.Acz || string.IsNullOrEmpty(buildInfo.DownloadUrl)))
+            return;
+
+        var apiAddress = UriHelper.GetServerApiAddress(parsedAddress);
+
+        // Infer download URL to be self-hosted client address if not supplied
+        // (The server may not know it's own address)
+        buildInfo.DownloadUrl = new Uri(apiAddress, "client.zip").ToString();
+
+        if (buildInfo.Acz)
+        {
+            buildInfo.ManifestUrl = new Uri(apiAddress, "manifest.txt").ToString();
+            buildInfo.ManifestDownloadUrl = new Uri(apiAddress, "download").ToString();
         }
     }
 

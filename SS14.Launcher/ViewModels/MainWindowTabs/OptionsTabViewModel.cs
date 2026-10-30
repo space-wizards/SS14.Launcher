@@ -50,6 +50,16 @@ public class OptionsTabViewModel : MainWindowTabViewModel
         }
     }
 
+    public bool PrefetchFavoriteServers
+    {
+        get => Cfg.GetCVar(CVars.PrefetchFavoriteServers);
+        set
+        {
+            Cfg.SetCVar(CVars.PrefetchFavoriteServers, value);
+            Cfg.CommitConfig();
+        }
+    }
+
     public bool OverrideAssets
     {
         get => Cfg.GetCVar(CVars.OverrideAssets);

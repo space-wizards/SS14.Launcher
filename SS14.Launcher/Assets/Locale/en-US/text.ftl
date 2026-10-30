@@ -170,6 +170,7 @@ main-window-out-of-date-download-manual = Download (manual)
 main-window-early-access-title = Heads up!
 main-window-early-access-desc = Space Station 14 is still very much in alpha. We hope you like what you see, and maybe even stick around, but make sure to keep your expectations modest for the time being.
 main-window-early-access-accept = Got it!
+main-window-background-updating = Updating content...
 main-window-intel-degrade-title = Intel 13th/14th Generation CPU detected.
 main-window-intel-degrade-desc =
     The Intel 13th/14th generation CPUs are known to silently degrade permanently and die due to a microcode bug by Intel. We sadly can't tell if you are currently affected by this bug, so this warning appears for all users with these CPUs.
@@ -368,6 +369,8 @@ tab-options-seasonal-branding = Seasonal Branding
 tab-options-seasonal-branding-desc = Whatever temporally relevant icons and logos we can come up with.
 tab-options-disable-signing = Disable Engine Signature Checks
 tab-options-disable-signing-desc = { "[" }DEV ONLY] Disables verification of engine signatures. DO NOT ENABLE UNLESS YOU KNOW EXACTLY WHAT YOU'RE DOING.
+tab-options-prefetch-favorites = Download Favorite Server Updates in Background
+tab-options-prefetch-favorites-desc = Checks your favorite servers when the launcher starts, and every 10 minutes after that, and downloads any new game updates ahead of time so joining is faster. Uses bandwidth and disk space.
 tab-options-hub-settings = Hub Settings
 tab-options-hub-settings-desc = Change what hub server or servers you would like to use to fetch the server list.
 tab-options-desc-incompatible = This option is incompatible with your platform and has been disabled.
