@@ -121,6 +121,10 @@ public class App : Application
         }
     }
 
+    // This many unhandled UI exceptions within this long means something is broken for good.
+    private const int UnhandledErrorLimit = 5;
+    private static readonly TimeSpan UnhandledErrorWindow = TimeSpan.FromSeconds(10);
+
     private void OnStartup(object? s, ControlledApplicationLifetimeStartupEventArgs e)
     {
         Program.UiStarted = true;
@@ -141,6 +145,30 @@ public class App : Application
         {
             DataContext = viewModel
         };
+
+        // Exceptions from UI handlers (async void methods and so on) would otherwise take the whole launcher down.
+        // But if they keep coming, carrying on only fills the log and leaves a broken window, so give up instead.
+        var errorLimiter = new ErrorRateLimiter(UnhandledErrorLimit, UnhandledErrorWindow);
+        Dispatcher.UIThread.UnhandledException += (_, args) =>
+        {
+            var code = ErrorClassifier.ClassifyPrecisely(args.Exception) ?? ErrorCodes.GenBackground;
+            Log.Error(args.Exception, "Unhandled exception on the UI thread ({ErrorCode})", code);
+
+            if (errorLimiter.Record(DateTimeOffset.UtcNow))
+            {
+                Log.Fatal("{Limit} unhandled UI exceptions within {Window}, closing the launcher ({ErrorCode})",
+                    UnhandledErrorLimit, UnhandledErrorWindow, code);
+                Log.CloseAndFlush();
+
+                FatalErrorDialog.Show(code, "Space Station 14 Launcher ran into too many errors and has to close.");
+                Environment.Exit(1);
+                return;
+            }
+
+            args.Handled = true;
+            viewModel.ShowErrorOverlay("error-overlay-title-unexpected", "error-overlay-desc-unexpected", code);
+        };
+
         viewModel.OnWindowInitialized();
 
         loc.LanguageSwitched += () =>
@@ -149,15 +177,6 @@ public class App : Application
 
             // Reloading content isn't a smooth process anyway, so let's do some housekeeping while we're at it.
             GC.Collect();
-        };
-
-        Dispatcher.UIThread.UnhandledException += (_, args) =>
-        {
-            var code = ErrorClassifier.ClassifyPrecisely(args.Exception) ?? ErrorCodes.GenBackground;
-            Log.Error(args.Exception, "Unhandled exception on the UI thread ({ErrorCode})", code);
-
-            args.Handled = true;
-            viewModel.ShowErrorOverlay("error-overlay-title-unexpected", "error-overlay-desc-unexpected", code);
         };
 
         var lc = new LauncherCommands(viewModel);
