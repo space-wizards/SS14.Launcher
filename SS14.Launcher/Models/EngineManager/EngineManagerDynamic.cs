@@ -334,7 +334,7 @@ public sealed partial class EngineManagerDynamic : IEngineManager
     public async Task<EngineModuleManifest> GetEngineModuleManifest(CancellationToken cancel = default)
     {
         return await ConfigConstants.RobustModulesManifest.GetFromJsonAsync<EngineModuleManifest>(_http, cancel) ??
-               throw new InvalidDataException();
+               throw new LauncherException("The engine module manifest was empty", ErrorCodes.NetEmptyResponse);
     }
 
     public async Task DoEngineCullMaybeAsync(SqliteConnection contenCon)
