@@ -579,6 +579,16 @@ public partial class Connector : ObservableObject
             throw new ConnectException(ConnectionStatus.ClientExited, ErrorCodes.CliEngineMissing, e);
         }
 
+        // The updater should have made sure this exists, but it didn't. Grumble grumble...
+        if (!File.Exists(binPath))
+        {
+            Log.Error("Engine archive for version {EngineVersion} is missing: {Path}", engineVersion, binPath);
+            throw new ConnectException(
+                ConnectionStatus.ClientExited,
+                ErrorCodes.CliEngineMissing,
+                new FileNotFoundException("The engine archive is missing", binPath));
+        }
+
         var startInfo = await GetLoaderStartInfo();
 
         startInfo.ArgumentList.Add(binPath);
@@ -778,8 +788,6 @@ public partial class Connector : ObservableObject
             basePath = LauncherPaths.DirLauncherInstall;
             if (OperatingSystem.IsMacOS())
                 basePath = Path.Combine(basePath, "..", "..");
-            else
-                basePath = Path.Combine(basePath, "loader");
         }
         else
         {

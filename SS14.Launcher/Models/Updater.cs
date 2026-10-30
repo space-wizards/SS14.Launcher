@@ -56,6 +56,8 @@ public sealed partial class Updater : ObservableObject
     [ObservableProperty] private (long downloaded, long total, ProgressUnit unit)? _progress;
     [ObservableProperty] private long? _speed;
 
+    [ObservableProperty] private long? _progressBytes;
+
     public Exception? UpdateException;
 
     /// <summary>
@@ -110,6 +112,7 @@ public sealed partial class Updater : ObservableObject
         finally
         {
             Progress = null;
+            ProgressBytes = null;
             Speed = null;
             _updating = false;
         }

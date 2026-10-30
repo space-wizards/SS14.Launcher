@@ -41,7 +41,7 @@ public sealed partial class MainWindowViewModel : ViewModelBase, IErrorOverlayOw
     public DataManager Cfg => _cfg;
     [ObservableProperty] private bool _outOfDate;
 
-    private IDisposable? _authOverrideCountdownTimer;
+    private IDisposable? _warningCountdownTimer;
 
     public HomePageViewModel HomeTab { get; }
     public ServerListTabViewModel ServersTab { get; }
@@ -92,6 +92,9 @@ public sealed partial class MainWindowViewModel : ViewModelBase, IErrorOverlayOw
 
         _cfg.Logins.Connect()
             .Subscribe(_ => OnPropertyChanged(new PropertyChangedEventArgs(nameof(AccountDropDownVisible))));
+
+        // Start the countdown if the first warning to show needs one.
+        WarningsChanged();
     }
 
     public MainWindow? Control { get; set; }
@@ -140,12 +143,117 @@ public sealed partial class MainWindowViewModel : ViewModelBase, IErrorOverlayOw
         tab.Selected();
     }
 
-    public ICVarEntry<bool> HasDismissedEarlyAccessWarning => Cfg.GetCVarEntry(CVars.HasDismissedEarlyAccessWarning);
-    public bool ShouldShowIntelDegradationWarning => IsVulnerableToIntelDegradation(_cfg);
-    public bool ShouldShowRosettaWarning => IsAppleSiliconInRosetta(_cfg);
-    [ObservableProperty] private bool _shouldShowAuthOverrideWarning;
-    [ObservableProperty] private int _authOverrideCountdown = 5;
-    [ObservableProperty] private bool _isAuthOverrideButtonEnabled;
+    // Warning overlays are shown one at a time, highest priority first.
+    private enum ActiveWarning
+    {
+        None,
+        AuthOverride,
+        EarlyAccess,
+        Epilepsy,
+        IntelDegradation,
+        Rosetta
+    }
+
+    private ActiveWarning CurrentWarning
+    {
+        get
+        {
+            if (ShouldShowAuthOverrideWarning)
+                return ActiveWarning.AuthOverride;
+            if (!IsDismissed(ActiveWarning.EarlyAccess))
+                return ActiveWarning.EarlyAccess;
+            if (!IsDismissed(ActiveWarning.Epilepsy))
+                return ActiveWarning.Epilepsy;
+            if (!IsDismissed(ActiveWarning.IntelDegradation) && IsVulnerableToIntelDegradation())
+                return ActiveWarning.IntelDegradation;
+            if (!IsDismissed(ActiveWarning.Rosetta) && IsAppleSiliconInRosetta())
+                return ActiveWarning.Rosetta;
+
+            return ActiveWarning.None;
+        }
+    }
+
+    private bool IsDismissed(ActiveWarning warning)
+    {
+        return Cfg.GetCVar(CVars.DismissedWarnings).Split(',').Contains(warning.ToString());
+    }
+
+    private void Dismiss(ActiveWarning warning)
+    {
+        var dismissed = Cfg.GetCVar(CVars.DismissedWarnings).Split(',', StringSplitOptions.RemoveEmptyEntries);
+        Cfg.SetCVar(CVars.DismissedWarnings, string.Join(',', dismissed.Append(warning.ToString()).Distinct()));
+        Cfg.CommitConfig();
+        WarningsChanged();
+    }
+
+    public bool ShowEarlyAccessWarning => CurrentWarning == ActiveWarning.EarlyAccess;
+    public bool ShowEpilepsyWarning => CurrentWarning == ActiveWarning.Epilepsy;
+    public bool ShowIntelDegradationWarning => CurrentWarning == ActiveWarning.IntelDegradation;
+    public bool ShowRosettaWarning => CurrentWarning == ActiveWarning.Rosetta;
+    public bool ShowAuthOverrideWarning => CurrentWarning == ActiveWarning.AuthOverride;
+
+    private ActiveWarning _lastWarning;
+    private int _warningCountdown;
+
+    /// <summary>
+    /// Seconds left before the current warning can be acknowledged. 0 if it can be acknowledged right away.
+    /// </summary>
+    public int WarningCountdown
+    {
+        get => _warningCountdown;
+        private set
+        {
+            if (!SetProperty(ref _warningCountdown, value))
+                return;
+
+            OnPropertyChanged(nameof(IsWarningButtonEnabled));
+            OnPropertyChanged(nameof(AuthOverrideButtonText));
+            OnPropertyChanged(nameof(IntelDegradationButtonText));
+        }
+    }
+
+    public bool IsWarningButtonEnabled => WarningCountdown <= 0;
+
+    public string AuthOverrideButtonText => AcceptButtonText("main-window-auth-override-acknowledge");
+    public string IntelDegradationButtonText => AcceptButtonText("main-window-intel-degrade-accept");
+
+    private string AcceptButtonText(string key)
+    {
+        var text = _loc.GetString(key);
+        if (WarningCountdown <= 0)
+            return text;
+
+        return _loc.GetString("main-window-warning-accept-countdown",
+            ("text", text), ("seconds", WarningCountdown));
+    }
+
+    private void WarningsChanged()
+    {
+        var current = CurrentWarning;
+        if (current != _lastWarning)
+        {
+            _lastWarning = current;
+            RestartWarningCountdown(current);
+        }
+
+        OnPropertyChanged(nameof(ShowEarlyAccessWarning));
+        OnPropertyChanged(nameof(ShowEpilepsyWarning));
+        OnPropertyChanged(nameof(ShowIntelDegradationWarning));
+        OnPropertyChanged(nameof(ShowRosettaWarning));
+        OnPropertyChanged(nameof(ShowAuthOverrideWarning));
+    }
+
+    private bool _shouldShowAuthOverrideWarning;
+
+    public bool ShouldShowAuthOverrideWarning
+    {
+        get => _shouldShowAuthOverrideWarning;
+        set
+        {
+            if (SetProperty(ref _shouldShowAuthOverrideWarning, value))
+                WarningsChanged();
+        }
+    }
 
     public string Version => $"v{LauncherVersion.Version}";
 
@@ -319,48 +427,42 @@ public sealed partial class MainWindowViewModel : ViewModelBase, IErrorOverlayOw
 
     public void DismissEarlyAccessPressed()
     {
-        Cfg.SetCVar(CVars.HasDismissedEarlyAccessWarning, true);
-        Cfg.CommitConfig();
+        Dismiss(ActiveWarning.EarlyAccess);
+    }
+
+    public void DismissEpilepsyWarningPressed()
+    {
+        Dismiss(ActiveWarning.Epilepsy);
     }
 
     public void DismissIntelDegradationPressed()
     {
-        Cfg.SetCVar(CVars.HasDismissedIntelDegradation, true);
-        Cfg.CommitConfig();
-        OnPropertyChanged(nameof(ShouldShowIntelDegradationWarning));
+        Dismiss(ActiveWarning.IntelDegradation);
     }
 
     public void DismissAppleSiliconRosettaPressed()
     {
-        Cfg.SetCVar(CVars.HasDismissedRosettaWarning, true);
-        Cfg.CommitConfig();
-        OnPropertyChanged(nameof(ShouldShowRosettaWarning));
+        Dismiss(ActiveWarning.Rosetta);
     }
 
     public void DismissAuthOverridePressed()
     {
-        _authOverrideCountdownTimer?.Dispose();
-        _authOverrideCountdownTimer = null;
         ShouldShowAuthOverrideWarning = false;
     }
 
-    public void StartAuthOverrideCountdown()
+    private void RestartWarningCountdown(ActiveWarning warning)
     {
-        AuthOverrideCountdown = 5;
-        IsAuthOverrideButtonEnabled = false;
-        _authOverrideCountdownTimer?.Dispose();
+        _warningCountdownTimer?.Dispose();
+        _warningCountdownTimer = null;
 
-        _authOverrideCountdownTimer = DispatcherTimer.Run(() =>
+        WarningCountdown = warning is ActiveWarning.AuthOverride or ActiveWarning.IntelDegradation ? 5 : 0;
+        if (WarningCountdown <= 0)
+            return;
+
+        _warningCountdownTimer = DispatcherTimer.Run(() =>
         {
-            AuthOverrideCountdown--;
-            if (AuthOverrideCountdown <= 0)
-            {
-                IsAuthOverrideButtonEnabled = true;
-                _authOverrideCountdownTimer?.Dispose();
-                _authOverrideCountdownTimer = null;
-                return false;
-            }
-            return true;
+            WarningCountdown--;
+            return WarningCountdown > 0;
         }, TimeSpan.FromSeconds(1), DispatcherPriority.Normal);
     }
 
@@ -490,12 +592,11 @@ public sealed partial class MainWindowViewModel : ViewModelBase, IErrorOverlayOw
         ConnectingViewModel.StartContentBundle(this, file);
     }
 
-    private static bool IsVulnerableToIntelDegradation(DataManager cfg)
+    private static bool IsVulnerableToIntelDegradation()
     {
         var processor = LauncherDiagnostics.GetProcessorModel();
 
-        // No Intel processor, or already dismissed the warning.
-        if (!processor.Contains("Intel") || cfg.GetCVar(CVars.HasDismissedIntelDegradation))
+        if (!processor.Contains("Intel"))
             return false;
 
         // Get the i#-#### from the processor string.
@@ -509,13 +610,13 @@ public sealed partial class MainWindowViewModel : ViewModelBase, IErrorOverlayOw
         return affectedGenerations.Any(match.Value.Contains) && !excludedSuffixes.Any(match.Value.EndsWith);
     }
 
-    private static bool IsAppleSiliconInRosetta(DataManager cfg)
+    private static bool IsAppleSiliconInRosetta()
     {
         if (!OperatingSystem.IsMacOS())
             return false;
 
         var processor = LauncherDiagnostics.GetProcessorModel();
 
-        return processor.Contains("VirtualApple") && !cfg.GetCVar(CVars.HasDismissedRosettaWarning);
+        return processor.Contains("VirtualApple");
     }
 }

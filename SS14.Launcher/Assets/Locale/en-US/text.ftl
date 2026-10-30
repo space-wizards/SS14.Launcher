@@ -11,11 +11,15 @@ account-drop-down-add-account = Add account
 ## Localization for the "add favorite server" dialog window
 
 add-favorite-window-title = Add Favorite Server
+add-favorite-window-title-edit = Edit Favorite Server
+add-favorite-window-button-add = Add
+add-favorite-window-button-save = Save
 add-favorite-window-address-invalid = Address is invalid
+add-favorite-window-address-duplicate = Already a favorite
 add-favorite-window-label-name = Name:
 add-favorite-window-label-address = Address:
-# 'Example' name shown as a watermark in the name input box
-add-favorite-window-example-name = Honk Station
+# Shown as a watermark in the name input box. The name is optional.
+add-favorite-window-name-hint = Leave empty to use the server's own name
 
 ## Strings for the "connecting" menu that appears when connecting to a server.
 
@@ -170,6 +174,17 @@ main-window-out-of-date-download-manual = Download (manual)
 main-window-early-access-title = Heads up!
 main-window-early-access-desc = Space Station 14 is still very much in alpha. We hope you like what you see, and maybe even stick around, but make sure to keep your expectations modest for the time being.
 main-window-early-access-accept = Got it!
+main-window-epilepsy-title = Photosensitivity warning
+main-window-epilepsy-desc =
+    A very small percentage of people may experience seizures or loss of consciousness when exposed to flashing lights or certain visual patterns, even if they have no history of epilepsy.
+
+    Space Station 14 and the servers you can join through this launcher may contain flashing lights, strobing effects and rapidly changing visuals. Servers are run by third parties, and we cannot control what they display.
+
+    If you or anyone in your family has an epileptic condition, consult a doctor before playing.
+
+    Stop playing immediately and seek medical attention if you experience dizziness, altered vision, eye or muscle twitches, disorientation, or any involuntary movement. This message will not appear again after you accept it.
+main-window-epilepsy-accept = I understand
+main-window-warning-accept-countdown = { $text } ({ $seconds }s)
 main-window-intel-degrade-title = Intel 13th/14th Generation CPU detected.
 main-window-intel-degrade-desc =
     The Intel 13th/14th generation CPUs are known to silently degrade permanently and die due to a microcode bug by Intel. We sadly can't tell if you are currently affected by this bug, so this warning appears for all users with these CPUs.
@@ -268,11 +283,16 @@ filters-title-region = Region
 filters-title-rp = Role-play level
 filters-title-player-count = Player count
 filters-title-18 = 18+
+filters-title-whitelist = Whitelist
 filters-title-hub = Hub
 filters-18-yes = Yes
 filters-18-yes-desc = Yes
 filters-18-no = No
 filters-18-no-desc = No
+filters-whitelist-yes = Yes
+filters-whitelist-yes-desc = Only show servers that you have to be whitelisted to join
+filters-whitelist-no = No
+filters-whitelist-no-desc = Only show servers that do not need a whitelist
 filters-player-count-hide-empty = Hide empty
 filters-player-count-hide-empty-desc = Servers with no players will not be shown
 filters-player-count-hide-full = Hide full
@@ -318,6 +338,7 @@ server-entry-description-none = No server description provided
 server-entry-status-lobby = Lobby
 server-fetched-from-hub = Fetched from { $hub }
 server-entry-raise = Raise to top
+server-entry-edit = Edit
 
 ## Strings for the "Development" tab
 ## These aren't shown to users so they're not very important

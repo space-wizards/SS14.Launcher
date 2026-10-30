@@ -223,7 +223,6 @@ public class App : Application
         {
             Log.Information("Auth URL override detected: {AuthUrl}.", ConfigConstants.AuthUrl.Urls);
             viewModel.ShouldShowAuthOverrideWarning = true;
-            viewModel.StartAuthOverrideCountdown();
         }
 
         window.Show();

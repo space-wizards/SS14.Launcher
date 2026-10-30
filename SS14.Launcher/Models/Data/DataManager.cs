@@ -157,6 +157,33 @@ public sealed class DataManager : ObservableObject
         _favoriteServers.Remove(server);
     }
 
+    /// <summary>
+    /// Changes the name and/or address of a favorite.
+    /// Might change it's position in the list
+    /// </summary>
+    /// <param name="server">The favorite to change.</param>
+    /// <param name="name">The new name, or null to show the name the server reports.</param>
+    /// <param name="address">The new address.</param>
+    /// <exception cref="ArgumentException">The new address is already another favorite.</exception>
+    public void EditFavoriteServer(FavoriteServer server, string? name, string address)
+    {
+        var edited = new FavoriteServer(name, address, server.RaiseTime);
+
+        if (address == server.Address)
+        {
+            _favoriteServers.AddOrUpdate(edited);
+            return;
+        }
+
+        if (_favoriteServers.Lookup(address).HasValue)
+        {
+            throw new ArgumentException("A server with that address is already a favorite.");
+        }
+
+        _favoriteServers.Remove(server);
+        _favoriteServers.AddOrUpdate(edited);
+    }
+
     public void RaiseFavoriteServer(FavoriteServer server)
     {
         _favoriteServers.Remove(server);

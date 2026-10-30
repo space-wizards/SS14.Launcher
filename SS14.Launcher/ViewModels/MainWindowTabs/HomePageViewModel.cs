@@ -46,6 +46,8 @@ public partial class HomePageViewModel : MainWindowTabViewModel
                     _statusCache.InitialUpdateStatus(a.CacheData);
                 }
             })
+            // Removed favorites must not keep being refreshed (and queried) from the cache.
+            .OnItemRemoved(a => _statusCache.Remove(a.CacheData.Address))
             .Sort(Comparer<ServerEntryViewModel>.Create((a, b) => {
                 var dc = a.Favorite!.RaiseTime.CompareTo(b.Favorite!.RaiseTime);
                 if (dc != 0)
@@ -95,17 +97,27 @@ public partial class HomePageViewModel : MainWindowTabViewModel
             return;
         }
 
-        var (name, address) = await new AddFavoriteDialog().ShowDialog<(string name, string address)>(window);
+        var dialog = new AddFavoriteDialog(
+            null,
+            null,
+            address => _cfg.FavoriteServers.Lookup(address).HasValue,
+            editing: false);
+
+        // Null if the dialog was closed without adding anything.
+        if (await dialog.ShowDialog<(string name, string address)?>(window) is not { } result)
+        {
+            return;
+        }
 
         try
         {
-            _cfg.AddFavoriteServer(new FavoriteServer(name, address));
+            // No name means the favorite shows the name the server reports.
+            _cfg.AddFavoriteServer(new FavoriteServer(string.IsNullOrEmpty(result.name) ? null : result.name, result.address));
             _cfg.CommitConfig();
         }
         catch (ArgumentException)
         {
-            // Happens if address already a favorite, so ignore.
-            // TODO: Give a popup to the user?
+            // The dialog doesn't allow an address that is already a favorite, so this should not happen.
         }
     }
 

@@ -81,6 +81,37 @@ public class LauncherCommands
         ConnectingViewModel.StartConnect(_windowVm, param, reason);
     }
 
+    /// <summary>
+    /// Decides whether this (primary) launcher should close so that a launcher of a newer version can take over.
+    /// </summary>
+    public async Task<bool> CanYieldTo(Version newer)
+    {
+        return await Dispatcher.UIThread.InvokeAsync(() =>
+        {
+            var current = LauncherVersion.Version;
+            if (current == null || newer <= current)
+                return false;
+
+            // Don't pull the rug out from under a download or a running game.
+            if (_windowVm.ConnectingVM != null || _windowVm.Control == null)
+            {
+                Log.Information("Not making way for newer launcher {Newer}: busy", newer);
+                return false;
+            }
+
+            Log.Information("Making way for newer launcher {Newer} (we are {Current})", newer, current);
+            return true;
+        });
+    }
+
+    /// <summary>
+    /// Closes this launcher after <see cref="CanYieldTo"/> agreed to make way.
+    /// </summary>
+    public void Yield()
+    {
+        Dispatcher.UIThread.Post(() => _windowVm.Control?.Close());
+    }
+
     public async ValueTask QueueCommand(string cmd)
     {
         await CommandChannel.Writer.WriteAsync(cmd);
@@ -168,6 +199,15 @@ public class LauncherCommands
     public const string PingCommand = ":Ping";
     public const string RedialWaitCommand = ":RedialWait";
     public const string BlankReasonCommand = "r";
+
+    /// <summary>
+    /// Sent by a launcher before anything else, followed by its version. The primary answers with
+    /// <see cref="YieldReply"/> if it is closing to let the sender take over, or <see cref="KeepReply"/> if not.
+    /// Launchers from before this existed don't answer.
+    /// </summary>
+    public const string VersionPrefix = "V";
+    public const string YieldReply = "X";
+    public const string KeepReply = "K";
     public static string ConstructConnectCommand(Uri uri) => "c" + uri.ToString();
 }
 
