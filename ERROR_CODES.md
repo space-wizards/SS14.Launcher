@@ -37,7 +37,7 @@ Codes should NEVER be renumbered or reused. The source of truth is [`ErrorCodes.
 
 | Code | Meaning | Usual cause |
 |---|---|---|
-| `SS14L-UPD-001` | The content version has no engine dependency | Corrupt content database |
+| `SS14L-UPD-001` | The content version has no engine dependency | The content stored by the launcher is damaged or incomplete |
 | `SS14L-UPD-002` | The content manifest has an unknown header | Server is incompatible or serving something that is not a manifest |
 | `SS14L-UPD-003` | The content manifest does not match its hash | Corrupt or tampered download |
 | `SS14L-UPD-004` | A compressed blob decompressed to the wrong size | Corrupt download |
@@ -88,7 +88,7 @@ Codes should NEVER be renumbered or reused. The source of truth is [`ErrorCodes.
 | `SS14L-CLI-001` | The game client could not be started (an error occurred) | See the exception in the log |
 | `SS14L-CLI-002` | The game client process did not start | The operating system refused to start it |
 | `SS14L-CLI-003` | The game client exited immediately with an error | Crash on startup |
-| `SS14L-CLI-004` | The game loader was not found, or this platform is not supported | Damaged install, or a security program removed a file |
+| `SS14L-CLI-004` | The game loader was not found, or this platform is not supported | Damaged install, a security program removed a file, or a system component the loader needs is missing |
 | `SS14L-CLI-005` | The engine version is not installed locally | Installed engine was deleted |
 | `SS14L-CLI-006` | The file is not a content bundle (no metadata) | Wrong file |
 | `SS14L-CLI-007` | The content bundle's metadata is invalid | Broken bundle |
@@ -112,7 +112,7 @@ Codes should NEVER be renumbered or reused. The source of truth is [`ErrorCodes.
 | `SS14L-DB-008` | A database is busy or locked by another process | Another launcher is using it |
 | `SS14L-DB-009` | A database is full or read-only | Disk full or read-only folder |
 | `SS14L-DB-010` | A database file is corrupt | Disk problem or an interrupted write |
-| `SS14L-DB-011` | Clearing the installed server content failed | A game client is still running |
+| `SS14L-DB-011` | Clearing the installed server content failed | The content database is locked or the drive is read-only. |
 | `SS14L-DB-012` | Some other database error | See the log |
 | `SS14L-DB-013` | A database file could not be opened | The data folder is missing, read-only or not writable |
 | `SS14L-DB-014` | A database file system error | The data folder is on a network drive or a file system without the locking SQLite needs |
@@ -126,7 +126,7 @@ Codes should NEVER be renumbered or reused. The source of truth is [`ErrorCodes.
 | `SS14L-IO-003` | Access to a file or folder was denied | Permissions or an antivirus |
 | `SS14L-IO-004` | The disk is full | Free up space |
 | `SS14L-IO-005` | Extracting an archive failed | Corrupt download or disk problem |
-| `SS14L-IO-006` | Clearing the installed engines failed | A game client is still running |
+| `SS14L-IO-006` | Clearing the installed engines failed | A file could not be deleted: on Windows often because a game is still running, otherwise permissions or a read-only drive |
 | `SS14L-IO-007` | The launcher log file could not be written | Log folder is not writable |
 | `SS14L-IO-008` | A temporary file could not be created | Temp folder not writable or disk full |
 | `SS14L-IO-009` | A link or folder could not be opened with another program | No valid program to handle this was found |

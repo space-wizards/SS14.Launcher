@@ -88,7 +88,11 @@ public sealed class LoginManager : ObservableObject
             .AsObservableCache();
     }
 
-    public async Task Initialize()
+    /// <param name="refreshNow">
+    /// Whether to check the saved logins with the auth server right away.
+    /// Skip it when the auth server is known to be unreachable: the timer below still keeps the tokens fresh later.
+    /// </param>
+    public async Task Initialize(bool refreshNow = true)
     {
         // Set up timer so that if the user leaves their launcher open for a month or something
         // their tokens don't expire.
@@ -104,7 +108,8 @@ public sealed class LoginManager : ObservableObject
         }, ConfigConstants.TokenRefreshInterval, DispatcherPriority.Background);
 
         // Refresh all tokens we got.
-        await RefreshAllTokens();
+        if (refreshNow)
+            await RefreshAllTokens();
     }
 
     private async Task RefreshAllTokens()

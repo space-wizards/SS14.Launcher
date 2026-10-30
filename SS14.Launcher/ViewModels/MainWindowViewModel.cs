@@ -4,9 +4,11 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Net.NetworkInformation;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using Avalonia.Platform.Storage;
 using Avalonia.Threading;
@@ -145,7 +147,7 @@ public sealed partial class MainWindowViewModel : ViewModelBase, IErrorOverlayOw
 
     public async void OnWindowInitialized()
     {
-        var online = false;
+        var reachable = true;
 
         if (IsRunningFromTranslocatedLocation())
         {
@@ -155,34 +157,44 @@ public sealed partial class MainWindowViewModel : ViewModelBase, IErrorOverlayOw
 
         try
         {
-            if (!NetworkInterface.GetIsNetworkAvailable())
+            ErrorCode? offlineCode = null;
+
+            // The OS can be wrong about having no network (some virtual or tunnel adapters aren't counted),
+            // so before believing it, check that the auth server's name really can't be found.
+            if (!NetworkInterface.GetIsNetworkAvailable() && !await CanFindAuthServerAsync())
             {
                 // Nothing we require is reachable, so don't make the user wait for every request to time out.
-                ShowOfflineError(ErrorCodes.NetNoConnection);
+                offlineCode = ErrorCodes.NetNoConnection;
             }
             else
             {
                 BusyTask = _loc.GetString("main-window-busy-checking-update");
                 await CheckLauncherUpdate();
 
-                if (_infoManager.FailureCode is { } failure)
-                {
-                    // Without launcher info we can't tell whether this launcher is even allowed to run,
-                    // and the login checks would only time out the same way.
-                    ShowOfflineError(failure);
-                }
-                else
-                {
-                    online = true;
-                    BusyTask = _loc.GetString("main-window-busy-checking-login-status");
-                    await CheckAccounts();
-                }
+                // Other failures, such as the server answering with an error, are no reason to treat the user as
+                // offline. We carry on like before and assume this launcher is up to date.
+                if (_infoManager.FailureCode is { } failure && IsConnectivityFailure(failure))
+                    offlineCode = failure;
             }
+
+            if (offlineCode is { } code)
+            {
+                reachable = false;
+                ShowOfflineError(code);
+            }
+            else
+            {
+                BusyTask = _loc.GetString("main-window-busy-checking-login-status");
+            }
+
+            // Logins are always set up, so the token refresh timer runs and the saved accounts stay.
+            // Only the check against the auth server right now is skipped if we know it would just time out.
+            await CheckAccounts(reachable);
         }
         catch (Exception e)
         {
             // Whatever goes wrong here, we can't keep the spinny thing going for all eternity.
-            online = false;
+            reachable = false;
             var code = ErrorClassifier.ClassifyPrecisely(e) ?? ErrorCodes.GenUnexpected;
             Log.Error(e, "Startup checks failed ({ErrorCode})", code);
             ShowErrorOverlay("error-overlay-title-unexpected", "error-overlay-desc-unexpected", code);
@@ -192,12 +204,38 @@ public sealed partial class MainWindowViewModel : ViewModelBase, IErrorOverlayOw
             BusyTask = null;
         }
 
-        if (online && _cfg.SelectedLoginId is { } g && _loginMgr.Logins.TryLookup(g, out var login))
+        // Selecting the saved account would only try the auth server again, and show a second error.
+        if (reachable && _cfg.SelectedLoginId is { } g && _loginMgr.Logins.TryLookup(g, out var login))
         {
             TrySwitchToAccount(login);
         }
 
         // We should now start reacting to commands.
+    }
+
+    private static bool IsConnectivityFailure(ErrorCode code)
+    {
+        return code == ErrorCodes.NetNoConnection
+               || code == ErrorCodes.NetDnsFailed
+               || code == ErrorCodes.NetConnectFailed
+               || code == ErrorCodes.NetTimeout;
+    }
+
+    private static async Task<bool> CanFindAuthServerAsync()
+    {
+        try
+        {
+            var host = new Uri(ConfigConstants.AuthUrl.Urls[0]).Host;
+
+            using var timeout = new CancellationTokenSource(TimeSpan.FromSeconds(3));
+            await Dns.GetHostAddressesAsync(host, timeout.Token);
+
+            return true;
+        }
+        catch (Exception)
+        {
+            return false;
+        }
     }
 
     // macOS runs a quarantined app from a random read-only copy ("App Translocation", according to the docs) until it is moved somewhere.
@@ -210,13 +248,14 @@ public sealed partial class MainWindowViewModel : ViewModelBase, IErrorOverlayOw
     private void ShowOfflineError(ErrorCode code)
     {
         Log.Warning("Cannot reach the launcher's servers ({ErrorCode})", code);
-        ShowErrorOverlay("error-overlay-title-offline", "error-overlay-desc-offline", code);
+        // The message already tells the user to check their connection, so skip the hint that says the same.
+        ShowErrorOverlay("error-overlay-title-offline", "error-overlay-desc-offline", code, showHint: false);
     }
 
-    private async Task CheckAccounts()
+    private async Task CheckAccounts(bool refreshNow)
     {
         // Check if accounts are still valid and refresh their tokens if necessary.
-        await _loginMgr.Initialize();
+        await _loginMgr.Initialize(refreshNow);
     }
 
     public void OnDiscordButtonPressed()
@@ -352,8 +391,7 @@ public sealed partial class MainWindowViewModel : ViewModelBase, IErrorOverlayOw
         }
         catch (AuthApiException e)
         {
-            Log.Warning(e, "AuthApiException while trying to refresh account {login}", account.LoginInfo);
-            Log.Warning("Account refresh failed ({ErrorCode})", e.Code);
+            Log.Warning(e, "AuthApiException while trying to refresh account {login} ({ErrorCode})", account.LoginInfo, e.Code);
             OverlayViewModel = new AuthErrorsOverlayViewModel(this, _loc.GetString("main-window-error-connecting-auth-server"),
                 new[]
                 {
@@ -370,7 +408,7 @@ public sealed partial class MainWindowViewModel : ViewModelBase, IErrorOverlayOw
     /// <summary>
     /// Shows an error overlay with the given localized text and error code.
     /// </summary>
-    public void ShowErrorOverlay(string titleKey, string descriptionKey, ErrorCode code)
+    public void ShowErrorOverlay(string titleKey, string descriptionKey, ErrorCode code, bool showHint = true)
     {
         if (OverlayViewModel != null)
             return;
@@ -379,7 +417,8 @@ public sealed partial class MainWindowViewModel : ViewModelBase, IErrorOverlayOw
             this,
             _loc.GetString(titleKey),
             new[] { _loc.GetString(descriptionKey) },
-            code);
+            code,
+            showHint: showHint);
     }
 
     /// <summary>

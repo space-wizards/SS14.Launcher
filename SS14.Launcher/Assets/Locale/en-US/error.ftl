@@ -13,7 +13,7 @@ error-code-help = Include this code when asking for help.
 error-overlay-title-connect-failed = Connection failed
 error-overlay-title-content-bundle-failed = Could not load the file
 error-overlay-title-offline = Cannot reach the internet
-error-overlay-desc-offline = The launcher could not reach its servers, so it can't check for updates or sign you in. Check your internet connection and restart the launcher.
+error-overlay-desc-offline = The launcher could not reach its servers, so it can't check for updates or sign you in. You have not been signed out. Check your internet connection, then restart the launcher to carry on with your saved account.
 error-overlay-title-translocated = Move the launcher to Applications
 error-overlay-desc-translocated = The launcher is running from a temporary location, which could stop it from starting the game. Quit it, move it to your Applications folder and open it from there.
 error-overlay-title-unexpected = Something went wrong
@@ -48,6 +48,11 @@ error-hint-net-012 = The download was cut off before it finished. Check your con
 error-hint-net-013 = The server that hosts the download refused the request. Try again later, or try another server.
 
 # Account
+error-hint-auth-001 = Check your username or email address and your password, then try again.
+error-hint-auth-002 = Confirm your email address using the email you were sent, then try again.
+error-hint-auth-003 = Enter the code from your authenticator app to finish signing in.
+error-hint-auth-004 = That code was not accepted. Check your authenticator app and try again.
+error-hint-auth-005 = If you think your account should not be locked, ask for help.
 error-hint-auth-009 = The launcher could not reach the account server. Check your internet connection, or try again later.
 
 # Database and settings
