@@ -65,7 +65,7 @@ public sealed partial class MainWindowViewModel : ViewModelBase, IErrorOverlayOw
             NewsTab,
             OptionsTab,
 #if DEVELOPMENT
-            new DevelopmentTabViewModel(),
+            new DevelopmentTabViewModel(this),
 #endif
         };
 
