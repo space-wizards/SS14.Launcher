@@ -15,22 +15,13 @@
     <Panel>
       <StackPanel Orientation="Vertical" IsVisible="{Binding !IsAskingPrivacyPolicy}">
         <TextBlock HorizontalAlignment="Center" Classes="NanoHeadingMedium" Text="{Binding TitleText}" />
-        <SelectableTextBlock HorizontalAlignment="Center" Margin="0 10" DockPanel.Dock="Top" Text="{Binding StatusText}"
-                             TextWrapping="Wrap"  MaxWidth="400" />
-        <SelectableTextBlock HorizontalAlignment="Center" Margin="0 0 0 10" TextAlignment="Center"
-                             Text="{Binding ErrorHintText}" TextWrapping="Wrap" MaxWidth="400"
-                             IsVisible="{Binding ErrorHintText, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
-        <SelectableTextBlock HorizontalAlignment="Center" Margin="0 0 0 10" Classes="SubText"
-                             Text="{Binding ErrorCodeText}" TextWrapping="Wrap" MaxWidth="400"
-                             IsVisible="{Binding ErrorCodeText, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
+        <TextBlock HorizontalAlignment="Center" Margin="0 10" DockPanel.Dock="Top" Text="{Binding StatusText}"
+                   TextWrapping="Wrap"  MaxWidth="400" />
         <ProgressBar DockPanel.Dock="Bottom" Maximum="1" Value="{Binding Progress}"
                      IsIndeterminate="{Binding ProgressIndeterminate}" IsVisible="{Binding ProgressBarVisible}"
                      MinWidth="300" />
 
         <Panel DockPanel.Dock="Bottom">
-          <Button Content="Ok" IsVisible="{Binding IsErrored}" HorizontalAlignment="Center"
-                  Command="{Binding ErrorDismissed}" MinWidth="75" />
-
           <DockPanel LastChildFill="False">
             <Button DockPanel.Dock="Left"
                     Name="CancelButton"

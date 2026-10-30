@@ -20,6 +20,7 @@ public class ConnectingViewModel : ViewModelBase
     private readonly CancellationTokenSource _cancelSource = new CancellationTokenSource();
 
     private string? _reasonSuffix;
+    private bool _failureShown;
 
     public bool IsErrored
         => _connector.Status == ConnectionFailed ||
@@ -66,8 +67,6 @@ public class ConnectingViewModel : ViewModelBase
                 case nameof(_connector.Status):
                     OnPropertyChanged(nameof(ProgressIndeterminate));
                     OnPropertyChanged(nameof(StatusText));
-                    OnPropertyChanged(nameof(ErrorCodeText));
-                    OnPropertyChanged(nameof(ErrorHintText));
                     OnPropertyChanged(nameof(ProgressBarVisible));
                     OnPropertyChanged(nameof(IsErrored));
                     OnPropertyChanged(nameof(IsAskingPrivacyPolicy));
@@ -78,6 +77,10 @@ public class ConnectingViewModel : ViewModelBase
                     {
                         CloseOverlay();
                     }
+                    else if (IsErrored)
+                    {
+                        ShowFailure();
+                    }
 
                     break;
                 case nameof(_connector.PrivacyPolicyDifferentVersion):
@@ -85,14 +88,7 @@ public class ConnectingViewModel : ViewModelBase
                     break;
                 case nameof(_connector.ClientExitedBadly):
                     OnPropertyChanged(nameof(StatusText));
-                    OnPropertyChanged(nameof(ErrorCodeText));
-                    OnPropertyChanged(nameof(ErrorHintText));
                     OnPropertyChanged(nameof(IsErrored));
-                    break;
-                case nameof(_connector.FailureCode):
-                case nameof(_connector.ClientExitCode):
-                    OnPropertyChanged(nameof(ErrorCodeText));
-                    OnPropertyChanged(nameof(ErrorHintText));
                     break;
             }
         };
@@ -200,7 +196,8 @@ public class ConnectingViewModel : ViewModelBase
         };
     }
 
-    public string ErrorCodeText
+    // The error code line for the current failure, including the exit code if the game exited.
+    private string ErrorCodeText
     {
         get
         {
@@ -223,20 +220,6 @@ public class ConnectingViewModel : ViewModelBase
 
             return _loc.GetString("error-code-label", ("code", code.ToString()))
                    + "\n" + _loc.GetString("error-code-help");
-        }
-    }
-
-    /// <summary>
-    /// Advice for fixing the current failure, if there is any for its code.
-    /// </summary>
-    public string ErrorHintText
-    {
-        get
-        {
-            if (!IsErrored || _connector.FailureCode is not { } code)
-                return "";
-
-            return ErrorHints.Get(code, _loc) ?? "";
         }
     }
 
@@ -281,9 +264,27 @@ public class ConnectingViewModel : ViewModelBase
         _connector.LaunchContentBundle(file, _cancelSource.Token);
     }
 
-    public void ErrorDismissed()
+    /// <summary>
+    /// Replaces this screen with the regular error overlay (title, message, hint, code, OK button).
+    /// </summary>
+    private void ShowFailure()
     {
+        if (_failureShown)
+            return;
+
+        _failureShown = true;
+
+        var titleKey = _connectionType == ConnectionType.ContentBundle
+            ? "error-overlay-title-content-bundle-failed"
+            : "error-overlay-title-connect-failed";
+
+        // "Failed to connect to server!" would only repeat the title, so it can go away >:(
+        var message = _connector.Status == ConnectionFailed ? "" : StatusText;
+        var code = _connector.FailureCode ?? ErrorCodes.GenUnexpected;
+        var codeText = ErrorCodeText;
+
         CloseOverlay();
+        _windowVm.ShowFailureOverlay(_loc.GetString(titleKey), message, code, codeText);
     }
 
     private void CloseOverlay()

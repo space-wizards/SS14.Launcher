@@ -9,6 +9,8 @@ public class AuthErrorsOverlayViewModel : ViewModelBase
     public string Title { get; }
     public string[] Errors { get; }
 
+    public bool HasErrors => Errors.Length > 0;
+
     public ErrorCode? Code { get; }
 
     /// <summary>
@@ -18,21 +20,26 @@ public class AuthErrorsOverlayViewModel : ViewModelBase
         ? ErrorHints.Get(code, LocalizationManager.Instance) ?? ""
         : "";
 
-    public string CodeText => Code is { } code
+    // Set by callers that have a more detailed code line than just the code, such as one with an exit code.
+    private readonly string? _codeText;
+
+    public string CodeText => _codeText ?? (Code is { } code
         ? LocalizationManager.Instance.GetString("error-code-label", ("code", code.ToString()))
           + "\n" + LocalizationManager.Instance.GetString("error-code-help")
-        : "";
+        : "");
 
     public AuthErrorsOverlayViewModel(
         IErrorOverlayOwner parentVM,
         string title,
         string[] errors,
-        ErrorCode? code = null)
+        ErrorCode? code = null,
+        string? codeText = null)
     {
         ParentVm = parentVM;
         Title = title;
         Errors = errors;
         Code = code;
+        _codeText = codeText;
     }
 
     public static ErrorCode DenyCodeToErrorCode(AuthApi.AuthenticateDenyResponseCode code)

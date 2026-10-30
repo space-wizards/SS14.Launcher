@@ -382,6 +382,18 @@ public sealed partial class MainWindowViewModel : ViewModelBase, IErrorOverlayOw
             code);
     }
 
+    /// <summary>
+    /// Shows an error overlay for a failed connection. Unlike <see cref="ShowErrorOverlay"/> it takes text that
+    /// is already put together, and it replaces any overlay that is up, since the user is waiting for this.
+    /// </summary>
+    public void ShowFailureOverlay(string title, string message, ErrorCode code, string codeText)
+    {
+        // An empty message means the title says it all, so don't leave a blank line.
+        var messages = message.Length == 0 ? Array.Empty<string>() : new[] { message };
+
+        OverlayViewModel = new AuthErrorsOverlayViewModel(this, title, messages, code, codeText);
+    }
+
     public void OverlayOk()
     {
         OverlayViewModel = null;
