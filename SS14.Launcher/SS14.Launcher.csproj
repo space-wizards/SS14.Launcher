@@ -37,6 +37,14 @@
       <DependentUpon>ServerFilterView.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
+  <ItemGroup Condition="'$(FullRelease)' == 'True'">
+    <Compile Remove="ViewModels\MainWindowTabs\DevelopmentTabViewModel.cs" />
+    <Compile Remove="ViewModels\MainWindowTabs\DevelopmentFailure.cs" />
+    <Compile Remove="Views\MainWindowTabs\DevelopmentTabView.xaml.cs" />
+    <Compile Remove="Utility\DevFakeServer.cs" />
+    <AvaloniaResource Remove="Views\MainWindowTabs\DevelopmentTabView.xaml" />
+    <AdditionalFiles Remove="Views\MainWindowTabs\DevelopmentTabView.xaml" />
+  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Avalonia" />
     <PackageReference Include="Avalonia.Desktop" />
