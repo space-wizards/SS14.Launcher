@@ -1,5 +1,6 @@
 using System;
 using System.Buffers;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
@@ -7,8 +8,10 @@ using System.Net.Http;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Toolkit.Mvvm.Messaging;
 using Mono.Unix;
 using Serilog;
+using SS14.Launcher.Utility;
 using TerraFX.Interop.Windows;
 using Win = TerraFX.Interop.Windows.Windows;
 
@@ -22,8 +25,18 @@ public static class Helpers
 
     public static void ExtractZipToDirectory(string directory, Stream zipStream)
     {
-        using var zipArchive = new ZipArchive(zipStream);
-        zipArchive.ExtractToDirectory(directory);
+        try
+        {
+            using var zipArchive = new ZipArchive(zipStream);
+            zipArchive.ExtractToDirectory(directory);
+        }
+        catch (Exception e) when (e is IOException or UnauthorizedAccessException or InvalidDataException)
+        {
+            throw new LauncherException(
+                "Failed to extract archive",
+                ErrorClassifier.ClassifyPrecisely(e) ?? ErrorCodes.IoExtract,
+                e);
+        }
     }
 
     public static void ClearDirectory(string directory)
@@ -52,7 +65,12 @@ public static class Helpers
         await Task.Run(async () =>
         {
             using var response = await client.GetAsync(uri, HttpCompletionOption.ResponseHeadersRead, cancel);
-            response.EnsureSuccessStatusCode();
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new DownloadException(
+                    $"Download server returned HTTP {(int)response.StatusCode} ({response.StatusCode})",
+                    ErrorCodes.NetDownloadHttp);
+            }
 
             await using var contentStream = await response.Content.ReadAsStreamAsync(cancel);
             // await using var fileStream = new FileStream(filePath, FileMode.OpenOrCreate, FileAccess.Write, FileShare.ReadWrite, 4096, useAsync: true);
@@ -70,7 +88,17 @@ public static class Helpers
 
             do
             {
-                var read = await contentStream.ReadAsync(buffer.AsMemory(0, bufferLength), cancel);
+                int read;
+                try
+                {
+                    read = await contentStream.ReadAsync(buffer.AsMemory(0, bufferLength), cancel);
+                }
+                catch (Exception e) when (e is IOException or HttpRequestException)
+                {
+                    // Not a local disk problem (those come from the write below), the connection dropped
+                    throw new DownloadException("Download was interrupted", ErrorCodes.NetDownloadInterrupted, e);
+                }
+
                 if (read == 0)
                 {
                     isMoreToRead = false;
@@ -118,7 +146,36 @@ public static class Helpers
 
     public static void OpenUri(string uri)
     {
-        Process.Start(new ProcessStartInfo(uri) { UseShellExecute = true });
+        StartExternal(new ProcessStartInfo(uri) { UseShellExecute = true });
+    }
+
+    /// <summary>
+    /// Opens a folder in the system's file manager.
+    /// </summary>
+    public static void OpenFolder(string path)
+    {
+        StartExternal(new ProcessStartInfo { UseShellExecute = true, FileName = path });
+    }
+
+    /// <summary>
+    /// Starts another program on the user's behalf (a browser, the file manager).
+    /// There may be no program to handle it, in which case the user gets an error instead of a crash.
+    /// </summary>
+    private static void StartExternal(ProcessStartInfo startInfo)
+    {
+        try
+        {
+            Process.Start(startInfo);
+        }
+        catch (Exception e) when (e is Win32Exception or InvalidOperationException or FileNotFoundException)
+        {
+            Log.Error(e, "Failed to open {Target} ({ErrorCode})", startInfo.FileName, ErrorCodes.IoOpenExternal);
+
+            WeakReferenceMessenger.Default.Send(new ErrorOccurred(
+                "error-overlay-title-open-external",
+                "error-overlay-desc-open-external",
+                ErrorCodes.IoOpenExternal));
+        }
     }
 
     private static readonly string[] ByteSuffixes =

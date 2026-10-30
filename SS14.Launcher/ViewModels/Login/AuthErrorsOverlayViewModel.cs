@@ -9,11 +9,36 @@ public class AuthErrorsOverlayViewModel : ViewModelBase
     public string Title { get; }
     public string[] Errors { get; }
 
-    public AuthErrorsOverlayViewModel(IErrorOverlayOwner parentVM, string title, string[] errors)
+    public ErrorCode? Code { get; }
+
+    public string CodeText => Code is { } code
+        ? LocalizationManager.Instance.GetString("error-code-label", ("code", code.ToString()))
+          + "\n" + LocalizationManager.Instance.GetString("error-code-help")
+        : "";
+
+    public AuthErrorsOverlayViewModel(
+        IErrorOverlayOwner parentVM,
+        string title,
+        string[] errors,
+        ErrorCode? code = null)
     {
         ParentVm = parentVM;
         Title = title;
         Errors = errors;
+        Code = code;
+    }
+
+    public static ErrorCode DenyCodeToErrorCode(AuthApi.AuthenticateDenyResponseCode code)
+    {
+        return code switch
+        {
+            AuthApi.AuthenticateDenyResponseCode.InvalidCredentials => ErrorCodes.AuthInvalidCredentials,
+            AuthApi.AuthenticateDenyResponseCode.AccountUnconfirmed => ErrorCodes.AuthUnconfirmed,
+            AuthApi.AuthenticateDenyResponseCode.TfaRequired => ErrorCodes.AuthTfaRequired,
+            AuthApi.AuthenticateDenyResponseCode.TfaInvalid => ErrorCodes.AuthTfaInvalid,
+            AuthApi.AuthenticateDenyResponseCode.AccountLocked => ErrorCodes.AuthLocked,
+            _ => ErrorCodes.AuthUnknownDeny
+        };
     }
 
     public static string[] AuthCodeToErrors(string[] errors, AuthApi.AuthenticateDenyResponseCode code)

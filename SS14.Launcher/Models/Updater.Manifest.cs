@@ -107,7 +107,7 @@ public sealed partial class Updater
         using var sr = new StreamReader(manifest);
 
         if (await sr.ReadLineAsync(cancel) != "Robust Content Manifest 1")
-            throw new UpdateException("Unknown manifest header!");
+            throw new UpdateException("Unknown manifest header!", ErrorCodes.UpdManifestHeader);
 
         Log.Debug("Parsing manifest...");
 
@@ -116,7 +116,19 @@ public sealed partial class Updater
         while (await sr.ReadLineAsync(cancel) is { } manifestLine)
         {
             var sep = manifestLine.IndexOf(' ');
-            var hash = Convert.FromHexString(manifestLine.AsSpan(0, sep));
+            if (sep < 0)
+                throw new UpdateException("Manifest line has no file name!", ErrorCodes.UpdManifestParse);
+
+            byte[] hash;
+            try
+            {
+                hash = Convert.FromHexString(manifestLine.AsSpan(0, sep));
+            }
+            catch (FormatException e)
+            {
+                throw new UpdateException("Manifest line has an invalid hash!", ErrorCodes.UpdManifestParse, e);
+            }
+
             var filename = manifestLine.AsMemory(sep + 1);
 
             entries.Add(new ContentManifestEntry
@@ -130,7 +142,7 @@ public sealed partial class Updater
 
         var manifestHash = manifest.Finish();
         if (Convert.ToHexString(manifestHash) != buildInfo.ManifestHash)
-            throw new UpdateException("Manifest has incorrect hash!");
+            throw new UpdateException("Manifest has incorrect hash!", ErrorCodes.UpdManifestHash);
 
         Log.Debug("Successfully validated manifest hash");
 
@@ -317,7 +329,7 @@ public sealed partial class Updater
                         swZstd.Stop();
 
                         if (decompressedLength != data.Length)
-                            throw new UpdateException($"Compressed blob {i} had incorrect decompressed size!");
+                            throw new UpdateException($"Compressed blob {i} had incorrect decompressed size!", ErrorCodes.UpdBlobSize);
 
                         // Set variables so that the database write down below uses them.
                         compression = ContentCompressionScheme.ZStd;
@@ -347,7 +359,7 @@ public sealed partial class Updater
                 */
 
                 if (!manifestEntry.Hash.AsSpan().SequenceEqual(hash))
-                    throw new UpdateException("Hash mismatch while downloading!");
+                    throw new UpdateException("Hash mismatch while downloading!", ErrorCodes.UpdBlobHash);
 
                 if (!preCompressed)
                 {
@@ -421,20 +433,20 @@ public sealed partial class Updater
         if (!resp.Headers.TryGetValues("X-Robust-Download-Min-Protocol", out var minHeaders)
             || !resp.Headers.TryGetValues("X-Robust-Download-Max-Protocol", out var maxHeaders))
         {
-            throw new UpdateException("Missing required headers from OPTIONS on manifest download URL!");
+            throw new UpdateException("Missing required headers from OPTIONS on manifest download URL!", ErrorCodes.UpdProtocolHeadersMissing);
         }
 
         if (!int.TryParse(minHeaders.First(), NumberStyles.Integer, CultureInfo.InvariantCulture, out var min)
             || !int.TryParse(maxHeaders.First(), NumberStyles.Integer, CultureInfo.InvariantCulture, out var max))
         {
-            throw new UpdateException("Invalid version headers on OPTIONS on manifest download URL!");
+            throw new UpdateException("Invalid version headers on OPTIONS on manifest download URL!", ErrorCodes.UpdProtocolHeadersInvalid);
         }
 
         Log.Debug("Download server protocol min: {MinProtocolVersion} max: {MaxProtocolVersion}", min, max);
 
         if (min > ManifestDownloadProtocolVersion || max < ManifestDownloadProtocolVersion)
         {
-            throw new UpdateException("No supported protocol version for download server.");
+            throw new UpdateException("No supported protocol version for download server.", ErrorCodes.UpdNoProtocol);
         }
     }
 

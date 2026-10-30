@@ -6,6 +6,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
+using Avalonia.Threading;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using JetBrains.Annotations;
@@ -122,6 +123,8 @@ public class App : Application
 
     private void OnStartup(object? s, ControlledApplicationLifetimeStartupEventArgs e)
     {
+        Program.UiStarted = true;
+
         var loc = Locator.Current.GetRequiredService<LocalizationManager>();
         var msgr = Locator.Current.GetRequiredService<LauncherMessaging>();
         var contentManager = Locator.Current.GetRequiredService<ContentManager>();
@@ -146,6 +149,15 @@ public class App : Application
 
             // Reloading content isn't a smooth process anyway, so let's do some housekeeping while we're at it.
             GC.Collect();
+        };
+
+        Dispatcher.UIThread.UnhandledException += (_, args) =>
+        {
+            var code = ErrorClassifier.ClassifyPrecisely(args.Exception) ?? ErrorCodes.GenBackground;
+            Log.Error(args.Exception, "Unhandled exception on the UI thread ({ErrorCode})", code);
+
+            args.Handled = true;
+            viewModel.ShowErrorOverlay("error-overlay-title-unexpected", "error-overlay-desc-unexpected", code);
         };
 
         var lc = new LauncherCommands(viewModel);

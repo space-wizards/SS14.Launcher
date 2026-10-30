@@ -6,11 +6,13 @@ using System.Linq;
 using System.Net.Http.Headers;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Logging;
 using Avalonia.Media;
 using Microsoft.Win32;
 using Serilog;
+using LoggingLevelSwitch = Serilog.Core.LoggingLevelSwitch;
 using Serilog.Sinks.SystemConsole.Themes;
 using Splat;
 using SS14.Launcher.Api;
@@ -81,29 +83,37 @@ internal static class Program
         if (msgr.SendCommandsOrClaim(commands, commandSendAnyway))
             return;
 
-        var logCfg = new LoggerConfiguration()
-            .MinimumLevel.Debug()
-            .WriteTo.Console(theme: AnsiConsoleTheme.Sixteen);
+        var logLevel = new LoggingLevelSwitch(LogEventLevel.Debug);
 
-        Log.Logger = logCfg.CreateLogger();
+        Log.Logger = new LoggerConfiguration()
+            .MinimumLevel.Debug()
+            .WriteTo.Console(theme: AnsiConsoleTheme.Sixteen)
+            .CreateLogger();
+
+        RegisterCrashHandlers();
 
         VcRedistCheck.Check();
-        LauncherPaths.CreateDirs();
+        RunStartupStep(LauncherPaths.CreateDirs, _ => ErrorCodes.IoCreateDirs);
+
+        // Log to the file as early as possible, so failures while loading the config get recorded too.
+        // Don't worry, I made sure this can't be the thing preventing us from launching.
+        EnableFileLogging(logLevel);
 
         var cfg = new DataManager();
-        cfg.Load();
+        RunStartupStep(
+            cfg.Load,
+            e => e is InvalidCastException or FormatException or NullReferenceException or KeyNotFoundException
+                ? ErrorCodes.DbSettingsCorrupt
+                : ErrorCodes.DbOpenSettings);
         Locator.CurrentMutable.RegisterConstant(cfg);
+
+        // The verbose setting lives in the config, so it can only apply once that is loaded.
+        logLevel.MinimumLevel = cfg.GetCVar(CVars.LogLauncherVerbose) ? LogEventLevel.Verbose : LogEventLevel.Debug;
 
         CheckWindowsVersion();
         // Bad antivirus check disabled: I assume Avast/AVG fixed their shit.
         // CheckBadAntivirus();
         CheckWine(cfg);
-
-        Log.Logger = new LoggerConfiguration()
-            .MinimumLevel.Is(cfg.GetCVar(CVars.LogLauncherVerbose) ? LogEventLevel.Verbose : LogEventLevel.Debug)
-            .WriteTo.Console(theme: AnsiConsoleTheme.Sixteen)
-            .WriteTo.File(LauncherPaths.PathLauncherLog, rollingInterval: RollingInterval.Day, retainedFileCountLimit: 7, fileSizeLimitBytes: 100L * 1024 * 1024)
-            .CreateLogger();
 
         LauncherDiagnostics.LogDiagnostics();
 
@@ -117,6 +127,7 @@ internal static class Program
 
         try
         {
+            UiStartAttempted = true;
             BuildAvaloniaApp(cfg).StartWithClassicDesktopLifetime(args);
         }
         catch (Exception ex)
@@ -131,6 +142,81 @@ internal static class Program
         }
     }
 
+    private static void EnableFileLogging(LoggingLevelSwitch level)
+    {
+        try
+        {
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.ControlledBy(level)
+                .WriteTo.Console(theme: AnsiConsoleTheme.Sixteen)
+                .WriteTo.File(LauncherPaths.PathLauncherLog, rollingInterval: RollingInterval.Day, retainedFileCountLimit: 7, fileSizeLimitBytes: 100L * 1024 * 1024)
+                .CreateLogger();
+        }
+        catch (Exception e)
+        {
+            Log.Warning(e, "Could not open the launcher log file ({ErrorCode})", ErrorCodes.IoLogWrite);
+        }
+    }
+
+    /// <summary>
+    /// Runs a step the launcher can't start without. If it fails, tells the user and exits.
+    /// </summary>
+    /// <param name="step">The step to run.</param>
+    /// <param name="fallbackCode">The code to use if the exception doesn't identify the failure precisely.</param>
+    private static void RunStartupStep(Action step, Func<Exception, ErrorCode> fallbackCode)
+    {
+        try
+        {
+            step();
+        }
+        catch (Exception e)
+        {
+            var code = ErrorClassifier.ClassifyPrecisely(e) ?? fallbackCode(e);
+            Log.Fatal(e, "Fatal error during startup ({ErrorCode})", code);
+            Log.CloseAndFlush();
+
+            FatalErrorDialog.Show(code, "Space Station 14 Launcher failed to start.");
+            Environment.Exit(1);
+        }
+    }
+
+    /// <summary>
+    /// Set just before the UI framework starts.
+    /// </summary>
+    private static bool UiStartAttempted;
+
+    /// <summary>
+    /// Set once the UI framework is up and the app began starting.
+    /// </summary>
+    internal static bool UiStarted;
+
+    /// <summary>
+    /// The code for a crash nothing else identified: if it happened while the UI framework was still starting
+    /// (no display, missing X11 or font libraries), say so, because that is the usual reason.
+    /// </summary>
+    private static ErrorCode CrashCode => UiStartAttempted && !UiStarted ? ErrorCodes.GenNoGraphics : ErrorCodes.GenCrash;
+
+    private static void RegisterCrashHandlers()
+    {
+        AppDomain.CurrentDomain.UnhandledException += (_, e) =>
+        {
+            var exception = e.ExceptionObject as Exception ?? new Exception(e.ExceptionObject?.ToString());
+            var code = ErrorClassifier.ClassifyPrecisely(exception) ?? CrashCode;
+
+            Log.Fatal(exception, "Unhandled exception ({ErrorCode})", code);
+            Log.CloseAndFlush();
+
+            if (e.IsTerminating)
+                FatalErrorDialog.Show(code, "Space Station 14 Launcher has crashed.");
+        };
+
+        TaskScheduler.UnobservedTaskException += (_, e) =>
+        {
+            Log.Warning(e.Exception, "Unobserved task exception ({ErrorCode})", ErrorCodes.GenBackground);
+            e.SetObserved();
+        };
+    }
+
     private static unsafe void CheckWindowsVersion()
     {
         // 14393 is Windows 10 version 1607, minimum we currently support.
@@ -139,7 +225,8 @@ internal static class Program
 
         var text =
             "You are using an old version of Windows that is no longer supported by Space Station 14.\n\n" +
-            "If anything breaks, DO NOT ASK FOR HELP OR SUPPORT.";
+            "If anything breaks, DO NOT ASK FOR HELP OR SUPPORT.\n\n" +
+            $"Error code: {ErrorCodes.GenUnsupportedOs}";
 
         var caption = "Unsupported Windows version";
 
@@ -148,7 +235,8 @@ internal static class Program
         if (Language.UserHasLanguage("ru"))
         {
             text = "Вы используете старую версию Windows которая больше не поддерживается Space Station 14.\n\n" +
-                   "При возникновении ошибок НЕ БУДЕТ ОКАЗАНО НИКАКОЙ ПОДДЕРЖКИ.";
+                   "При возникновении ошибок НЕ БУДЕТ ОКАЗАНО НИКАКОЙ ПОДДЕРЖКИ.\n\n" +
+                   $"Error code: {ErrorCodes.GenUnsupportedOs}";
 
             caption = "Неподдерживаемая версия Windows";
         }

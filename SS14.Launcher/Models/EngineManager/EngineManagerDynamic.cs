@@ -87,10 +87,10 @@ public sealed partial class EngineManagerDynamic : IEngineManager
 
         var foundVersion = await GetVersionInfo(engineVersion, cancel: cancel);
         if (foundVersion == null)
-            throw new UpdateException("Unable to find engine version in manifest!");
+            throw new UpdateException("Unable to find engine version in manifest!", ErrorCodes.UpdEngineNotInManifest);
 
         if (foundVersion.Info.Insecure)
-            throw new UpdateException("Specified engine version is insecure!");
+            throw new UpdateException("Specified engine version is insecure!", ErrorCodes.UpdEngineInsecure);
 
         Log.Debug(
             "Requested engine version was {RequestedEngien}, redirected to {FoundVersion}",
@@ -165,7 +165,7 @@ public sealed partial class EngineManagerDynamic : IEngineManager
         var versionData = manifest.Modules[moduleName].Versions[moduleVersion];
 
         if (versionData.Insecure)
-            throw new UpdateException("Selected module version is insecure!");
+            throw new UpdateException("Selected module version is insecure!", ErrorCodes.UpdModuleInsecure);
 
         Log.Debug("Selected module {ModuleName} {ModuleVersion}", moduleName, moduleVersion);
 
@@ -216,7 +216,7 @@ public sealed partial class EngineManagerDynamic : IEngineManager
                 else
 #endif
                 {
-                    throw new UpdateException("Failed to verify module signature!");
+                    throw new UpdateException("Failed to verify module signature!", ErrorCodes.UpdModuleSignature);
                 }
             }
 
@@ -433,7 +433,7 @@ public sealed partial class EngineManagerDynamic : IEngineManager
 
         var rid = RidUtility.FindBestRid(foundRids);
         if (rid == null)
-            throw new UpdateException($"Unable to find overriden {name} for current platform");
+            throw new UpdateException($"Unable to find overriden {name} for current platform", ErrorCodes.UpdUnexpected);
 
         var path = Path.Combine(dir, $"{name}_{rid}.zip");
         Log.Warning("Using override for {Name}: {Path}", name, path);

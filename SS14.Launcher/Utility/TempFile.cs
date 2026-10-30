@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 
 namespace SS14.Launcher.Utility;
 
@@ -6,7 +7,17 @@ public static class TempFile
 {
     public static FileStream CreateTempFile()
     {
-        return new TempFileStream(Path.GetTempFileName());
+        try
+        {
+            return new TempFileStream(Path.GetTempFileName());
+        }
+        catch (Exception e) when (e is IOException or UnauthorizedAccessException)
+        {
+            throw new LauncherException(
+                "Could not create a temporary file",
+                ErrorClassifier.ClassifyPrecisely(e) ?? ErrorCodes.IoTempFile,
+                e);
+        }
     }
 
     private sealed class TempFileStream : FileStream

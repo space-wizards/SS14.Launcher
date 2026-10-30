@@ -86,8 +86,9 @@ public sealed partial class Updater
         {
             if (!expectHash.Equals(newFileHashString, StringComparison.OrdinalIgnoreCase))
             {
-                throw new InvalidOperationException(
-                    $"Hash mismatch. Expected: {expectHash}, got: {newFileHashString}");
+                throw new UpdateException(
+                    $"Hash mismatch. Expected: {expectHash}, got: {newFileHashString}",
+                    ErrorCodes.UpdZipHash);
             }
         }
 

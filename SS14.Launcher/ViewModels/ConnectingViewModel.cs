@@ -66,6 +66,7 @@ public class ConnectingViewModel : ViewModelBase
                 case nameof(_connector.Status):
                     OnPropertyChanged(nameof(ProgressIndeterminate));
                     OnPropertyChanged(nameof(StatusText));
+                    OnPropertyChanged(nameof(ErrorCodeText));
                     OnPropertyChanged(nameof(ProgressBarVisible));
                     OnPropertyChanged(nameof(IsErrored));
                     OnPropertyChanged(nameof(IsAskingPrivacyPolicy));
@@ -83,7 +84,12 @@ public class ConnectingViewModel : ViewModelBase
                     break;
                 case nameof(_connector.ClientExitedBadly):
                     OnPropertyChanged(nameof(StatusText));
+                    OnPropertyChanged(nameof(ErrorCodeText));
                     OnPropertyChanged(nameof(IsErrored));
+                    break;
+                case nameof(_connector.FailureCode):
+                case nameof(_connector.ClientExitCode):
+                    OnPropertyChanged(nameof(ErrorCodeText));
                     break;
             }
         };
@@ -185,9 +191,36 @@ public class ConnectingViewModel : ViewModelBase
         {
             NoEngineForPlatformException => _loc.GetString("connecting-status-update-error-no-engine-for-platform"),
             NoModuleForPlatformException => _loc.GetString("connecting-status-update-error-no-module-for-platform"),
+            { } e => _loc.GetString("connecting-status-update-error", ("err", $"{e.GetType().Name}: {e.Message}")),
             _ => _loc.GetString("connecting-status-update-error",
-                ("err", _updater.UpdateException?.Message ?? _loc.GetString("connecting-status-update-error-unknown")))
+                ("err", _loc.GetString("connecting-status-update-error-unknown")))
         };
+    }
+
+    public string ErrorCodeText
+    {
+        get
+        {
+            if (!IsErrored || _connector.FailureCode is not { } code)
+                return "";
+
+            if (_connector.ClientExitCode is { } exitCode)
+            {
+                if (!OperatingSystem.IsWindows() && exitCode is > 128 and <= 192)
+                {
+                    return _loc.GetString("error-code-label-exit-signal",
+                               ("code", code.ToString()), ("exit", exitCode), ("signal", exitCode - 128))
+                           + "\n" + _loc.GetString("error-code-help");
+                }
+
+                return _loc.GetString("error-code-label-exit-code",
+                           ("code", code.ToString()), ("exit", exitCode))
+                       + "\n" + _loc.GetString("error-code-help");
+            }
+
+            return _loc.GetString("error-code-label", ("code", code.ToString()))
+                   + "\n" + _loc.GetString("error-code-help");
+        }
     }
 
     public string TitleText => _connectionType switch

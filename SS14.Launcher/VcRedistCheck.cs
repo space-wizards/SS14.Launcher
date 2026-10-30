@@ -26,7 +26,9 @@ public static class VcRedistCheck
         // We could show this dialog all fancy with Avalonia but I'm lazy so.
         int ret;
 
-        var text = "The game needs the VC++ 2015 redistributable installed, which you do not have.\nWould you like to download the installer for it?";
+        var text = "The game needs the VC++ 2015 redistributable installed, which you do not have.\n" +
+                   "Would you like to download the installer for it?\n\n" +
+                   $"Error code: {ErrorCodes.GenMissingRuntime}";
         var caption = "VC++ 2015 redistributable not installed";
         uint type = MB.MB_ICONERROR | MB.MB_YESNO;
         {

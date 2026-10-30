@@ -29,6 +29,11 @@ public sealed class LauncherInfoManager(HttpClient httpClient)
 
     public Task LoadTask { get; private set; } = default!;
 
+    /// <summary>
+    /// Why loading the info failed, or null if it didn't. Only meaningful once <see cref="LoadTask"/> completed.
+    /// </summary>
+    public ErrorCode? FailureCode { get; private set; }
+
     public void Initialize()
     {
         LoadTask = LoadData();
@@ -44,12 +49,14 @@ public sealed class LauncherInfoManager(HttpClient httpClient)
             if (info == null)
             {
                 Log.Warning("Launcher info response was null.");
+                FailureCode = ErrorCodes.NetEmptyResponse;
                 return;
             }
         }
         catch (Exception e)
         {
-            Log.Warning(e, "Loading launcher info failed");
+            FailureCode = ErrorClassifier.Classify(e, ErrorCodes.NetHttp);
+            Log.Warning(e, "Loading launcher info failed ({ErrorCode})", FailureCode);
             return;
         }
 

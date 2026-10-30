@@ -17,6 +17,9 @@
 
     <Button Name="OkButton" DockPanel.Dock="Bottom" Content="{loc:Loc login-errors-button-ok}" MinWidth="60" HorizontalAlignment="Center"
             Command="{Binding Ok}" />
+    <SelectableTextBlock DockPanel.Dock="Bottom" Classes="SubText" HorizontalAlignment="Center" TextAlignment="Center"
+                         Margin="0 0 0 10" MaxWidth="400" TextWrapping="Wrap" Text="{Binding CodeText}"
+                         IsVisible="{Binding CodeText, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
     <ItemsControl ItemsSource="{Binding Errors}" Margin="0, 20" HorizontalAlignment="Center" MaxWidth="400">
       <ItemsControl.ItemTemplate>
         <DataTemplate DataType="system:String">

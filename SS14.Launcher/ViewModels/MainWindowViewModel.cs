@@ -5,12 +5,14 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Net.NetworkInformation;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Avalonia.Platform.Storage;
 using Avalonia.Threading;
 using DynamicData;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
+using Microsoft.Toolkit.Mvvm.Messaging;
 using Serilog;
 using Splat;
 using SS14.Launcher.Api;
@@ -76,6 +78,10 @@ public sealed partial class MainWindowViewModel : ViewModelBase, IErrorOverlayOw
                 RunSelectedOnTab();
         };
 
+        // Things without a UI of their own (saving settings, the options tab) report errors through the messenger.
+        WeakReferenceMessenger.Default.Register<MainWindowViewModel, ErrorOccurred>(this, static (vm, message) =>
+            Dispatcher.UIThread.Post(() => vm.ShowErrorOverlay(message.TitleKey, message.DescriptionKey, message.Code)));
+
         _loginMgr.PropertyChanged += (_, e) =>
         {
             if (e.PropertyName is nameof(_loginMgr.ActiveAccount))
@@ -139,18 +145,72 @@ public sealed partial class MainWindowViewModel : ViewModelBase, IErrorOverlayOw
 
     public async void OnWindowInitialized()
     {
-        BusyTask = _loc.GetString("main-window-busy-checking-update");
-        await CheckLauncherUpdate();
-        BusyTask = _loc.GetString("main-window-busy-checking-login-status");
-        await CheckAccounts();
-        BusyTask = null;
+        var online = false;
 
-        if (_cfg.SelectedLoginId is { } g && _loginMgr.Logins.TryLookup(g, out var login))
+        if (IsRunningFromTranslocatedLocation())
+        {
+            Log.Warning("Running from a translocated location ({ErrorCode})", ErrorCodes.GenTranslocated);
+            ShowErrorOverlay("error-overlay-title-translocated", "error-overlay-desc-translocated", ErrorCodes.GenTranslocated);
+        }
+
+        try
+        {
+            if (!NetworkInterface.GetIsNetworkAvailable())
+            {
+                // Nothing we require is reachable, so don't make the user wait for every request to time out.
+                ShowOfflineError(ErrorCodes.NetNoConnection);
+            }
+            else
+            {
+                BusyTask = _loc.GetString("main-window-busy-checking-update");
+                await CheckLauncherUpdate();
+
+                if (_infoManager.FailureCode is { } failure)
+                {
+                    // Without launcher info we can't tell whether this launcher is even allowed to run,
+                    // and the login checks would only time out the same way.
+                    ShowOfflineError(failure);
+                }
+                else
+                {
+                    online = true;
+                    BusyTask = _loc.GetString("main-window-busy-checking-login-status");
+                    await CheckAccounts();
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            // Whatever goes wrong here, we can't keep the spinny thing going for all eternity.
+            online = false;
+            var code = ErrorClassifier.ClassifyPrecisely(e) ?? ErrorCodes.GenUnexpected;
+            Log.Error(e, "Startup checks failed ({ErrorCode})", code);
+            ShowErrorOverlay("error-overlay-title-unexpected", "error-overlay-desc-unexpected", code);
+        }
+        finally
+        {
+            BusyTask = null;
+        }
+
+        if (online && _cfg.SelectedLoginId is { } g && _loginMgr.Logins.TryLookup(g, out var login))
         {
             TrySwitchToAccount(login);
         }
 
         // We should now start reacting to commands.
+    }
+
+    // macOS runs a quarantined app from a random read-only copy ("App Translocation", according to the docs) until it is moved somewhere.
+    private static bool IsRunningFromTranslocatedLocation()
+    {
+        return OperatingSystem.IsMacOS()
+               && LauncherPaths.DirLauncherInstall.Contains("/AppTranslocation/", StringComparison.Ordinal);
+    }
+
+    private void ShowOfflineError(ErrorCode code)
+    {
+        Log.Warning("Cannot reach the launcher's servers ({ErrorCode})", code);
+        ShowErrorOverlay("error-overlay-title-offline", "error-overlay-desc-offline", code);
     }
 
     private async Task CheckAccounts()
@@ -293,16 +353,33 @@ public sealed partial class MainWindowViewModel : ViewModelBase, IErrorOverlayOw
         catch (AuthApiException e)
         {
             Log.Warning(e, "AuthApiException while trying to refresh account {login}", account.LoginInfo);
+            Log.Warning("Account refresh failed ({ErrorCode})", e.Code);
             OverlayViewModel = new AuthErrorsOverlayViewModel(this, _loc.GetString("main-window-error-connecting-auth-server"),
                 new[]
                 {
                     e.InnerException?.Message ?? _loc.GetString("main-window-error-unknown")
-                });
+                },
+                e.Code);
         }
         finally
         {
             BusyTask = null;
         }
+    }
+
+    /// <summary>
+    /// Shows an error overlay with the given localized text and error code.
+    /// </summary>
+    public void ShowErrorOverlay(string titleKey, string descriptionKey, ErrorCode code)
+    {
+        if (OverlayViewModel != null)
+            return;
+
+        OverlayViewModel = new AuthErrorsOverlayViewModel(
+            this,
+            _loc.GetString(titleKey),
+            new[] { _loc.GetString(descriptionKey) },
+            code);
     }
 
     public void OverlayOk()
