@@ -75,6 +75,8 @@ public sealed class DevelopmentTabViewModel : MainWindowTabViewModel
                 FaultBackgroundTask),
             new($"{Short(ErrorCodes.GenCrash)}: Unhandled: throw on a new thread (CRASHES the launcher)", () =>
                 new Thread(() => throw new InvalidOperationException("Test exception from a new thread")).Start()),
+            new($"{Short(ErrorCodes.GenBackground)}: Unhandled: throw 10 times in a row (trips the limiter, CLOSES the launcher)",
+                ThrowRepeatedly),
 
             // Exceptions the classifier turns into a code, shown in an overlay.
             ClassifyEntry("file in use", new IOException("File is in use",
@@ -166,6 +168,16 @@ public sealed class DevelopmentTabViewModel : MainWindowTabViewModel
         return new DevelopmentFailure(
             $"{Short(code)}: Overlay: {name}",
             () => ShowOverlay($"error-overlay-title-{stringName}", $"error-overlay-desc-{stringName}", code));
+    }
+
+    private static void ThrowRepeatedly()
+    {
+        for (var i = 1; i <= 10; i++)
+        {
+            var n = i;
+            Avalonia.Threading.Dispatcher.UIThread.Post(() =>
+                throw new InvalidOperationException($"Test exception {n} of 10"));
+        }
     }
 
     private static async void ThrowInAsyncVoid()
