@@ -12,8 +12,8 @@ public sealed partial class MainWindowViewModel
     private sealed class LauncherWarning
     {
         /// <summary>
-        /// Saved in the settings once the user answers, so it isn't shown again. Don't rename it, that would
-        /// show it again to everyone who already answered.
+        /// Saved in the settings once the user answers, so it isn't shown again.
+        /// Renaming it would show the popup again, if desired.
         /// </summary>
         public required string Id { get; init; }
 
@@ -34,7 +34,9 @@ public sealed partial class MainWindowViewModel
         /// <summary>Runs when the second button is pressed, if there is one.</summary>
         public Action? OnSecondary { get; init; }
 
-        /// <summary>Seconds the accept button stays disabled after the popup appears, to make sure it's read.</summary>
+        /// <summary>
+        /// Seconds the buttons stay disabled after the popup appears, to make sure it's read.
+        /// </summary>
         public int CountdownSeconds { get; init; }
 
         /// <summary>Whether the title is red. Yes, that's all it does.</summary>
@@ -43,6 +45,7 @@ public sealed partial class MainWindowViewModel
         /// <summary>
         /// Whether answering is saved (as <see cref="Id"/>), so it never shows again.
         /// If false, it's up to <see cref="ShouldShow"/> to stop it, and it may come back next launch.
+        /// So <see cref="OnAccept"/> must make <see cref="ShouldShow"/> return false, or it shows again right away.
         /// </summary>
         public bool Remember { get; init; } = true;
     }
@@ -170,9 +173,7 @@ public sealed partial class MainWindowViewModel
         }
     }
 
-    /// <summary>
-    /// Seconds left before the current warning can be acknowledged. 0 if it can be acknowledged right away.
-    /// </summary>
+    /// <summary>Seconds left before the current warning can be acknowledged. 0 if it can be acknowledged right away.</summary>
     public int WarningCountdown
     {
         get => _warningCountdown;
@@ -215,8 +216,8 @@ public sealed partial class MainWindowViewModel
     }
 
     /// <summary>
-    /// Looks again at which popup should be up. Call it after something that <see cref="LauncherWarning.ShouldShow"/>
-    /// depends on changes.
+    /// Re-checks which popup should be showing, and switches to it (or hides the popup if none applies).
+    /// Call it after anything a <see cref="LauncherWarning.ShouldShow"/> depends on changes, and after a popup is answered.
     /// </summary>
     private void WarningsChanged()
     {
