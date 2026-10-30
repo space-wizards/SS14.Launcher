@@ -289,6 +289,10 @@ public sealed partial class Updater
 
             var hash = new byte[256 / 8];
 
+            // The speed readout doesn't need to change for every little file :p
+            var speedUpdateWatch = Stopwatch.StartNew();
+            var speedUpdateDue = true;
+
             for (var i = 0; i < toDownload.Count; i++)
             {
                 // Simple loop stuff.
@@ -308,7 +312,12 @@ public sealed partial class Updater
                     Progress = (i, toDownload.Count, ProgressUnit.None);
                 }
 
-                Speed = bandwidthStream.CalcCurrentAvg();
+                if (speedUpdateDue || speedUpdateWatch.ElapsedMilliseconds >= 500)
+                {
+                    Speed = bandwidthStream.CalcCurrentAvg();
+                    speedUpdateWatch.Restart();
+                    speedUpdateDue = false;
+                }
 
                 // Read file header.
                 await stream.ReadExactAsync(fileHeader, cancel);
