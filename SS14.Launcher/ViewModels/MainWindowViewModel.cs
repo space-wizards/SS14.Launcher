@@ -110,6 +110,10 @@ public sealed partial class MainWindowViewModel : ViewModelBase, IErrorOverlayOw
     [ObservableProperty] private string? _busyTask;
     [ObservableProperty] private ViewModelBase? _overlayViewModel;
 
+    // Errors that happened while another overlay was up, shown one after the other as each is dismissed.
+    private const int MaxPendingOverlays = 5;
+    private readonly Queue<AuthErrorsOverlayViewModel> _pendingOverlays = new();
+
     public int SelectedIndex
     {
         get => _selectedIndex;
@@ -173,7 +177,7 @@ public sealed partial class MainWindowViewModel : ViewModelBase, IErrorOverlayOw
 
                 // Other failures, such as the server answering with an error, are no reason to treat the user as
                 // offline. We carry on like before and assume this launcher is up to date.
-                if (_infoManager.FailureCode is { } failure && IsConnectivityFailure(failure))
+                if (_infoManager.FailureCode is { } failure && await IsOfflineFailureAsync(failure))
                     offlineCode = failure;
             }
 
@@ -213,12 +217,18 @@ public sealed partial class MainWindowViewModel : ViewModelBase, IErrorOverlayOw
         // We should now start reacting to commands.
     }
 
-    private static bool IsConnectivityFailure(ErrorCode code)
+    private static async Task<bool> IsOfflineFailureAsync(ErrorCode code)
     {
-        return code == ErrorCodes.NetNoConnection
-               || code == ErrorCodes.NetDnsFailed
-               || code == ErrorCodes.NetConnectFailed
-               || code == ErrorCodes.NetTimeout;
+        if (code == ErrorCodes.NetNoConnection || code == ErrorCodes.NetDnsFailed)
+            return true;
+
+        // Only the launcher info server was slow or refused us, which says nothing about the auth server.
+        // This could happen with Russian censorship where they throttle downloads.
+        // The rest of the launcher is likely to be unstable or unusable, but it isn't a reason to fail.
+        if (code == ErrorCodes.NetConnectFailed || code == ErrorCodes.NetTimeout)
+            return !await CanFindAuthServerAsync();
+
+        return false;
     }
 
     private static async Task<bool> CanFindAuthServerAsync()
@@ -392,12 +402,12 @@ public sealed partial class MainWindowViewModel : ViewModelBase, IErrorOverlayOw
         catch (AuthApiException e)
         {
             Log.Warning(e, "AuthApiException while trying to refresh account {login} ({ErrorCode})", account.LoginInfo, e.Code);
-            OverlayViewModel = new AuthErrorsOverlayViewModel(this, _loc.GetString("main-window-error-connecting-auth-server"),
+            PushOverlay(new AuthErrorsOverlayViewModel(this, _loc.GetString("main-window-error-connecting-auth-server"),
                 new[]
                 {
                     e.InnerException?.Message ?? _loc.GetString("main-window-error-unknown")
                 },
-                e.Code);
+                e.Code));
         }
         finally
         {
@@ -410,15 +420,36 @@ public sealed partial class MainWindowViewModel : ViewModelBase, IErrorOverlayOw
     /// </summary>
     public void ShowErrorOverlay(string titleKey, string descriptionKey, ErrorCode code, bool showHint = true)
     {
-        if (OverlayViewModel != null)
-            return;
-
-        OverlayViewModel = new AuthErrorsOverlayViewModel(
+        PushOverlay(new AuthErrorsOverlayViewModel(
             this,
             _loc.GetString(titleKey),
             new[] { _loc.GetString(descriptionKey) },
             code,
-            showHint: showHint);
+            showHint: showHint));
+    }
+
+    /// <summary>
+    /// Shows the overlay now, or once the ones before it have been dismissed. Same error twice in a row is shown once.
+    /// </summary>
+    private void PushOverlay(AuthErrorsOverlayViewModel overlay)
+    {
+        if (OverlayViewModel == null)
+        {
+            OverlayViewModel = overlay;
+            return;
+        }
+
+        if (IsSameError(OverlayViewModel, overlay) || _pendingOverlays.Any(p => IsSameError(p, overlay)))
+            return;
+
+        // Errors that keep coming are the crash handler's problem, don't pile up a stack of them.
+        if (_pendingOverlays.Count < MaxPendingOverlays)
+            _pendingOverlays.Enqueue(overlay);
+    }
+
+    private static bool IsSameError(ViewModelBase? shown, AuthErrorsOverlayViewModel other)
+    {
+        return shown is AuthErrorsOverlayViewModel o && o.Code == other.Code && o.Title == other.Title;
     }
 
     /// <summary>
@@ -435,7 +466,7 @@ public sealed partial class MainWindowViewModel : ViewModelBase, IErrorOverlayOw
 
     public void OverlayOk()
     {
-        OverlayViewModel = null;
+        OverlayViewModel = _pendingOverlays.Count > 0 ? _pendingOverlays.Dequeue() : null;
     }
 
     public bool IsContentBundleDropValid(IStorageFile file)
