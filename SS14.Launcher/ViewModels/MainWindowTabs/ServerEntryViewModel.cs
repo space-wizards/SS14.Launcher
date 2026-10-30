@@ -7,6 +7,7 @@ using Microsoft.Toolkit.Mvvm.Messaging;
 using SS14.Launcher.Localization;
 using SS14.Launcher.Models.Data;
 using SS14.Launcher.Models.ServerStatus;
+using SS14.Launcher.Views;
 using static SS14.Launcher.Utility.HubUtility;
 
 namespace SS14.Launcher.ViewModels.MainWindowTabs;
@@ -25,6 +26,7 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
     public ICommand ConnectCommand { get; }
     public ICommand FavoriteButtonCommand { get; }
     public ICommand FavoriteRaiseButtonCommand { get; }
+    public ICommand FavoriteEditCommand { get; }
 
     public ServerEntryViewModel(MainWindowViewModel windowVm, ServerStatusData cacheData, IServerSource serverSource,
         DataManager cfg)
@@ -36,6 +38,7 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
         ConnectCommand = new RelayCommand(ConnectPressed);
         FavoriteButtonCommand = new RelayCommand(FavoriteButtonPressed);
         FavoriteRaiseButtonCommand = new RelayCommand(FavoriteRaiseButtonPressed);
+        FavoriteEditCommand = new RelayCommand(FavoriteEditPressed);
     }
 
     public ServerEntryViewModel(
@@ -81,7 +84,26 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
         }
     }
 
-    public string Name => Favorite?.Name ?? _cacheData.Name ?? _fallbackName;
+    public string Name
+    {
+        get
+        {
+            // A favorite with a name the user gave it shows that name.
+            // No name means whatever the server says it is called.
+            if (!string.IsNullOrWhiteSpace(Favorite?.Name))
+                return Favorite.Name;
+
+            if (!string.IsNullOrWhiteSpace(_cacheData.Name))
+                return _cacheData.Name;
+
+            if (!string.IsNullOrWhiteSpace(_fallbackName))
+                return _fallbackName;
+
+            // We don't know a name (yet): the server hasn't answered, or can't be reached.
+            // The address at least says which server this is.
+            return Address;
+        }
+    }
 
     private string FavoriteButtonText => IsFavorite
         ? _loc.GetString("server-entry-remove-favorite")
@@ -187,11 +209,36 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
         }
         else
         {
-            var fav = new FavoriteServer(_cacheData.Name ?? FallbackName, Address);
+            var fav = new FavoriteServer(null, Address);
             _cfg.AddFavoriteServer(fav);
         }
 
         _cfg.CommitConfig();
+    }
+
+    public async void FavoriteEditPressed()
+    {
+        if (Favorite is not { } favorite || _windowVm.Control is not { } window)
+            return;
+
+        var dialog = new AddFavoriteDialog(
+            favorite.Name,
+            favorite.Address,
+            address => address != favorite.Address && _cfg.FavoriteServers.Lookup(address).HasValue,
+            editing: true);
+
+        if (await dialog.ShowDialog<(string name, string address)?>(window) is not { } result)
+            return;
+
+        try
+        {
+            _cfg.EditFavoriteServer(favorite, string.IsNullOrEmpty(result.name) ? null : result.name, result.address);
+            _cfg.CommitConfig();
+        }
+        catch (ArgumentException)
+        {
+            // The dialog doesn't allow taking another favorite's address, so this should not happen.
+        }
     }
 
     public void FavoriteRaiseButtonPressed()
