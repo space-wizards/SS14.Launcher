@@ -28,6 +28,11 @@ public sealed partial class ServerListCache : ObservableObject, IServerSource
     [ObservableProperty] private RefreshListStatus _status = RefreshListStatus.NotUpdated;
 
     /// <summary>
+    /// Why the last refresh failed, if <see cref="Status"/> is an error. Always set before the status changes.
+    /// </summary>
+    public ErrorCode? FailureCode { get; private set; }
+
+    /// <summary>
     /// This function requests the initial update from the server if one hasn't already been requested.
     /// </summary>
     public void RequestInitialUpdate()
@@ -55,6 +60,7 @@ public sealed partial class ServerListCache : ObservableObject, IServerSource
     public async void RefreshServerList(CancellationToken cancel)
     {
         AllServers.Clear();
+        FailureCode = null;
         Status = RefreshListStatus.UpdatingMaster;
 
         try
@@ -62,6 +68,8 @@ public sealed partial class ServerListCache : ObservableObject, IServerSource
             var entries = new HashSet<HubServerListEntry>();
             var requests = new List<(Task<ServerListEntry[]> Request, Uri Hub)>();
             var allSucceeded = true;
+
+            ErrorCode? hubFailure = null;
 
             // Queue requests
             foreach (var hub in ConfigConstants.DefaultHubUrls)
@@ -95,7 +103,9 @@ public sealed partial class ServerListCache : ObservableObject, IServerSource
                         // request.Exception is non-null, see https://learn.microsoft.com/en-us/dotnet/api/system.threading.tasks.task.isfaulted?view=net-7.0#remarks
                         foreach (var ex in request.Exception!.InnerExceptions)
                         {
-                            Log.Warning("Request to hub {HubAddress} failed: {Message}", hub, ex.Message);
+                            var exCode = ErrorClassifier.ClassifyPrecisely(ex);
+                            Log.Warning("Request to hub {HubAddress} failed: {Message} ({ErrorCode})", hub, ex.Message, exCode);
+                            hubFailure ??= exCode;
                         }
                     }
                     else if (request.IsCanceled)
@@ -129,21 +139,35 @@ public sealed partial class ServerListCache : ObservableObject, IServerSource
             }));
 
             if (AllServers.Count == 0)
+            {
                 // We did not get any servers
+                FailureCode = hubFailure ?? ErrorCodes.NetServerListFailed;
                 Status = RefreshListStatus.Error;
+            }
             else if (!allSucceeded)
+            {
                 // Some hubs succeeded and returned data
+                FailureCode = ErrorCodes.NetServerListPartial;
                 Status = RefreshListStatus.PartialError;
+            }
             else
+            {
                 Status = RefreshListStatus.Updated;
+            }
+
+            if (FailureCode is { } failure)
+                Log.Warning("Server list refresh was not fully successful ({ErrorCode})", failure);
         }
         catch (OperationCanceledException)
         {
+            // The refresh has a time limit, so this means it ran out of time (or was replaced by a newer refresh).
+            FailureCode = ErrorCodes.NetTimeout;
             Status = RefreshListStatus.Error;
         }
         catch (Exception e)
         {
-            Log.Error(e, "Failed to fetch server list due to exception");
+            FailureCode = ErrorClassifier.Classify(e, ErrorCodes.NetServerListFailed);
+            Log.Error(e, "Failed to fetch server list due to exception ({ErrorCode})", FailureCode);
             Status = RefreshListStatus.Error;
         }
     }

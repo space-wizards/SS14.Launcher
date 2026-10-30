@@ -72,11 +72,7 @@ public class OptionsTabViewModel : MainWindowTabViewModel
 
     public void OpenLogDirectory()
     {
-        Process.Start(new ProcessStartInfo
-        {
-            UseShellExecute = true,
-            FileName = LauncherPaths.DirLogs
-        });
+        Helpers.OpenFolder(LauncherPaths.DirLogs);
     }
 
     public void OpenAccountSettings()

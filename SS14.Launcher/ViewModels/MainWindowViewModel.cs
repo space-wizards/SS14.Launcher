@@ -4,13 +4,17 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
+using System.Net.NetworkInformation;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using Avalonia.Platform.Storage;
 using Avalonia.Threading;
 using DynamicData;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
+using Microsoft.Toolkit.Mvvm.Messaging;
 using Serilog;
 using Splat;
 using SS14.Launcher.Api;
@@ -63,7 +67,7 @@ public sealed partial class MainWindowViewModel : ViewModelBase, IErrorOverlayOw
             NewsTab,
             OptionsTab,
 #if DEVELOPMENT
-            new DevelopmentTabViewModel(),
+            new DevelopmentTabViewModel(this),
 #endif
         };
 
@@ -75,6 +79,10 @@ public sealed partial class MainWindowViewModel : ViewModelBase, IErrorOverlayOw
             if (e.PropertyName is nameof(LoggedIn) && LoggedIn)
                 RunSelectedOnTab();
         };
+
+        // Things without a UI of their own (saving settings, the options tab) report errors through the messenger.
+        WeakReferenceMessenger.Default.Register<MainWindowViewModel, ErrorOccurred>(this, static (vm, message) =>
+            Dispatcher.UIThread.Post(() => vm.ShowErrorOverlay(message.TitleKey, message.DescriptionKey, message.Code)));
 
         _loginMgr.PropertyChanged += (_, e) =>
         {
@@ -104,6 +112,10 @@ public sealed partial class MainWindowViewModel : ViewModelBase, IErrorOverlayOw
 
     [ObservableProperty] private string? _busyTask;
     [ObservableProperty] private ViewModelBase? _overlayViewModel;
+
+    // Errors that happened while another overlay was up, shown one after the other as each is dismissed.
+    private const int MaxPendingOverlays = 5;
+    private readonly Queue<AuthErrorsOverlayViewModel> _pendingOverlays = new();
 
     public int SelectedIndex
     {
@@ -247,13 +259,65 @@ public sealed partial class MainWindowViewModel : ViewModelBase, IErrorOverlayOw
 
     public async void OnWindowInitialized()
     {
-        BusyTask = _loc.GetString("main-window-busy-checking-update");
-        await CheckLauncherUpdate();
-        BusyTask = _loc.GetString("main-window-busy-checking-login-status");
-        await CheckAccounts();
-        BusyTask = null;
+        var reachable = true;
 
-        if (_cfg.SelectedLoginId is { } g && _loginMgr.Logins.TryLookup(g, out var login))
+        if (IsRunningFromTranslocatedLocation())
+        {
+            Log.Warning("Running from a translocated location ({ErrorCode})", ErrorCodes.GenTranslocated);
+            ShowErrorOverlay("error-overlay-title-translocated", "error-overlay-desc-translocated", ErrorCodes.GenTranslocated);
+        }
+
+        try
+        {
+            ErrorCode? offlineCode = null;
+
+            // The OS can be wrong about having no network (some virtual or tunnel adapters aren't counted),
+            // so before believing it, check that the auth server's name really can't be found.
+            if (!NetworkInterface.GetIsNetworkAvailable() && !await CanFindAuthServerAsync())
+            {
+                // Nothing we require is reachable, so don't make the user wait for every request to time out.
+                offlineCode = ErrorCodes.NetNoConnection;
+            }
+            else
+            {
+                BusyTask = _loc.GetString("main-window-busy-checking-update");
+                await CheckLauncherUpdate();
+
+                // Other failures, such as the server answering with an error, are no reason to treat the user as
+                // offline. We carry on like before and assume this launcher is up to date.
+                if (_infoManager.FailureCode is { } failure && await IsOfflineFailureAsync(failure))
+                    offlineCode = failure;
+            }
+
+            if (offlineCode is { } code)
+            {
+                reachable = false;
+                ShowOfflineError(code);
+            }
+            else
+            {
+                BusyTask = _loc.GetString("main-window-busy-checking-login-status");
+            }
+
+            // Logins are always set up, so the token refresh timer runs and the saved accounts stay.
+            // Only the check against the auth server right now is skipped if we know it would just time out.
+            await CheckAccounts(reachable);
+        }
+        catch (Exception e)
+        {
+            // Whatever goes wrong here, we can't keep the spinny thing going for all eternity.
+            reachable = false;
+            var code = ErrorClassifier.ClassifyPrecisely(e) ?? ErrorCodes.GenUnexpected;
+            Log.Error(e, "Startup checks failed ({ErrorCode})", code);
+            ShowErrorOverlay("error-overlay-title-unexpected", "error-overlay-desc-unexpected", code);
+        }
+        finally
+        {
+            BusyTask = null;
+        }
+
+        // Selecting the saved account would only try the auth server again, and show a second error.
+        if (reachable && _cfg.SelectedLoginId is { } g && _loginMgr.Logins.TryLookup(g, out var login))
         {
             TrySwitchToAccount(login);
         }
@@ -261,10 +325,55 @@ public sealed partial class MainWindowViewModel : ViewModelBase, IErrorOverlayOw
         // We should now start reacting to commands.
     }
 
-    private async Task CheckAccounts()
+    private static async Task<bool> IsOfflineFailureAsync(ErrorCode code)
+    {
+        if (code == ErrorCodes.NetNoConnection || code == ErrorCodes.NetDnsFailed)
+            return true;
+
+        // Only the launcher info server was slow or refused us, which says nothing about the auth server.
+        // This could happen with Russian censorship where they throttle downloads.
+        // The rest of the launcher is likely to be unstable or unusable, but it isn't a reason to fail.
+        if (code == ErrorCodes.NetConnectFailed || code == ErrorCodes.NetTimeout)
+            return !await CanFindAuthServerAsync();
+
+        return false;
+    }
+
+    private static async Task<bool> CanFindAuthServerAsync()
+    {
+        try
+        {
+            var host = new Uri(ConfigConstants.AuthUrl.Urls[0]).Host;
+
+            using var timeout = new CancellationTokenSource(TimeSpan.FromSeconds(3));
+            await Dns.GetHostAddressesAsync(host, timeout.Token);
+
+            return true;
+        }
+        catch (Exception)
+        {
+            return false;
+        }
+    }
+
+    // macOS runs a quarantined app from a random read-only copy ("App Translocation", according to the docs) until it is moved somewhere.
+    private static bool IsRunningFromTranslocatedLocation()
+    {
+        return OperatingSystem.IsMacOS()
+               && LauncherPaths.DirLauncherInstall.Contains("/AppTranslocation/", StringComparison.Ordinal);
+    }
+
+    private void ShowOfflineError(ErrorCode code)
+    {
+        Log.Warning("Cannot reach the launcher's servers ({ErrorCode})", code);
+        // The message already tells the user to check their connection, so skip the hint that says the same.
+        ShowErrorOverlay("error-overlay-title-offline", "error-overlay-desc-offline", code, showHint: false);
+    }
+
+    private async Task CheckAccounts(bool refreshNow)
     {
         // Check if accounts are still valid and refresh their tokens if necessary.
-        await _loginMgr.Initialize();
+        await _loginMgr.Initialize(refreshNow);
     }
 
     public void OnDiscordButtonPressed()
@@ -394,12 +503,13 @@ public sealed partial class MainWindowViewModel : ViewModelBase, IErrorOverlayOw
         }
         catch (AuthApiException e)
         {
-            Log.Warning(e, "AuthApiException while trying to refresh account {login}", account.LoginInfo);
-            OverlayViewModel = new AuthErrorsOverlayViewModel(this, _loc.GetString("main-window-error-connecting-auth-server"),
+            Log.Warning(e, "AuthApiException while trying to refresh account {login} ({ErrorCode})", account.LoginInfo, e.Code);
+            PushOverlay(new AuthErrorsOverlayViewModel(this, _loc.GetString("main-window-error-connecting-auth-server"),
                 new[]
                 {
                     e.InnerException?.Message ?? _loc.GetString("main-window-error-unknown")
-                });
+                },
+                e.Code));
         }
         finally
         {
@@ -407,9 +517,58 @@ public sealed partial class MainWindowViewModel : ViewModelBase, IErrorOverlayOw
         }
     }
 
+    /// <summary>
+    /// Shows an error overlay with the given localized text and error code.
+    /// </summary>
+    public void ShowErrorOverlay(string titleKey, string descriptionKey, ErrorCode code, bool showHint = true)
+    {
+        PushOverlay(new AuthErrorsOverlayViewModel(
+            this,
+            _loc.GetString(titleKey),
+            new[] { _loc.GetString(descriptionKey) },
+            code,
+            showHint: showHint));
+    }
+
+    /// <summary>
+    /// Shows the overlay now, or once the ones before it have been dismissed. Same error twice in a row is shown once.
+    /// </summary>
+    private void PushOverlay(AuthErrorsOverlayViewModel overlay)
+    {
+        if (OverlayViewModel == null)
+        {
+            OverlayViewModel = overlay;
+            return;
+        }
+
+        if (IsSameError(OverlayViewModel, overlay) || _pendingOverlays.Any(p => IsSameError(p, overlay)))
+            return;
+
+        // Errors that keep coming are the crash handler's problem, don't pile up a stack of them.
+        if (_pendingOverlays.Count < MaxPendingOverlays)
+            _pendingOverlays.Enqueue(overlay);
+    }
+
+    private static bool IsSameError(ViewModelBase? shown, AuthErrorsOverlayViewModel other)
+    {
+        return shown is AuthErrorsOverlayViewModel o && o.Code == other.Code && o.Title == other.Title;
+    }
+
+    /// <summary>
+    /// Shows an error overlay for a failed connection. Unlike <see cref="ShowErrorOverlay"/> it takes text that
+    /// is already put together, and it replaces any overlay that is up, since the user is waiting for this.
+    /// </summary>
+    public void ShowFailureOverlay(string title, string message, ErrorCode code, string codeText)
+    {
+        // An empty message means the title says it all, so don't leave a blank line.
+        var messages = message.Length == 0 ? Array.Empty<string>() : new[] { message };
+
+        OverlayViewModel = new AuthErrorsOverlayViewModel(this, title, messages, code, codeText);
+    }
+
     public void OverlayOk()
     {
-        OverlayViewModel = null;
+        OverlayViewModel = _pendingOverlays.Count > 0 ? _pendingOverlays.Dequeue() : null;
     }
 
     public bool IsContentBundleDropValid(IStorageFile file)

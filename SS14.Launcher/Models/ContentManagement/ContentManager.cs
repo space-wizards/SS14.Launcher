@@ -10,6 +10,7 @@ using Microsoft.Data.Sqlite;
 using Serilog;
 using SS14.Launcher.Models.Data;
 using SS14.Launcher.Utility;
+using SS14.Launcher.Models;
 
 namespace SS14.Launcher.Models.ContentManagement;
 
@@ -17,20 +18,53 @@ public sealed class ContentManager
 {
     public void Initialize()
     {
-        using var con = GetSqliteConnection();
+        using var con = OpenForStartup();
 
         // I tried to set this from inside the migrations but didn't work, rip.
         // Anyways: enabling WAL mode here so that downloading new files doesn't lock up if your game is running.
-        con.Execute("PRAGMA journal_mode=WAL");
+        EnableWal(con, ErrorCodes.DbOpenContent);
 
         Log.Debug("Migrating content database...");
 
         var sw = Stopwatch.StartNew();
         var success = Migrator.Migrate(con, "SS14.Launcher.Models.ContentManagement.Migrations");
         if (!success)
-            throw new Exception("Migrations failed!");
+            throw new LauncherException("Migrations failed!", ErrorCodes.DbMigrateContent);
 
         Log.Debug("Did content DB migrations in {MigrationTime}", sw.Elapsed);
+    }
+
+    /// <summary>
+    /// Turns on WAL mode. Some file systems (network drives, some FUSE mounts) can't do the locking it needs.
+    /// </summary>
+    internal static void EnableWal(SqliteConnection con, ErrorCode fallback)
+    {
+        try
+        {
+            con.Execute("PRAGMA journal_mode=WAL");
+        }
+        catch (SqliteException e)
+        {
+            throw new LauncherException(
+                "Failed to enable WAL mode on the database",
+                ErrorClassifier.ClassifyPrecisely(e) ?? fallback,
+                e);
+        }
+    }
+
+    private static SqliteConnection OpenForStartup()
+    {
+        try
+        {
+            return GetSqliteConnection();
+        }
+        catch (Exception e) when (e is SqliteException or IOException or UnauthorizedAccessException)
+        {
+            throw new LauncherException(
+                "Failed to open the content database",
+                ErrorClassifier.ClassifyPrecisely(e) ?? ErrorCodes.DbOpenContent,
+                e);
+        }
     }
 
     /// <summary>
@@ -64,8 +98,9 @@ public sealed class ContentManager
             }
             catch (Exception e)
             {
-                Log.Error(e, "Error while truncating content DB!");
-                return true;
+                var code = ErrorClassifier.ClassifyPrecisely(e) ?? ErrorCodes.DbClearContent;
+                Log.Error(e, "Error while truncating content DB! ({ErrorCode})", code);
+                throw new LauncherException("Failed to clear server content", code, e);
             }
         });
     }
@@ -102,7 +137,7 @@ public sealed class ContentManager
                 return new ZStdDecompressStream(blob);
 
             default:
-                throw new InvalidDataException("Unknown compression scheme in ContentDB!");
+                throw new UpdateException("Unknown compression scheme in ContentDB!", ErrorCodes.UpdUnknownCompression);
         }
     }
 

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
@@ -41,6 +42,8 @@ public partial class Connector : ObservableObject
 
     [ObservableProperty] private ConnectionStatus _status = ConnectionStatus.None;
     [ObservableProperty] private bool _clientExitedBadly;
+    [ObservableProperty] private ErrorCode? _failureCode;
+    [ObservableProperty] private int? _clientExitCode;
     [ObservableProperty] private bool _privacyPolicyDifferentVersion;
     public ServerPrivacyPolicyInfo? PrivacyPolicyInfo { get; private set; }
 
@@ -52,13 +55,17 @@ public partial class Connector : ObservableObject
         }
         catch (ConnectException e)
         {
-            Log.Error(e, "Failed to connect: {status}", e.Status);
-            Status = e.Status;
+            Fail(e.Status, e.Code, e, "Failed to connect");
         }
-        catch (OperationCanceledException e)
+        catch (OperationCanceledException e) when (!ErrorClassifier.IsTimeout(e))
         {
             Log.Information(e, "Cancelled connect");
             Status = ConnectionStatus.Cancelled;
+        }
+        catch (Exception e)
+        {
+            // Includes timeouts, which look like cancellation but aren't the user's doing.
+            Fail(ConnectionStatus.ConnectionFailed, ErrorClassifier.Classify(e), e, "Unexpected error while connecting");
         }
         finally
         {
@@ -76,18 +83,36 @@ public partial class Connector : ObservableObject
         }
         catch (ConnectException e)
         {
-            Log.Error(e, "Failed to launch: {status}", e.Status);
-            Status = e.Status;
+            Fail(e.Status, e.Code, e, "Failed to launch");
         }
-        catch (OperationCanceledException e)
+        catch (OperationCanceledException e) when (!ErrorClassifier.IsTimeout(e))
         {
             Log.Information(e, "Cancelled launch");
             Status = ConnectionStatus.Cancelled;
+        }
+        catch (Exception e) when (e is InvalidDataException or JsonException)
+        {
+            // The file isn't a readable zip, or its metadata isn't valid JSON.
+            var code = e is JsonException ? ErrorCodes.CliBundleMetadata : ErrorCodes.CliBundleUnreadable;
+            Fail(ConnectionStatus.NotAContentBundle, code, e, "Content bundle was not valid");
+        }
+        catch (Exception e)
+        {
+            Fail(ConnectionStatus.UpdateError, ErrorClassifier.Classify(e), e, "Unexpected error while launching");
         }
         finally
         {
             Cleanup();
         }
+    }
+
+    private void Fail(ConnectionStatus status, ErrorCode code, Exception e, string what)
+    {
+        Log.Error(e, "{What}: {Status} ({ErrorCode})", what, status, code);
+
+        // Set the code first so the UI can read it as soon as the status changes.
+        FailureCode = code;
+        Status = status;
     }
 
     private async Task ConnectInternalAsync(string address, CancellationToken cancel)
@@ -202,7 +227,7 @@ public partial class Connector : ObservableObject
             if (metadataJson == null)
             {
                 Log.Error("Zip file did not contain rt_content_bundle.json");
-                throw new ConnectException(ConnectionStatus.NotAContentBundle);
+                throw new ConnectException(ConnectionStatus.NotAContentBundle, ErrorCodes.CliNotBundle);
             }
 
             ContentBundleMetadata? metadata;
@@ -214,7 +239,7 @@ public partial class Connector : ObservableObject
             if (metadata == null)
             {
                 Log.Error("rt_content_bundle.json deserialized as null");
-                throw new ConnectException(ConnectionStatus.NotAContentBundle);
+                throw new ConnectException(ConnectionStatus.NotAContentBundle, ErrorCodes.CliBundleMetadata);
             }
 
             Log.Debug("Loaded metadata for content bundle, continuing with launch");
@@ -296,10 +321,23 @@ public partial class Connector : ObservableObject
                 return;
             }
 
+            if (clientProc.ExitCode != 0)
+            {
+                var viaOpen = clientProc.StartInfo.FileName == "open";
+                var code = viaOpen ? ErrorCodes.CliMacLaunch : ErrorCodes.CliExitedEarly;
+
+                Log.Error("Client exited immediately with exit code {ExitCode} ({ErrorCode})",
+                    clientProc.ExitCode, code);
+
+                ClientExitCode = clientProc.ExitCode;
+                FailureCode = code;
+            }
+
             ClientExitedBadly = clientProc.ExitCode != 0;
         }
         else
         {
+            FailureCode ??= ErrorCodes.CliNoProcess;
             ClientExitedBadly = true;
         }
 
@@ -390,9 +428,27 @@ public partial class Connector : ObservableObject
             // Launch client.
             return await LaunchClient(launchInfo, args, cVars);
         }
+        catch (ConnectException e)
+        {
+            Log.Error(e, "Failed to start client ({ErrorCode})", e.Code);
+            FailureCode = e.Code;
+            return null;
+        }
+        catch (Win32Exception e)
+        {
+            var code = ErrorClassifier.ClassifyProcessStart(e)
+                       ?? ErrorClassifier.Classify(e, ErrorCodes.CliStartFailed);
+
+            Log.Error(e, "Could not start the client ({ErrorCode}, native error {NativeError})",
+                code, e.NativeErrorCode);
+            FailureCode = code;
+            return null;
+        }
         catch (Exception e)
         {
-            Log.Error(e, "Exception while starting client");
+            var code = ErrorClassifier.Classify(e, ErrorCodes.CliStartFailed);
+            Log.Error(e, "Exception while starting client ({ErrorCode})", code);
+            FailureCode = code;
             return null;
         }
     }
@@ -417,7 +473,7 @@ public partial class Connector : ObservableObject
         catch (FormatException e)
         {
             Log.Error(e, "Failed to parse ConnectAddress");
-            throw new ConnectException(ConnectionStatus.ConnectionFailed);
+            throw new ConnectException(ConnectionStatus.ConnectionFailed, ErrorCodes.NetBadConnectAddress, e);
         }
     }
 
@@ -426,7 +482,7 @@ public partial class Connector : ObservableObject
         var installation = await _updater.RunUpdateForLaunchAsync(info, cancel);
         if (installation == null)
         {
-            throw new ConnectException(ConnectionStatus.UpdateError);
+            throw new ConnectException(ConnectionStatus.UpdateError, _updater.UpdateErrorCode ?? ErrorCodes.UpdUnexpected);
         }
 
         return installation;
@@ -441,7 +497,7 @@ public partial class Connector : ObservableObject
         var installation = await _updater.InstallContentBundleForLaunchAsync(archive, zipHash, metadata, cancel);
         if (installation == null)
         {
-            throw new ConnectException(ConnectionStatus.UpdateError);
+            throw new ConnectException(ConnectionStatus.UpdateError, _updater.UpdateErrorCode ?? ErrorCodes.UpdUnexpected);
         }
 
         return installation;
@@ -452,7 +508,7 @@ public partial class Connector : ObservableObject
         if (!UriHelper.TryParseSs14Uri(address, out var parsedAddress))
         {
             Log.Error("Invalid URI in GetServerInfoAsync: {Uri}", address);
-            throw new ConnectException(ConnectionStatus.ConnectionFailed);
+            throw new ConnectException(ConnectionStatus.ConnectionFailed, ErrorCodes.NetBadServerAddress);
         }
 
         // Fetch server connect info.
@@ -480,7 +536,14 @@ public partial class Connector : ObservableObject
         }
         catch (Exception e) when (e is JsonException or HttpRequestException or InvalidDataException)
         {
-            throw new ConnectException(ConnectionStatus.ConnectionFailed, e);
+            var code = e switch
+            {
+                JsonException => ErrorCodes.NetBadResponse,
+                InvalidDataException => ErrorCodes.NetEmptyResponse,
+                _ => ErrorClassifier.Classify(e, ErrorCodes.NetHttp)
+            };
+
+            throw new ConnectException(ConnectionStatus.ConnectionFailed, code, e);
         }
     }
 
@@ -503,14 +566,27 @@ public partial class Connector : ObservableObject
     {
         var pubKey = LauncherPaths.PathPublicKey;
         var engineVersion = launchInfo.ModuleInfo.Single(x => x.Module == "Robust").Version;
-        var binPath = _engineManager.GetEnginePath(engineVersion);
-        var sig = _engineManager.GetEngineSignature(engineVersion);
+
+        string binPath;
+        string sig;
+        try
+        {
+            binPath = _engineManager.GetEnginePath(engineVersion);
+            sig = _engineManager.GetEngineSignature(engineVersion);
+        }
+        catch (Exception e) when (e is ArgumentException or InvalidOperationException or KeyNotFoundException)
+        {
+            throw new ConnectException(ConnectionStatus.ClientExited, ErrorCodes.CliEngineMissing, e);
+        }
 
         // The updater should have made sure this exists, but it didn't. Grumble grumble...
         if (!File.Exists(binPath))
         {
             Log.Error("Engine archive for version {EngineVersion} is missing: {Path}", engineVersion, binPath);
-            throw new FileNotFoundException("The engine archive is missing", binPath);
+            throw new ConnectException(
+                ConnectionStatus.ClientExited,
+                ErrorCodes.CliEngineMissing,
+                new FileNotFoundException("The engine archive is missing", binPath));
         }
 
         var startInfo = await GetLoaderStartInfo();
@@ -593,27 +669,21 @@ public partial class Connector : ObservableObject
 
         Log.Debug("Launch command: {LaunchCommand}", commandBuilder.ToString());
 
+        // macOS starts the loader through "open", so there is no loader executable to check there.
+        if (!OperatingSystem.IsMacOS() && !File.Exists(startInfo.FileName))
+        {
+            Log.Error("Loader not found at {LoaderPath}", startInfo.FileName);
+            throw new ConnectException(ConnectionStatus.ClientExited, ErrorCodes.CliNoLoader);
+        }
+
         var process = Process.Start(startInfo);
 
         if (process != null)
         {
             Log.Debug("Setting up manual-pipe logging for new client with PID {pid}.", process.Id);
 
-            var fileStdout = new FileStream(
-                LauncherPaths.PathClientStdoutLog,
-                FileMode.Create,
-                FileAccess.Write,
-                FileShare.Delete | FileShare.ReadWrite,
-                0,
-                FileOptions.Asynchronous);
-
-            var fileStderr = new FileStream(
-                LauncherPaths.PathClientStderrLog,
-                FileMode.Create,
-                FileAccess.Write,
-                FileShare.Delete | FileShare.ReadWrite,
-                0,
-                FileOptions.Asynchronous);
+            var fileStdout = OpenClientLog(LauncherPaths.PathClientStdoutLog);
+            var fileStderr = OpenClientLog(LauncherPaths.PathClientStderrLog);
 
             PipeOutput(process, fileStdout, fileStderr);
         }
@@ -624,6 +694,25 @@ public partial class Connector : ObservableObject
         {
             startInfo.EnvironmentVariables[envVar] = value;
             // Log.Debug("Env: {EnvVar} = {Value}", envVar, value);
+        }
+    }
+
+    private static Stream OpenClientLog(string path)
+    {
+        try
+        {
+            return new FileStream(
+                path,
+                FileMode.Create,
+                FileAccess.Write,
+                FileShare.Delete | FileShare.ReadWrite,
+                0,
+                FileOptions.Asynchronous);
+        }
+        catch (Exception e) when (e is IOException or UnauthorizedAccessException)
+        {
+            Log.Warning(e, "Could not create client log file {Path} ({ErrorCode})", path, ErrorCodes.CliLogFiles);
+            return Stream.Null;
         }
     }
 
@@ -744,19 +833,33 @@ public partial class Connector : ObservableObject
                 // Fucking stupid since we can clearly just work around it like this...
                 // Thank you, Blaisorblade on Ask Different
                 // https://apple.stackexchange.com/questions/105155/denied-file-read-access-on-file-i-own-and-have-full-r-w-permissions-on
-                var xattr = Process.Start(new ProcessStartInfo
+                Process? xattr;
+                try
                 {
-                    FileName = "xattr",
-                    ArgumentList = {"-d", "com.apple.quarantine", appPath},
-                    RedirectStandardError = true,
-                    RedirectStandardOutput = true
-                });
+                    xattr = Process.Start(new ProcessStartInfo
+                    {
+                        FileName = "xattr",
+                        ArgumentList = {"-r", "-d", "com.apple.quarantine", appPath},
+                        RedirectStandardError = true,
+                        RedirectStandardOutput = true
+                    });
+                }
+                catch (Win32Exception e)
+                {
+                    throw new ConnectException(ConnectionStatus.ClientExited, ErrorCodes.CliMacLaunch, e);
+                }
 
                 if (xattr is null)
-                    throw new Exception("Xattr failed to start");
+                    throw new ConnectException(ConnectionStatus.ClientExited, ErrorCodes.CliMacLaunch);
                 PipeLogOutput(xattr);
 
                 await xattr.WaitForExitAsync();
+
+                if (xattr.ExitCode != 0)
+                {
+                    // Not fatal by itself, but it explains it if "open" refuses to start the game next.=
+                    Log.Warning("Clearing the quarantine attribute failed with exit code {ExitCode}", xattr.ExitCode);
+                }
 
                 var startInfo = new ProcessStartInfo
                 {
@@ -793,7 +896,7 @@ public partial class Connector : ObservableObject
             }
         }
 
-        throw new NotSupportedException("Unsupported platform.");
+        throw new ConnectException(ConnectionStatus.ClientExited, ErrorCodes.CliNoLoader);
     }
 #pragma warning restore 162
 
@@ -812,19 +915,16 @@ public partial class Connector : ObservableObject
         NotAContentBundle
     }
 
-    private sealed class ConnectException : Exception
+    private sealed class ConnectException : Exception, IErrorCoded
     {
         public ConnectionStatus Status { get; }
+        public ErrorCode Code { get; }
 
-        public ConnectException(ConnectionStatus status)
+        public ConnectException(ConnectionStatus status, ErrorCode code, Exception? inner = null)
+            : base($"Failed to connect: {status} ({code})", inner)
         {
             Status = status;
-        }
-
-        public ConnectException(ConnectionStatus status, Exception inner)
-            : base($"Failed to connect: {status}", inner)
-        {
-            Status = status;
+            Code = code;
         }
     }
 }

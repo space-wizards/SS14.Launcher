@@ -57,7 +57,7 @@ public static class LauncherPaths
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
         {
             var xdgDataHome = Environment.GetEnvironmentVariable("XDG_DATA_HOME");
-            if (xdgDataHome == null)
+            if (string.IsNullOrEmpty(xdgDataHome) || !Path.IsPathRooted(xdgDataHome))
             {
                 appDataDir = Path.Combine(
                     Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".local", "share");

@@ -40,7 +40,7 @@ public interface IEngineManager
     static string ResolveEngineModuleVersion(EngineModuleManifest manifest, string moduleName, string engineVersion)
     {
         if (!manifest.Modules.TryGetValue(moduleName, out var moduleData))
-            throw new UpdateException("Unable to find engine module in manifest!");
+            throw new UpdateException("Unable to find engine module in manifest!", ErrorCodes.UpdModuleNotInManifest);
 
         // Because engine modules are solely identified by *minimum* version,
         // we have to double-check that there isn't a newer version of the module available for the relevant engine.
@@ -51,7 +51,7 @@ public interface IEngineManager
             .MaxBy(kv => kv.Version);
 
         if (selectedVersion == null)
-            throw new UpdateException("Unable to find suitable module version in manifest!");
+            throw new UpdateException("Unable to find suitable module version in manifest!", ErrorCodes.UpdNoSuitableModule);
 
         // Follow redirects. The redirect target does not need to satisfy the engine minimum check above
         var key = selectedVersion.Key;
@@ -60,10 +60,10 @@ public interface IEngineManager
         while (versionData.Redirect is { } redirect)
         {
             if (!seen.Add(redirect))
-                throw new UpdateException("Module version redirect loop detected in manifest!");
+                throw new UpdateException("Module version redirect loop detected in manifest!", ErrorCodes.UpdModuleRedirectLoop);
 
             if (!moduleData.Versions.TryGetValue(redirect, out var redirected))
-                throw new UpdateException("Module version redirect target not found in manifest!");
+                throw new UpdateException("Module version redirect target not found in manifest!", ErrorCodes.UpdModuleRedirectMissing);
 
             key = redirect;
             versionData = redirected;

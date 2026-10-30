@@ -60,6 +60,11 @@ public sealed partial class Updater : ObservableObject
 
     public Exception? UpdateException;
 
+    /// <summary>
+    /// The error code describing <see cref="UpdateException"/>.
+    /// </summary>
+    public ErrorCode? UpdateErrorCode;
+
     public async Task<ContentLaunchInfo?> RunUpdateForLaunchAsync(
         ServerBuildInformation buildInformation,
         CancellationToken cancel = default)
@@ -80,11 +85,12 @@ public sealed partial class Updater : ObservableObject
     {
         if (_updating)
         {
-            throw new InvalidOperationException("Update already in progress.");
+            throw new UpdateException("Update already in progress.", ErrorCodes.UpdAlreadyRunning);
         }
 
         _updating = true;
         UpdateException = null;
+        UpdateErrorCode = null;
 
         try
         {
@@ -92,7 +98,7 @@ public sealed partial class Updater : ObservableObject
             Status = UpdateStatus.Ready;
             return ret;
         }
-        catch (OperationCanceledException)
+        catch (OperationCanceledException e) when (!ErrorClassifier.IsTimeout(e))
         {
             throw;
         }
@@ -100,7 +106,8 @@ public sealed partial class Updater : ObservableObject
         {
             Status = UpdateStatus.Error;
             UpdateException = e;
-            Log.Error(e, "Exception while trying to run updates");
+            UpdateErrorCode = ErrorClassifier.Classify(e, ErrorCodes.UpdUnexpected);
+            Log.Error(e, "Exception while trying to run updates ({ErrorCode})", UpdateErrorCode);
         }
         finally
         {
@@ -275,7 +282,7 @@ public sealed partial class Updater : ObservableObject
 
             var robustIndex = Array.FindIndex(modules, m => m.Item1 == "Robust");
             if (robustIndex < 0)
-                throw new UpdateException("Content version has no engine dependency!");
+                throw new UpdateException("Content version has no engine dependency!", ErrorCodes.UpdNoEngineDependency);
 
             // Engine version may change here due to manifest version redirects.
             var engineVersion = await InstallEngineVersionIfMissing(modules[robustIndex].Item2, cancel);
@@ -739,7 +746,7 @@ public sealed partial class Updater : ObservableObject
         }
         else
         {
-            throw new InvalidOperationException("No download information provided at all!");
+            throw new UpdateException("No download information provided at all!", ErrorCodes.UpdNoDownloadInfo);
         }
 
         Log.Debug("Manifest hash: {ManifestHash}", Convert.ToHexString(manifestHash));

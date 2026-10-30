@@ -37,14 +37,14 @@ public sealed class OverrideAssetsManager
     {
         using var con = GetSqliteConnection();
 
-        con.Execute("PRAGMA journal_mode=WAL");
+        ContentManagement.ContentManager.EnableWal(con, ErrorCodes.DbMigrateAssets);
 
         Log.Debug("Migrating override assets database...");
 
         var sw = Stopwatch.StartNew();
         var success = Migrator.Migrate(con, "SS14.Launcher.Models.OverrideAssets.Migrations");
         if (!success)
-            throw new Exception("Migration failed!");
+            throw new LauncherException("Migration failed!", ErrorCodes.DbMigrateAssets);
 
         Log.Debug("Did override assets DB migrations in {MigrationTime}", sw.Elapsed);
 
