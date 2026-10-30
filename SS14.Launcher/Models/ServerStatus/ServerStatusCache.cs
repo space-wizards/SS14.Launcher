@@ -20,8 +20,8 @@ namespace SS14.Launcher.Models.ServerStatus;
 /// </summary>
 public sealed class ServerStatusCache : IServerSource
 {
-    // Yes this class "memory leaks" because it never frees these data objects.
-    // Oh well!
+    // Entries are only freed through Remove(), so whoever hands out a status has to say when it's done with it.
+    // Otherwise Refresh() keeps querying servers nobody is looking at any more.
     private readonly Dictionary<string, CacheReg> _cachedData = new();
     private readonly HttpClient _http;
 
@@ -45,6 +45,19 @@ public sealed class ServerStatusCache : IServerSource
         _cachedData.Add(serverAddress, reg);
 
         return data;
+    }
+
+    /// <summary>
+    ///     Forgets a server: stops any fetch in progress, and means <see cref="Refresh"/> no longer queries it.
+    /// </summary>
+    /// <param name="serverAddress">The address of the server to forget.</param>
+    public void Remove(string serverAddress)
+    {
+        if (!_cachedData.Remove(serverAddress, out var reg))
+            return;
+
+        reg.Cancellation?.Cancel();
+        reg.Data.InfoCancel?.Cancel();
     }
 
     /// <summary>
