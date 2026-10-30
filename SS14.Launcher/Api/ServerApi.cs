@@ -37,6 +37,7 @@ public static class ServerApi
         public const string TagLanguage     = "lang:";
         public const string TagRolePlay     = "rp:";
         public const string TagNoTagInfer   = "no_tag_infer";
+        public const string TagWhitelist    = "whitelist";
 
         // Region tags.
         public const string RegionAfricaCentral       = "af_c";
