@@ -132,6 +132,10 @@ public static class ErrorClassifier
             case PathTooLongException:
                 return ErrorCodes.IoPathTooLong;
 
+            // The server closed the connection before it sent everything it promised. Must come before IOException
+            case HttpIOException:
+                return ErrorCodes.NetDownloadInterrupted;
+
             case IOException io:
                 return ClassifyIo(io);
 
