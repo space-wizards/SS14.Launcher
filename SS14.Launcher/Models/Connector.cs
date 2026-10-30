@@ -699,8 +699,6 @@ public partial class Connector : ObservableObject
             basePath = LauncherPaths.DirLauncherInstall;
             if (OperatingSystem.IsMacOS())
                 basePath = Path.Combine(basePath, "..", "..");
-            else
-                basePath = Path.Combine(basePath, "loader");
         }
         else
         {
