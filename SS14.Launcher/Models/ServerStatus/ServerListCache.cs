@@ -69,6 +69,8 @@ public sealed partial class ServerListCache : ObservableObject, IServerSource
             var requests = new List<(Task<ServerListEntry[]> Request, Uri Hub)>();
             var allSucceeded = true;
 
+            ErrorCode? hubFailure = null;
+
             // Queue requests
             foreach (var hub in ConfigConstants.DefaultHubUrls)
             {
@@ -101,7 +103,9 @@ public sealed partial class ServerListCache : ObservableObject, IServerSource
                         // request.Exception is non-null, see https://learn.microsoft.com/en-us/dotnet/api/system.threading.tasks.task.isfaulted?view=net-7.0#remarks
                         foreach (var ex in request.Exception!.InnerExceptions)
                         {
-                            Log.Warning("Request to hub {HubAddress} failed: {Message}", hub, ex.Message);
+                            var exCode = ErrorClassifier.ClassifyPrecisely(ex);
+                            Log.Warning("Request to hub {HubAddress} failed: {Message} ({ErrorCode})", hub, ex.Message, exCode);
+                            hubFailure ??= exCode;
                         }
                     }
                     else if (request.IsCanceled)
@@ -137,7 +141,7 @@ public sealed partial class ServerListCache : ObservableObject, IServerSource
             if (AllServers.Count == 0)
             {
                 // We did not get any servers
-                FailureCode = ErrorCodes.NetServerListFailed;
+                FailureCode = hubFailure ?? ErrorCodes.NetServerListFailed;
                 Status = RefreshListStatus.Error;
             }
             else if (!allSucceeded)
