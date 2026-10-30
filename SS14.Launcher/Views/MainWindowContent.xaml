@@ -111,58 +111,38 @@
       </StackPanel>
     </ContentControl>
 
-    <!-- Yes I realize the absurdity of having literally 5 of these error overlay controls defined get off my back. -->
+    <v:WarningOverlay IsVisible="{Binding ShowEarlyAccessWarning}"
+                      Title="{loc:Loc main-window-early-access-title}"
+                      Description="{loc:Loc main-window-early-access-desc}"
+                      ButtonText="{loc:Loc main-window-early-access-accept}"
+                      Command="{Binding DismissEarlyAccessPressed}" />
 
-    <ContentControl Classes="OverlayBox" IsVisible="{Binding !HasDismissedEarlyAccessWarning.Value}">
-      <StackPanel Orientation="Vertical">
-        <TextBlock HorizontalAlignment="Center" Classes="NanoHeadingMedium"
-                   Text="{loc:Loc main-window-early-access-title}" />
-        <TextBlock Margin="0, 10" TextAlignment="Center" MaxWidth="450" TextWrapping="Wrap"
-                   Text="{loc:Loc main-window-early-access-desc}" />
-        <Button Content="{loc:Loc main-window-early-access-accept}" Command="{Binding DismissEarlyAccessPressed}"
-                HorizontalAlignment="Center" />
-      </StackPanel>
-    </ContentControl>
+    <v:WarningOverlay IsVisible="{Binding ShowEpilepsyWarning}"
+                      Title="{loc:Loc main-window-epilepsy-title}"
+                      Description="{loc:Loc main-window-epilepsy-desc}"
+                      ButtonText="{loc:Loc main-window-epilepsy-accept}"
+                      Command="{Binding DismissEpilepsyWarningPressed}" />
 
-    <ContentControl Classes="OverlayBox" IsVisible="{Binding ShouldShowIntelDegradationWarning}">
-      <StackPanel Orientation="Vertical">
-        <TextBlock HorizontalAlignment="Center" Classes="NanoHeadingMedium"
-                   Text="{loc:Loc main-window-intel-degrade-title}" />
-        <TextBlock Margin="0, 10" TextAlignment="Center" MaxWidth="450" TextWrapping="Wrap"
-                   Text="{loc:Loc main-window-intel-degrade-desc}" />
-        <Button Content="{loc:Loc main-window-intel-degrade-accept}" Command="{Binding DismissIntelDegradationPressed}"
-                HorizontalAlignment="Center" />
-      </StackPanel>
-    </ContentControl>
+    <v:WarningOverlay IsVisible="{Binding ShowIntelDegradationWarning}"
+                      Title="{loc:Loc main-window-intel-degrade-title}"
+                      Description="{loc:Loc main-window-intel-degrade-desc}"
+                      ButtonText="{Binding IntelDegradationButtonText}"
+                      ButtonEnabled="{Binding IsWarningButtonEnabled}"
+                      Command="{Binding DismissIntelDegradationPressed}" />
 
-    <ContentControl Classes="OverlayBox" IsVisible="{Binding ShouldShowRosettaWarning}">
-      <StackPanel Orientation="Vertical">
-        <TextBlock HorizontalAlignment="Center" Classes="NanoHeadingMedium"
-                   Text="{loc:Loc main-window-rosetta-title}" />
-        <TextBlock Margin="0, 10" TextAlignment="Center" MaxWidth="450" TextWrapping="Wrap"
-                   Text="{loc:Loc main-window-rosetta-desc}" />
-        <Button Content="{loc:Loc main-window-rosetta-accept}" Command="{Binding DismissAppleSiliconRosettaPressed}"
-                HorizontalAlignment="Center" />
-      </StackPanel>
-    </ContentControl>
+    <v:WarningOverlay IsVisible="{Binding ShowRosettaWarning}"
+                      Title="{loc:Loc main-window-rosetta-title}"
+                      Description="{loc:Loc main-window-rosetta-desc}"
+                      ButtonText="{loc:Loc main-window-rosetta-accept}"
+                      Command="{Binding DismissAppleSiliconRosettaPressed}" />
 
-    <ContentControl Classes="OverlayBox" IsVisible="{Binding ShouldShowAuthOverrideWarning}">
-      <StackPanel Orientation="Vertical">
-        <TextBlock HorizontalAlignment="Center" Classes="NanoHeadingMedium" Foreground="Red"
-                   Text="{loc:Loc main-window-auth-override-title}" />
-        <TextBlock Margin="0, 10" TextAlignment="Center" MaxWidth="450" TextWrapping="Wrap"
-                   Text="{loc:Loc main-window-auth-override-desc}" />
-        <Button Content="{Binding AuthOverrideCountdown, StringFormat='I acknowledge ({0}s)'}"
-                Command="{Binding DismissAuthOverridePressed}"
-                IsEnabled="{Binding IsAuthOverrideButtonEnabled}"
-                HorizontalAlignment="Center" />
-      </StackPanel>
-    </ContentControl>
-
-    <!--
-      Literally just keep piling them on it doesn't matter.
-      This is way easier than coming up with some horribly over-engineered solution.
-      -->
+    <v:WarningOverlay IsVisible="{Binding ShowAuthOverrideWarning}"
+                      Title="{loc:Loc main-window-auth-override-title}"
+                      TitleForeground="Red"
+                      Description="{loc:Loc main-window-auth-override-desc}"
+                      ButtonText="{Binding AuthOverrideButtonText}"
+                      ButtonEnabled="{Binding IsWarningButtonEnabled}"
+                      Command="{Binding DismissAuthOverridePressed}" />
 
     <v:ConnectingOverlay DataContext="{Binding ConnectingVM}"
                          IsVisible="{Binding $parent.DataContext.ConnectingVM, Converter={x:Static ObjectConverters.IsNotNull}}" />

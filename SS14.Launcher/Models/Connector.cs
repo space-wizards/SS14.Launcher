@@ -513,6 +513,13 @@ public partial class Connector : ObservableObject
         var binPath = _engineManager.GetEnginePath(engineVersion);
         var sig = _engineManager.GetEngineSignature(engineVersion);
 
+        // The updater should have made sure this exists, but it didn't. Grumble grumble...
+        if (!File.Exists(binPath))
+        {
+            Log.Error("Engine archive for version {EngineVersion} is missing: {Path}", engineVersion, binPath);
+            throw new FileNotFoundException("The engine archive is missing", binPath);
+        }
+
         var startInfo = await GetLoaderStartInfo();
 
         startInfo.ArgumentList.Add(binPath);

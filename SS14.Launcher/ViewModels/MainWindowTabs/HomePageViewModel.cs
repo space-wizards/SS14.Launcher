@@ -46,6 +46,8 @@ public partial class HomePageViewModel : MainWindowTabViewModel
                     _statusCache.InitialUpdateStatus(a.CacheData);
                 }
             })
+            // Removed favorites must not keep being refreshed (and queried) from the cache.
+            .OnItemRemoved(a => _statusCache.Remove(a.CacheData.Address))
             .Sort(Comparer<ServerEntryViewModel>.Create((a, b) => {
                 var dc = a.Favorite!.RaiseTime.CompareTo(b.Favorite!.RaiseTime);
                 if (dc != 0)

@@ -22,25 +22,9 @@ public static class CVars
     public static readonly CVarDef<bool> CompatMode = CVarDef.Create("CompatMode", false);
 
     /// <summary>
-    /// On first launch, the launcher tells you that SS14 is EARLY ACCESS.
-    /// This stores whether they dismissed that, though people will insist on pretending it defaults to true.
+    /// Comma-separated names of the launcher warnings that the user already acknowledged and shouldn't be shown again.
     /// </summary>
-    public static readonly CVarDef<bool> HasDismissedEarlyAccessWarning
-        = CVarDef.Create("HasDismissedEarlyAccessWarning", false);
-
-    /// <summary>
-    /// Used to warn users about the degradation of the Intel 13th and 14th generation CPUs
-    /// This has proven multiple times to cause issues with game startup due to some memory access issue after enough degradation.
-    /// <see href="https://www.reddit.com/r/intel/comments/1egthzw/megathread_for_intel_core_13th_14th_gen_cpu/"/>
-    /// </summary>
-    public static readonly CVarDef<bool> HasDismissedIntelDegradation
-        = CVarDef.Create("HasDismissedIntelDegradation", false);
-
-    /// <summary>
-    /// Used to warn Apple Silicon users who are running the game under Rosetta 2 when they could be running the native build.
-    /// </summary>
-    public static readonly CVarDef<bool> HasDismissedRosettaWarning
-        = CVarDef.Create("HasDismissedRosettaWarning", false);
+    public static readonly CVarDef<string> DismissedWarnings = CVarDef.Create("DismissedWarnings", "");
 
     /// <summary>
     /// Whether to download updates for favorite servers in the background, so they're ready when joining.

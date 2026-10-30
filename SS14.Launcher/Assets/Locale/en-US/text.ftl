@@ -171,6 +171,17 @@ main-window-early-access-title = Heads up!
 main-window-early-access-desc = Space Station 14 is still very much in alpha. We hope you like what you see, and maybe even stick around, but make sure to keep your expectations modest for the time being.
 main-window-early-access-accept = Got it!
 main-window-background-updating = Updating content...
+main-window-epilepsy-title = Photosensitivity warning
+main-window-epilepsy-desc =
+    A very small percentage of people may experience seizures or loss of consciousness when exposed to flashing lights or certain visual patterns, even if they have no history of epilepsy.
+
+    Space Station 14 and the servers you can join through this launcher may contain flashing lights, strobing effects and rapidly changing visuals. Servers are run by third parties, and we cannot control what they display.
+
+    If you or anyone in your family has an epileptic condition, consult a doctor before playing.
+
+    Stop playing immediately and seek medical attention if you experience dizziness, altered vision, eye or muscle twitches, disorientation, or any involuntary movement. This message will not appear again after you accept it.
+main-window-epilepsy-accept = I understand
+main-window-warning-accept-countdown = { $text } ({ $seconds }s)
 main-window-intel-degrade-title = Intel 13th/14th Generation CPU detected.
 main-window-intel-degrade-desc =
     The Intel 13th/14th generation CPUs are known to silently degrade permanently and die due to a microcode bug by Intel. We sadly can't tell if you are currently affected by this bug, so this warning appears for all users with these CPUs.

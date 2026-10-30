@@ -1,0 +1,18 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:v="clr-namespace:SS14.Launcher.Views"
+             x:Class="SS14.Launcher.Views.WarningOverlay"
+             x:DataType="v:WarningOverlay">
+  <ContentControl Classes="OverlayBox">
+    <StackPanel Orientation="Vertical">
+      <TextBlock Name="TitleText" HorizontalAlignment="Center" Classes="NanoHeadingMedium"
+                 Text="{Binding Title, RelativeSource={RelativeSource AncestorType=v:WarningOverlay}}" />
+      <TextBlock Margin="0, 10" TextAlignment="Center" MaxWidth="450" TextWrapping="Wrap"
+                 Text="{Binding Description, RelativeSource={RelativeSource AncestorType=v:WarningOverlay}}" />
+      <Button HorizontalAlignment="Center"
+              Content="{Binding ButtonText, RelativeSource={RelativeSource AncestorType=v:WarningOverlay}}"
+              Command="{Binding Command, RelativeSource={RelativeSource AncestorType=v:WarningOverlay}}"
+              IsEnabled="{Binding ButtonEnabled, RelativeSource={RelativeSource AncestorType=v:WarningOverlay}}" />
+    </StackPanel>
+  </ContentControl>
+</UserControl>

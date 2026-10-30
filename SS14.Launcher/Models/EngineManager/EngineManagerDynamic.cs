@@ -97,10 +97,23 @@ public sealed partial class EngineManagerDynamic : IEngineManager
             engineVersion,
             foundVersion.Version);
 
-        if (_cfg.EngineInstallations.Lookup(foundVersion.Version).HasValue)
+        var installed = _cfg.EngineInstallations.Lookup(foundVersion.Version);
+        if (installed.HasValue)
         {
-            // Already have the engine version, we're good.
-            return new EngineInstallationResult(foundVersion.Version, false);
+            var installedPath = Path.Combine(LauncherPaths.DirEngineInstallations, $"{foundVersion.Version}.zip");
+            if (File.Exists(installedPath))
+            {
+                // Already have the engine version, we're good.
+                return new EngineInstallationResult(foundVersion.Version, false);
+            }
+
+            // The config says we have it but the file is gone :(
+            Log.Warning(
+                "Engine version {EngineVersion} is installed according to the config, but {Path} is missing. Reinstalling",
+                foundVersion.Version,
+                installedPath);
+
+            _cfg.RemoveEngineInstallation(installed.Value);
         }
 
         Log.Information("Installing engine version {version}...", foundVersion.Version);
@@ -169,12 +182,25 @@ public sealed partial class EngineManagerDynamic : IEngineManager
 
         Log.Debug("Selected module {ModuleName} {ModuleVersion}", moduleName, moduleVersion);
 
-        var alreadyInstalled = _cfg.EngineModules.Any(m => m.Name == moduleName && m.Version == moduleVersion);
+        var installedModule = _cfg.EngineModules.FirstOrDefault(m => m.Name == moduleName && m.Version == moduleVersion);
 
-        if (alreadyInstalled)
+        if (installedModule != null)
         {
-            Log.Debug("Already have module installed!");
-            return false;
+            GetModulePaths(moduleName, moduleVersion, out _, out var installedPath);
+
+            if (Directory.Exists(installedPath) && Directory.EnumerateFileSystemEntries(installedPath).Any())
+            {
+                Log.Debug("Already have module installed!");
+                return false;
+            }
+
+            Log.Warning(
+                "Module {ModuleName} {ModuleVersion} is installed according to the config, but {Path} is missing or empty. Reinstalling",
+                moduleName,
+                moduleVersion,
+                installedPath);
+
+            _cfg.RemoveEngineModule(installedModule);
         }
 
         Log.Information("Installing {ModuleName} {ModuleVersion}", moduleName, moduleVersion);
@@ -387,33 +413,46 @@ public sealed partial class EngineManagerDynamic : IEngineManager
 
             _cfg.RemoveEngineModule(module);
 
-            await Task.Run(() => Directory.Delete(path, true));
+            // The folder may already be gone if the config was out of step with the disk.
+            await Task.Run(() =>
+            {
+                if (Directory.Exists(path))
+                    Directory.Delete(path, true);
+            });
         }
+
+        // Don't leave the removals queued, if we die before they're written the config would list files we deleted.
+        _cfg.CommitConfig();
     }
 
     public void ClearAllEngines()
     {
-        foreach (var install in _cfg.EngineInstallations.Items.ToArray())
+        try
         {
-            _cfg.RemoveEngineInstallation(install);
-        }
+            foreach (var install in _cfg.EngineInstallations.Items.ToArray())
+            {
+                _cfg.RemoveEngineInstallation(install);
+            }
 
-        foreach (var module in _cfg.EngineModules.ToArray())
+            foreach (var module in _cfg.EngineModules.ToArray())
+            {
+                _cfg.RemoveEngineModule(module);
+            }
+
+            foreach (var file in Directory.EnumerateFiles(LauncherPaths.DirEngineInstallations))
+            {
+                File.Delete(file);
+            }
+
+            foreach (var dir in Directory.EnumerateDirectories(LauncherPaths.DirModuleInstallations))
+            {
+                Directory.Delete(dir, recursive: true);
+            }
+        }
+        finally
         {
-            _cfg.RemoveEngineModule(module);
+            _cfg.CommitConfig();
         }
-
-        foreach (var file in Directory.EnumerateFiles(LauncherPaths.DirEngineInstallations))
-        {
-            File.Delete(file);
-        }
-
-        foreach (var dir in Directory.EnumerateDirectories(LauncherPaths.DirModuleInstallations))
-        {
-            Directory.Delete(dir, recursive: true);
-        }
-
-        _cfg.CommitConfig();
     }
 
     private static string FindOverrideZip(string name, string dir)
