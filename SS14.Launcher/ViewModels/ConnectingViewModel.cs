@@ -48,6 +48,10 @@ public class ConnectingViewModel : ViewModelBase
                     OnPropertyChanged(nameof(ProgressText));
                     break;
 
+                case nameof(_updater.ProgressBytes):
+                    OnPropertyChanged(nameof(ProgressText));
+                    break;
+
                 case nameof(_updater.Speed):
                     OnPropertyChanged(nameof(SpeedText));
                     OnPropertyChanged(nameof(SpeedIndeterminate));
@@ -118,7 +122,10 @@ public class ConnectingViewModel : ViewModelBase
             return unit switch
             {
                 Updater.ProgressUnit.Bytes => $"{Helpers.FormatBytes(downloaded)} / {Helpers.FormatBytes(total)}",
-                _ => $"{downloaded} / {total}"
+                // A count (of files). Say how much came in too, if we know.
+                _ => _updater.ProgressBytes is { } bytes
+                    ? $"{downloaded} / {total} ({Helpers.FormatBytes(bytes)})"
+                    : $"{downloaded} / {total}"
             };
         }
     }
