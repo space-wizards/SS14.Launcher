@@ -11,11 +11,15 @@ account-drop-down-add-account = Add account
 ## Localization for the "add favorite server" dialog window
 
 add-favorite-window-title = Add Favorite Server
+add-favorite-window-title-edit = Edit Favorite Server
+add-favorite-window-button-add = Add
+add-favorite-window-button-save = Save
 add-favorite-window-address-invalid = Address is invalid
+add-favorite-window-address-duplicate = Already a favorite
 add-favorite-window-label-name = Name:
 add-favorite-window-label-address = Address:
-# 'Example' name shown as a watermark in the name input box
-add-favorite-window-example-name = Honk Station
+# Shown as a watermark in the name input box. The name is optional.
+add-favorite-window-name-hint = Leave empty to use the server's own name
 
 ## Strings for the "connecting" menu that appears when connecting to a server.
 
@@ -287,11 +291,16 @@ filters-title-region = Region
 filters-title-rp = Role-play level
 filters-title-player-count = Player count
 filters-title-18 = 18+
+filters-title-whitelist = Whitelist
 filters-title-hub = Hub
 filters-18-yes = Yes
 filters-18-yes-desc = Yes
 filters-18-no = No
 filters-18-no-desc = No
+filters-whitelist-yes = Yes
+filters-whitelist-yes-desc = Only show servers that you have to be whitelisted to join
+filters-whitelist-no = No
+filters-whitelist-no-desc = Only show servers that do not need a whitelist
 filters-player-count-hide-empty = Hide empty
 filters-player-count-hide-empty-desc = Servers with no players will not be shown
 filters-player-count-hide-full = Hide full
@@ -337,6 +346,7 @@ server-entry-description-none = No server description provided
 server-entry-status-lobby = Lobby
 server-fetched-from-hub = Fetched from { $hub }
 server-entry-raise = Raise to top
+server-entry-edit = Edit
 
 ## Strings for the "Development" tab
 ## These aren't shown to users so they're not very important

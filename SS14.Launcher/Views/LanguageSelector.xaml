@@ -15,7 +15,7 @@
     <v:DropDown.HeaderContent>
       <v:IconLabel Icon="{DynamicResource 'InfoIcon-web'}" Content="{loc:Loc language-selector-label}" />
     </v:DropDown.HeaderContent>
-    <Panel Width="400" Height="300">
+    <Panel Width="400" Height="300" PointerWheelChanged="OnPopupWheel">
       <v:AngleBox Fill="{DynamicResource ThemePopupBackgroundBrush}" SideStyle="OpenLeft" />
       <DockPanel>
         <!-- Bottom row -->
@@ -33,7 +33,7 @@
                   Command="{Binding OnHelpTranslateButtonPressed}" />
         </Grid>
         <!-- Main contents -->
-        <ScrollViewer Margin="2">
+        <ScrollViewer Name="LanguageScroll" Margin="2">
           <StackPanel>
             <ItemsControl ItemsSource="{Binding Languages}">
               <ItemsControl.ItemTemplate>

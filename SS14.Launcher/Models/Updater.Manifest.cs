@@ -47,6 +47,7 @@ public sealed partial class Updater
         var toDownload = ManifestCalculateFilesToDownload(fetchedManifest, con, swSqlite);
 
         Progress = null;
+        ProgressBytes = null;
         Status = UpdateStatus.DownloadingClientUpdate;
 
         if (toDownload.Count > 0)
@@ -84,6 +85,11 @@ public sealed partial class Updater
 
         return fetchedManifest.ManifestHash;
     }
+
+    /// <summary>
+    /// Optional response header of the download request, the total uncompressed size in bytes of the files requested.
+    /// </summary>
+    private const string TotalDownloadSizeHeader = "X-Robust-Download-Total-Size";
 
     private async Task<FetchedContentManifestData> ManifestFetchContentManifest(
         ServerBuildInformation buildInfo,
@@ -226,6 +232,15 @@ public sealed partial class Updater
         var response = await _http.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancel);
         response.EnsureSuccessStatusCode();
 
+        // Servers can tell us how many bytes the files we asked for add up to (uncompressed, and not including the
+        // headers in the stream). Not all of them do, so we can only show a size we count ourselves without it.
+        var totalBytes = GetTotalDownloadSize(response);
+        if (totalBytes != null)
+            Log.Debug("Server says the download is {TotalSize} bytes", totalBytes);
+
+        // Uncompressed bytes of the files received so far, to compare to totalBytes.
+        long bytesDone = 0;
+
         var stream = await response.Content.ReadAsStreamAsync(cancel);
         var bandwidthStream = new BandwidthStream(stream);
         stream = bandwidthStream;
@@ -274,6 +289,10 @@ public sealed partial class Updater
 
             var hash = new byte[256 / 8];
 
+            // The speed readout doesn't need to change for every little file :p
+            var speedUpdateWatch = Stopwatch.StartNew();
+            var speedUpdateDue = true;
+
             for (var i = 0; i < toDownload.Count; i++)
             {
                 // Simple loop stuff.
@@ -281,13 +300,30 @@ public sealed partial class Updater
 
                 var manifestEntry = manifestData.Entries[toDownload[i]];
 
-                Progress = (i, toDownload.Count, ProgressUnit.None);
-                Speed = bandwidthStream.CalcCurrentAvg();
+                if (totalBytes is { } total)
+                {
+                    // Never show more than the total, in case the server's number was off.
+                    ProgressBytes = null;
+                    Progress = (Math.Min(bytesDone, total), total, ProgressUnit.Bytes);
+                }
+                else
+                {
+                    ProgressBytes = bytesDone;
+                    Progress = (i, toDownload.Count, ProgressUnit.None);
+                }
+
+                if (speedUpdateDue || speedUpdateWatch.ElapsedMilliseconds >= 500)
+                {
+                    Speed = bandwidthStream.CalcCurrentAvg();
+                    speedUpdateWatch.Restart();
+                    speedUpdateDue = false;
+                }
 
                 // Read file header.
                 await stream.ReadExactAsync(fileHeader, cancel);
 
                 var length = BinaryPrimitives.ReadInt32LittleEndian(fileHeader.AsSpan(0, 4));
+                bytesDone += length;
 
                 EnsureBuffer(ref readBuffer, length);
                 var data = readBuffer.AsMemory(0, length);
@@ -403,7 +439,20 @@ public sealed partial class Updater
         }
 
         Progress = null;
+        ProgressBytes = null;
         Speed = null;
+    }
+
+    private static long? GetTotalDownloadSize(HttpResponseMessage response)
+    {
+        if (!response.Headers.TryGetValues(TotalDownloadSizeHeader, out var values))
+            return null;
+
+        // Anything we can't make sense of means we don't know the size.
+        return long.TryParse(values.FirstOrDefault(), NumberStyles.None, CultureInfo.InvariantCulture, out var total)
+               && total > 0
+            ? total
+            : null;
     }
 
     private async Task CheckManifestDownloadServerProtocolVersions(string url, CancellationToken cancel)
