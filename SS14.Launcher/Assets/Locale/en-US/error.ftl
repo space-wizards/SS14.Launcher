@@ -10,6 +10,8 @@ error-code-help = Include this code when asking for help.
 
 ## Error overlays.
 
+error-overlay-title-connect-failed = Connection failed
+error-overlay-title-content-bundle-failed = Could not load the file
 error-overlay-title-offline = Cannot reach the internet
 error-overlay-desc-offline = The launcher could not reach its servers, so it can't check for updates or sign you in. Check your internet connection and restart the launcher.
 error-overlay-title-translocated = Move the launcher to Applications
@@ -27,6 +29,14 @@ error-overlay-desc-open-external = The launcher could not find a program to open
 
 ## Hints: short advice shown above the error code. A code has a hint if there is a string named
 ## error-hint-<area>-<number> for it, for example error-hint-io-004 for SS14L-IO-004.
+## Codes without one of their own use the generic hint for their area, error-hint-<area>, if there is one.
+
+# Generic hints for codes that have no hint of their own
+error-hint-net = A network issue occurred. Try again later.
+error-hint-upd = Something went wrong while downloading the game. Try again later. If it keeps happening, ask for help and include the code below.
+error-hint-auth = Something went wrong with your account. Try again later.
+error-hint-cli = The game could not be started. Try again. If it keeps happening, ask for help and include the code below.
+error-hint-db = The launcher had a problem with its stored data. Try again. If it keeps happening, ask for help and include the code below.
 
 # Network
 error-hint-net-004 = That server address doesn't look right. Check it for typos and try again.

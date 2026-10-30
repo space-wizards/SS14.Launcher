@@ -60,6 +60,27 @@ public class ErrorHintsTests
         Assert.That(both, Is.Empty, "String ids defined in both text.ftl and error.ftl");
     }
 
+    [Test]
+    public void AreaKeyNamesFollowTheArea()
+    {
+        Assert.That(ErrorHints.GetAreaKey(new ErrorCode("NET", 3)), Is.EqualTo("error-hint-net"));
+        Assert.That(ErrorHints.GetAreaKey(new ErrorCode("AUTH", 9)), Is.EqualTo("error-hint-auth"));
+    }
+
+    [Test]
+    public void GenericHintsAreForRealAreas()
+    {
+        var areas = AllCodes().Select(c => ErrorHints.GetAreaKey(c)).ToHashSet();
+
+        var stray = MessageIds("error.ftl")
+            .Where(id => Regex.IsMatch(id, @"^error-hint-[a-z]+$"))
+            .Where(id => !areas.Contains(id))
+            .Order()
+            .ToList();
+
+        Assert.That(stray, Is.Empty, "Generic error-hint strings that don't match any error area");
+    }
+
     private static List<ErrorCode> AllCodes()
     {
         return typeof(ErrorCodes)
