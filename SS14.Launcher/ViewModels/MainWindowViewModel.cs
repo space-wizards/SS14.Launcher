@@ -147,7 +147,9 @@ public sealed partial class MainWindowViewModel : ViewModelBase, IErrorOverlayOw
         EarlyAccess,
         Epilepsy,
         IntelDegradation,
-        Rosetta
+        Rosetta,
+        // A question rather than a warning, so it comes after the ones the user has to read. Keep this at the bottom if we get more warnings.
+        BackgroundFetch
     }
 
     private ActiveWarning CurrentWarning
@@ -164,6 +166,9 @@ public sealed partial class MainWindowViewModel : ViewModelBase, IErrorOverlayOw
                 return ActiveWarning.IntelDegradation;
             if (!IsDismissed(ActiveWarning.Rosetta) && IsAppleSiliconInRosetta())
                 return ActiveWarning.Rosetta;
+            if (!IsDismissed(ActiveWarning.BackgroundFetch) && !Cfg.GetCVar(CVars.PrefetchFavoriteServers)
+                && Cfg.FavoriteServers.Count > 0)
+                return ActiveWarning.BackgroundFetch;
 
             return ActiveWarning.None;
         }
@@ -187,6 +192,7 @@ public sealed partial class MainWindowViewModel : ViewModelBase, IErrorOverlayOw
     public bool ShowIntelDegradationWarning => CurrentWarning == ActiveWarning.IntelDegradation;
     public bool ShowRosettaWarning => CurrentWarning == ActiveWarning.Rosetta;
     public bool ShowAuthOverrideWarning => CurrentWarning == ActiveWarning.AuthOverride;
+    public bool ShowBackgroundFetchPrompt => CurrentWarning == ActiveWarning.BackgroundFetch;
 
     private ActiveWarning _lastWarning;
     private int _warningCountdown;
@@ -237,6 +243,7 @@ public sealed partial class MainWindowViewModel : ViewModelBase, IErrorOverlayOw
         OnPropertyChanged(nameof(ShowIntelDegradationWarning));
         OnPropertyChanged(nameof(ShowRosettaWarning));
         OnPropertyChanged(nameof(ShowAuthOverrideWarning));
+        OnPropertyChanged(nameof(ShowBackgroundFetchPrompt));
     }
 
     private bool _shouldShowAuthOverrideWarning;
@@ -344,6 +351,18 @@ public sealed partial class MainWindowViewModel : ViewModelBase, IErrorOverlayOw
     public void DismissAppleSiliconRosettaPressed()
     {
         Dismiss(ActiveWarning.Rosetta);
+    }
+
+    public void EnableBackgroundFetchPressed()
+    {
+        // Through the options tab so its checkbox follows
+        OptionsTab.PrefetchFavoriteServers = true;
+        Dismiss(ActiveWarning.BackgroundFetch);
+    }
+
+    public void DeclineBackgroundFetchPressed()
+    {
+        Dismiss(ActiveWarning.BackgroundFetch);
     }
 
     public void DismissAuthOverridePressed()

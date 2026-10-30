@@ -136,6 +136,14 @@
                       ButtonText="{loc:Loc main-window-rosetta-accept}"
                       Command="{Binding DismissAppleSiliconRosettaPressed}" />
 
+    <v:WarningOverlay IsVisible="{Binding ShowBackgroundFetchPrompt}"
+                      Title="{loc:Loc main-window-background-fetch-title}"
+                      Description="{loc:Loc main-window-background-fetch-desc}"
+                      ButtonText="{loc:Loc main-window-background-fetch-enable}"
+                      Command="{Binding EnableBackgroundFetchPressed}"
+                      SecondaryButtonText="{loc:Loc main-window-background-fetch-decline}"
+                      SecondaryCommand="{Binding DeclineBackgroundFetchPressed}" />
+
     <v:WarningOverlay IsVisible="{Binding ShowAuthOverrideWarning}"
                       Title="{loc:Loc main-window-auth-override-title}"
                       TitleForeground="Red"

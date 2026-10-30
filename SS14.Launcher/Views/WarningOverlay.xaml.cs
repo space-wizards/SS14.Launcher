@@ -25,6 +25,24 @@ public partial class WarningOverlay : UserControl
     public static readonly StyledProperty<ICommand?> CommandProperty =
         AvaloniaProperty.Register<WarningOverlay, ICommand?>(nameof(Command));
 
+    public static readonly StyledProperty<object?> SecondaryButtonTextProperty =
+        AvaloniaProperty.Register<WarningOverlay, object?>(nameof(SecondaryButtonText));
+
+    public static readonly StyledProperty<ICommand?> SecondaryCommandProperty =
+        AvaloniaProperty.Register<WarningOverlay, ICommand?>(nameof(SecondaryCommand));
+
+    public object? SecondaryButtonText
+    {
+        get => GetValue(SecondaryButtonTextProperty);
+        set => SetValue(SecondaryButtonTextProperty, value);
+    }
+
+    public ICommand? SecondaryCommand
+    {
+        get => GetValue(SecondaryCommandProperty);
+        set => SetValue(SecondaryCommandProperty, value);
+    }
+
     public string? Title
     {
         get => GetValue(TitleProperty);

@@ -57,6 +57,7 @@ public class OptionsTabViewModel : MainWindowTabViewModel
         {
             Cfg.SetCVar(CVars.PrefetchFavoriteServers, value);
             Cfg.CommitConfig();
+            OnPropertyChanged();
         }
     }
 

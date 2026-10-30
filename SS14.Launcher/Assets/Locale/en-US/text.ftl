@@ -198,6 +198,13 @@ main-window-rosetta-desc =
 
     If you are intentionally running the game using Rosetta 2, you can dismiss this message and it will not appear again. Although if you are doing this in an attempt to fix a problem, please make a bug report.
 main-window-rosetta-accept = Continue
+main-window-background-fetch-title = Download updates in the background?
+main-window-background-fetch-desc =
+    The launcher can check your favorite servers when it starts, and every 10 minutes after that, and download new game updates ahead of time, so joining is faster.
+
+    This uses bandwidth and disk space. It only contacts servers you have favorited, and stops when you join a server. You can change this any time in the options.
+main-window-background-fetch-enable = Turn on
+main-window-background-fetch-decline = Not now
 main-window-drag-drop-prompt = Drop to run game
 main-window-busy-checking-update = Checking for launcher update…
 main-window-busy-checking-login-status = Refreshing login status…
