@@ -111,46 +111,16 @@
       </StackPanel>
     </ContentControl>
 
-    <v:WarningOverlay IsVisible="{Binding ShowEarlyAccessWarning}"
-                      Title="{loc:Loc main-window-early-access-title}"
-                      Description="{loc:Loc main-window-early-access-desc}"
-                      ButtonText="{loc:Loc main-window-early-access-accept}"
-                      Command="{Binding DismissEarlyAccessPressed}" />
-
-    <v:WarningOverlay IsVisible="{Binding ShowEpilepsyWarning}"
-                      Title="{loc:Loc main-window-epilepsy-title}"
-                      Description="{loc:Loc main-window-epilepsy-desc}"
-                      ButtonText="{loc:Loc main-window-epilepsy-accept}"
-                      Command="{Binding DismissEpilepsyWarningPressed}" />
-
-    <v:WarningOverlay IsVisible="{Binding ShowIntelDegradationWarning}"
-                      Title="{loc:Loc main-window-intel-degrade-title}"
-                      Description="{loc:Loc main-window-intel-degrade-desc}"
-                      ButtonText="{Binding IntelDegradationButtonText}"
+    <!-- Every warning and prompt. See MainWindowViewModel.Warnings.cs for how to add one. -->
+    <v:WarningOverlay IsVisible="{Binding ShowWarning}"
+                      Title="{Binding WarningTitle}"
+                      TitleForeground="{Binding WarningTitleBrush}"
+                      Description="{Binding WarningDescription}"
+                      ButtonText="{Binding WarningAcceptText}"
                       ButtonEnabled="{Binding IsWarningButtonEnabled}"
-                      Command="{Binding DismissIntelDegradationPressed}" />
-
-    <v:WarningOverlay IsVisible="{Binding ShowRosettaWarning}"
-                      Title="{loc:Loc main-window-rosetta-title}"
-                      Description="{loc:Loc main-window-rosetta-desc}"
-                      ButtonText="{loc:Loc main-window-rosetta-accept}"
-                      Command="{Binding DismissAppleSiliconRosettaPressed}" />
-
-    <v:WarningOverlay IsVisible="{Binding ShowBackgroundFetchPrompt}"
-                      Title="{loc:Loc main-window-background-fetch-title}"
-                      Description="{loc:Loc main-window-background-fetch-desc}"
-                      ButtonText="{loc:Loc main-window-background-fetch-enable}"
-                      Command="{Binding EnableBackgroundFetchPressed}"
-                      SecondaryButtonText="{loc:Loc main-window-background-fetch-decline}"
-                      SecondaryCommand="{Binding DeclineBackgroundFetchPressed}" />
-
-    <v:WarningOverlay IsVisible="{Binding ShowAuthOverrideWarning}"
-                      Title="{loc:Loc main-window-auth-override-title}"
-                      TitleForeground="Red"
-                      Description="{loc:Loc main-window-auth-override-desc}"
-                      ButtonText="{Binding AuthOverrideButtonText}"
-                      ButtonEnabled="{Binding IsWarningButtonEnabled}"
-                      Command="{Binding DismissAuthOverridePressed}" />
+                      Command="{Binding WarningAcceptPressed}"
+                      SecondaryButtonText="{Binding WarningSecondaryText}"
+                      SecondaryCommand="{Binding WarningSecondaryPressed}" />
 
     <v:ConnectingOverlay DataContext="{Binding ConnectingVM}"
                          IsVisible="{Binding $parent.DataContext.ConnectingVM, Converter={x:Static ObjectConverters.IsNotNull}}" />
