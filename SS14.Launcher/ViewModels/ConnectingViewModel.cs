@@ -67,6 +67,7 @@ public class ConnectingViewModel : ViewModelBase
                     OnPropertyChanged(nameof(ProgressIndeterminate));
                     OnPropertyChanged(nameof(StatusText));
                     OnPropertyChanged(nameof(ErrorCodeText));
+                    OnPropertyChanged(nameof(ErrorHintText));
                     OnPropertyChanged(nameof(ProgressBarVisible));
                     OnPropertyChanged(nameof(IsErrored));
                     OnPropertyChanged(nameof(IsAskingPrivacyPolicy));
@@ -85,11 +86,13 @@ public class ConnectingViewModel : ViewModelBase
                 case nameof(_connector.ClientExitedBadly):
                     OnPropertyChanged(nameof(StatusText));
                     OnPropertyChanged(nameof(ErrorCodeText));
+                    OnPropertyChanged(nameof(ErrorHintText));
                     OnPropertyChanged(nameof(IsErrored));
                     break;
                 case nameof(_connector.FailureCode):
                 case nameof(_connector.ClientExitCode):
                     OnPropertyChanged(nameof(ErrorCodeText));
+                    OnPropertyChanged(nameof(ErrorHintText));
                     break;
             }
         };
@@ -220,6 +223,20 @@ public class ConnectingViewModel : ViewModelBase
 
             return _loc.GetString("error-code-label", ("code", code.ToString()))
                    + "\n" + _loc.GetString("error-code-help");
+        }
+    }
+
+    /// <summary>
+    /// Advice for fixing the current failure, if there is any for its code.
+    /// </summary>
+    public string ErrorHintText
+    {
+        get
+        {
+            if (!IsErrored || _connector.FailureCode is not { } code)
+                return "";
+
+            return ErrorHints.Get(code, _loc) ?? "";
         }
     }
 

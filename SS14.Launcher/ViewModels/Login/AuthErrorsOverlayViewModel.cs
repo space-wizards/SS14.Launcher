@@ -11,6 +11,13 @@ public class AuthErrorsOverlayViewModel : ViewModelBase
 
     public ErrorCode? Code { get; }
 
+    /// <summary>
+    /// Advice for fixing the problem, if there is any for this code.
+    /// </summary>
+    public string HintText => Code is { } code
+        ? ErrorHints.Get(code, LocalizationManager.Instance) ?? ""
+        : "";
+
     public string CodeText => Code is { } code
         ? LocalizationManager.Instance.GetString("error-code-label", ("code", code.ToString()))
           + "\n" + LocalizationManager.Instance.GetString("error-code-help")

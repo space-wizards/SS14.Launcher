@@ -23,24 +23,6 @@ connecting-title-connecting = Connecting…
 connecting-title-content-bundle = Loading…
 connecting-cancel = Cancel
 connecting-status-none = Starting connection…
-error-code-label = Error code: { $code }
-error-code-label-exit-code = Error code: { $code } (exit code { $exit })
-error-code-label-exit-signal = Error code: { $code } (exit code { $exit }, signal { $signal })
-error-overlay-title-offline = Cannot reach the internet
-error-overlay-desc-offline = The launcher could not reach its servers, so it can't check for updates or sign you in. Check your internet connection and restart the launcher.
-error-overlay-title-translocated = Move the launcher to Applications
-error-overlay-desc-translocated = The launcher is running from a temporary location, which could stop it from starting the game. Quit it, move it to your Applications folder and open it from there.
-error-overlay-title-unexpected = Something went wrong
-error-overlay-desc-unexpected = The launcher ran into an unexpected problem. You can keep using it, but if things stop working, restart the launcher.
-error-overlay-title-save-settings = Could not save your settings
-error-overlay-desc-save-settings = Your latest changes may be lost when you close the launcher.
-error-overlay-title-clear-content = Could not clear server content
-error-overlay-desc-clear-content = Close any running game clients and try again.
-error-overlay-title-clear-engines = Could not clear installed engines
-error-overlay-desc-clear-engines = Close any running game clients and try again.
-error-overlay-title-open-external = Could not open that
-error-overlay-desc-open-external = The launcher could not find a program to open it with.
-error-code-help = Include this code when asking for help.
 connecting-status-update-error =
     There was an error while downloading server content. If this persists try some of the following:
     - Try connecting to another game server to see if the problem persists.

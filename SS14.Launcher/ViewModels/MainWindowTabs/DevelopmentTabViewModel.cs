@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Sockets;
+using System.Reflection;
 using System.Security.Authentication;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Data.Sqlite;
@@ -61,53 +64,47 @@ public sealed class DevelopmentTabViewModel : MainWindowTabViewModel
 
     private DevelopmentFailure[] BuildFailures()
     {
-        return
+        List<DevelopmentFailure> failures =
         [
-            // Exceptions nothing catches.
-            new("Unhandled: throw in a button handler (overlay)", () =>
+            // Exceptions nothing catches. The UI handler gives these GEN-003, except the thread, which is a crash.
+            new($"{Short(ErrorCodes.GenBackground)}: Unhandled: throw in a button handler (overlay)", () =>
                 throw new InvalidOperationException("Test exception from a button handler")),
-            new("Unhandled: throw in an async void method (overlay)", ThrowInAsyncVoid),
-            new("Unhandled: fault a background task (only logged)", FaultBackgroundTask),
-            new("Unhandled: throw on a new thread (CRASHES the launcher)", () =>
+            new($"{Short(ErrorCodes.GenBackground)}: Unhandled: throw in an async void method (overlay)",
+                ThrowInAsyncVoid),
+            new($"{Short(ErrorCodes.GenBackground)}: Unhandled: fault a background task (only logged)",
+                FaultBackgroundTask),
+            new($"{Short(ErrorCodes.GenCrash)}: Unhandled: throw on a new thread (CRASHES the launcher)", () =>
                 new Thread(() => throw new InvalidOperationException("Test exception from a new thread")).Start()),
 
             // Exceptions the classifier turns into a code, shown in an overlay.
-            new("Classify: file in use", () => Classify(new IOException("File is in use",
-                OperatingSystem.IsWindows() ? unchecked((int)0x80070020) : 16))),
-            new("Classify: disk full", () => Classify(new IOException("Disk is full",
-                OperatingSystem.IsWindows() ? unchecked((int)0x80070070) : 28))),
-            new("Classify: permission denied", () => Classify(new UnauthorizedAccessException("Access denied"))),
-            new("Classify: path too long", () => Classify(new PathTooLongException())),
-            new("Classify: database busy", () => Classify(new SqliteException("database is locked", 5))),
-            new("Classify: database can't be opened", () => Classify(new SqliteException("unable to open", 14))),
-            new("Classify: host not found", () => Classify(new HttpRequestException("Request failed",
-                new SocketException((int)SocketError.HostNotFound)))),
-            new("Classify: connection refused", () => Classify(new HttpRequestException("Request failed",
-                new SocketException((int)SocketError.ConnectionRefused)))),
-            new("Classify: TLS failure", () => Classify(new HttpRequestException("Request failed",
-                new AuthenticationException("The remote certificate is invalid")))),
-            new("Classify: request timeout", () => Classify(
-                new TaskCanceledException("Timed out", new TimeoutException()))),
-            new("Classify: missing native library", () => Classify(new DllNotFoundException("libsodium"))),
-            new("Classify: corrupt download", () => Classify(new InvalidDataException("Corrupt data"))),
+            ClassifyEntry("file in use", new IOException("File is in use",
+                OperatingSystem.IsWindows() ? unchecked((int)0x80070020) : 16)),
+            ClassifyEntry("disk full", new IOException("Disk is full",
+                OperatingSystem.IsWindows() ? unchecked((int)0x80070070) : 28)),
+            ClassifyEntry("permission denied", new UnauthorizedAccessException("Access denied")),
+            ClassifyEntry("path too long", new PathTooLongException()),
+            ClassifyEntry("database busy", new SqliteException("database is locked", 5)),
+            ClassifyEntry("database can't be opened", new SqliteException("unable to open", 14)),
+            ClassifyEntry("host not found", new HttpRequestException("Request failed",
+                new SocketException((int)SocketError.HostNotFound))),
+            ClassifyEntry("connection refused", new HttpRequestException("Request failed",
+                new SocketException((int)SocketError.ConnectionRefused))),
+            ClassifyEntry("TLS failure", new HttpRequestException("Request failed",
+                new AuthenticationException("The remote certificate is invalid"))),
+            ClassifyEntry("request timeout", new TaskCanceledException("Timed out", new TimeoutException())),
+            ClassifyEntry("missing native library", new DllNotFoundException("libsodium")),
+            ClassifyEntry("corrupt download", new InvalidDataException("Corrupt data")),
 
             // The overlays other parts of the launcher show, with their real text.
-            new("Overlay: offline", () => ShowOverlay(
-                "error-overlay-title-offline", "error-overlay-desc-offline", ErrorCodes.NetNoConnection)),
-            new("Overlay: settings could not be saved", () => ShowOverlay(
-                "error-overlay-title-save-settings", "error-overlay-desc-save-settings", ErrorCodes.DbSaveSettings)),
-            new("Overlay: unexpected error", () => ShowOverlay(
-                "error-overlay-title-unexpected", "error-overlay-desc-unexpected", ErrorCodes.GenBackground)),
-            new("Overlay: could not clear content", () => ShowOverlay(
-                "error-overlay-title-clear-content", "error-overlay-desc-clear-content", ErrorCodes.DbClearContent)),
-            new("Overlay: could not clear engines", () => ShowOverlay(
-                "error-overlay-title-clear-engines", "error-overlay-desc-clear-engines", ErrorCodes.IoClearEngines)),
-            new("Overlay: could not open a link", () => ShowOverlay(
-                "error-overlay-title-open-external", "error-overlay-desc-open-external", ErrorCodes.IoOpenExternal)),
-            new("Overlay: running from a translocated location", () => ShowOverlay(
-                "error-overlay-title-translocated", "error-overlay-desc-translocated", ErrorCodes.GenTranslocated)),
+            OverlayEntry("offline", "offline", ErrorCodes.NetNoConnection),
+            OverlayEntry("settings could not be saved", "save-settings", ErrorCodes.DbSaveSettings),
+            OverlayEntry("unexpected error", "unexpected", ErrorCodes.GenBackground),
+            OverlayEntry("could not clear content", "clear-content", ErrorCodes.DbClearContent),
+            OverlayEntry("could not clear engines", "clear-engines", ErrorCodes.IoClearEngines),
+            OverlayEntry("could not open a link", "open-external", ErrorCodes.IoOpenExternal),
+            OverlayEntry("running from a translocated location", "translocated", ErrorCodes.GenTranslocated),
 
-            // Real connects, because thats the easiest way to do this
+            // Real connects, because thats the easiest way to do this. The code depends on what happens.
             new("Connect: nothing is listening (refused)", () => Connect("ss14://127.0.0.1:1")),
             new("Connect: unknown host", () => Connect("ss14://this-host-does-not-exist.invalid")),
             new("Connect: address that isn't one", () => Connect("http://not-an-ss14-address")),
@@ -116,6 +113,59 @@ public sealed class DevelopmentTabViewModel : MainWindowTabViewModel
             new("Connect: server answers 404", () => ConnectToFakeServer(DevFakeServerMode.NotFound)),
             new("Connect: server hangs up mid-answer", () => ConnectToFakeServer(DevFakeServerMode.Truncated)),
         ];
+
+        failures.AddRange(BuildHintFailures());
+
+        return failures.ToArray();
+    }
+
+    /// <summary>
+    /// One entry for every error code that has a hint in the locale files, to see its hint. Found by looking, so
+    /// this keeps up with new codes and hints on its own.
+    /// </summary>
+    private IEnumerable<DevelopmentFailure> BuildHintFailures()
+    {
+        return typeof(ErrorCodes)
+            .GetFields(BindingFlags.Public | BindingFlags.Static)
+            .Where(f => f.FieldType == typeof(ErrorCode))
+            .Select(f => (Name: f.Name, Code: (ErrorCode)f.GetValue(null)!))
+            .Where(c => ErrorHints.Get(c.Code, _loc) != null)
+            .OrderBy(c => c.Code.Area)
+            .ThenBy(c => c.Code.Number)
+            .Select(c => new DevelopmentFailure(
+                $"{Short(c.Code)}: Hint, {Humanize(c.Name, c.Code.Area)}",
+                // Thrown out of the button handler, so it goes through the real crash handling and the overlay.
+                () => throw new LauncherException($"Test exception carrying {c.Code}", c.Code)));
+    }
+
+    // The code without its SS14L prefix, as in NET-007.
+    private static string Short(ErrorCode code) => $"{code.Area}-{code.Number:D3}";
+
+    // "NetDnsFailed" in the NET area becomes "Dns failed".
+    private static string Humanize(string fieldName, string area)
+    {
+        var name = fieldName.StartsWith(area, StringComparison.OrdinalIgnoreCase)
+            ? fieldName[area.Length..]
+            : fieldName;
+
+        var words = Regex.Replace(name, "(?<=[a-z0-9])(?=[A-Z])", " ").ToLowerInvariant();
+
+        return words.Length == 0 ? fieldName : char.ToUpperInvariant(words[0]) + words[1..];
+    }
+
+    private DevelopmentFailure ClassifyEntry(string name, Exception e)
+    {
+        // What it classifies as depends on the operating system, so ask now.
+        var code = ErrorClassifier.Classify(e);
+
+        return new DevelopmentFailure($"{Short(code)}: Classify: {name}", () => Classify(e));
+    }
+
+    private DevelopmentFailure OverlayEntry(string name, string stringName, ErrorCode code)
+    {
+        return new DevelopmentFailure(
+            $"{Short(code)}: Overlay: {name}",
+            () => ShowOverlay($"error-overlay-title-{stringName}", $"error-overlay-desc-{stringName}", code));
     }
 
     private static async void ThrowInAsyncVoid()
