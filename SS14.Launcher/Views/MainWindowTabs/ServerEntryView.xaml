@@ -108,6 +108,12 @@
                                Height="20" />
             </Button>
 
+            <!-- Edit name/address button. -->
+            <Button IsVisible="{Binding ViewedInFavoritesPane}"
+              Classes="OpenBoth"
+              Content="{loc:Loc server-entry-edit}"
+              Command="{Binding FavoriteEditCommand}" />
+
             <!-- Raise to top button. -->
             <Button IsVisible="{Binding ViewedInFavoritesPane}"
               Classes="OpenLeft"
