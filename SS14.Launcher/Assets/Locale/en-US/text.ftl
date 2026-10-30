@@ -174,6 +174,7 @@ main-window-out-of-date-download-manual = Download (manual)
 main-window-early-access-title = Heads up!
 main-window-early-access-desc = Space Station 14 is still very much in alpha. We hope you like what you see, and maybe even stick around, but make sure to keep your expectations modest for the time being.
 main-window-early-access-accept = Got it!
+main-window-background-updating = Updating content...
 main-window-epilepsy-title = Photosensitivity warning
 main-window-epilepsy-desc =
     A very small percentage of people may experience seizures or loss of consciousness when exposed to flashing lights or certain visual patterns, even if they have no history of epilepsy.
@@ -201,6 +202,13 @@ main-window-rosetta-desc =
 
     If you are intentionally running the game using Rosetta 2, you can dismiss this message and it will not appear again. Although if you are doing this in an attempt to fix a problem, please make a bug report.
 main-window-rosetta-accept = Continue
+main-window-background-fetch-title = Download updates in the background?
+main-window-background-fetch-desc =
+    The launcher can check your favorite servers when it starts, and every 10 minutes after that, and download new game updates ahead of time, so joining is faster.
+
+    This uses bandwidth and disk space. It only contacts servers you have favorited, and stops when you join a server. You can change this any time in the options.
+main-window-background-fetch-enable = Turn on
+main-window-background-fetch-decline = Not now
 main-window-drag-drop-prompt = Drop to run game
 main-window-busy-checking-update = Checking for launcher update…
 main-window-busy-checking-login-status = Refreshing login status…
@@ -389,6 +397,8 @@ tab-options-seasonal-branding = Seasonal Branding
 tab-options-seasonal-branding-desc = Whatever temporally relevant icons and logos we can come up with.
 tab-options-disable-signing = Disable Engine Signature Checks
 tab-options-disable-signing-desc = { "[" }DEV ONLY] Disables verification of engine signatures. DO NOT ENABLE UNLESS YOU KNOW EXACTLY WHAT YOU'RE DOING.
+tab-options-prefetch-favorites = Download Favorite Server Updates in Background
+tab-options-prefetch-favorites-desc = Checks your favorite servers when the launcher starts, and every 10 minutes after that, and downloads any new game updates ahead of time so joining is faster. Uses bandwidth and disk space.
 tab-options-hub-settings = Hub Settings
 tab-options-hub-settings-desc = Change what hub server or servers you would like to use to fetch the server list.
 tab-options-desc-incompatible = This option is incompatible with your platform and has been disabled.

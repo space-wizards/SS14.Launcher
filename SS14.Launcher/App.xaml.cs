@@ -148,6 +148,8 @@ public class App : Application
             GC.Collect();
         };
 
+        new FavoritesPrefetcher().Start();
+
         var lc = new LauncherCommands(viewModel);
         lc.RunCommandTask();
         Locator.CurrentMutable.RegisterConstant(lc);

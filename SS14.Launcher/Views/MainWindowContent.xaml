@@ -136,6 +136,14 @@
                       ButtonText="{loc:Loc main-window-rosetta-accept}"
                       Command="{Binding DismissAppleSiliconRosettaPressed}" />
 
+    <v:WarningOverlay IsVisible="{Binding ShowBackgroundFetchPrompt}"
+                      Title="{loc:Loc main-window-background-fetch-title}"
+                      Description="{loc:Loc main-window-background-fetch-desc}"
+                      ButtonText="{loc:Loc main-window-background-fetch-enable}"
+                      Command="{Binding EnableBackgroundFetchPressed}"
+                      SecondaryButtonText="{loc:Loc main-window-background-fetch-decline}"
+                      SecondaryCommand="{Binding DeclineBackgroundFetchPressed}" />
+
     <v:WarningOverlay IsVisible="{Binding ShowAuthOverrideWarning}"
                       Title="{loc:Loc main-window-auth-override-title}"
                       TitleForeground="Red"
@@ -153,7 +161,14 @@
       <TextBlock Text="{loc:Loc main-window-drag-drop-prompt}" />
     </ContentControl>
 
-    <TextBlock Text="{Binding Version}" HorizontalAlignment="Right"
-               VerticalAlignment="Bottom" Classes="SubText" Margin="6"/>
+    <StackPanel Orientation="Horizontal" Spacing="8" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="6">
+      <StackPanel Orientation="Horizontal" Spacing="4" IsVisible="{Binding IsBackgroundUpdating}">
+        <Viewbox Width="18" Height="18">
+          <v:DungSpinner IsVisible="{Binding IsBackgroundUpdating}" />
+        </Viewbox>
+        <TextBlock Text="{loc:Loc main-window-background-updating}" Classes="SubText" VerticalAlignment="Center" />
+      </StackPanel>
+      <TextBlock Text="{Binding Version}" Classes="SubText" VerticalAlignment="Center" />
+    </StackPanel>
   </Panel>
 </UserControl>
