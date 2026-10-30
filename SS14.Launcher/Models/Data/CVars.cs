@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Runtime.InteropServices;
 using JetBrains.Annotations;
 using SS14.Launcher.Utility;
@@ -102,6 +102,11 @@ public static class CVars
     /// Whether to display override assets (trans rights).
     /// </summary>
     public static readonly CVarDef<bool> OverrideAssets = CVarDef.Create("OverrideAssets", true);
+
+    /// <summary>
+    /// Favorite Servers pinging
+    /// </summary>
+    public static readonly CVarDef<bool> FavoritePinging = CVarDef.Create("FavoritePinging", true);
 
     /// <summary>
     /// Stores the minimum player count value used by the "minimum player count" filter.
