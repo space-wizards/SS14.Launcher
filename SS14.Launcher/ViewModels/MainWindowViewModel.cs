@@ -35,6 +35,7 @@ public sealed partial class MainWindowViewModel : ViewModelBase, IErrorOverlayOw
     private readonly LoginManager _loginMgr;
     private readonly LauncherInfoManager _infoManager;
     private readonly LocalizationManager _loc;
+    private readonly Updater _updater;
 
     private int _selectedIndex;
 
@@ -54,6 +55,7 @@ public sealed partial class MainWindowViewModel : ViewModelBase, IErrorOverlayOw
         _loginMgr = Locator.Current.GetRequiredService<LoginManager>();
         _infoManager = Locator.Current.GetRequiredService<LauncherInfoManager>();
         _loc = LocalizationManager.Instance;
+        _updater = Locator.Current.GetRequiredService<Updater>();
 
         ServersTab = new ServerListTabViewModel(this);
         NewsTab = new NewsTabViewModel();
@@ -84,6 +86,12 @@ public sealed partial class MainWindowViewModel : ViewModelBase, IErrorOverlayOw
         WeakReferenceMessenger.Default.Register<MainWindowViewModel, ErrorOccurred>(this, static (vm, message) =>
             Dispatcher.UIThread.Post(() => vm.ShowErrorOverlay(message.TitleKey, message.DescriptionKey, message.Code)));
 
+        _updater.PropertyChanged += (_, e) =>
+        {
+            if (e.PropertyName is nameof(_updater.IsBackgroundUpdating))
+                OnPropertyChanged(new PropertyChangedEventArgs(nameof(IsBackgroundUpdating)));
+        };
+
         _loginMgr.PropertyChanged += (_, e) =>
         {
             if (e.PropertyName is nameof(_loginMgr.ActiveAccount))
@@ -94,6 +102,7 @@ public sealed partial class MainWindowViewModel : ViewModelBase, IErrorOverlayOw
             .Subscribe(_ => OnPropertyChanged(new PropertyChangedEventArgs(nameof(AccountDropDownVisible))));
 
         // Start the countdown if the first warning to show needs one.
+        _warnings = BuildWarnings();
         WarningsChanged();
     }
 
@@ -143,117 +152,7 @@ public sealed partial class MainWindowViewModel : ViewModelBase, IErrorOverlayOw
         tab.Selected();
     }
 
-    // Warning overlays are shown one at a time, highest priority first.
-    private enum ActiveWarning
-    {
-        None,
-        AuthOverride,
-        EarlyAccess,
-        Epilepsy,
-        IntelDegradation,
-        Rosetta
-    }
-
-    private ActiveWarning CurrentWarning
-    {
-        get
-        {
-            if (ShouldShowAuthOverrideWarning)
-                return ActiveWarning.AuthOverride;
-            if (!IsDismissed(ActiveWarning.EarlyAccess))
-                return ActiveWarning.EarlyAccess;
-            if (!IsDismissed(ActiveWarning.Epilepsy))
-                return ActiveWarning.Epilepsy;
-            if (!IsDismissed(ActiveWarning.IntelDegradation) && IsVulnerableToIntelDegradation())
-                return ActiveWarning.IntelDegradation;
-            if (!IsDismissed(ActiveWarning.Rosetta) && IsAppleSiliconInRosetta())
-                return ActiveWarning.Rosetta;
-
-            return ActiveWarning.None;
-        }
-    }
-
-    private bool IsDismissed(ActiveWarning warning)
-    {
-        return Cfg.GetCVar(CVars.DismissedWarnings).Split(',').Contains(warning.ToString());
-    }
-
-    private void Dismiss(ActiveWarning warning)
-    {
-        var dismissed = Cfg.GetCVar(CVars.DismissedWarnings).Split(',', StringSplitOptions.RemoveEmptyEntries);
-        Cfg.SetCVar(CVars.DismissedWarnings, string.Join(',', dismissed.Append(warning.ToString()).Distinct()));
-        Cfg.CommitConfig();
-        WarningsChanged();
-    }
-
-    public bool ShowEarlyAccessWarning => CurrentWarning == ActiveWarning.EarlyAccess;
-    public bool ShowEpilepsyWarning => CurrentWarning == ActiveWarning.Epilepsy;
-    public bool ShowIntelDegradationWarning => CurrentWarning == ActiveWarning.IntelDegradation;
-    public bool ShowRosettaWarning => CurrentWarning == ActiveWarning.Rosetta;
-    public bool ShowAuthOverrideWarning => CurrentWarning == ActiveWarning.AuthOverride;
-
-    private ActiveWarning _lastWarning;
-    private int _warningCountdown;
-
-    /// <summary>
-    /// Seconds left before the current warning can be acknowledged. 0 if it can be acknowledged right away.
-    /// </summary>
-    public int WarningCountdown
-    {
-        get => _warningCountdown;
-        private set
-        {
-            if (!SetProperty(ref _warningCountdown, value))
-                return;
-
-            OnPropertyChanged(nameof(IsWarningButtonEnabled));
-            OnPropertyChanged(nameof(AuthOverrideButtonText));
-            OnPropertyChanged(nameof(IntelDegradationButtonText));
-        }
-    }
-
-    public bool IsWarningButtonEnabled => WarningCountdown <= 0;
-
-    public string AuthOverrideButtonText => AcceptButtonText("main-window-auth-override-acknowledge");
-    public string IntelDegradationButtonText => AcceptButtonText("main-window-intel-degrade-accept");
-
-    private string AcceptButtonText(string key)
-    {
-        var text = _loc.GetString(key);
-        if (WarningCountdown <= 0)
-            return text;
-
-        return _loc.GetString("main-window-warning-accept-countdown",
-            ("text", text), ("seconds", WarningCountdown));
-    }
-
-    private void WarningsChanged()
-    {
-        var current = CurrentWarning;
-        if (current != _lastWarning)
-        {
-            _lastWarning = current;
-            RestartWarningCountdown(current);
-        }
-
-        OnPropertyChanged(nameof(ShowEarlyAccessWarning));
-        OnPropertyChanged(nameof(ShowEpilepsyWarning));
-        OnPropertyChanged(nameof(ShowIntelDegradationWarning));
-        OnPropertyChanged(nameof(ShowRosettaWarning));
-        OnPropertyChanged(nameof(ShowAuthOverrideWarning));
-    }
-
-    private bool _shouldShowAuthOverrideWarning;
-
-    public bool ShouldShowAuthOverrideWarning
-    {
-        get => _shouldShowAuthOverrideWarning;
-        set
-        {
-            if (SetProperty(ref _shouldShowAuthOverrideWarning, value))
-                WarningsChanged();
-        }
-    }
+    public bool IsBackgroundUpdating => _updater.IsBackgroundUpdating;
 
     public string Version => $"v{LauncherVersion.Version}";
 
@@ -423,47 +322,6 @@ public sealed partial class MainWindowViewModel : ViewModelBase, IErrorOverlayOw
     public void DownloadPressed()
     {
         Helpers.OpenUri(new Uri(ConfigConstants.DownloadUrl));
-    }
-
-    public void DismissEarlyAccessPressed()
-    {
-        Dismiss(ActiveWarning.EarlyAccess);
-    }
-
-    public void DismissEpilepsyWarningPressed()
-    {
-        Dismiss(ActiveWarning.Epilepsy);
-    }
-
-    public void DismissIntelDegradationPressed()
-    {
-        Dismiss(ActiveWarning.IntelDegradation);
-    }
-
-    public void DismissAppleSiliconRosettaPressed()
-    {
-        Dismiss(ActiveWarning.Rosetta);
-    }
-
-    public void DismissAuthOverridePressed()
-    {
-        ShouldShowAuthOverrideWarning = false;
-    }
-
-    private void RestartWarningCountdown(ActiveWarning warning)
-    {
-        _warningCountdownTimer?.Dispose();
-        _warningCountdownTimer = null;
-
-        WarningCountdown = warning is ActiveWarning.AuthOverride or ActiveWarning.IntelDegradation ? 5 : 0;
-        if (WarningCountdown <= 0)
-            return;
-
-        _warningCountdownTimer = DispatcherTimer.Run(() =>
-        {
-            WarningCountdown--;
-            return WarningCountdown > 0;
-        }, TimeSpan.FromSeconds(1), DispatcherPriority.Normal);
     }
 
     public void SelectTabServers()

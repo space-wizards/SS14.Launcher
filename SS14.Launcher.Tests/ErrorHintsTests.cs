@@ -47,7 +47,7 @@ public class ErrorHintsTests
     public void ErrorStringsParseWithoutErrors()
     {
         using var reader = new StringReader(ReadLocale("error.ftl"));
-        var resource = new LinguiniParser(reader).Parse(); // I love this name so much idk why its so funny to me...
+        var resource = LinguiniParser.FromTextReader(reader, "error.ftl").Parse(); // I love this name so much idk why its so funny to me...
 
         Assert.That(resource.Errors, Is.Empty);
     }
