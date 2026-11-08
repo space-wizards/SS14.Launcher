@@ -55,9 +55,9 @@ public partial class ServerListTabViewModel : MainWindowTabViewModel
             switch (status)
             {
                 case RefreshListStatus.Error:
-                    return _loc.GetString("tab-servers-list-status-error");
+                    return WithErrorCode(_loc.GetString("tab-servers-list-status-error"));
                 case RefreshListStatus.PartialError:
-                    return _loc.GetString("tab-servers-list-status-partial-error");
+                    return WithErrorCode(_loc.GetString("tab-servers-list-status-partial-error"));
                 case RefreshListStatus.UpdatingMaster:
                     return _loc.GetString("tab-servers-list-status-updating-master");
                 case RefreshListStatus.NotUpdated:
@@ -73,6 +73,14 @@ public partial class ServerListTabViewModel : MainWindowTabViewModel
                     return "";
             }
         }
+    }
+
+    private string WithErrorCode(string text)
+    {
+        if (_serverListCache.FailureCode is not { } code)
+            return text;
+
+        return text + "\n" + _loc.GetString("error-code-label", ("code", code.ToString()));
     }
 
     [ObservableProperty] private bool _filtersVisible;

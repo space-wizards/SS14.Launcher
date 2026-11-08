@@ -297,7 +297,7 @@ public sealed class DataManager : ObservableObject
         var success = Migrator.Migrate(connection, "SS14.Launcher.Models.Data.Migrations");
 
         if (!success)
-            throw new Exception("Migrations failed!");
+            throw new LauncherException("Migrations failed!", ErrorCodes.DbMigrateSettings);
 
         Log.Debug("Did migrations in {MigrationTime}", sw.Elapsed);
 
@@ -423,6 +423,17 @@ public sealed class DataManager : ObservableObject
                 var sw = Stopwatch.StartNew();
                 transaction.Commit();
                 Log.Debug("Commit took: {CommitElapsed}", sw.Elapsed);
+            }
+            catch (Exception e)
+            {
+                // An uncaught exception here would've crashed the launcher. Why? Why not lol
+                var code = ErrorClassifier.ClassifyPrecisely(e) ?? ErrorCodes.DbSaveSettings;
+                Log.Error(e, "Failed to save settings ({ErrorCode})", code);
+
+                WeakReferenceMessenger.Default.Send(new ErrorOccurred(
+                    "error-overlay-title-save-settings",
+                    "error-overlay-desc-save-settings",
+                    code));
             }
             finally
             {

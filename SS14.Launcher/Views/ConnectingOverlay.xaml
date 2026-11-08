@@ -22,15 +22,11 @@
                      MinWidth="300" />
 
         <Panel DockPanel.Dock="Bottom">
-          <Button Content="Ok" IsVisible="{Binding IsErrored}" HorizontalAlignment="Center"
-                  Command="{Binding ErrorDismissed}" MinWidth="75" />
-
           <Grid ColumnDefinitions="Auto,*,Auto,Auto">
             <Button Grid.Column="0"
                     Name="CancelButton"
                     Content="{loc:Loc connecting-cancel}"
-                    Command="{Binding Cancel}"
-                    IsVisible="{Binding !IsErrored}" />
+                    Command="{Binding Cancel}" />
 
             <TextBlock Grid.Column="2" Margin="8 4 0 4" MinWidth="85" VerticalAlignment="Center"
                        Text="{Binding SpeedText}"

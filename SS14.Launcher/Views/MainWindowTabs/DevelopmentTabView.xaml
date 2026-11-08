@@ -25,5 +25,21 @@
     <TextBlock VerticalAlignment="Center" TextWrapping="Wrap"
                Text="{loc:Loc tab-development-enable-engine-override-desc}"
                Margin="8" />
+
+    <TextBlock Text="Error testing" Classes="NanoHeadingSmall" Margin="4,16,4,4" />
+    <TextBlock VerticalAlignment="Center" TextWrapping="Wrap" Margin="8,0,8,4"
+               Text="Make the launcher fail on purpose, to see the error screens and codes. Some entries only write to the log, and one fully crashes the launcher." />
+
+    <Grid ColumnDefinitions="*,Auto" Margin="4">
+      <ComboBox ItemsSource="{Binding Failures}" SelectedItem="{Binding SelectedFailure}"
+                HorizontalAlignment="Stretch">
+        <ComboBox.ItemTemplate>
+          <DataTemplate x:DataType="mainWindowTabs:DevelopmentFailure">
+            <TextBlock Text="{Binding Name}" />
+          </DataTemplate>
+        </ComboBox.ItemTemplate>
+      </ComboBox>
+      <Button Grid.Column="1" Content="Trigger" Command="{Binding TriggerFailure}" Margin="4,0,0,0" />
+    </Grid>
   </StackPanel>
 </UserControl>

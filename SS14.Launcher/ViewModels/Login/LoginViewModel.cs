@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
+using Serilog;
 using SS14.Launcher.Api;
 using SS14.Launcher.Localization;
 using SS14.Launcher.Models.Data;
@@ -101,7 +102,9 @@ public partial class LoginViewModel : BaseLoginViewModel
         }
 
         var errors = AuthErrorsOverlayViewModel.AuthCodeToErrors(resp.Errors, resp.Code);
-        vm.OverlayControl = new AuthErrorsOverlayViewModel(vm, loc.GetString("login-login-error-title"), errors);
+        var errorCode = resp.FailureCode ?? AuthErrorsOverlayViewModel.DenyCodeToErrorCode(resp.Code);
+        Log.Information("Login failed ({ErrorCode})", errorCode);
+        vm.OverlayControl = new AuthErrorsOverlayViewModel(vm, loc.GetString("login-login-error-title"), errors, errorCode);
         return false;
     }
 

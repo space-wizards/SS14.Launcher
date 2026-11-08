@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
+using Avalonia.Threading;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using JetBrains.Annotations;
@@ -14,6 +16,7 @@ using Splat;
 using SS14.Launcher.Localization;
 using SS14.Launcher.Models;
 using SS14.Launcher.Models.ContentManagement;
+using SS14.Launcher.Models.Data;
 using SS14.Launcher.Models.OverrideAssets;
 using SS14.Launcher.Utility;
 using SS14.Launcher.ViewModels;
@@ -120,8 +123,14 @@ public class App : Application
         }
     }
 
+    // This many unhandled UI exceptions within this long means something is broken for good.
+    private const int UnhandledErrorLimit = 5;
+    private static readonly TimeSpan UnhandledErrorWindow = TimeSpan.FromSeconds(10);
+
     private void OnStartup(object? s, ControlledApplicationLifetimeStartupEventArgs e)
     {
+        Program.UiStarted = true;
+
         var loc = Locator.Current.GetRequiredService<LocalizationManager>();
         var msgr = Locator.Current.GetRequiredService<LauncherMessaging>();
         var contentManager = Locator.Current.GetRequiredService<ContentManager>();
@@ -138,7 +147,64 @@ public class App : Application
         {
             DataContext = viewModel
         };
+
+        // Exceptions from UI handlers (async void methods and so on) would otherwise take the whole launcher down.
+        // But if they keep coming, carrying on only fills the log and leaves a broken window, so give up instead.
+        var errorLimiter = new ErrorRateLimiter(UnhandledErrorLimit, UnhandledErrorWindow);
+        var givingUp = false; // The "Shits cooked" flag
+        Dispatcher.UIThread.UnhandledException += (_, args) =>
+        {
+            // Already on the way out, the rest of the errors don't matter any more.
+            if (givingUp)
+            {
+                args.Handled = true;
+                return;
+            }
+
+            var code = ErrorClassifier.ClassifyPrecisely(args.Exception) ?? ErrorCodes.GenBackground;
+            Log.Error(args.Exception, "Unhandled exception on the UI thread ({ErrorCode})", code);
+
+            if (errorLimiter.Record(DateTimeOffset.UtcNow))
+            {
+                givingUp = true;
+                args.Handled = true;
+
+                Log.Fatal("{Limit} unhandled UI exceptions within {Window}, closing the launcher ({ErrorCode})",
+                    UnhandledErrorLimit, UnhandledErrorWindow, code);
+                SaveSettingsBeforeExit();
+                Log.CloseAndFlush();
+
+                var dialog = new Thread(() => FatalErrorDialog.Show(code,
+                    "Space Station 14 Launcher ran into too many errors and has to close."));
+                dialog.Start();
+                dialog.Join();
+
+                Environment.Exit(1);
+                return;
+            }
+
+            args.Handled = true;
+            viewModel.ShowErrorOverlay("error-overlay-title-unexpected", "error-overlay-desc-unexpected", code);
+        };
+
         viewModel.OnWindowInitialized();
+
+        // Environment.Exit skips the cleanup Main would do.
+        // Attempts to save, but at this point the launcher is already beyond saving, so it may fail.
+        // With any luck, only the ui is fucked and we can still cleanly close the db...
+        static void SaveSettingsBeforeExit()
+        {
+            try
+            {
+                var cfg = Locator.Current.GetRequiredService<DataManager>();
+                if (!Task.Run(cfg.Close).Wait(TimeSpan.FromSeconds(3)))
+                    Log.Warning("Saving settings before exit took too long, giving up");
+            }
+            catch (Exception e)
+            {
+                Log.Warning(e, "Could not save settings before exit");
+            }
+        }
 
         loc.LanguageSwitched += () =>
         {

@@ -55,22 +55,42 @@ public sealed class AuthApi
             // Unknown error? uh oh.
             return new AuthenticateResult(
                 new[] { "Server returned unknown error" },
-                AuthenticateDenyResponseCode.UnknownError);
+                AuthenticateDenyResponseCode.UnknownError,
+                ErrorCodes.AuthBadStatus);
         }
         catch (JsonException e)
         {
             Log.Error(e, "JsonException in AuthenticateAsync");
             return new AuthenticateResult(
                 new[] { "Server sent invalid response" },
-                AuthenticateDenyResponseCode.UnknownError);
+                AuthenticateDenyResponseCode.UnknownError,
+                ErrorCodes.AuthBadResponse);
         }
-        catch (HttpRequestException httpE)
+        catch (Exception httpE) when (httpE is HttpRequestException or AggregateException)
         {
-            Log.Error(httpE, "HttpRequestException in AuthenticateAsync");
+            // AggregateException is what the fallback URL logic throws when every URL failed.
+            Log.Error(httpE, "Connection error in AuthenticateAsync");
             HttpSelfTest.StartSelfTest();
             return new AuthenticateResult(
                 new[] { $"Connection error to authentication server: {httpE.Message}" },
-                AuthenticateDenyResponseCode.UnknownError);
+                AuthenticateDenyResponseCode.UnknownError,
+                ErrorClassifier.ClassifyPrecisely(httpE) ?? ErrorCodes.AuthConnect);
+        }
+        catch (OperationCanceledException e) when (ErrorClassifier.IsTimeout(e))
+        {
+            Log.Error(e, "Timeout in AuthenticateAsync");
+            return new AuthenticateResult(
+                new[] { "Connection to authentication server timed out" },
+                AuthenticateDenyResponseCode.UnknownError,
+                ErrorCodes.NetTimeout);
+        }
+        catch (Exception e) when (e is not OperationCanceledException)
+        {
+            Log.Error(e, "Unexpected exception in AuthenticateAsync");
+            return new AuthenticateResult(
+                new[] { $"Unexpected error ({e.GetType().Name})" },
+                AuthenticateDenyResponseCode.UnknownError,
+                ErrorClassifier.ClassifyPrecisely(e) ?? ErrorCodes.AuthUnexpected);
         }
     }
 
@@ -203,18 +223,21 @@ public sealed class AuthApi
             Log.Error("Server returned unexpected HTTP status code: {responseCode}", resp.StatusCode);
             Log.Debug("Response for error:\n{response}\n{content}", resp, await resp.Content.ReadAsStringAsync());
 
-            throw new AuthApiException($"Server returned unexpected HTTP status code: {resp.StatusCode}");
+            throw new AuthApiException($"Server returned unexpected HTTP status code: {resp.StatusCode}", ErrorCodes.AuthRefresh);
         }
-        catch (HttpRequestException httpE)
+        catch (Exception httpE) when (httpE is HttpRequestException or AggregateException)
         {
-            Log.Error(httpE, "HttpRequestException in ResendConfirmationAsync");
+            Log.Error(httpE, "Connection error in RefreshTokenAsync");
             HttpSelfTest.StartSelfTest();
-            throw new AuthApiException("HttpRequestException thrown", httpE);
+            throw new AuthApiException(
+                "HttpRequestException thrown",
+                ErrorClassifier.ClassifyPrecisely(httpE) ?? ErrorCodes.AuthConnect,
+                httpE);
         }
         catch (JsonException jsonE)
         {
-            Log.Error(jsonE, "JsonException in ResendConfirmationAsync");
-            throw new AuthApiException("JsonException thrown", jsonE);
+            Log.Error(jsonE, "JsonException in RefreshTokenAsync");
+            throw new AuthApiException("JsonException thrown", ErrorCodes.AuthBadResponse, jsonE);
         }
     }
 
@@ -278,14 +301,17 @@ public sealed class AuthApi
             // Unknown error? uh oh.
             Log.Error("Server returned unexpected HTTP status code: {responseCode}", resp.StatusCode);
             Log.Debug("Response for error:\n{response}\n{content}", resp, await resp.Content.ReadAsStringAsync());
-            throw new AuthApiException($"Server returned unexpected HTTP status code: {resp.StatusCode}");
+            throw new AuthApiException($"Server returned unexpected HTTP status code: {resp.StatusCode}", ErrorCodes.AuthTokenCheck);
         }
-        catch (HttpRequestException httpE)
+        catch (Exception httpE) when (httpE is HttpRequestException or AggregateException)
         {
             // Does it make sense to just... swallow this exception? The token will stay "active" until it expires.
-            Log.Error(httpE, "HttpRequestException in CheckTokenAsync");
+            Log.Error(httpE, "Connection error in CheckTokenAsync");
             HttpSelfTest.StartSelfTest();
-            throw new AuthApiException("HttpRequestException thrown", httpE);
+            throw new AuthApiException(
+                "HttpRequestException thrown",
+                ErrorClassifier.ClassifyPrecisely(httpE) ?? ErrorCodes.AuthConnect,
+                httpE);
         }
     }
 
@@ -352,12 +378,22 @@ public readonly struct AuthenticateResult
         Code = default;
     }
 
-    public AuthenticateResult(string[] errors, AuthApi.AuthenticateDenyResponseCode code)
+    public AuthenticateResult(
+        string[] errors,
+        AuthApi.AuthenticateDenyResponseCode code,
+        ErrorCode? failureCode = null)
     {
         _loginInfo = null;
         _errors = errors;
         Code = code;
+        FailureCode = failureCode;
     }
+
+    /// <summary>
+    /// Our own error code for failures that didn't come from the server's deny response
+    /// (the server couldn't be reached, sent nonsense, etc).
+    /// </summary>
+    public ErrorCode? FailureCode { get; }
 
     public bool IsSuccess => _loginInfo != null;
 
@@ -403,17 +439,12 @@ public enum RegisterResponseStatus
 }
 
 [Serializable]
-public class AuthApiException : Exception
+public class AuthApiException : Exception, IErrorCoded
 {
-    public AuthApiException()
-    {
-    }
+    public ErrorCode Code { get; }
 
-    public AuthApiException(string message) : base(message)
+    public AuthApiException(string message, ErrorCode code, Exception? inner = null) : base(message, inner)
     {
-    }
-
-    public AuthApiException(string message, Exception inner) : base(message, inner)
-    {
+        Code = code;
     }
 }

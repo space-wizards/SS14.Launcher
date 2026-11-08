@@ -133,7 +133,17 @@ internal static class LauncherDiagnostics
 
         if (OperatingSystem.IsMacOS())
         {
-            var name = GetProcessorModelMacOS();
+            string? name = null;
+            try
+            {
+                name = GetProcessorModelMacOS();
+            }
+            catch (Win32Exception)
+            {
+                // Despite what the name would suggest, this error can occur on mac.
+                // But, we don't care, so it's not thrown :3
+            }
+
             if (name != null)
                 return name;
         }

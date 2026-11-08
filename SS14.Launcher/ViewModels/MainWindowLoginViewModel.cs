@@ -60,10 +60,6 @@ public class MainWindowLoginViewModel : ViewModelBase
 
     public void OpenLogDirectory()
     {
-        Process.Start(new ProcessStartInfo
-        {
-            UseShellExecute = true,
-            FileName = LauncherPaths.DirLogs
-        });
+        Helpers.OpenFolder(LauncherPaths.DirLogs);
     }
 }
