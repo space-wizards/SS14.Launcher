@@ -94,6 +94,7 @@ public sealed partial class MainWindowViewModel : ViewModelBase, IErrorOverlayOw
             .Subscribe(_ => OnPropertyChanged(new PropertyChangedEventArgs(nameof(AccountDropDownVisible))));
 
         // Start the countdown if the first warning to show needs one.
+        _warnings = BuildWarnings();
         WarningsChanged();
     }
 
@@ -137,125 +138,6 @@ public sealed partial class MainWindowViewModel : ViewModelBase, IErrorOverlayOw
         var tab = Tabs[_selectedIndex];
         tab.IsSelected = true;
         tab.Selected();
-    }
-
-    // Warning overlays are shown one at a time, highest priority first.
-    private enum ActiveWarning
-    {
-        None,
-        AuthOverride,
-        EarlyAccess,
-        Epilepsy,
-        IntelDegradation,
-        Rosetta,
-        // A question rather than a warning, so it comes after the ones the user has to read. Keep this at the bottom if we get more warnings.
-        BackgroundFetch
-    }
-
-    private ActiveWarning CurrentWarning
-    {
-        get
-        {
-            if (ShouldShowAuthOverrideWarning)
-                return ActiveWarning.AuthOverride;
-            if (!IsDismissed(ActiveWarning.EarlyAccess))
-                return ActiveWarning.EarlyAccess;
-            if (!IsDismissed(ActiveWarning.Epilepsy))
-                return ActiveWarning.Epilepsy;
-            if (!IsDismissed(ActiveWarning.IntelDegradation) && IsVulnerableToIntelDegradation())
-                return ActiveWarning.IntelDegradation;
-            if (!IsDismissed(ActiveWarning.Rosetta) && IsAppleSiliconInRosetta())
-                return ActiveWarning.Rosetta;
-            if (!IsDismissed(ActiveWarning.BackgroundFetch) && !Cfg.GetCVar(CVars.PrefetchFavoriteServers)
-                && Cfg.FavoriteServers.Count > 0)
-                return ActiveWarning.BackgroundFetch;
-
-            return ActiveWarning.None;
-        }
-    }
-
-    private bool IsDismissed(ActiveWarning warning)
-    {
-        return Cfg.GetCVar(CVars.DismissedWarnings).Split(',').Contains(warning.ToString());
-    }
-
-    private void Dismiss(ActiveWarning warning)
-    {
-        var dismissed = Cfg.GetCVar(CVars.DismissedWarnings).Split(',', StringSplitOptions.RemoveEmptyEntries);
-        Cfg.SetCVar(CVars.DismissedWarnings, string.Join(',', dismissed.Append(warning.ToString()).Distinct()));
-        Cfg.CommitConfig();
-        WarningsChanged();
-    }
-
-    public bool ShowEarlyAccessWarning => CurrentWarning == ActiveWarning.EarlyAccess;
-    public bool ShowEpilepsyWarning => CurrentWarning == ActiveWarning.Epilepsy;
-    public bool ShowIntelDegradationWarning => CurrentWarning == ActiveWarning.IntelDegradation;
-    public bool ShowRosettaWarning => CurrentWarning == ActiveWarning.Rosetta;
-    public bool ShowAuthOverrideWarning => CurrentWarning == ActiveWarning.AuthOverride;
-    public bool ShowBackgroundFetchPrompt => CurrentWarning == ActiveWarning.BackgroundFetch;
-
-    private ActiveWarning _lastWarning;
-    private int _warningCountdown;
-
-    /// <summary>
-    /// Seconds left before the current warning can be acknowledged. 0 if it can be acknowledged right away.
-    /// </summary>
-    public int WarningCountdown
-    {
-        get => _warningCountdown;
-        private set
-        {
-            if (!SetProperty(ref _warningCountdown, value))
-                return;
-
-            OnPropertyChanged(nameof(IsWarningButtonEnabled));
-            OnPropertyChanged(nameof(AuthOverrideButtonText));
-            OnPropertyChanged(nameof(IntelDegradationButtonText));
-        }
-    }
-
-    public bool IsWarningButtonEnabled => WarningCountdown <= 0;
-
-    public string AuthOverrideButtonText => AcceptButtonText("main-window-auth-override-acknowledge");
-    public string IntelDegradationButtonText => AcceptButtonText("main-window-intel-degrade-accept");
-
-    private string AcceptButtonText(string key)
-    {
-        var text = _loc.GetString(key);
-        if (WarningCountdown <= 0)
-            return text;
-
-        return _loc.GetString("main-window-warning-accept-countdown",
-            ("text", text), ("seconds", WarningCountdown));
-    }
-
-    private void WarningsChanged()
-    {
-        var current = CurrentWarning;
-        if (current != _lastWarning)
-        {
-            _lastWarning = current;
-            RestartWarningCountdown(current);
-        }
-
-        OnPropertyChanged(nameof(ShowEarlyAccessWarning));
-        OnPropertyChanged(nameof(ShowEpilepsyWarning));
-        OnPropertyChanged(nameof(ShowIntelDegradationWarning));
-        OnPropertyChanged(nameof(ShowRosettaWarning));
-        OnPropertyChanged(nameof(ShowAuthOverrideWarning));
-        OnPropertyChanged(nameof(ShowBackgroundFetchPrompt));
-    }
-
-    private bool _shouldShowAuthOverrideWarning;
-
-    public bool ShouldShowAuthOverrideWarning
-    {
-        get => _shouldShowAuthOverrideWarning;
-        set
-        {
-            if (SetProperty(ref _shouldShowAuthOverrideWarning, value))
-                WarningsChanged();
-        }
     }
 
     public bool IsBackgroundUpdating => _updater.IsBackgroundUpdating;
@@ -331,59 +213,6 @@ public sealed partial class MainWindowViewModel : ViewModelBase, IErrorOverlayOw
     public void DownloadPressed()
     {
         Helpers.OpenUri(new Uri(ConfigConstants.DownloadUrl));
-    }
-
-    public void DismissEarlyAccessPressed()
-    {
-        Dismiss(ActiveWarning.EarlyAccess);
-    }
-
-    public void DismissEpilepsyWarningPressed()
-    {
-        Dismiss(ActiveWarning.Epilepsy);
-    }
-
-    public void DismissIntelDegradationPressed()
-    {
-        Dismiss(ActiveWarning.IntelDegradation);
-    }
-
-    public void DismissAppleSiliconRosettaPressed()
-    {
-        Dismiss(ActiveWarning.Rosetta);
-    }
-
-    public void EnableBackgroundFetchPressed()
-    {
-        // Through the options tab so its checkbox follows
-        OptionsTab.PrefetchFavoriteServers = true;
-        Dismiss(ActiveWarning.BackgroundFetch);
-    }
-
-    public void DeclineBackgroundFetchPressed()
-    {
-        Dismiss(ActiveWarning.BackgroundFetch);
-    }
-
-    public void DismissAuthOverridePressed()
-    {
-        ShouldShowAuthOverrideWarning = false;
-    }
-
-    private void RestartWarningCountdown(ActiveWarning warning)
-    {
-        _warningCountdownTimer?.Dispose();
-        _warningCountdownTimer = null;
-
-        WarningCountdown = warning is ActiveWarning.AuthOverride or ActiveWarning.IntelDegradation ? 5 : 0;
-        if (WarningCountdown <= 0)
-            return;
-
-        _warningCountdownTimer = DispatcherTimer.Run(() =>
-        {
-            WarningCountdown--;
-            return WarningCountdown > 0;
-        }, TimeSpan.FromSeconds(1), DispatcherPriority.Normal);
     }
 
     public void SelectTabServers()

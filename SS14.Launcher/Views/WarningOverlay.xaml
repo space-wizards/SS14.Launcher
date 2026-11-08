@@ -15,6 +15,7 @@
                 IsEnabled="{Binding ButtonEnabled, RelativeSource={RelativeSource AncestorType=v:WarningOverlay}}" />
         <Button Content="{Binding SecondaryButtonText, RelativeSource={RelativeSource AncestorType=v:WarningOverlay}}"
                 Command="{Binding SecondaryCommand, RelativeSource={RelativeSource AncestorType=v:WarningOverlay}}"
+                IsEnabled="{Binding ButtonEnabled, RelativeSource={RelativeSource AncestorType=v:WarningOverlay}}"
                 IsVisible="{Binding SecondaryButtonText, RelativeSource={RelativeSource AncestorType=v:WarningOverlay}, Converter={x:Static ObjectConverters.IsNotNull}}" />
       </StackPanel>
     </StackPanel>
