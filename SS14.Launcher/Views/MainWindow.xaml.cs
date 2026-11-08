@@ -7,7 +7,7 @@ using Avalonia.Platform.Storage;
 using SS14.Launcher.Localization;
 using SS14.Launcher.ViewModels;
 using TerraFX.Interop.Windows;
-using IDataObject = Avalonia.Input.IDataObject;
+using Avalonia.Input.Platform;
 
 namespace SS14.Launcher.Views;
 
@@ -86,16 +86,16 @@ public partial class MainWindow : Window
     {
         _content.DragDropOverlay.IsVisible = false;
 
-        if (!IsDragDropValid(args.Data))
+        if (!IsDragDropValid(args.DataTransfer))
             return;
 
-        var file = GetDragDropFile(args.Data)!;
+        var file = GetDragDropFile(args.DataTransfer)!;
         _viewModel!.Dropped(file);
     }
 
     private void DragOver(object? sender, DragEventArgs args)
     {
-        if (!IsDragDropValid(args.Data))
+        if (!IsDragDropValid(args.DataTransfer))
         {
             args.DragEffects = DragDropEffects.None;
             return;
@@ -111,28 +111,28 @@ public partial class MainWindow : Window
 
     private void DragEnter(object? sender, DragEventArgs args)
     {
-        if (!IsDragDropValid(args.Data))
+        if (!IsDragDropValid(args.DataTransfer))
             return;
 
         _content.DragDropOverlay.IsVisible = true;
     }
 
-    private bool IsDragDropValid(IDataObject dataObject)
+    private bool IsDragDropValid(IDataTransfer dataTransfer)
     {
         if (_viewModel == null)
             return false;
 
-        if (GetDragDropFile(dataObject) is not { } fileName)
+        if (GetDragDropFile(dataTransfer) is not { } fileName)
             return false;
 
         return _viewModel.IsContentBundleDropValid(fileName);
     }
 
-    private static IStorageFile? GetDragDropFile(IDataObject dataObject)
+    private static IStorageFile? GetDragDropFile(IDataTransfer dataTransfer)
     {
-        if (!dataObject.Contains(DataFormats.Files))
+        if (!dataTransfer.Contains(DataFormat.File))
             return null;
 
-        return dataObject.GetFiles()?.OfType<IStorageFile>().FirstOrDefault();
+        return dataTransfer.TryGetFiles()?.OfType<IStorageFile>().FirstOrDefault();
     }
 }

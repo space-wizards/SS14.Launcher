@@ -123,7 +123,7 @@ public partial class HomePageViewModel : MainWindowTabViewModel
 
     private bool TryGetWindow([NotNullWhen(true)] out Window? window)
     {
-        window = Control?.GetVisualRoot() as Window;
+        window = (Control is null ? null : TopLevel.GetTopLevel(Control)) as Window;
         return window != null;
     }
 
