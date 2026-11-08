@@ -28,8 +28,8 @@
       <ToggleButton DockPanel.Dock="Right" IsChecked="{Binding FiltersVisible}" Classes="OpenRight"
                     Content="{Binding Filters.FiltersText}" />
       <TextBox DockPanel.Dock="Right" Text="{Binding SearchString, Mode=TwoWay}"
-               Watermark="{loc:Loc tab-servers-search-watermark}"
-               UseFloatingWatermark="False"
+               PlaceholderText="{loc:Loc tab-servers-search-watermark}"
+               UseFloatingPlaceholder="False"
                Margin="0 0 8 0" />
     </DockPanel>
 

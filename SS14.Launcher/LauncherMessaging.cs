@@ -237,12 +237,12 @@ public class LauncherMessaging
                 if (token.IsCancellationRequested) break;
                 try
                 {
-                    while (!sr.EndOfStream)
+                    while (true)
                     {
-                        // Can't be cancelled
-                        var line = await sr.ReadLineAsync().WaitAsync(token).ConfigureAwait(false);
+                        var line = await sr.ReadLineAsync(token).ConfigureAwait(false);
+                        // null means the client disconnected (end of stream).
                         if (line == null)
-                            continue;
+                            break;
 
                         if (line.StartsWith(LauncherCommands.VersionPrefix))
                             await AnswerVersion(line, lc);

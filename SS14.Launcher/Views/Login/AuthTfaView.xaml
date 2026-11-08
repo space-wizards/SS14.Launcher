@@ -17,7 +17,7 @@
                Text="{loc:Loc login-2fa-message}" />
 
     <TextBox DockPanel.Dock="Top" Name="CodeBox" MaxWidth="300" Margin="0, 20, 0, 0"
-             Watermark="{loc:Loc login-2fa-input-watermark}"
+             PlaceholderText="{loc:Loc login-2fa-input-watermark}"
              Text="{Binding Code}" IsEnabled="{Binding !Busy}" />
 
     <DockPanel DockPanel.Dock="Top" LastChildFill="False" MaxWidth="300" Margin="0 20 0 0">

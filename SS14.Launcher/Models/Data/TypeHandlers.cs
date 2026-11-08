@@ -35,8 +35,10 @@ public sealed class DateTimeOffsetTypeHandler : SqlMapper.TypeHandler<DateTimeOf
 
 public sealed class UriTypeHandler : SqlMapper.TypeHandler<Uri>
 {
-    public override void SetValue(IDbDataParameter parameter, Uri value)
+    public override void SetValue(IDbDataParameter parameter, Uri? value)
     {
+        ArgumentNullException.ThrowIfNull(value);
+
         if (!value.IsAbsoluteUri)
             throw new ArgumentException("Refusing to store relative URI to database");
 

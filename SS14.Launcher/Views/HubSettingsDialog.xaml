@@ -123,7 +123,7 @@
                 </Button>
                 <TextBox Text="{Binding Address}"
                          PropertyChanged="HubTextChanged"
-                         Watermark="https://example.com/hub/"
+                         PlaceholderText="https://example.com/hub/"
                          IsEnabled="{Binding IsNotDefault}" />
               </DockPanel>
             </DataTemplate>
