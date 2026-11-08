@@ -9,6 +9,7 @@ public static class DynamicDataExt
         this IObservableCache<TValue, TKey> cache,
         TKey key,
         [MaybeNullWhen(false)] out TValue value)
+        where TValue : notnull
         where TKey : notnull
     {
         var option = cache.Lookup(key);
@@ -26,6 +27,7 @@ public static class DynamicDataExt
         this SourceCache<TValue, TKey> cache,
         TKey key,
         [MaybeNullWhen(false)] out TValue value)
+        where TValue : notnull
         where TKey : notnull
     {
         var option = cache.Lookup(key);

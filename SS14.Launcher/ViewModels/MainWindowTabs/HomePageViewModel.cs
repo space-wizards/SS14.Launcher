@@ -48,7 +48,7 @@ public partial class HomePageViewModel : MainWindowTabViewModel
             })
             // Removed favorites must not keep being refreshed (and queried) from the cache.
             .OnItemRemoved(a => _statusCache.Remove(a.CacheData.Address))
-            .Sort(Comparer<ServerEntryViewModel>.Create((a, b) => {
+            .SortAndBind(out var favorites, Comparer<ServerEntryViewModel>.Create((a, b) => {
                 var dc = a.Favorite!.RaiseTime.CompareTo(b.Favorite!.RaiseTime);
                 if (dc != 0)
                 {
@@ -56,7 +56,6 @@ public partial class HomePageViewModel : MainWindowTabViewModel
                 }
                 return string.Compare(a.Name, b.Name, StringComparison.CurrentCultureIgnoreCase);
             }))
-            .Bind(out var favorites)
             .Subscribe(_ =>
             {
                 FavoritesEmpty = favorites.Count == 0;
