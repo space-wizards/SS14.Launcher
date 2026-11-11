@@ -24,6 +24,7 @@ public sealed partial class ServerListFiltersViewModel : ObservableObject
     public ObservableList<ServerFilterViewModel> FiltersRegion { get; } = [];
     public ObservableList<ServerFilterViewModel> FiltersRolePlay { get; } = [];
     public ObservableList<ServerFilterViewModel> FiltersEighteenPlus { get; } = [];
+    public ObservableList<ServerFilterViewModel> FiltersWhitelist { get; } = [];
     public ObservableList<ServerFilterViewModel> FiltersHub { get; } = [];
 
     public ServerFilterViewModel FilterPlayerCountHideEmpty { get; }
@@ -64,6 +65,16 @@ public sealed partial class ServerListFiltersViewModel : ObservableObject
             _loc.GetString("filters-18-no-desc"),
             _loc.GetString("filters-18-no"),
             new ServerFilter(ServerFilterCategory.EighteenPlus, ServerFilter.DataFalse), this));
+
+        FiltersWhitelist.Add(new ServerFilterViewModel(
+            _loc.GetString("filters-whitelist-yes-desc"),
+            _loc.GetString("filters-whitelist-yes"),
+            new ServerFilter(ServerFilterCategory.Whitelist, ServerFilter.DataTrue), this));
+
+        FiltersWhitelist.Add(new ServerFilterViewModel(
+            _loc.GetString("filters-whitelist-no-desc"),
+            _loc.GetString("filters-whitelist-no"),
+            new ServerFilter(ServerFilterCategory.Whitelist, ServerFilter.DataFalse), this));
 
         FilterPlayerCountHideEmpty = new ServerFilterViewModel(
             _loc.GetString("filters-player-count-hide-empty-desc"),
@@ -202,6 +213,17 @@ public sealed partial class ServerListFiltersViewModel : ObservableObject
         FiltersHub.SetItems(filtersHub);
     }
 
+    /// <summary>
+    /// Reads a yes/no filter: true if only "yes" is checked, false if only "no" is, null if neither or both are.
+    /// </summary>
+    private bool? GetYesNoFilter(ServerFilterCategory category)
+    {
+        var yes = GetFilter(category, ServerFilter.DataTrue);
+        var no = GetFilter(category, ServerFilter.DataFalse);
+
+        return yes == no ? null : yes;
+    }
+
     public bool GetFilter(ServerFilterCategory category, string data) => GetFilter(new ServerFilter(category, data));
     public bool GetFilter(ServerFilter filter) => _dataManager.Filters.Contains(filter);
 
@@ -252,21 +274,9 @@ public sealed partial class ServerListFiltersViewModel : ObservableObject
         if (GetFilter(ServerFilter.PlayerCountMax))
             maxPlayerCount = _dataManager.GetCVar(CVars.FilterPlayerCountMaxValue);
 
-        // Precache 18+ bool.
-        bool? eighteenPlus = null;
-        if (GetFilter(ServerFilterCategory.EighteenPlus, ServerFilter.DataTrue))
-        {
-            eighteenPlus = true;
-        }
-
-        if (GetFilter(ServerFilterCategory.EighteenPlus, ServerFilter.DataFalse))
-        {
-            // Having both
-            if (eighteenPlus == true)
-                eighteenPlus = null;
-            else
-                eighteenPlus = false;
-        }
+        // Precache the yes/no filters.
+        var eighteenPlus = GetYesNoFilter(ServerFilterCategory.EighteenPlus);
+        var whitelist = GetYesNoFilter(ServerFilterCategory.Whitelist);
 
         for (var i = 0; i < list.Count; i++)
         {
@@ -288,6 +298,14 @@ public sealed partial class ServerListFiltersViewModel : ObservableObject
             {
                 var serverEighteenPlus = server.Tags.Contains(Tags.TagEighteenPlus);
                 if (eighteenPlus != serverEighteenPlus)
+                    return false;
+            }
+
+            // Whitelist checks
+            if (whitelist != null)
+            {
+                var serverWhitelist = server.Tags.Contains(Tags.TagWhitelist);
+                if (whitelist != serverWhitelist)
                     return false;
             }
 

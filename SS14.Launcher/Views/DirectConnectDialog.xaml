@@ -20,6 +20,6 @@
       <TextBlock Name="InvalidLabel" Text="{loc:Loc direct-connect-address-invalid}" VerticalAlignment="Center" />
     </DockPanel>
 
-    <TextBox Name="AddressBox" Watermark="ss14://example.com:1212" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" />
+    <TextBox Name="AddressBox" PlaceholderText="ss14://example.com:1212" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" />
   </DockPanel>
 </Window>

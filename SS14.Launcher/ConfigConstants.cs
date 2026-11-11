@@ -23,6 +23,10 @@ public static class ConfigConstants
     public const string LauncherCommandsNamedPipeName = "SS14.Launcher.CommandPipe";
     // Amount of time to wait before the launcher decides to ignore named pipes entirely to keep the rest of the launcher functional.
     public const int LauncherCommandsNamedPipeTimeout = 150;
+    // How long a new launcher waits for the primary launcher to answer its version announcement.
+    public const int LauncherCommandsVersionReplyTimeout = 500;
+    // How long a new launcher waits for an older primary launcher to close after it agreed to make way.
+    public const int LauncherCommandsTakeOverTimeout = 10000;
     // Amount of time to wait to let a redialling client properly die
     public const int LauncherCommandsRedialWaitTimeout = 1000;
 

@@ -17,6 +17,10 @@
 ///         <description><c>true</c> or <c>false</c></description>
 ///     </item>
 ///     <item>
+///         <term>Whitelist</term>
+///         <description><c>true</c> or <c>false</c></description>
+///     </item>
+///     <item>
 ///         <term>Region</term>
 ///         <description>Region tag value</description>
 ///     </item>
@@ -57,4 +61,5 @@ public enum ServerFilterCategory : byte
     EighteenPlus = 4,
     PlayerCount = 5,
     Hub = 6,
+    Whitelist = 7,
 }

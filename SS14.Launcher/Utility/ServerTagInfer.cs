@@ -52,6 +52,13 @@ public static partial class ServerTagInfer
                 addedTags.Add(Tags.TagEighteenPlus);
         }
 
+        // Infer whitelist for [WL] and [Whitelist].
+        if (!currentTags.Contains(Tags.TagWhitelist))
+        {
+            if (tagLikes.Contains("wl") || tagLikes.Contains("whitelist") || tagLikes.Contains("whitelisted"))
+                addedTags.Add(Tags.TagWhitelist);
+        }
+
         // Infer NRP/LRP/MRP/HRP if no RP tags.
         if (!currentTags.Any(t => t.StartsWith(Tags.TagRolePlay, StringComparison.OrdinalIgnoreCase)))
         {

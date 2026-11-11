@@ -31,13 +31,14 @@ public sealed partial class MainWindowViewModel : ViewModelBase, IErrorOverlayOw
     private readonly LoginManager _loginMgr;
     private readonly LauncherInfoManager _infoManager;
     private readonly LocalizationManager _loc;
+    private readonly Updater _updater;
 
     private int _selectedIndex;
 
     public DataManager Cfg => _cfg;
     [ObservableProperty] private bool _outOfDate;
 
-    private IDisposable? _authOverrideCountdownTimer;
+    private IDisposable? _warningCountdownTimer;
 
     public HomePageViewModel HomeTab { get; }
     public ServerListTabViewModel ServersTab { get; }
@@ -50,6 +51,7 @@ public sealed partial class MainWindowViewModel : ViewModelBase, IErrorOverlayOw
         _loginMgr = Locator.Current.GetRequiredService<LoginManager>();
         _infoManager = Locator.Current.GetRequiredService<LauncherInfoManager>();
         _loc = LocalizationManager.Instance;
+        _updater = Locator.Current.GetRequiredService<Updater>();
 
         ServersTab = new ServerListTabViewModel(this);
         NewsTab = new NewsTabViewModel();
@@ -76,6 +78,12 @@ public sealed partial class MainWindowViewModel : ViewModelBase, IErrorOverlayOw
                 RunSelectedOnTab();
         };
 
+        _updater.PropertyChanged += (_, e) =>
+        {
+            if (e.PropertyName is nameof(_updater.IsBackgroundUpdating))
+                OnPropertyChanged(new PropertyChangedEventArgs(nameof(IsBackgroundUpdating)));
+        };
+
         _loginMgr.PropertyChanged += (_, e) =>
         {
             if (e.PropertyName is nameof(_loginMgr.ActiveAccount))
@@ -84,6 +92,10 @@ public sealed partial class MainWindowViewModel : ViewModelBase, IErrorOverlayOw
 
         _cfg.Logins.Connect()
             .Subscribe(_ => OnPropertyChanged(new PropertyChangedEventArgs(nameof(AccountDropDownVisible))));
+
+        // Start the countdown if the first warning to show needs one.
+        _warnings = BuildWarnings();
+        WarningsChanged();
     }
 
     public MainWindow? Control { get; set; }
@@ -128,12 +140,7 @@ public sealed partial class MainWindowViewModel : ViewModelBase, IErrorOverlayOw
         tab.Selected();
     }
 
-    public ICVarEntry<bool> HasDismissedEarlyAccessWarning => Cfg.GetCVarEntry(CVars.HasDismissedEarlyAccessWarning);
-    public bool ShouldShowIntelDegradationWarning => IsVulnerableToIntelDegradation(_cfg);
-    public bool ShouldShowRosettaWarning => IsAppleSiliconInRosetta(_cfg);
-    [ObservableProperty] private bool _shouldShowAuthOverrideWarning;
-    [ObservableProperty] private int _authOverrideCountdown = 5;
-    [ObservableProperty] private bool _isAuthOverrideButtonEnabled;
+    public bool IsBackgroundUpdating => _updater.IsBackgroundUpdating;
 
     public string Version => $"v{LauncherVersion.Version}";
 
@@ -206,53 +213,6 @@ public sealed partial class MainWindowViewModel : ViewModelBase, IErrorOverlayOw
     public void DownloadPressed()
     {
         Helpers.OpenUri(new Uri(ConfigConstants.DownloadUrl));
-    }
-
-    public void DismissEarlyAccessPressed()
-    {
-        Cfg.SetCVar(CVars.HasDismissedEarlyAccessWarning, true);
-        Cfg.CommitConfig();
-    }
-
-    public void DismissIntelDegradationPressed()
-    {
-        Cfg.SetCVar(CVars.HasDismissedIntelDegradation, true);
-        Cfg.CommitConfig();
-        OnPropertyChanged(nameof(ShouldShowIntelDegradationWarning));
-    }
-
-    public void DismissAppleSiliconRosettaPressed()
-    {
-        Cfg.SetCVar(CVars.HasDismissedRosettaWarning, true);
-        Cfg.CommitConfig();
-        OnPropertyChanged(nameof(ShouldShowRosettaWarning));
-    }
-
-    public void DismissAuthOverridePressed()
-    {
-        _authOverrideCountdownTimer?.Dispose();
-        _authOverrideCountdownTimer = null;
-        ShouldShowAuthOverrideWarning = false;
-    }
-
-    public void StartAuthOverrideCountdown()
-    {
-        AuthOverrideCountdown = 5;
-        IsAuthOverrideButtonEnabled = false;
-        _authOverrideCountdownTimer?.Dispose();
-
-        _authOverrideCountdownTimer = DispatcherTimer.Run(() =>
-        {
-            AuthOverrideCountdown--;
-            if (AuthOverrideCountdown <= 0)
-            {
-                IsAuthOverrideButtonEnabled = true;
-                _authOverrideCountdownTimer?.Dispose();
-                _authOverrideCountdownTimer = null;
-                return false;
-            }
-            return true;
-        }, TimeSpan.FromSeconds(1), DispatcherPriority.Normal);
     }
 
     public void SelectTabServers()
@@ -331,12 +291,11 @@ public sealed partial class MainWindowViewModel : ViewModelBase, IErrorOverlayOw
         ConnectingViewModel.StartContentBundle(this, file);
     }
 
-    private static bool IsVulnerableToIntelDegradation(DataManager cfg)
+    private static bool IsVulnerableToIntelDegradation()
     {
         var processor = LauncherDiagnostics.GetProcessorModel();
 
-        // No Intel processor, or already dismissed the warning.
-        if (!processor.Contains("Intel") || cfg.GetCVar(CVars.HasDismissedIntelDegradation))
+        if (!processor.Contains("Intel"))
             return false;
 
         // Get the i#-#### from the processor string.
@@ -350,13 +309,13 @@ public sealed partial class MainWindowViewModel : ViewModelBase, IErrorOverlayOw
         return affectedGenerations.Any(match.Value.Contains) && !excludedSuffixes.Any(match.Value.EndsWith);
     }
 
-    private static bool IsAppleSiliconInRosetta(DataManager cfg)
+    private static bool IsAppleSiliconInRosetta()
     {
         if (!OperatingSystem.IsMacOS())
             return false;
 
         var processor = LauncherDiagnostics.GetProcessorModel();
 
-        return processor.Contains("VirtualApple") && !cfg.GetCVar(CVars.HasDismissedRosettaWarning);
+        return processor.Contains("VirtualApple");
     }
 }

@@ -11,6 +11,8 @@
     <DefineConstants Condition="'$(FullRelease)' != 'True'">DEVELOPMENT;$(DefineConstants)</DefineConstants>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <NoWarn>CA1416</NoWarn>
+    <!-- Avalonia 12 defaults to compiled bindings, but our XAML uses reflection bindings. -->
+    <AvaloniaUseCompiledBindingsByDefault>false</AvaloniaUseCompiledBindingsByDefault>
   </PropertyGroup>
   <PropertyGroup Condition="$([MSBuild]::IsOSPlatform('FreeBSD'))">
     <UseSystemSqlite>True</UseSystemSqlite>
@@ -23,15 +25,10 @@
     <Compile Update="**\*.xaml.cs">
       <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
-    <AvaloniaResource Include="**\*.xaml">
+    <AvaloniaXaml Include="**\*.xaml">
       <SubType>Designer</SubType>
-    </AvaloniaResource>
+    </AvaloniaXaml>
     <AvaloniaResource Include="Assets\**" />
-    <AvaloniaResource Update="Views\MainWindowLogin.xaml">
-      <SubType>Designer</SubType>
-    </AvaloniaResource>
-
-    <AdditionalFiles Include="**\*.xaml" SourceItemGroup="AvaloniaXaml" />
 
     <Compile Update="Views\MainWindowTabs\ServerFilterView.xaml.cs">
       <DependentUpon>ServerFilterView.xaml</DependentUpon>

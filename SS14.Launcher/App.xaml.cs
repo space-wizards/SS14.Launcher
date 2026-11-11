@@ -148,6 +148,8 @@ public class App : Application
             GC.Collect();
         };
 
+        new FavoritesPrefetcher().Start();
+
         var lc = new LauncherCommands(viewModel);
         lc.RunCommandTask();
         Locator.CurrentMutable.RegisterConstant(lc);
@@ -157,7 +159,6 @@ public class App : Application
         {
             Log.Information("Auth URL override detected: {AuthUrl}.", ConfigConstants.AuthUrl.Urls);
             viewModel.ShouldShowAuthOverrideWarning = true;
-            viewModel.StartAuthOverrideCountdown();
         }
 
         window.Show();

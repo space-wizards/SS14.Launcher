@@ -126,6 +126,6 @@ public sealed partial class AvailableAccountViewModel : ViewModelBase
 
     public AvailableAccountViewModel(LoggedInAccount account)
     {
-        Account = account;
+        _account = account;
     }
 }

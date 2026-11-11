@@ -12,12 +12,12 @@ Taken & modified from Avalonia's git repo.
             <TextBlock Name="floatingWatermark"
                        Foreground="{DynamicResource ThemeAccentBrush}"
                        FontSize="{DynamicResource FontSizeSmall}"
-                       Text="{TemplateBinding Watermark}"
+                       Text="{TemplateBinding PlaceholderText}"
                        DockPanel.Dock="Top">
               <TextBlock.IsVisible>
                 <MultiBinding Converter="{x:Static BoolConverters.And}">
                   <Binding RelativeSource="{RelativeSource TemplatedParent}"
-                           Path="UseFloatingWatermark" />
+                           Path="UseFloatingPlaceholder" />
                   <Binding RelativeSource="{RelativeSource TemplatedParent}"
                            Path="Text"
                            Converter="{x:Static StringConverters.IsNotNullOrEmpty}" />
@@ -33,7 +33,7 @@ Taken & modified from Avalonia's git repo.
                 <Panel>
                   <TextBlock Name="watermark"
                              Opacity="0.5"
-                             Text="{TemplateBinding Watermark}"
+                             Text="{TemplateBinding PlaceholderText}"
                              IsVisible="{TemplateBinding Text, Converter={x:Static StringConverters.IsNullOrEmpty}}" />
                   <TextPresenter Name="PART_TextPresenter"
                                  Text="{TemplateBinding Text, Mode=TwoWay}"

@@ -13,7 +13,7 @@
   </Design.DataContext>
   <ContentControl Classes="OverlayBox">
     <Panel>
-      <StackPanel Orientation="Vertical" IsVisible="{Binding !IsAskingPrivacyPolicy}">
+      <StackPanel Orientation="Vertical" Width="440" IsVisible="{Binding !IsAskingPrivacyPolicy}">
         <TextBlock HorizontalAlignment="Center" Classes="NanoHeadingMedium" Text="{Binding TitleText}" />
         <TextBlock HorizontalAlignment="Center" Margin="0 10" DockPanel.Dock="Top" Text="{Binding StatusText}"
                    TextWrapping="Wrap"  MaxWidth="400" />
@@ -25,24 +25,26 @@
           <Button Content="Ok" IsVisible="{Binding IsErrored}" HorizontalAlignment="Center"
                   Command="{Binding ErrorDismissed}" MinWidth="75" />
 
-          <DockPanel LastChildFill="False">
-            <Button DockPanel.Dock="Left"
+          <Grid ColumnDefinitions="Auto,*,Auto,Auto">
+            <Button Grid.Column="0"
                     Name="CancelButton"
                     Content="{loc:Loc connecting-cancel}"
                     Command="{Binding Cancel}"
                     IsVisible="{Binding !IsErrored}" />
 
-            <TextBlock DockPanel.Dock="Right" Margin="8 4 0 4" Text="{Binding ProgressText}"
-                       TextWrapping="Wrap"
-                       IsVisible="{Binding !ProgressIndeterminate}" />
-
-            <TextBlock DockPanel.Dock="Right" Margin="0 4" Text="{Binding SpeedText}"
-                       TextWrapping="Wrap"
+            <TextBlock Grid.Column="2" Margin="8 4 0 4" MinWidth="85" VerticalAlignment="Center"
+                       Text="{Binding SpeedText}"
+                       TextAlignment="Right" TextWrapping="NoWrap"
                        IsVisible="{Binding !SpeedIndeterminate}" />
-          </DockPanel>
+
+            <TextBlock Grid.Column="3" Margin="8 4 0 4" MinWidth="190" VerticalAlignment="Center"
+                       Text="{Binding ProgressText}"
+                       TextAlignment="Right" TextWrapping="NoWrap"
+                       IsVisible="{Binding !ProgressIndeterminate}" />
+          </Grid>
         </Panel>
 
-        <views:RandomMessage Name="Messages" Margin="0 6 0 0" MaxWidth="250" />
+        <views:RandomMessage Name="Messages" Margin="0 10 0 0" MaxWidth="400" />
       </StackPanel>
       <StackPanel Orientation="Vertical" IsVisible="{Binding IsAskingPrivacyPolicy}">
         <TextBlock HorizontalAlignment="Center" Classes="NanoHeadingMedium" Text="{Binding TitleText}" />

@@ -43,6 +43,8 @@ public sealed partial class Updater : ObservableObject
     private readonly IEngineManager _engineManager;
     private readonly HttpClient _http;
     private bool _updating;
+    private CancellationTokenSource? _backgroundCancel;
+    private TaskCompletionSource? _backgroundDone;
 
     public Updater()
     {
@@ -55,6 +57,11 @@ public sealed partial class Updater : ObservableObject
     [ObservableProperty] private UpdateStatus _status;
     [ObservableProperty] private (long downloaded, long total, ProgressUnit unit)? _progress;
     [ObservableProperty] private long? _speed;
+    [ObservableProperty] private long? _progressBytes;
+    /// <summary>
+    /// Whether an update is currently running in the background, not because of a launch.
+    /// </summary>
+    [ObservableProperty] private bool _isBackgroundUpdating;
 
     public Exception? UpdateException;
 
@@ -74,8 +81,61 @@ public sealed partial class Updater : ObservableObject
         return await GuardUpdateAsync(() => InstallContentBundle(archive, zipHash, metadata, cancel));
     }
 
+    /// <summary>
+    /// Runs an update without a launch waiting on it, such as pre-downloading.
+    /// Does nothing if another update is running, and is cancelled if a launch update starts.
+    /// </summary>
+    public async Task<bool> RunBackgroundUpdateAsync(
+        ServerBuildInformation buildInformation,
+        CancellationToken cancel = default)
+    {
+        if (_updating)
+            return false;
+
+        _updating = true;
+        IsBackgroundUpdating = true;
+        var previousStatus = Status;
+        _backgroundCancel = CancellationTokenSource.CreateLinkedTokenSource(cancel);
+        _backgroundDone = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
+
+        try
+        {
+            await RunUpdate(buildInformation, _backgroundCancel.Token);
+            return true;
+        }
+        catch (OperationCanceledException)
+        {
+            Log.Debug("Background update was cancelled");
+            return false;
+        }
+        catch (Exception e)
+        {
+            Log.Warning(e, "Exception while running background update");
+            return false;
+        }
+        finally
+        {
+            Progress = null;
+            Speed = null;
+            Status = previousStatus;
+            IsBackgroundUpdating = false;
+            _backgroundCancel.Dispose();
+            _backgroundCancel = null;
+            _updating = false;
+            _backgroundDone.SetResult();
+            _backgroundDone = null;
+        }
+    }
+
     private async Task<T?> GuardUpdateAsync<T>(Func<Task<T>> func) where T : class
     {
+        // A launch takes priority over a background update
+        if (_backgroundDone is { } backgroundDone)
+        {
+            _backgroundCancel?.Cancel();
+            await backgroundDone.Task;
+        }
+
         if (_updating)
         {
             throw new InvalidOperationException("Update already in progress.");
@@ -103,6 +163,7 @@ public sealed partial class Updater : ObservableObject
         finally
         {
             Progress = null;
+            ProgressBytes = null;
             Speed = null;
             _updating = false;
         }
@@ -270,27 +331,50 @@ public sealed partial class Updater : ObservableObject
                 "SELECT ModuleName, moduleVersion FROM ContentEngineDependency WHERE VersionId = @Version",
                 new { Version = versionRowId }).ToArray();
 
+            var robustIndex = Array.FindIndex(modules, m => m.Item1 == "Robust");
+            if (robustIndex < 0)
+                throw new UpdateException("Content version has no engine dependency!");
+
+            // Engine version may change here due to manifest version redirects.
+            var engineVersion = await InstallEngineVersionIfMissing(modules[robustIndex].Item2, cancel);
+            modules[robustIndex] = ("Robust", engineVersion);
+
             for (var index = 0; index < modules.Length; index++)
             {
-                var (name, version) = modules[index];
-                if (name == "Robust")
-                {
-                    // Engine version may change here due to manifest version redirects.
-                    var newEngineVersion = await InstallEngineVersionIfMissing(version, cancel);
-                    modules[index] = (name, newEngineVersion);
-                }
-                else
-                {
-                    Status = UpdateStatus.DownloadingEngineModules;
+                if (index == robustIndex)
+                    continue;
 
-                    var manifest = await moduleManifest.Value;
-                    await _engineManager.DownloadModuleIfNecessary(
+                var (name, storedVersion) = modules[index];
+
+                Status = UpdateStatus.DownloadingEngineModules;
+
+                var manifest = await moduleManifest.Value;
+
+                // Re-resolve every launch so stale data isn't reused
+                var version = IEngineManager.ResolveEngineModuleVersion(manifest, name, engineVersion);
+                modules[index] = (name, version);
+
+                if (version != storedVersion)
+                {
+                    Log.Information(
+                        "Module {ModuleName} resolved to {ModuleVersion}, was {OldModuleVersion}",
                         name,
                         version,
-                        manifest,
-                        DownloadProgressCallback,
-                        cancel);
+                        storedVersion);
+
+                    // Engine culling keeps whatever versions are in this table, this stops it from deleting what we just installed
+                    con.Execute(
+                        @"UPDATE ContentEngineDependency SET ModuleVersion = @ModVersion
+                            WHERE VersionId = @Version AND ModuleName = @ModName",
+                        new { Version = versionRowId, ModName = name, ModVersion = version });
                 }
+
+                await _engineManager.DownloadModuleIfNecessary(
+                    name,
+                    version,
+                    manifest,
+                    DownloadProgressCallback,
+                    cancel);
             }
         }
 
@@ -631,7 +715,7 @@ public sealed partial class Updater : ObservableObject
 
                         con.Execute(@"
                                 INSERT INTO ContentEngineDependency(VersionId, ModuleName, ModuleVersion)
-                                VALUES (@Version, @ModName, @EngineVersion)",
+                                VALUES (@Version, @ModName, @ModVersion)",
                             new
                             {
                                 Version = versionId,
