@@ -34,6 +34,9 @@ public static class LauncherPaths
     public static readonly string PathPublicKey = Path.Combine(DirLauncherInstall, "signing_key");
     public static readonly string PathContentDb = Path.Combine(DirLocalData, "content.db");
     public static readonly string PathOverrideAssetsDb = Path.Combine(DirLocalData, "override_assets.db");
+    // Cached copies of the engine/module manifests, used as a fallback when the CDN is unreachable.
+    public static readonly string PathEngineBuildManifest = Path.Combine(DirLocalData, "engine_build_manifest.json");
+    public static readonly string PathEngineModuleManifest = Path.Combine(DirLocalData, "engine_module_manifest.json");
 
     public static void CreateDirs()
     {

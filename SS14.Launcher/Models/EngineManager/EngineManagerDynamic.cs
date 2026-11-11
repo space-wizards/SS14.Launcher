@@ -4,7 +4,6 @@ using System.IO;
 using System.IO.MemoryMappedFiles;
 using System.Linq;
 using System.Net.Http;
-using System.Net.Http.Json;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -359,8 +358,12 @@ public sealed partial class EngineManagerDynamic : IEngineManager
 
     public async Task<EngineModuleManifest> GetEngineModuleManifest(CancellationToken cancel = default)
     {
-        return await ConfigConstants.RobustModulesManifest.GetFromJsonAsync<EngineModuleManifest>(_http, cancel) ??
-               throw new InvalidDataException();
+        var json = await FetchManifestJsonWithDiskFallback(
+            ConfigConstants.RobustModulesManifest,
+            LauncherPaths.PathEngineModuleManifest,
+            cancel);
+
+        return DeserializeManifest<EngineModuleManifest>(json);
     }
 
     public async Task DoEngineCullMaybeAsync(SqliteConnection contenCon)
