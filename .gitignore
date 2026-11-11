@@ -11,3 +11,6 @@ SS14.Launcher/FodyWeavers.xsd
 
 !PublishFiles/Space Station 14 Launcher.app/Contents/Resources/bin/
 __pycache__
+
+# Visual Studio 2015 cache/options directory
+/.vs

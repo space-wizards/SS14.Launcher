@@ -401,6 +401,8 @@ tab-options-prefetch-favorites = Download Favorite Server Updates in Background
 tab-options-prefetch-favorites-desc = Checks your favorite servers when the launcher starts, and every 10 minutes after that, and downloads any new game updates ahead of time so joining is faster. Uses bandwidth and disk space.
 tab-options-hub-settings = Hub Settings
 tab-options-hub-settings-desc = Change what hub server or servers you would like to use to fetch the server list.
+tab-options-favorite-pinging = Favorite Servers pinging
+tab-options-favorite-pinging-desc = Should launcher ping servers on home page to measure their lag.
 tab-options-desc-incompatible = This option is incompatible with your platform and has been disabled.
 
 ## For the language selection menu.
@@ -420,3 +422,8 @@ language-selector-language = { $languageName } ({ $englishName })
 
 # Generic "Done!" message used for some buttons.
 button-done = Done!
+
+# pinging
+pinging-please-wait = Pinging...
+pinging-timed-out = Timed out
+pinging-error = Ping error

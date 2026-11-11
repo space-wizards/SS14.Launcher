@@ -3,6 +3,12 @@ using System.ComponentModel;
 
 namespace SS14.Launcher.Models.ServerStatus;
 
+public abstract record PingStatus();
+public record PingTimedOut() : PingStatus;
+public record Pinging() : PingStatus;
+public record PingError() : PingStatus;
+public record PingTime(int Value) : PingStatus;
+
 /// <summary>
 ///     Contains data about the status of a single server.
 /// </summary>
@@ -30,4 +36,6 @@ public interface IServerStatusData : INotifyPropertyChanged
     DateTime? RoundStartTime { get; set; }
 
     GameRoundStatus RoundStatus { get; set; }
+
+    public PingStatus? PingTime { get; set; }
 }
